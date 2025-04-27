@@ -46,6 +46,61 @@ a:hover {
   opacity: 0.8;
 }
 
+/* Button Styles */
+.btn-primary {
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  background-color: #a855f7;
+  color: #fff;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.btn-primary:hover {
+  background-color: #9333ea;
+}
+.btn-secondary {
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+  color: #6b21a8;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Form Input Styles */
+input, textarea {
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+}
+input:focus, textarea:focus {
+  outline: none;
+  ring: 2px solid #a855f7;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: #a855f7;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9333ea;
+}
+
 /* Light Mode Variables */
 :root {
   --background: #f1f1f1;
@@ -58,10 +113,25 @@ a:hover {
     --background: #0f0f0f;
     --text: #f1f1f1;
   }
-
   .section {
     background: rgba(0, 0, 0, 0.4);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  }
+  .btn-primary {
+    background-color: #c084fc;
+  }
+  .btn-primary:hover {
+    background-color: #a855f7;
+  }
+  .btn-secondary {
+    color: #d8b4fe;
+  }
+  input, textarea {
+    background: rgba(255, 255, 255, 0.3);
+    color: #f1f1f1;
+  }
+  input:focus, textarea:focus {
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -79,15 +149,12 @@ a:hover {
     padding: 1rem;
     border-radius: 12px;
   }
-
   h1 {
     font-size: 1.8rem;
   }
-
   h2 {
     font-size: 1.5rem;
   }
-
   p {
     font-size: 1rem;
   }
