@@ -109,8 +109,7 @@ export default function Portfolio() {
       {/* Contact Section */}
       <section
         id="contact"
-        className="section w-[90%] md:w-[800px] mx-auto mt-10 mb-10"
-        aria-label="Contact"
+        classNameiala="Contact"
       >
         <h2 className="text-3xl font-bold text-center mb-6">Contact</h2>
         <form
