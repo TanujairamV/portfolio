@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "homepage": "https://TanujairamV.github.io/portfolio/",
   "browserslist": ">0.2%, not dead, not op_mini all",
   "dependencies": {
