@@ -1,10 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { BrowserRouter } from "react-router-dom"; // if you are using react-router-dom
 import App from "./App";
+import "./index.css"; // your styles
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter basename="/portfolio">
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );

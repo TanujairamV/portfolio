@@ -2,6 +2,7 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://TanujairamV.github.io/portfolio/",
   "browserslist": ">0.2%, not dead, not op_mini all",
   "dependencies": {
     "framer-motion": "^10.18.0",
