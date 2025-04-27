@@ -11,12 +11,12 @@ const IntroScreen = ({ onComplete }) => {
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + fullText.charAt(index));
         setIndex(index + 1);
-      }, 100); // typing speed (ms)
+      }, 100);
       return () => clearTimeout(timeout);
     } else {
       setTimeout(() => {
         onComplete();
-      }, 1000); // Wait 1s after typing finishes
+      }, 1000);
     }
   }, [index, fullText, onComplete]);
 
@@ -26,20 +26,9 @@ const IntroScreen = ({ onComplete }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="intro-screen"
-      style={{
-        display: 'flex',
-        height: '100vh',
-        width: '100vw',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
-        color: '#fff',
-        fontSize: '2rem',
-        fontWeight: 'bold',
-        fontFamily: 'Poppins, sans-serif',
-      }}
     >
       {displayedText}
+      <span className="blinking-cursor">|</span>
     </motion.div>
   );
 };
