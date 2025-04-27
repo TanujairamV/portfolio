@@ -1,8 +1,94 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Reset some defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* Extra optional custom styles */
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base font and background */
 body {
-  @apply bg-gradient-to-br from-blue-100/50 to-purple-200/50;
+  font-family: 'Poppins', sans-serif;
+  background: var(--background);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh;
+}
+
+/* Frosted Glass Morphism for sections */
+.section {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  transition: all 0.4s ease;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Light Mode Variables */
+:root {
+  --background: #f1f1f1;
+  --text: #1f1f1f;
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0f0f;
+    --text: #f1f1f1;
+  }
+
+  .section {
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Responsive Layouts */
+@media (max-width: 768px) {
+  .section {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
 }
