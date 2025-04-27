@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import IntroScreen from './components/IntroScreen';
-import MainPage from './components/MainPage'; // Your existing main content
+import Portfolio from './components/Portfolio';
+import Navbar from './components/Navbar';
 
 function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -11,13 +12,16 @@ function App() {
   };
 
   return (
-    <AnimatePresence>
-      {showIntro ? (
-        <IntroScreen onComplete={handleIntroComplete} />
-      ) : (
-        <MainPage />
-      )}
-    </AnimatePresence>
+    <>
+      {!showIntro && <Navbar />}
+      <AnimatePresence>
+        {showIntro ? (
+          <IntroScreen onComplete={handleIntroComplete} />
+        ) : (
+          <Portfolio />
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
