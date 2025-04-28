@@ -36,5 +36,17 @@ body {
 }
 
 .btn-secondary {
-  @apply px-4 py-2 border border-accent-magenta dark:border-accent-cyan text-accent-magenta dark:text-accent-cyan font-semibold rounded-md hover:bg-accent-magenta/10 dark:hover:bg-accent-cyan/10 transition-all duration-300;
+  @apply px-4 py-2 border font-semibold rounded-md transition-all duration-300;
+  border-color: var(--accent-magenta);
+  color: var(--accent-magenta);
+}
+.btn-secondary:hover {
+  background-color: rgba(255, 0, 255, 0.1); /* accent-magenta/10 */
+}
+.dark .btn-secondary {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+.dark .btn-secondary:hover {
+  background-color: rgba(0, 255, 255, 0.1); /* accent-cyan/10 */
 }
