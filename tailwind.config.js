@@ -19,6 +19,11 @@ module.exports = {
         'accent-cyan': 'var(--accent-cyan)',
         'accent-purple': 'var(--accent-purple)',
       },
+      backgroundOpacity: {
+        10: '0.1',
+        50: '0.5',
+        80: '0.8',
+      },
     },
   },
   plugins: [],
