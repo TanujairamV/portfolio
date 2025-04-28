@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  safelist: [
+    'hover:bg-accent-magenta/10',
+    'dark:hover:bg-accent-cyan/10',
+  ],
   theme: {
     extend: {
       fontFamily: {
