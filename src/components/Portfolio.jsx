@@ -1,22 +1,38 @@
 import { motion } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 export default function Portfolio() {
   return (
-    <div className="w-full bg-gradient-to-br from-blue-100/50 to-purple-200/50">
+    <div className="min-h-screen relative">
+      {/* Background Image with Blur Overlay */}
+      <div
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat z-[-1]"
+        style={{
+          backgroundImage: `url('/assets/tech-bg.jpg')`,
+        }}
+      >
+        <div className="absolute inset-0 backdrop-blur-md bg-dark-bg/50 dark:bg-light-bg/50 transition-colors duration-300" />
+      </div>
+
+      {/* Theme Toggle */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+
       {/* Hero Section */}
       <motion.div
         id="home"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="section w-[90%] md:w-[600px] mx-auto mt-20 flex flex-col items-center text-center"
+        className="section relative w-[90%] md:w-[600px] mx-auto mt-20 flex flex-col items-center text-center text-dark-text dark:text-light-text"
         role="banner"
         aria-label="Portfolio introduction"
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Hey, I'm Tanujairam
         </h1>
-        <p className="text-gray-700 text-lg mb-6">
+        <p className="text-lg mb-6 text-dark-text-secondary dark:text-light-text-secondary">
           Developer. Creator. Explorer.
         </p>
         <div className="flex gap-4 mb-6">
@@ -43,7 +59,7 @@ export default function Portfolio() {
             aria-label="GitHub profile"
           >
             <svg
-              className="w-6 h-6 text-gray-900 hover:text-purple-500"
+              className="w-6 h-6 text-dark-text hover:text-accent-magenta dark:text-light-text dark:hover:text-accent-cyan transition-colors"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -57,7 +73,7 @@ export default function Portfolio() {
             aria-label="LinkedIn profile"
           >
             <svg
-              className="w-6 h-6 text-gray-900 hover:text-purple-500"
+              className="w-6 h-6 text-dark-text hover:text-accent-magenta dark:text-light-text dark:hover:text-accent-cyan transition-colors"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -70,36 +86,35 @@ export default function Portfolio() {
       {/* Projects Section */}
       <section
         id="projects"
-        className="section w-[90%] md:w-[800px] mx-auto mt-10"
-        role="region"
+        className="section relative w-[90%] md:w-[800px] mx-auto mt-10 text-dark-text dark:text-light-text"
         aria-label="Projects"
       >
         <h2 className="text-3xl font-bold text-center mb-6">Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="section p-6">
+          <div className="section p-6 bg-dark-card/80 dark:bg-light-card/80 backdrop-blur-sm rounded-lg">
             <h3 className="text-xl font-semibold mb-2">Project 1</h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-dark-text-secondary dark:text-light-text-secondary mb-4">
               A web application built with React and Node.js, showcasing modern UI/UX.
             </p>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-500 hover:underline"
+              className="text-accent-magenta hover:text-accent-cyan dark:text-accent-cyan dark:hover:text-accent-magenta transition-colors"
             >
               View on GitHub
             </a>
           </div>
-          <div className="section p-6">
+          <div className="section p-6 bg-dark-card/80 dark:bg-light-card/80 backdrop-blur-sm rounded-lg">
             <h3 className="text-xl font-semibold mb-2">Project 2</h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-dark-text-secondary dark:text-light-text-secondary mb-4">
               A mobile app developed with Flutter, focusing on performance.
             </p>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-purple-500 hover:underline"
+              className="text-accent-magenta hover:text-accent-cyan dark:text-accent-cyan dark:hover:text-accent-magenta transition-colors"
             >
               View on GitHub
             </a>
@@ -110,8 +125,7 @@ export default function Portfolio() {
       {/* Contact Section */}
       <section
         id="contact"
-        className="section w-[90%] md:w-[800px] mx-auto mt-10 mb-10"
-        role="region"
+        className="section relative w-[90%] md:w-[800px] mx-auto mt-10 mb-10 text-dark-text dark:text-light-text"
         aria-label="Contact"
       >
         <h2 className="text-3xl font-bold text-center mb-6">Contact</h2>
@@ -125,18 +139,21 @@ export default function Portfolio() {
           <input
             type="text"
             placeholder="Name"
+            className="p-2 rounded bg-dark-card/50 dark:bg-light-card/50 text-dark-text dark:text-light-text border border-dark-text-secondary/50 dark:border-light-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-magenta dark:focus:ring-accent-cyan"
             aria-label="Name"
             required
           />
           <input
             type="email"
             placeholder="Email"
+            className="p-2 rounded bg-dark-card/50 dark:bg-light-card/50 text-dark-text dark:text-light-text border border-dark-text-secondary/50 dark:border-light-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-magenta dark:focus:ring-accent-cyan"
             aria-label="Email"
             required
           />
           <textarea
             placeholder="Message"
             rows="4"
+            className="p-2 rounded bg-dark-card/50 dark:bg-light-card/50 text-dark-text dark:text-light-text border border-dark-text-secondary/50 dark:border-light-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-magenta dark:focus:ring-accent-cyan"
             aria-label="Message"
             required
           ></textarea>
