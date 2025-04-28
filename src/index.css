@@ -2,204 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Reset Defaults */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Base Font and Background */
-body {
-  font-family: 'Poppins', sans-serif;
-  background: var(--background);
-  color: var(--text);
-  transition: background 0.3s, color 0.3s;
-  min-height: 100vh;
-}
-
-/* Frosted Glass Morphism for Sections */
-.section {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 2rem;
-  margin: 2rem auto;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  transition: all 0.4s ease;
-}
-
-/* Intro Screen */
-.intro-screen {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
-  color: #fff;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.blinking-cursor {
-  animation: blink 0.7s step-end infinite;
-}
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Headings */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-}
-
-/* Links */
-a {
-  text-decoration: none;
-  color: var(--text);
-}
-a:hover {
-  opacity: 0.8;
-}
-
-/* Button Styles */
-.btn-primary {
-  padding: 0.5rem 1.5rem;
-  border-radius: 9999px;
-  background-color: #a855f7;
-  color: #fff;
-  font-weight: 600;
-  transition: background-color 0.3s;
-}
-.btn-primary:hover {
-  background-color: #9333ea;
-}
-.btn-secondary {
-  padding: 0.5rem 1.5rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(4px);
-  color: #6b21a8;
-  font-weight: 600;
-  transition: background 0.3s;
-}
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.6);
-}
-
-/* Form Input Styles */
-input, textarea {
-  background: rgba(255, 255, 255, 0.5);
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.3s;
-}
-input:focus, textarea:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 0 2px #a855f7;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-  background: #a855f7;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #9333ea;
-}
-
-/* Light Mode Variables */
 :root {
-  --background: #f1f1f1;
-  --text: #1f1f1f;
+  --bg-primary: #F4F4F9;
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --card-bg: #FFFFFF;
+  --accent-magenta: #FF00FF;
+  --accent-cyan: #00FFFF;
+  --accent-purple: #7B61FF;
 }
 
-/* Dark Mode Variables */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f0f0f;
-    --text: #f1f1f1;
-  }
-  .section {
-    background: rgba(0, 0, 0, 0.4);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  }
-  .btn-primary {
-    background-color: #c084fc;
-  }
-  .btn-primary:hover {
-    background-color: #a855f7;
-  }
-  .btn-secondary {
-    color: #d8b4fe;
-  }
-  input, textarea {
-    background: rgba(255, 255, 255, 0.3);
-    color: #f1f1f1;
-  }
-  input:focus, textarea:focus {
-    background: rgba(255, 255, 255, 0.5);
-  }
-  .text-gray-900 {
-    color: #f1f1f1;
-  }
-  .text-gray-700 {
-    color: #d1d1d1;
-  }
+.dark {
+  --bg-primary: #0A0E2B;
+  --text-primary: #E0E0E0;
+  --text-secondary: #A0A0A0;
+  --card-bg: #1C1F3A;
 }
 
-/* Fallback for Older Browsers */
-@supports not (backdrop-filter: blur(12px)) {
-  .section {
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
-  }
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Responsive Layouts */
-@media (max-width: 768px) {
-  .section {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
-  .intro-screen {
-    font-size: 1.5rem;
-  }
+.section {
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-@media (max-width: 480px) {
-  .section {
-    margin: 0.5rem;
-    padding: 1rem;
-    border-radius: 12px;
-  }
-  h1 {
-    font-size: 1.8rem;
-  }
-  h2 {
-    font-size: 1.5rem;
-  }
-  p {
-    font-size: 1rem;
-  }
-  .intro-screen {
-    font-size: 1.2rem;
-  }
+.btn-primary {
+  @apply px-4 py-2 bg-gradient-to-r from-accent-magenta to-accent-cyan text-white font-semibold rounded-md hover:from-accent-cyan hover:to-accent-magenta transition-all duration-300;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 border border-accent-magenta dark:border-accent-cyan text-accent-magenta dark:text-accent-cyan font-semibold rounded-md hover:bg-accent-magenta/10 dark:hover:bg-accent-cyan/10 transition-all duration-300;
 }
