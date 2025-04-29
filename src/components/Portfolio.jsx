@@ -35,10 +35,10 @@ export default function Portfolio() {
           {/* Logo and Name */}
           <a
             href="#home"
-            className="text-2xl font-montserrat font-bold text-text-primary flex items-center gap-2"
+            className="text-2.25rem font-montserrat font-extrabold text-text-primary flex items-center gap-2"
             aria-label="Tanujairam Home"
           >
-            <span className="text-accent-yellow">T</span>Tanujairam
+            <span className="text-accent-purple">T</span>Tanujairam
           </a>
 
           {/* Navigation Links (Desktop) */}
@@ -47,18 +47,18 @@ export default function Portfolio() {
               <li key={link.name}>
                 <a
                   href={link.href}
-                  className="text-text-primary font-inter text-lg hover:text-accent-yellow hover:scale-105 transition-all duration-300 relative group"
+                  className="text-text-primary font-poppins text-lg hover:text-accent-purple hover:scale-105 transition-all duration-300 relative group"
                   aria-label={link.name}
                 >
                   {link.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-yellow group-hover:w-full transition-all duration-300"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-purple group-hover:w-full transition-all duration-300"></span>
                 </a>
               </li>
             ))}
           </ul>
 
           {/* Current Time */}
-          <div className="text-text-primary font-inter text-lg" aria-live="polite">
+          <div className="text-text-primary font-poppins text-lg" aria-live="polite">
             {time}
           </div>
 
@@ -93,7 +93,7 @@ export default function Portfolio() {
               <li key={link.name} className="py-2">
                 <a
                   href={link.href}
-                  className="text-text-primary font-inter text-lg hover:text-accent-yellow"
+                  className="text-text-primary font-poppins text-lg hover:text-accent-purple"
                   onClick={() => setIsMenuOpen(false)}
                   aria-label={link.name}
                 >
@@ -120,10 +120,10 @@ export default function Portfolio() {
         role="banner"
         aria-label="Portfolio introduction"
       >
-        <h1 className="text-4xl md:text-5xl font-bold font-inter mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
           Hey, I'm Tanujairam
         </h1>
-        <p className="text-lg mb-6 text-text-secondary font-inter">
+        <p className="text-lg mb-6 text-text-secondary font-inter font-medium">
           Designer. Creator. Innovator.
         </p>
         <div className="flex gap-4 mb-6">
@@ -142,7 +142,7 @@ export default function Portfolio() {
             aria-label="GitHub profile"
           >
             <svg
-              className="w-6 h-6 text-text-primary hover:text-accent-yellow transition-colors"
+              className="w-6 h-6 text-text-primary hover:text-accent-purple transition-colors"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -156,7 +156,7 @@ export default function Portfolio() {
             aria-label="LinkedIn profile"
           >
             <svg
-              className="w-6 h-6 text-text-primary hover:text-accent-yellow transition-colors"
+              className="w-6 h-6 text-text-primary hover:text-accent-purple transition-colors"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -175,8 +175,8 @@ export default function Portfolio() {
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="About"
       >
-        <h2 className="text-3xl font-bold font-inter text-center mb-6">About Me</h2>
-        <p className="text-lg text-text-secondary font-inter text-center">
+        <h2 className="text-3xl font-bold font-poppins text-center mb-6">About Me</h2>
+        <p className="text-lg text-text-secondary font-inter font-medium text-center">
           I'm a passionate developer and designer with a focus on creating intuitive and visually stunning web experiences. My expertise spans React, Tailwind CSS, and modern JavaScript frameworks.
         </p>
       </motion.section>
@@ -190,32 +190,32 @@ export default function Portfolio() {
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="Projects"
       >
-        <h2 className="text-3xl font-bold font-inter text-center mb-6">Projects</h2>
+        <h2 className="text-3xl font-bold font-poppins text-center mb-6">Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-yellow/20 transition-shadow">
-            <h3 className="text-xl font-semibold font-inter mb-2">Project 1</h3>
-            <p className="text-text-secondary font-inter mb-4">
+          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-purple/20 transition-shadow">
+            <h3 className="text-xl font-semibold font-poppins mb-2">Project 1</h3>
+            <p className="text-text-secondary font-inter font-medium mb-4">
               A web application built with React and Node.js, showcasing modern UI/UX.
             </p>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent-yellow hover:underline font-inter"
+              className="text-accent-purple hover:underline font-inter"
             >
               View on GitHub
             </a>
           </div>
-          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-yellow/20 transition-shadow">
-            <h3 className="text-xl font-semibold font-inter mb-2">Project 2</h3>
-            <p className="text-text-secondary font-inter mb-4">
+          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-purple/20 transition-shadow">
+            <h3 className="text-xl font-semibold font-poppins mb-2">Project 2</h3>
+            <p className="text-text-secondary font-inter font-medium mb-4">
               A mobile app developed with Flutter, focusing on performance.
             </p>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent-yellow hover:underline font-inter"
+              className="text-accent-purple hover:underline font-inter"
             >
               View on GitHub
             </a>
@@ -232,7 +232,7 @@ export default function Portfolio() {
         className="section w-[90%] md:w-[800px] mx-auto mb-10 text-text-primary"
         aria-label="Contact"
       >
-        <h2 className="text-3xl font-bold font-inter text-center mb-6">Contact</h2>
+        <h2 className="text-3xl font-bold font-poppins text-center mb-6">Contact</h2>
         <form
           className="flex flex-col gap-4 max-w-md mx-auto"
           onSubmit={(e) => {
@@ -243,21 +243,21 @@ export default function Portfolio() {
           <input
             type="text"
             placeholder="Name"
-            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-yellow font-inter"
+            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
             aria-label="Name"
             required
           />
           <input
             type="email"
             placeholder="Email"
-            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-yellow font-inter"
+            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
             aria-label="Email"
             required
           />
           <textarea
             placeholder="Message"
             rows="4"
-            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-yellow font-inter"
+            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
             aria-label="Message"
             required
           ></textarea>
