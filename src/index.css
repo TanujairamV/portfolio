@@ -1,52 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-primary: #F4F4F9;
-  --text-primary: #1A1A1A;
-  --text-secondary: #4A4A4A;
-  --card-bg: #FFFFFF;
-  --accent-magenta: #FF00FF;
-  --accent-cyan: #00FFFF;
-  --accent-purple: #7B61FF;
+  --bg-primary: #1A1A1A;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B3B3B3;
+  --accent-yellow: #F5E050;
+  --card-bg: #2A2A2A;
 }
 
-.dark {
-  --bg-primary: #0A0E2B;
-  --text-primary: #E0E0E0;
-  --text-secondary: #A0A0A0;
-  --card-bg: #1C1F3A;
+[data-theme='light'] {
+  --bg-primary: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --accent-yellow: #F5E050;
+  --card-bg: #F5F5F5;
 }
 
 body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.section {
-  margin: 0 auto;
-  padding: 1rem;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .btn-primary {
-  @apply px-4 py-2 bg-gradient-to-r from-accent-magenta to-accent-cyan text-white font-semibold rounded-md hover:from-accent-cyan hover:to-accent-magenta transition-all duration-300;
+  @apply bg-[var(--accent-yellow)] text-[var(--bg-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[#E6D147] transition-colors;
 }
 
 .btn-secondary {
-  @apply px-4 py-2 border font-semibold rounded-md transition-all duration-300;
-  border-color: var(--accent-magenta);
-  color: var(--accent-magenta);
+  @apply border border-[var(--accent-yellow)] text-[var(--accent-yellow)] font-medium py-2 px-4 rounded-lg hover:bg-[var(--accent-yellow)] hover:text-[var(--bg-primary)] transition-colors;
 }
-.btn-secondary:hover {
-  background-color: rgba(255, 0, 255, 0.1); /* accent-magenta/10 */
-}
-.dark .btn-secondary {
-  border-color: var(--accent-cyan);
-  color: var(--accent-cyan);
-}
-.dark .btn-secondary:hover {
-  background-color: rgba(0, 255, 255, 0.1); /* accent-cyan/10 */
+
+.section {
+  @apply py-10;
 }
