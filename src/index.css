@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&family=Poppins:wght@400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +8,7 @@
   --bg-primary: #1A1A1A;
   --text-primary: #FFFFFF;
   --text-secondary: #B3B3B3;
-  --accent-yellow: #F5E050;
+  --accent-purple: #6B46C1;
   --card-bg: #2A2A2A;
 }
 
@@ -16,7 +16,7 @@
   --bg-primary: #FFFFFF;
   --text-primary: #1A1A1A;
   --text-secondary: #4A4A4A;
-  --accent-yellow: #F5E050;
+  --accent-purple: #6B46C1;
   --card-bg: #F5F5F5;
 }
 
@@ -27,11 +27,11 @@ body {
 }
 
 .btn-primary {
-  @apply bg-[var(--accent-yellow)] text-[var(--bg-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[#E6D147] transition-colors shadow-md;
+  @apply bg-[var(--accent-purple)] text-[var(--text-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[#805AD5] transition-colors shadow-md;
 }
 
 .btn-secondary {
-  @apply border border-[var(--accent-yellow)] text-[var(--text-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[var(--accent-yellow)] hover:text-[var(--bg-primary)] transition-colors shadow-md;
+  @apply border border-[var(--accent-purple)] text-[var(--text-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[var(--accent-purple)] hover:text-[var(--text-primary)] transition-colors shadow-md;
 }
 
 .section {
@@ -40,4 +40,8 @@ body {
 
 .container {
   @apply max-w-7xl;
+}
+
+.text-2\.25rem {
+  font-size: 2.25rem;
 }
