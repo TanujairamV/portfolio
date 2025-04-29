@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -38,4 +38,8 @@ body {
 
 .section {
   @apply py-10;
+}
+
+.container {
+  @apply max-w-7xl;
 }
