@@ -1,21 +1,9 @@
 import { motion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
-const BASE_PATH = process.env.PUBLIC_URL || '';
-
 export default function Portfolio() {
   return (
     <div className="min-h-screen relative">
-      {/* Background Image with Blur Overlay */}
-      <div
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat z-[-1]"
-        style={{
-          backgroundImage: `url('${BASE_PATH}/assets/tech-bg.jpg')`,
-        }}
-      >
-        <div className="absolute inset-0 backdrop-blur-md bg-dark-bg/50 dark:bg-light-bg/50 transition-colors duration-300" />
-      </div>
-
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
@@ -24,18 +12,18 @@ export default function Portfolio() {
       {/* Hero Section */}
       <motion.div
         id="home"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="section relative w-[90%] md:w-[600px] mx-auto mt-20 flex flex-col items-center text-center text-dark-text dark:text-light-text"
+        className="section w-[90%] md:w-[600px] mx-auto mt-20 flex flex-col items-center text-center text-text-primary"
         role="banner"
         aria-label="Portfolio introduction"
       >
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold font-inter mb-4">
           Hey, I'm Tanujairam
         </h1>
-        <p className="text-lg mb-6 text-dark-text-secondary dark:text-light-text-secondary">
-          Developer. Creator. Explorer.
+        <p className="text-lg mb-6 text-text-secondary font-inter">
+          Designer. Creator. Innovator.
         </p>
         <div className="flex gap-4 mb-6">
           <a
@@ -61,7 +49,7 @@ export default function Portfolio() {
             aria-label="GitHub profile"
           >
             <svg
-              className="w-6 h-6 text-dark-text hover:text-accent-magenta dark:text-light-text dark:hover:text-accent-cyan transition-colors"
+              className="w-6 h-6 text-text-primary hover:text-accent-yellow transition-colors"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -75,7 +63,7 @@ export default function Portfolio() {
             aria-label="LinkedIn profile"
           >
             <svg
-              className="w-6 h-6 text-dark-text hover:text-accent-magenta dark:text-light-text dark:hover:text-accent-cyan transition-colors"
+              className="w-6 h-6 text-text-primary hover:text-accent-yellow transition-colors"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -86,51 +74,57 @@ export default function Portfolio() {
       </motion.div>
 
       {/* Projects Section */}
-      <section
+      <motion.section
         id="projects"
-        className="section relative w-[90%] md:w-[800px] mx-auto mt-10 text-dark-text dark:text-light-text"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="Projects"
       >
-        <h2 className="text-3xl font-bold text-center mb-6">Projects</h2>
+        <h2 className="text-3xl font-bold font-inter text-center mb-6">Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="section p-6 bg-dark-card/80 dark:bg-light-card/80 backdrop-blur-sm rounded-lg">
-            <h3 className="text-xl font-semibold mb-2">Project 1</h3>
-            <p className="text-dark-text-secondary dark:text-light-text-secondary mb-4">
+          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-yellow/20 transition-shadow">
+            <h3 className="text-xl font-semibold font-inter mb-2">Project 1</h3>
+            <p className="text-text-secondary font-inter mb-4">
               A web application built with React and Node.js, showcasing modern UI/UX.
             </p>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent-magenta hover:text-accent-cyan dark:text-accent-cyan dark:hover:text-accent-magenta transition-colors"
+              className="text-accent-yellow hover:underline font-inter"
             >
               View on GitHub
             </a>
           </div>
-          <div className="section p-6 bg-dark-card/80 dark:bg-light-card/80 backdrop-blur-sm rounded-lg">
-            <h3 className="text-xl font-semibold mb-2">Project 2</h3>
-            <p className="text-dark-text-secondary dark:text-light-text-secondary mb-4">
+          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-yellow/20 transition-shadow">
+            <h3 className="text-xl font-semibold font-inter mb-2">Project 2</h3>
+            <p className="text-text-secondary font-inter mb-4">
               A mobile app developed with Flutter, focusing on performance.
             </p>
             <a
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent-magenta hover:text-accent-cyan dark:text-accent-cyan dark:hover:text-accent-magenta transition-colors"
+              className="text-accent-yellow hover:underline font-inter"
             >
               View on GitHub
             </a>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Contact Section */}
-      <section
+      <motion.section
         id="contact"
-        className="section relative w-[90%] md:w-[800px] mx-auto mt-10 mb-10 text-dark-text dark:text-light-text"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="section w-[90%] md:w-[800px] mx-auto mb-10 text-text-primary"
         aria-label="Contact"
       >
-        <h2 className="text-3xl font-bold text-center mb-6">Contact</h2>
+        <h2 className="text-3xl font-bold font-inter text-center mb-6">Contact</h2>
         <form
           className="flex flex-col gap-4 max-w-md mx-auto"
           onSubmit={(e) => {
@@ -141,29 +135,29 @@ export default function Portfolio() {
           <input
             type="text"
             placeholder="Name"
-            className="p-2 rounded bg-dark-card/50 dark:bg-light-card/50 text-dark-text dark:text-light-text border border-dark-text-secondary/50 dark:border-light-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-magenta dark:focus:ring-accent-cyan"
+            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-yellow font-inter"
             aria-label="Name"
             required
           />
           <input
             type="email"
             placeholder="Email"
-            className="p-2 rounded bg-dark-card/50 dark:bg-light-card/50 text-dark-text dark:text-light-text border border-dark-text-secondary/50 dark:border-light-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-magenta dark:focus:ring-accent-cyan"
+            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-yellow font-inter"
             aria-label="Email"
             required
           />
           <textarea
             placeholder="Message"
             rows="4"
-            className="p-2 rounded bg-dark-card/50 dark:bg-light-card/50 text-dark-text dark:text-light-text border border-dark-text-secondary/50 dark:border-light-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-magenta dark:focus:ring-accent-cyan"
+            className="p-2 rounded bg-card-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-yellow font-inter"
             aria-label="Message"
             required
           ></textarea>
-          <button type="submit" className="btn-primary">
+          <button type="submit" className="btn-primary font-inter">
             Send Message
           </button>
         </form>
-      </section>
+      </motion.section>
     </div>
   );
 }
