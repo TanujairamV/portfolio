@@ -15,6 +15,10 @@ module.exports = {
         inter: ['Inter', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
       },
+      backgroundImage: {
+        'gradient-dark': 'linear-gradient(135deg, #1A1A1A, #2A2A2A, #3A3A3A)',
+        'gradient-nav': 'linear-gradient(135deg, rgba(26,26,26,0.9), rgba(58,58,58,0.7))',
+      },
     },
   },
   plugins: [],
@@ -25,5 +29,7 @@ module.exports = {
     'hover:bg-accent-yellow',
     'hover:text-bg-primary',
     'backdrop-blur-md',
+    'bg-gradient-dark',
+    'bg-gradient-nav',
   ],
 };
