@@ -21,13 +21,13 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1A] via-[#2A2A2A] to-[#3A3A3A]">
       {/* Translucent Navigation Bar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-[rgba(26,26,26,0.8)] backdrop-blur-md"
+        className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-[rgba(26,26,26,0.9)] to-[rgba(58,58,58,0.7)] backdrop-blur-md"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -87,7 +87,7 @@ export default function Portfolio() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-[rgba(26,26,26,0.9)] backdrop-blur-md absolute top-16 left-0 right-0 flex flex-col items-center py-4"
+            className="md:hidden bg-gradient-to-br from-[rgba(26,26,26,0.9)] to-[rgba(58,58,58,0.7)] backdrop-blur-md absolute top-16 left-0 right-0 flex flex-col items-center py-4"
           >
             {navLinks.map((link) => (
               <li key={link.name} className="py-2">
