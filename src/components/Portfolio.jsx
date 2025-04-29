@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
+const BASE_PATH = process.env.PUBLIC_URL || '';
+
 export default function Portfolio() {
   return (
     <div className="min-h-screen relative">
@@ -8,7 +10,7 @@ export default function Portfolio() {
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat z-[-1]"
         style={{
-          backgroundImage: `url('/assets/tech-bg.jpg')`,
+          backgroundImage: `url('${BASE_PATH}/assets/tech-bg.jpg')`,
         }}
       >
         <div className="absolute inset-0 backdrop-blur-md bg-dark-bg/50 dark:bg-light-bg/50 transition-colors duration-300" />
