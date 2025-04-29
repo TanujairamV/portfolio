@@ -1,34 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  safelist: [
-    'hover:bg-accent-magenta/10',
-    'dark:hover:bg-accent-cyan/10',
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
-      fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
-      },
       colors: {
-        'dark-bg': 'var(--bg-primary)',
-        'light-bg': 'var(--bg-primary)',
-        'dark-text': 'var(--text-primary)',
-        'light-text': 'var(--text-primary)',
-        'dark-text-secondary': 'var(--text-secondary)',
-        'light-text-secondary': 'var(--text-secondary)',
-        'dark-card': 'var(--card-bg)',
-        'light-card': 'var(--card-bg)',
-        'accent-magenta': 'var(--accent-magenta)',
-        'accent-cyan': 'var(--accent-cyan)',
-        'accent-purple': 'var(--accent-purple)',
+        'bg-primary': 'var(--bg-primary)',
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'accent-yellow': 'var(--accent-yellow)',
+        'card-bg': 'var(--card-bg)',
       },
-      backgroundOpacity: {
-        10: '0.1',
-        50: '0.5',
-        80: '0.8',
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },
   plugins: [],
+  safelist: [
+    'bg-accent-yellow',
+    'text-accent-yellow',
+    'border-accent-yellow',
+    'hover:bg-accent-yellow',
+    'hover:text-bg-primary',
+  ],
 };
