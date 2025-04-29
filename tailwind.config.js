@@ -13,6 +13,7 @@ module.exports = {
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
       },
     },
   },
@@ -23,5 +24,6 @@ module.exports = {
     'border-accent-yellow',
     'hover:bg-accent-yellow',
     'hover:text-bg-primary',
+    'backdrop-blur-md',
   ],
 };
