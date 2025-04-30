@@ -12,14 +12,6 @@
   --card-bg: #2A2A2A;
 }
 
-[data-theme='light'] {
-  --bg-primary: #FFFFFF;
-  --text-primary: #1A1A1A;
-  --text-secondary: #4A4A4A;
-  --accent-purple: #6B46C1;
-  --card-bg: #F5F5F5;
-}
-
 html, body {
   margin: 0;
   padding: 0;
@@ -29,7 +21,8 @@ html, body {
 
 body {
   font-family: 'Inter', sans-serif;
-  transition: background-color 0.3s, color 0.3s;
+  background: linear-gradient(135deg, #1A1A1A, #4B0082, #2A2A2A);
+  color: var(--text-primary);
   cursor: none;
 }
 
@@ -53,7 +46,26 @@ body {
   font-size: 2.25rem;
 }
 
+/* Writing animation for SVG text */
+.write-animation {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: write 2s linear forwards;
+}
+
+@keyframes write {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Hide duplicate navbars */
 nav:not(:first-of-type) {
   display: none !important;
+}
+
+/* Ensure no extra space below navbar */
+nav {
+  margin: 0 !important;
+  padding-bottom: 0 !important;
 }
