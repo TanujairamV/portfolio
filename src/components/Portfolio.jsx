@@ -34,25 +34,25 @@ export default function Portfolio() {
   const particleConfigs = useMemo(() => ({
     light: {
       particles: {
-        number: { value: 100, density: { enable: true, value_area: 800 } },
-        color: { value: "#7B2CBF" },
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#A78BFA" }, // Softer purple
         shape: { type: "circle" },
-        opacity: { value: 0.75 },
+        opacity: { value: 0.6 },
         size: {
-          value: 2,
-          anim: { enable: true, speed: 5, size_min: 1, sync: true },
+          value: 3, // Slightly larger
+          anim: { enable: true, speed: 3, size_min: 1.5, sync: true },
         },
         line_linked: {
           enable: true,
-          distance: 125,
-          color: "#7B2CBF",
-          opacity: 2,
-          width: 0.5,
+          distance: 150,
+          color: "#A78BFA",
+          opacity: 0.5,
+          width: 0.8,
         },
         move: {
           enable: true,
-          speed: 5,
-          attract: { enable: true, rotateX: 1500, rotateY: 900 },
+          speed: 3, // Slower speed
+          attract: { enable: true, rotateX: 1200, rotateY: 800 },
         },
       },
       interactivity: {
@@ -63,7 +63,7 @@ export default function Portfolio() {
           resize: true,
         },
         modes: {
-          bubble: { distance: 300, size: 5, duration: 0.75, opacity: 8, speed: 3 },
+          bubble: { distance: 350, size: 6, duration: 0.8, opacity: 0.7, speed: 2 },
         },
       },
       retina_detect: true,
@@ -148,14 +148,13 @@ export default function Portfolio() {
     try {
       console.log('Initializing particles.js');
       particlesJS('particles-js', particleConfigs[initialDarkMode ? 'dark' : 'light']);
-      document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#eed1ff';
+      document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#F3E8FF';
     } catch (error) {
       console.error('Particles.js initialization failed:', error);
     }
 
     // Cursor movement
     const handleMouseMove = (e) => {
-      // Adjust for scroll offset
       const scrollY = window.scrollY || window.pageYOffset;
       setCursorPosition({ x: e.clientX, y: e.clientY + scrollY });
       console.log('Mouse moved:', { x: e.clientX, y: e.clientY, scrollY });
@@ -164,7 +163,6 @@ export default function Portfolio() {
     const handleMouseEnter = () => setIsCursorHovering(true);
     const handleMouseLeave = () => setIsCursorHovering(false);
 
-    // Bind to window to ensure global tracking
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     const hoverElements = document.querySelectorAll('a, button');
     hoverElements.forEach((el) => {
@@ -194,7 +192,7 @@ export default function Portfolio() {
         try {
           document.getElementById('particles-js').innerHTML = '';
           particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-          document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#eed1ff';
+          document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#F3E8FF';
           console.log('System theme changed to:', newMode ? 'dark' : 'light');
         } catch (error) {
           console.error('Particles.js reinitialization failed:', error);
@@ -221,16 +219,14 @@ export default function Portfolio() {
     setIsDarkMode(newMode);
     document.documentElement.classList.toggle('dark', newMode);
     localStorage.setItem('darkMode', newMode);
-    // Force style updates
-    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.85)');
+    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.9)');
     document.documentElement.style.setProperty('--text-primary', newMode ? '#FFFFFF' : '#000000');
     document.body.style.color = newMode ? '#FFFFFF' : '#000000';
-    // Reinitialize particles
     try {
       const particlesDiv = document.getElementById('particles-js');
       particlesDiv.innerHTML = '';
       particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-      particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#eed1ff';
+      particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#F3E8FF';
       console.log('Particles.js reinitialized for theme:', newMode ? 'dark' : 'light');
     } catch (error) {
       console.error('Particles.js toggle failed:', error);
@@ -287,7 +283,6 @@ export default function Portfolio() {
               background: 'transparent',
             }}
           >
-            {/* Fallback for cursor visibility */}
             <div
               className="absolute inset-0 rounded-full"
               style={{ background: isDarkMode ? '#FFFFFF' : '#000000', mixBlendMode: 'difference' }}
@@ -521,70 +516,70 @@ export default function Portfolio() {
           >
             <div className="container mx-auto">
               <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
-              About Me
-            </h2>
-            <div className="card box-blur p-6 rounded-lg shadow-md">
-              <p className="text-base font-inter text-text-secondary">
-                I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
-              </p>
+                About Me
+              </h2>
+              <div className="card box-blur p-6 rounded-lg shadow-md">
+                <p className="text-base font-inter text-text-secondary">
+                  I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
+                </p>
+              </div>
             </div>
-          </div>
-        </motion.section>
+          </motion.section>
 
-        {/* Contact Section */}
-        <motion.section
-          id="contact"
-          className="py-16 px-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <div className="container mx-auto">
-            <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
-              Contact
-            </h2>
-            <div className="card box-blur p-6 rounded-lg shadow-md max-w-md mx-auto">
-              <form
-                className="flex flex-col gap-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert('Form submission placeholder');
-                }}
-              >
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
-                  aria-label="Name"
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
-                  aria-label="Email"
-                  required
-                />
-                <textarea
-                  placeholder="Message"
-                  rows="4"
-                  className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
-                  aria-label="Message"
-                  required
-                ></textarea>
-                <button
-                  type="submit"
-                  className="btn-primary font-inter"
+          {/* Contact Section */}
+          <motion.section
+            id="contact"
+            className="py-16 px-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="container mx-auto">
+              <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
+                Contact
+              </h2>
+              <div className="card box-blur p-6 rounded-lg shadow-md max-w-md mx-auto">
+                <form
+                  className="flex flex-col gap-4"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    alert('Form submission placeholder');
+                  }}
                 >
-                  Send Message
-                </button>
-              </form>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
+                    aria-label="Name"
+                    required
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
+                    aria-label="Email"
+                    required
+                  />
+                  <textarea
+                    placeholder="Message"
+                    rows="4"
+                    className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
+                    aria-label="Message"
+                    required
+                  ></textarea>
+                  <button
+                    type="submit"
+                    className="btn-primary font-inter"
+                  >
+                    Send Message
+                  </button>
+                </form>
+              </div>
             </div>
-          </div>
-        </motion.section>
+          </motion.section>
+        </div>
       </div>
-    </div>
-  </ErrorBoundary>
+    </ErrorBoundary>
   );
 }
