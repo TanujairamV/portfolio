@@ -17,10 +17,12 @@ export default function Portfolio() {
     // Adaptive theme
     const savedMode = localStorage.getItem('darkMode');
     const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
+    const initialDarkMode = savedMode !== null ? savedMode === 'true' : systemDarkMode;
     setIsDarkMode(initialDarkMode);
     if (initialDarkMode) {
       document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
 
     // Cursor movement
@@ -41,7 +43,7 @@ export default function Portfolio() {
     // System theme change listener
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleThemeChange = (e) => {
-      if (!localStorage.getItem('darkMode')) {
+      if (localStorage.getItem('darkMode') === null) {
         setIsDarkMode(e.matches);
         document.documentElement.classList.toggle('dark', e.matches);
       }
@@ -60,9 +62,12 @@ export default function Portfolio() {
   }, []);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('darkMode', !isDarkMode);
+    console.log('Toggling dark mode, current state:', isDarkMode);
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    document.documentElement.classList.toggle('dark', newMode);
+    localStorage.setItem('darkMode', newMode);
+    console.log('New dark mode state:', newMode);
   };
 
   const navLinks = [
@@ -86,13 +91,12 @@ export default function Portfolio() {
         {/* Custom Cursor */}
         <div
           className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-100 ease-out ${
-            isCursorHovering ? 'w-10 h-10 border-2 border-accent-purple' : 'w-6 h-6'
+            isCursorHovering ? 'w-12 h-12 border-2 border-accent-purple' : 'w-8 h-8'
           }`}
           style={{
-            transform: `translate(${cursorPosition.x - (isCursorHovering ? 20 : 12)}px, ${cursorPosition.y - (isCursorHovering ? 20 : 12)}px)`,
-            backdropFilter: 'blur(10px)',
+            transform: `translate(${cursorPosition.x - (isCursorHovering ? 24 : 16)}px, ${cursorPosition.y - (isCursorHovering ? 24 : 16)}px)`,
             mixBlendMode: 'difference',
-            background: isCursorHovering ? 'transparent' : 'rgba(255, 255, 255, 0.1)',
+            background: isCursorHovering ? 'transparent' : 'rgba(255, 255, 255, 0.3)',
           }}
         />
 
