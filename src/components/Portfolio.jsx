@@ -6,13 +6,15 @@ export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
+    // Time update
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
 
+    // Custom cursor
     const handleMouseMove = (e) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
     };
@@ -27,18 +29,59 @@ export default function Portfolio() {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
-    const introTimer = setTimeout(() => {
-      setShowIntro(false);
-    }, 4000);
+    // Loader animation
+    const loader = document.getElementById('loader');
+    const loaderText = document.getElementById('loader-text');
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+    let interval = null;
+    let iteration = 0;
+    const value = loaderText.dataset.value;
+
+    const load = () => {
+      clearInterval(interval);
+      iteration = 0;
+      interval = setInterval(() => {
+        loaderText.innerText = value
+          .split('')
+          .map((letter, index) => {
+            if (index < iteration) {
+              return value[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('');
+        if (iteration >= value.length) {
+          clearInterval(interval);
+        }
+        iteration += 3 / value.length;
+      }, 30);
+      setTimeout(() => {
+        loader.style.zIndex = '0';
+        loader.style.opacity = '0';
+        setShowLoader(false);
+      }, 3000);
+    };
+
+    load();
+
+    const handleLoaderClick = () => {
+      document.documentElement.requestFullscreen().catch((err) => console.error(err));
+      setTimeout(load, 500);
+    };
+
+    loaderText.addEventListener('click', handleLoaderClick);
+    loaderText.addEventListener('touchend', handleLoaderClick);
 
     return () => {
       clearInterval(timer);
-      clearTimeout(introTimer);
+      clearInterval(interval);
       window.removeEventListener('mousemove', handleMouseMove);
       hoverElements.forEach((el) => {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
+      loaderText.removeEventListener('click', handleLoaderClick);
+      loaderText.removeEventListener('touchend', handleLoaderClick);
     };
   }, []);
 
@@ -49,13 +92,23 @@ export default function Portfolio() {
     { name: 'Contact', href: '#contact' },
   ];
 
-  const tanuLetters = ['T', 'a', 'n', 'u'];
-
   return (
     <div className="relative">
+      {/* Loader */}
+      <div
+        id="loader"
+        className="fixed inset-0 bg-black flex items-center justify-center z-[9999] transition-opacity duration-500"
+      >
+        <span
+          id="loader-text"
+          data-value="Tanu"
+          className="text-5xl font-dancing text-text-primary"
+        ></span>
+      </div>
+
       {/* Custom Cursor */}
       <div
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-transform duration-100 ease-out ${
+        className={`fixed top-0 left-0 pointer-events-none z-[9998] rounded-full transition-transform duration-100 ease-out ${
           isHovering ? 'w-8 h-8 border-2 border-accent-purple scale-125' : 'w-5 h-5'
         }`}
         style={{
@@ -65,60 +118,11 @@ export default function Portfolio() {
         }}
       />
 
-      {/* Intro Animation with Black Screen */}
-      {showIntro && (
-        <motion.div
-          className="fixed inset-0 bg-black flex items-center justify-center z-[1000]"
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, delay: 3.5 }}
-        >
-          <div className="flex items-center">
-            <svg className="text-5xl font-dancing text-text-primary" width="200" height="60">
-              <text
-                x="0"
-                y="50"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="write-animation"
-              >
-                Hello, I'm
-              </text>
-            </svg>
-            <div className="ml-2 flex">
-              {tanuLetters.map((letter, index) => (
-                <motion.span
-                  key={index}
-                  className="text-5xl font-dancing text-text-primary"
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    x: showIntro ? (index === 0 ? 20 : 0) : 0, // Move to navbar position
-                    y: showIntro ? (index === 0 ? 30 : 0) : 0, // Align with navbar
-                    scale: index === 0 ? 0.8 : 1,
-                  }}
-                  transition={{
-                    opacity: { duration: 0.3, delay: 1 + index * 0.2 },
-                    x: { duration: 1, delay: 3 },
-                    y: { duration: 1, delay: 3 },
-                    scale: { duration: 1, delay: 3 },
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      )}
-
       {/* Navigation Bar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, delay: showIntro ? 4 : 0 }}
+        transition={{ duration: 0.5, delay: showLoader ? 3.5 : 0 }}
         className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-[rgba(26,26,26,0.9)] to-[rgba(58,58,58,0.7)] backdrop-blur-md"
         role="navigation"
         aria-label="Main navigation"
@@ -129,13 +133,7 @@ export default function Portfolio() {
             className="text-2xl font-dancing text-text-primary"
             aria-label="Tanu Home"
           >
-            <motion.span
-              initial={{ opacity: showIntro ? 0 : 1 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: showIntro ? 4 : 0 }}
-            >
-              Tanu
-            </motion.span>
+            Tanu
           </a>
 
           <ul className="hidden md:flex space-x-8 items-center">
