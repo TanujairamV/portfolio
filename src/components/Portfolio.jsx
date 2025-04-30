@@ -74,40 +74,42 @@ export default function Portfolio() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, delay: 3.5 }}
         >
-          <svg className="text-5xl font-dancing text-text-primary" width="300" height="100">
-            <text
-              x="0"
-              y="50"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="write-animation"
-            >
-              Hello, I'm
-            </text>
-          </svg>
-          <div className="ml-2 flex">
-            {tanuLetters.map((letter, index) => (
-              <motion.span
-                key={index}
-                className="text-5xl font-dancing text-text-primary"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  x: index === 0 ? -window.innerWidth / 2 + 50 : 0,
-                  y: index === 0 ? -window.innerHeight / 2 + 50 : 0,
-                  scale: index === 0 ? 0.8 : 1,
-                }}
-                transition={{
-                  opacity: { duration: 0.3, delay: 1 + index * 0.2 },
-                  x: { duration: 1, delay: 3 },
-                  y: { duration: 1, delay: 3 },
-                  scale: { duration: 1, delay: 3 },
-                }}
+          <div className="flex items-center">
+            <svg className="text-5xl font-dancing text-text-primary" width="200" height="60">
+              <text
+                x="0"
+                y="50"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="write-animation"
               >
-                {letter}
-              </motion.span>
-            ))}
+                Hello, I'm
+              </text>
+            </svg>
+            <div className="ml-2 flex">
+              {tanuLetters.map((letter, index) => (
+                <motion.span
+                  key={index}
+                  className="text-5xl font-dancing text-text-primary"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: 1,
+                    x: showIntro ? (index === 0 ? 20 : 0) : 0, // Move to navbar position
+                    y: showIntro ? (index === 0 ? 30 : 0) : 0, // Align with navbar
+                    scale: index === 0 ? 0.8 : 1,
+                  }}
+                  transition={{
+                    opacity: { duration: 0.3, delay: 1 + index * 0.2 },
+                    x: { duration: 1, delay: 3 },
+                    y: { duration: 1, delay: 3 },
+                    scale: { duration: 1, delay: 3 },
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </div>
           </div>
         </motion.div>
       )}
@@ -124,7 +126,7 @@ export default function Portfolio() {
         <div className="container mx-auto px-4 flex items-center justify-between h-16">
           <a
             href="#home"
-            className="text-2xl font-montserrat font-extrabold text-text-primary"
+            className="text-2xl font-dancing text-text-primary"
             aria-label="Tanu Home"
           >
             <motion.span
