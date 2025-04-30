@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import particlesJS from 'particles.js';
 
@@ -11,7 +11,7 @@ export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(true);
   const loaderTextRef = useRef(null);
 
-  const particleConfigs = {
+  const particleConfigs = useMemo(() => ({
     light: {
       particles: {
         number: { value: 100, density: { enable: true, value_area: 800 } },
@@ -88,7 +88,7 @@ export default function Portfolio() {
       },
       retina_detect: true,
     },
-  };
+  }), []);
 
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 
@@ -175,7 +175,7 @@ export default function Portfolio() {
       });
       mediaQuery.removeEventListener('change', handleThemeChange);
     };
-  }, []);
+  }, [particleConfigs]);
 
   const toggleDarkMode = () => {
     console.log('Toggling dark mode, current state:', isDarkMode);
