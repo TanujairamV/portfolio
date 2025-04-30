@@ -65,9 +65,17 @@ nav {
   padding-bottom: 0 !important;
 }
 
-/* Ensure black screen covers entire viewport */
+/* Black screen for intro */
 .bg-black {
   background: #000000 !important;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Navbar logo styling */
+.font-dancing {
+  font-family: 'Dancing Script', cursive;
 }
