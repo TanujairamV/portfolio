@@ -114,6 +114,7 @@ body {
 /* Cursor animations */
 .follow {
   animation: followLightGradient 0.3s ease-in-out forwards;
+  z-index: 9999 !important; /* Ensure cursor is above all content */
 }
 
 html.dark .follow {
@@ -136,6 +137,12 @@ html.dark .follow {
   to {
     box-shadow: 0 0 15px rgba(179, 146, 172, 0.7);
   }
+}
+
+/* Ensure sections don't clip cursor */
+section {
+  position: relative;
+  overflow: visible !important;
 }
 
 /* Ensure single navbar */
