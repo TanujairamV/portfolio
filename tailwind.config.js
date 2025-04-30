@@ -20,9 +20,6 @@ module.exports = {
         'gradient-dark': 'linear-gradient(135deg, #1A1A1A, #4B0082, #2A2A2A)',
         'gradient-nav': 'linear-gradient(135deg, rgba(26,26,26,0.9), rgba(58,58,58,0.7))',
       },
-      fontSize: {
-        '2.25rem': '2.25rem',
-      },
     },
   },
   plugins: [],
@@ -31,7 +28,6 @@ module.exports = {
     'text-accent-purple',
     'border-accent-purple',
     'hover:bg-accent-purple',
-    'hover:text-bg-primary',
     'backdrop-blur-md',
     'bg-gradient-dark',
     'bg-gradient-nav',
