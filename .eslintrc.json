@@ -1,6 +1,0 @@
-// .eslintrc.json
-{
-  "rules": {
-    "jsx-a11y/no-redundant-roles": "off"
-  }
-}
