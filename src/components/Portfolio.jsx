@@ -35,23 +35,23 @@ export default function Portfolio() {
     light: {
       particles: {
         number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#A78BFA" }, // Softer purple
+        color: { value: "#7C3AED" }, // Vibrant purple
         shape: { type: "circle" },
-        opacity: { value: 0.6 },
+        opacity: { value: 0.6, anim: { enable: true, speed: 1, opacity_min: 0.3, sync: false } },
         size: {
-          value: 3, // Slightly larger
-          anim: { enable: true, speed: 3, size_min: 1.5, sync: true },
+          value: 3.5,
+          anim: { enable: true, speed: 2, size_min: 1.5, sync: true },
         },
         line_linked: {
           enable: true,
           distance: 150,
-          color: "#A78BFA",
+          color: "#7C3AED",
           opacity: 0.5,
           width: 0.8,
         },
         move: {
           enable: true,
-          speed: 3, // Slower speed
+          speed: 2.5,
           attract: { enable: true, rotateX: 1200, rotateY: 800 },
         },
       },
@@ -131,14 +131,50 @@ export default function Portfolio() {
     }, 30);
   };
 
+  // Cursor movement logic
   useEffect(() => {
-    console.log('useEffect running');
-    // Time update
+    console.log('Setting up cursor movement');
+    const handleMouseMove = (e) => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      setCursorPosition({ x: e.clientX, y: e.clientY + scrollY });
+      console.log('Mouse moved:', { x: e.clientX, y: e.clientY, scrollY });
+    };
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      setCursorPosition((prev) => ({ ...prev, y: prev.y + scrollY }));
+      console.log('Scrolled:', { scrollY });
+    };
+
+    const handleMouseEnter = () => setIsCursorHovering(true);
+    const handleMouseLeave = () => setIsCursorHovering(false);
+
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('scroll', handleScroll, { passive: true });
+    const hoverElements = document.querySelectorAll('a, button');
+    hoverElements.forEach((el) => {
+      el.addEventListener('mouseenter', handleMouseEnter);
+      el.addEventListener('mouseleave', handleMouseLeave);
+    });
+
+    return () => {
+      console.log('Cleaning up cursor movement');
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('scroll', handleScroll);
+      hoverElements.forEach((el) => {
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+      });
+    };
+  }, []);
+
+  // Main effect for time, theme, particles, and loader
+  useEffect(() => {
+    console.log('useEffect running for main setup');
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
 
-    // Theme and particles initialization
     const savedMode = localStorage.getItem('darkMode');
     const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
@@ -148,29 +184,11 @@ export default function Portfolio() {
     try {
       console.log('Initializing particles.js');
       particlesJS('particles-js', particleConfigs[initialDarkMode ? 'dark' : 'light']);
-      document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#F3E8FF';
+      document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#F5F3FF';
     } catch (error) {
       console.error('Particles.js initialization failed:', error);
     }
 
-    // Cursor movement
-    const handleMouseMove = (e) => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      setCursorPosition({ x: e.clientX, y: e.clientY + scrollY });
-      console.log('Mouse moved:', { x: e.clientX, y: e.clientY, scrollY });
-    };
-
-    const handleMouseEnter = () => setIsCursorHovering(true);
-    const handleMouseLeave = () => setIsCursorHovering(false);
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    const hoverElements = document.querySelectorAll('a, button');
-    hoverElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleMouseEnter);
-      el.addEventListener('mouseleave', handleMouseLeave);
-    });
-
-    // Loader
     console.log('Requesting fullscreen');
     document.documentElement.requestFullscreen().catch((err) => console.log('Fullscreen error:', err));
     if (loaderTextRef.current) {
@@ -182,7 +200,6 @@ export default function Portfolio() {
       document.exitFullscreen().catch((err) => console.log('Exit fullscreen error:', err));
     }, 3000);
 
-    // System theme change listener
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleThemeChange = (e) => {
       if (!localStorage.getItem('darkMode')) {
@@ -192,7 +209,7 @@ export default function Portfolio() {
         try {
           document.getElementById('particles-js').innerHTML = '';
           particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-          document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#F3E8FF';
+          document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#F5F3FF';
           console.log('System theme changed to:', newMode ? 'dark' : 'light');
         } catch (error) {
           console.error('Particles.js reinitialization failed:', error);
@@ -202,13 +219,8 @@ export default function Portfolio() {
     mediaQuery.addEventListener('change', handleThemeChange);
 
     return () => {
-      console.log('Cleaning up useEffect');
+      console.log('Cleaning up main useEffect');
       clearInterval(timer);
-      window.removeEventListener('mousemove', handleMouseMove);
-      hoverElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
       mediaQuery.removeEventListener('change', handleThemeChange);
     };
   }, [particleConfigs]);
@@ -219,14 +231,14 @@ export default function Portfolio() {
     setIsDarkMode(newMode);
     document.documentElement.classList.toggle('dark', newMode);
     localStorage.setItem('darkMode', newMode);
-    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.9)');
+    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.92)');
     document.documentElement.style.setProperty('--text-primary', newMode ? '#FFFFFF' : '#000000');
     document.body.style.color = newMode ? '#FFFFFF' : '#000000';
     try {
       const particlesDiv = document.getElementById('particles-js');
       particlesDiv.innerHTML = '';
       particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-      particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#F3E8FF';
+      particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#F5F3FF';
       console.log('Particles.js reinitialized for theme:', newMode ? 'dark' : 'light');
     } catch (error) {
       console.error('Particles.js toggle failed:', error);
@@ -263,7 +275,7 @@ export default function Portfolio() {
               id="loader-text"
               ref={loaderTextRef}
               data-value="Tanu"
-              className="text-5xl font-poppins text-white"
+              className="text-6xl font-poppins font-bold text-white"
             >
               Tanu
             </h1>
@@ -274,7 +286,7 @@ export default function Portfolio() {
         <div className="frosted-bg min-h-screen text-text-primary relative z-10">
           {/* Custom Cursor */}
           <div
-            className={`follow fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-100 ease-out ${
+            className={`follow fixed top-0 left-0 pointer-events-none z-[10000] rounded-full transition-all duration-100 ease-out ${
               isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12 border border-[rgba(128,128,128,0.3)]'
             }`}
             style={{
@@ -290,50 +302,50 @@ export default function Portfolio() {
           </div>
 
           {/* Navigation Bar */}
-          <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md shadow-sm">
-            <div className="container mx-auto px-4 flex items-center justify-between h-16">
+          <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg shadow-md">
+            <div className="container mx-auto px-6 py-4 flex items-center justify-between">
               <a
                 href="#home"
-                className="text-2xl font-dancing text-text-primary"
+                className="text-3xl font-dancing font-bold text-text-primary hover:text-accent-purple transition-colors duration-300"
                 onClick={(e) => handleNavClick(e, '#home')}
                 aria-label="Tanu Home"
               >
                 Tanu
               </a>
 
-              <ul className="hidden md:flex space-x-6 items-center">
+              <ul className="hidden md:flex space-x-8 items-center">
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <a
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.href)}
-                      className="text-text-primary font-poppins text-base hover:text-accent-purple hover:scale-105 transition-all duration-300 relative group"
+                      className="text-text-primary font-poppins text-lg hover:text-accent-purple hover:scale-110 transition-all duration-300 relative group"
                       aria-label={link.name}
                     >
                       {link.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-purple group-hover:w-full transition-all duration-300"></span>
+                      <span className="absolute bottom-0 left-0 w-0 h-1 bg-accent-purple group-hover:w-full transition-all duration-300"></span>
                     </a>
                   </li>
                 ))}
               </ul>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 <button
                   onClick={toggleDarkMode}
-                  className="text-text-primary hover:text-accent-purple"
+                  className="text-text-primary hover:text-accent-purple transition-colors duration-300"
                   aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                 >
                   {isDarkMode ? (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                   ) : (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
                   )}
                 </button>
-                <div className="text-text-primary font-poppins text-base" aria-live="polite">
+                <div className="text-text-primary font-poppins text-lg" aria-live="polite">
                   {time}
                 </div>
               </div>
@@ -344,7 +356,7 @@ export default function Portfolio() {
                 aria-label="Toggle mobile menu"
                 aria-expanded={isMenuOpen}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -361,14 +373,14 @@ export default function Portfolio() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ duration: 0.3 }}
-                className="md:hidden bg-background/90 backdrop-blur-md absolute top-16 left-0 right-0 flex flex-col items-center py-4 shadow-sm"
+                className="md:hidden bg-background/95 backdrop-blur-lg absolute top-16 left-0 right-0 flex flex-col items-center py-6 shadow-md"
               >
                 {navLinks.map((link) => (
-                  <li key={link.name} className="py-2">
+                  <li key={link.name} className="py-3">
                     <a
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.href)}
-                      className="text-text-primary font-poppins text-base hover:text-accent-purple"
+                      className="text-text-primary font-poppins text-lg hover:text-accent-purple transition-colors duration-300"
                       aria-label={link.name}
                     >
                       {link.name}
@@ -382,27 +394,27 @@ export default function Portfolio() {
           {/* Hero Section */}
           <motion.section
             id="home"
-            className="min-h-screen flex items-center justify-center text-center px-4"
+            className="min-h-screen flex items-center justify-center text-center px-6 pt-20"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="card box-blur p-8 rounded-lg shadow-md">
-              <h1 className="text-5xl sm:text-6xl font-poppins font-bold text-text-primary mb-2">
+            <div className="card box-blur p-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <h1 className="text-6xl sm:text-7xl font-poppins font-extrabold text-text-primary mb-4">
                 Tanu
               </h1>
-              <p className="text-xl font-inter text-text-secondary mb-6">
-                Student | Developer
+              <p className="text-2xl font-inter text-text-secondary mb-8">
+                Student | Developer | Innovator
               </p>
-              <div className="flex justify-center gap-4 mb-6">
+              <div className="flex justify-center gap-6 mb-8">
                 <a
                   href="https://github.com/tanujairam"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub profile"
-                  className="text-text-primary hover:text-accent-purple transition-colors"
+                  className="text-text-primary hover:text-accent-purple transition-colors duration-300 transform hover:scale-110"
                 >
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.66-.22.66-.49v-1.71c-2.78.6-3.36-1.34-3.36-1.34-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.564 9.564 0 0112 6.8c.85.004 1.71.11 2.52.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.56.84.56 1.69v2.5c0 .27.16.59.67.5A10.013 10.013 0 0022 12c0-5.52-4.48-10-10-10z" />
                   </svg>
                 </a>
@@ -411,9 +423,9 @@ export default function Portfolio() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn profile"
-                  className="text-text-primary hover:text-accent-purple transition-colors"
+                  className="text-text-primary hover:text-accent-purple transition-colors duration-300 transform hover:scale-110"
                 >
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9.36h3.41v1.52h.05c.48-.91 1.65-1.87 3.39-1.87 3.62 0 4.29 2.38 4.29 5.48v6.96zM5.34 7.83c-1.15 0-2.08-.93-2.08-2.08s.93-2.08 2.08-2.08 2.08.93 2.08 2.08-.93 2.08-2.08 2.08zm1.78 12.62H3.56V9.36h3.56v11.09zM22 0H2C.9 0 0 .9 0 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z" />
                   </svg>
                 </a>
@@ -421,7 +433,7 @@ export default function Portfolio() {
               <a
                 href="#projects"
                 onClick={(e) => handleNavClick(e, '#projects')}
-                className="btn-primary font-inter"
+                className="btn-primary font-inter text-lg px-6 py-3"
                 aria-label="View my projects"
               >
                 View My Work
@@ -432,45 +444,45 @@ export default function Portfolio() {
           {/* Projects Section */}
           <motion.section
             id="projects"
-            className="py-16 px-4"
+            className="py-20 px-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
             <div className="container mx-auto">
-              <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Projects
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="card box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-poppins font-semibold text-text-primary mb-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gradient-to-br from-card-bg to-[rgba(124,58,237,0.05)]">
+                  <h3 className="text-2xl font-poppins font-bold text-text-primary mb-3">
                     Project 1
                   </h3>
-                  <p className="text-base font-inter text-text-secondary mb-4">
-                    A web application built with React and Node.js.
+                  <p className="text-lg font-inter text-text-secondary mb-4">
+                    A web application built with React and Node.js to streamline user workflows.
                   </p>
                   <a
                     href="https://github.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent-purple hover:underline font-inter"
+                    className="text-accent-purple hover:underline font-inter text-lg"
                   >
                     View on GitHub
                   </a>
                 </div>
-                <div className="card box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-poppins font-semibold text-text-primary mb-2">
+                <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gradient-to-br from-card-bg to-[rgba(124,58,237,0.05)]">
+                  <h3 className="text-2xl font-poppins font-bold text-text-primary mb-3">
                     Project 2
                   </h3>
-                  <p className="text-base font-inter text-text-secondary mb-4">
-                    A mobile app developed with Flutter.
+                  <p className="text-lg font-inter text-text-secondary mb-4">
+                    A mobile app developed with Flutter for seamless cross-platform performance.
                   </p>
                   <a
                     href="https://github.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-accent-purple hover:underline font-inter"
+                    className="text-accent-purple hover:underline font-inter text-lg"
                   >
                     View on GitHub
                   </a>
@@ -482,18 +494,18 @@ export default function Portfolio() {
           {/* Skills Section */}
           <motion.section
             id="skills"
-            className="py-16 px-4"
+            className="py-20 px-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
             <div className="container mx-auto">
-              <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Skills
               </h2>
-              <div className="card box-blur p-6 rounded-lg shadow-md">
-                <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-base font-inter text-text-primary">
+              <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <ul className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-lg font-inter text-text-primary">
                   <li>React</li>
                   <li>Node.js</li>
                   <li>JavaScript</li>
@@ -508,18 +520,18 @@ export default function Portfolio() {
           {/* About Section */}
           <motion.section
             id="about"
-            className="py-16 px-4"
+            className="py-20 px-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
             <div className="container mx-auto">
-              <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 About Me
               </h2>
-              <div className="card box-blur p-6 rounded-lg shadow-md">
-                <p className="text-base font-inter text-text-secondary">
+              <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                <p className="text-lg font-inter text-text-secondary">
                   I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
                 </p>
               </div>
@@ -529,19 +541,19 @@ export default function Portfolio() {
           {/* Contact Section */}
           <motion.section
             id="contact"
-            className="py-16 px-4"
+            className="py-20 px-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
             <div className="container mx-auto">
-              <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Contact
               </h2>
-              <div className="card box-blur p-6 rounded-lg shadow-md max-w-md mx-auto">
+              <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-lg mx-auto">
                 <form
-                  className="flex flex-col gap-4"
+                  className="flex flex-col gap-6"
                   onSubmit={(e) => {
                     e.preventDefault();
                     alert('Form submission placeholder');
@@ -550,27 +562,27 @@ export default function Portfolio() {
                   <input
                     type="text"
                     placeholder="Name"
-                    className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
+                    className="p-3 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg"
                     aria-label="Name"
                     required
                   />
                   <input
                     type="email"
                     placeholder="Email"
-                    className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
+                    className="p-3 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg"
                     aria-label="Email"
                     required
                   />
                   <textarea
                     placeholder="Message"
-                    rows="4"
-                    className="p-2 rounded bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter"
+                    rows="5"
+                    className="p-3 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg"
                     aria-label="Message"
                     required
                   ></textarea>
                   <button
                     type="submit"
-                    className="btn-primary font-inter"
+                    className="btn-primary font-inter text-lg py-3"
                   >
                     Send Message
                   </button>
