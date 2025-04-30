@@ -66,8 +66,9 @@ export default function Portfolio() {
     setIsDarkMode(newMode);
     document.documentElement.classList.toggle('dark', newMode);
     localStorage.setItem('darkMode', newMode);
-    // Force style update
+    // Force style updates
     document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.85)');
+    document.documentElement.style.setProperty('--text-primary', newMode ? '#FFFFFF' : '#000000');
     console.log('New dark mode state:', newMode, 'Class list:', document.documentElement.classList.toString());
   };
 
@@ -93,10 +94,10 @@ export default function Portfolio() {
         {/* Custom Cursor */}
         <div
           className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-100 ease-out ${
-            isCursorHovering ? 'w-18 h-18 border-2 border-accent-purple' : 'w-14 h-14'
+            isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12'
           }`}
           style={{
-            transform: `translate(${cursorPosition.x - (isCursorHovering ? 36 : 28)}px, ${cursorPosition.y - (isCursorHovering ? 36 : 28)}px)`,
+            transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
             mixBlendMode: 'difference',
             background: 'transparent',
           }}
@@ -200,7 +201,7 @@ export default function Portfolio() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
         >
-          <div className="bg-card-bg p-8 rounded-lg shadow-md">
+          <div className="box-blur p-8 rounded-lg shadow-md">
             <h1 className="text-5xl sm:text-6xl font-poppins font-bold text-text-primary mb-2">
               Tanu
             </h1>
@@ -256,7 +257,7 @@ export default function Portfolio() {
               Projects
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h3 className="text-xl font-poppins font-semibold text-text-primary mb-2">
                   Project 1
                 </h3>
@@ -272,7 +273,7 @@ export default function Portfolio() {
                   View on GitHub
                 </a>
               </div>
-              <div className="bg-card-bg p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h3 className="text-xl font-poppins font-semibold text-text-primary mb-2">
                   Project 2
                 </h3>
@@ -305,7 +306,7 @@ export default function Portfolio() {
             <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
               Skills
             </h2>
-            <div className="bg-card-bg p-6 rounded-lg shadow-md">
+            <div className="box-blur p-6 rounded-lg shadow-md">
               <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-base font-inter text-text-primary">
                 <li>React</li>
                 <li>Node.js</li>
@@ -331,7 +332,7 @@ export default function Portfolio() {
             <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
               About Me
             </h2>
-            <div className="bg-card-bg p-6 rounded-lg shadow-md">
+            <div className="box-blur p-6 rounded-lg shadow-md">
               <p className="text-base font-inter text-text-secondary">
                 I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
               </p>
@@ -352,7 +353,7 @@ export default function Portfolio() {
             <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
               Contact
             </h2>
-            <div className="bg-card-bg p-6 rounded-lg shadow-md max-w-md mx-auto">
+            <div className="box-blur p-6 rounded-lg shadow-md max-w-md mx-auto">
               <form
                 className="flex flex-col gap-4"
                 onSubmit={(e) => {
