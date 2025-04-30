@@ -14,17 +14,13 @@ export default function Portfolio() {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
 
-    // Adaptive theme
+    // Theme initialization
     const savedMode = localStorage.getItem('darkMode');
     const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
     setIsDarkMode(initialDarkMode);
     console.log('Initial theme:', initialDarkMode ? 'dark' : 'light');
-    if (initialDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', initialDarkMode);
 
     // Cursor movement
     const handleMouseMove = (e) => {
@@ -70,6 +66,8 @@ export default function Portfolio() {
     setIsDarkMode(newMode);
     document.documentElement.classList.toggle('dark', newMode);
     localStorage.setItem('darkMode', newMode);
+    // Force style update
+    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.85)');
     console.log('New dark mode state:', newMode, 'Class list:', document.documentElement.classList.toString());
   };
 
@@ -95,10 +93,10 @@ export default function Portfolio() {
         {/* Custom Cursor */}
         <div
           className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-100 ease-out ${
-            isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12 border border-[rgba(255,255,255,0.4)]'
+            isCursorHovering ? 'w-18 h-18 border-2 border-accent-purple' : 'w-14 h-14'
           }`}
           style={{
-            transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
+            transform: `translate(${cursorPosition.x - (isCursorHovering ? 36 : 28)}px, ${cursorPosition.y - (isCursorHovering ? 36 : 28)}px)`,
             mixBlendMode: 'difference',
             background: 'transparent',
           }}
