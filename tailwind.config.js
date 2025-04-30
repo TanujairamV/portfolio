@@ -1,15 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        'bg-primary': 'var(--bg-primary)',
-        'text-primary': 'var(--text-primary)',
-        'text-secondary': 'var(--text-secondary)',
-        'accent-purple': 'var(--accent-purple)',
-        'card-bg': 'var(--card-bg)',
+        'bg-primary': '#1A1A1A',
+        'text-primary': '#FFFFFF',
+        'text-secondary': '#B3B3B3',
+        'accent-purple': '#6B46C1',
+        'card-bg': '#2A2A2A',
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
