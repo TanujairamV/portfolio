@@ -27,7 +27,6 @@ export default function Portfolio() {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
-    // Hide intro after 4 seconds
     const introTimer = setTimeout(() => {
       setShowIntro(false);
     }, 4000);
@@ -50,11 +49,10 @@ export default function Portfolio() {
     { name: 'Contact', href: '#contact' },
   ];
 
-  // Split "Tanu" for letter-by-letter animation
   const tanuLetters = ['T', 'a', 'n', 'u'];
 
   return (
-    <div className="bg-gradient-to-br from-[#1A1A1A] via-[#4B0082] to-[#2A2A2A] relative min-h-full">
+    <div className="relative">
       {/* Custom Cursor */}
       <div
         className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-transform duration-100 ease-out ${
@@ -113,7 +111,7 @@ export default function Portfolio() {
         </motion.div>
       )}
 
-      {/* Translucent Navigation Bar */}
+      {/* Navigation Bar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -123,10 +121,9 @@ export default function Portfolio() {
         aria-label="Main navigation"
       >
         <div className="container mx-auto px-4 flex items-center justify-between h-16">
-          {/* Name (No Logo) */}
           <a
             href="#home"
-            className="text-2.25rem font-montserrat font-extrabold text-text-primary"
+            className="text-2xl font-montserrat font-extrabold text-text-primary"
             aria-label="Tanujairam Home"
           >
             <motion.span
@@ -138,7 +135,6 @@ export default function Portfolio() {
             </motion.span>
           </a>
 
-          {/* Navigation Links (Desktop) */}
           <ul className="hidden md:flex space-x-8 items-center">
             {navLinks.map((link) => (
               <li key={link.name}>
@@ -154,12 +150,10 @@ export default function Portfolio() {
             ))}
           </ul>
 
-          {/* Current Time */}
           <div className="text-text-primary font-poppins text-lg" aria-live="polite">
             {time}
           </div>
 
-          {/* Hamburger Menu (Mobile) */}
           <button
             className="md:hidden text-text-primary focus:outline-none"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -177,7 +171,6 @@ export default function Portfolio() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <motion.ul
             initial={{ x: '100%' }}
@@ -203,14 +196,9 @@ export default function Portfolio() {
       </motion.nav>
 
       {/* Hero Section */}
-      <motion.div
+      <section
         id="home"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
-        className="section w-[90%] md:w-[600px] mx-auto mt-28 flex flex-col items-center text-center text-text-primary"
-        role="banner"
-        aria-label="Portfolio introduction"
+        className="section w-[90%] md:w-[600px] mx-auto mt-20 flex flex-col items-center text-center text-text-primary"
       >
         <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
           Hey, I'm Tanujairam
@@ -234,7 +222,7 @@ export default function Portfolio() {
             aria-label="GitHub profile"
           >
             <svg
-              className="w-6 h-6 text-text-primary hover:text-accent-purple transition-colors"
+              className="w-6 h-6 text-text-primary hover:text-accent-purple"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -248,7 +236,7 @@ export default function Portfolio() {
             aria-label="LinkedIn profile"
           >
             <svg
-              className="w-6 h-6 text-text-primary hover:text-accent-purple transition-colors"
+              className="w-6 h-6 text-text-primary hover:text-accent-purple"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -256,38 +244,30 @@ export default function Portfolio() {
             </svg>
           </a>
         </div>
-      </motion.div>
+      </section>
 
       {/* About Section */}
-      <motion.section
+      <section
         id="about"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
-        aria-label="About"
       >
         <h2 className="text-3xl font-bold font-poppins text-center mb-6">About Me</h2>
         <p className="text-lg text-text-secondary font-inter font-medium text-center">
-          I'm a passionate developer and designer with a focus on creating intuitive and visually stunning web experiences. My expertise spans React, Tailwind CSS, and modern JavaScript frameworks.
+          I'm a passionate developer and designer with a focus on creating intuitive and visually stunning web experiences.
         </p>
-      </motion.section>
+      </section>
 
       {/* Projects Section */}
-      <motion.section
+      <section
         id="projects"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
-        aria-label="Projects"
       >
         <h2 className="text-3xl font-bold font-poppins text-center mb-6">Projects</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-purple/20 transition-shadow">
+          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-purple/20">
             <h3 className="text-xl font-semibold font-poppins mb-2">Project 1</h3>
             <p className="text-text-secondary font-inter font-medium mb-4">
-              A web application built with React and Node.js, showcasing modern UI/UX.
+              A web application built with React and Node.js.
             </p>
             <a
               href="https://github.com"
@@ -298,10 +278,10 @@ export default function Portfolio() {
               View on GitHub
             </a>
           </div>
-          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-purple/20 transition-shadow">
+          <div className="p-6 bg-card-bg rounded-lg hover:shadow-lg hover:shadow-accent-purple/20">
             <h3 className="text-xl font-semibold font-poppins mb-2">Project 2</h3>
             <p className="text-text-secondary font-inter font-medium mb-4">
-              A mobile app developed with Flutter, focusing on performance.
+              A mobile app developed with Flutter.
             </p>
             <a
               href="https://github.com"
@@ -313,16 +293,12 @@ export default function Portfolio() {
             </a>
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Contact Section */}
-      <motion.section
+      <section
         id="contact"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
-        className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
-        aria-label="Contact"
+        className="section w-[90%] md:w-[800px] mx-auto text-text-primary pb-10"
       >
         <h2 className="text-3xl font-bold font-poppins text-center mb-6">Contact</h2>
         <form
@@ -357,7 +333,7 @@ export default function Portfolio() {
             Send Message
           </button>
         </form>
-      </motion.section>
+      </section>
     </div>
   );
 }
