@@ -15,6 +15,7 @@ module.exports = {
         inter: ['Inter', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
+        dancing: ['Dancing Script', 'cursive'],
       },
       backgroundImage: {
         'gradient-dark': 'linear-gradient(135deg, #1A1A1A, #4B0082, #2A2A2A)',
