@@ -52,7 +52,7 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1A] via-[#4B0082] to-[#2A2A2A] relative">
+    <div className="bg-gradient-to-br from-[#1A1A1A] via-[#4B0082] to-[#2A2A2A] relative">
       {/* Custom Cursor */}
       <div
         className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-transform duration-100 ease-out ${
@@ -79,7 +79,7 @@ export default function Portfolio() {
             animate={{ opacity: 0 }}
             transition={{ duration: 0.5, delay: 2 }}
           >
-            Hello, I am&nbsp;
+            Hello, I am 
           </motion.span>
           <motion.span
             className="text-5xl font-dancing text-text-primary"
@@ -319,7 +319,7 @@ export default function Portfolio() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
-        className="section w-[90%] md:w-[800px] mx-auto mb-10 text-text-primary"
+        className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="Contact"
       >
         <h2 className="text-3xl font-bold font-poppins text-center mb-6">Contact</h2>
