@@ -5,12 +5,36 @@ import ThemeToggle from './ThemeToggle';
 export default function Portfolio() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
-    return () => clearInterval(timer);
+
+    const handleMouseMove = (e) => {
+      setCursorPosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => setIsHovering(false);
+
+    window.addEventListener('mousemove', handleMouseMove);
+    const hoverElements = document.querySelectorAll('a, button');
+    hoverElements.forEach((el) => {
+      el.addEventListener('mouseenter', handleMouseEnter);
+      el.addEventListener('mouseleave', handleMouseLeave);
+    });
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('mousemove', handleMouseMove);
+      hoverElements.forEach((el) => {
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+      });
+    };
   }, []);
 
   const navLinks = [
@@ -21,7 +45,19 @@ export default function Portfolio() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1A] via-[#2A2A2A] to-[#3A3A3A]">
+    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1A] via-[#4B0082] to-[#2A2A2A] relative">
+      {/* Custom Cursor */}
+      <div
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-transform duration-100 ease-out ${
+          isHovering ? 'w-8 h-8 border-2 border-accent-purple scale-125' : 'w-5 h-5'
+        }`}
+        style={{
+          transform: `translate(${cursorPosition.x - (isHovering ? 16 : 10)}px, ${cursorPosition.y - (isHovering ? 16 : 10)}px)`,
+          background: isHovering ? 'transparent' : 'rgba(255, 255, 255, 0.2)',
+          mixBlendMode: 'difference',
+        }}
+      />
+
       {/* Translucent Navigation Bar */}
       <motion.nav
         initial={{ y: -100 }}
