@@ -49,6 +49,15 @@ html, body {
   cursor: none;
 }
 
+@media (max-width: 768px) {
+  html, body {
+    cursor: auto;
+  }
+  .follow {
+    display: none;
+  }
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: var(--background);
@@ -67,6 +76,13 @@ body {
   background: var(--box-bg);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+}
+
+.card-light {
+  background: transparent;
+  border: 2px solid var(--accent-purple);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .btn-primary {
@@ -95,13 +111,13 @@ body {
 
 @keyframes cardLightGradient {
   0% {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 243, 255, 0.96));
+    border-color: var(--accent-purple);
   }
   50% {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(237, 233, 254, 0.92));
+    border-color: #9F67FF;
   }
   100% {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 243, 255, 0.96));
+    border-color: var(--accent-purple);
   }
 }
 
@@ -117,7 +133,8 @@ body {
 /* Cursor animations */
 .follow {
   animation: followLightGradient 0.3s ease-in-out forwards;
-  z-index: 10000 !important;
+  z-index: 10001 !important;
+  will-change: transform;
 }
 
 html.dark .follow {
