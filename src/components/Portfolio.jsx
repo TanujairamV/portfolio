@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import particlesJS from 'particles.js';
 
 export default function Portfolio() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -7,6 +8,107 @@ export default function Portfolio() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isCursorHovering, setIsCursorHovering] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const loaderTextRef = useRef(null);
+
+  const particleConfigs = {
+    light: {
+      particles: {
+        number: { value: 100, density: { enable: true, value_area: 800 } },
+        color: { value: "#7B2CBF" },
+        shape: { type: "circle" },
+        opacity: { value: 0.75 },
+        size: {
+          value: 2,
+          anim: { enable: true, speed: 5, size_min: 1, sync: true },
+        },
+        line_linked: {
+          enable: true,
+          distance: 125,
+          color: "#7B2CBF",
+          opacity: 2,
+          width: 0.5,
+        },
+        move: {
+          enable: true,
+          speed: 5,
+          attract: { enable: true, rotateX: 1500, rotateY: 900 },
+        },
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "bubble" },
+          resize: true,
+        },
+        modes: {
+          bubble: { distance: 300, size: 5, duration: 0.75, opacity: 8, speed: 3 },
+        },
+      },
+      retina_detect: true,
+    },
+    dark: {
+      particles: {
+        number: { value: 100, density: { enable: true, value_area: 800 } },
+        color: { value: "#b392ac" },
+        shape: {
+          type: "polygon",
+          polygon: { nb_sides: 6 },
+        },
+        opacity: { value: 0.75 },
+        size: {
+          value: 2,
+          anim: { enable: true, speed: 5, size_min: 1, sync: true },
+        },
+        line_linked: {
+          enable: true,
+          distance: 125,
+          color: "#ffffff",
+          opacity: 0.75,
+          width: 0.5,
+        },
+        move: {
+          enable: true,
+          speed: 5,
+          attract: { enable: true, rotateX: 1500, rotateY: 900 },
+        },
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "bubble" },
+          resize: true,
+        },
+        modes: {
+          grab: { distance: 300, line_linked: { opacity: 1 } },
+          bubble: { distance: 300, size: 5, duration: 0.75, opacity: 8, speed: 3 },
+        },
+      },
+      retina_detect: true,
+    },
+  };
+
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+
+  const animateLoaderText = (element) => {
+    const value = element.dataset.value;
+    let iteration = 0;
+
+    const interval = setInterval(() => {
+      element.innerText = value
+        .split("")
+        .map((_, index) => {
+          if (index < iteration) return value[index];
+          return chars[Math.floor(Math.random() * chars.length)];
+        })
+        .join("");
+
+      if (iteration >= value.length) clearInterval(interval);
+      iteration += 3 / value.length;
+    }, 30);
+  };
 
   useEffect(() => {
     // Time update
@@ -14,13 +116,15 @@ export default function Portfolio() {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
 
-    // Theme initialization
+    // Theme and particles initialization
     const savedMode = localStorage.getItem('darkMode');
     const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
     setIsDarkMode(initialDarkMode);
     console.log('Initial theme:', initialDarkMode ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', initialDarkMode);
+    particlesJS('particles-js', particleConfigs[initialDarkMode ? 'dark' : 'light']);
+    document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#eed1ff';
 
     // Cursor movement
     const handleMouseMove = (e) => {
@@ -37,6 +141,16 @@ export default function Portfolio() {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
+    // Loader
+    document.documentElement.requestFullscreen().catch((err) => console.log('Fullscreen error:', err));
+    if (loaderTextRef.current) {
+      setTimeout(() => animateLoaderText(loaderTextRef.current), 500);
+    }
+    setTimeout(() => {
+      setIsLoading(false);
+      document.exitFullscreen().catch((err) => console.log('Exit fullscreen error:', err));
+    }, 3000);
+
     // System theme change listener
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleThemeChange = (e) => {
@@ -44,6 +158,9 @@ export default function Portfolio() {
         const newMode = e.matches;
         setIsDarkMode(newMode);
         document.documentElement.classList.toggle('dark', newMode);
+        document.getElementById('particles-js').innerHTML = '';
+        particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
+        document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#eed1ff';
         console.log('System theme changed to:', newMode ? 'dark' : 'light');
       }
     };
@@ -69,6 +186,12 @@ export default function Portfolio() {
     // Force style updates
     document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.85)');
     document.documentElement.style.setProperty('--text-primary', newMode ? '#FFFFFF' : '#000000');
+    document.body.style.color = newMode ? '#FFFFFF' : '#000000';
+    // Reinitialize particles
+    const particlesDiv = document.getElementById('particles-js');
+    particlesDiv.innerHTML = '';
+    particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
+    particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#eed1ff';
     console.log('New dark mode state:', newMode, 'Class list:', document.documentElement.classList.toString());
   };
 
@@ -88,13 +211,30 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      {/* Particles Background */}
+      <div id="particles-js" className="absolute inset-0 z-0"></div>
+
+      {/* Loader */}
+      {isLoading && (
+        <div id="loader" className="fixed inset-0 bg-black flex items-center justify-center z-[10000] transition-opacity duration-500">
+          <h1
+            id="loader-text"
+            ref={loaderTextRef}
+            data-value="Tanu"
+            className="text-5xl font-poppins text-white"
+          >
+            Tanu
+          </h1>
+        </div>
+      )}
+
       {/* Frosted Background Wrapper */}
-      <div className="frosted-bg min-h-screen text-text-primary">
+      <div className="frosted-bg min-h-screen text-text-primary relative z-10">
         {/* Custom Cursor */}
         <div
-          className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-100 ease-out ${
-            isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12'
+          className={`follow fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-100 ease-out ${
+            isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12 border border-[rgba(128,128,128,0.3)]'
           }`}
           style={{
             transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
@@ -201,7 +341,7 @@ export default function Portfolio() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
         >
-          <div className="box-blur p-8 rounded-lg shadow-md">
+          <div className="card box-blur p-8 rounded-lg shadow-md">
             <h1 className="text-5xl sm:text-6xl font-poppins font-bold text-text-primary mb-2">
               Tanu
             </h1>
@@ -257,7 +397,7 @@ export default function Portfolio() {
               Projects
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="card box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h3 className="text-xl font-poppins font-semibold text-text-primary mb-2">
                   Project 1
                 </h3>
@@ -273,7 +413,7 @@ export default function Portfolio() {
                   View on GitHub
                 </a>
               </div>
-              <div className="box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <div className="card box-blur p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h3 className="text-xl font-poppins font-semibold text-text-primary mb-2">
                   Project 2
                 </h3>
@@ -306,7 +446,7 @@ export default function Portfolio() {
             <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
               Skills
             </h2>
-            <div className="box-blur p-6 rounded-lg shadow-md">
+            <div className="card box-blur p-6 rounded-lg shadow-md">
               <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-base font-inter text-text-primary">
                 <li>React</li>
                 <li>Node.js</li>
@@ -332,7 +472,7 @@ export default function Portfolio() {
             <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
               About Me
             </h2>
-            <div className="box-blur p-6 rounded-lg shadow-md">
+            <div className="card box-blur p-6 rounded-lg shadow-md">
               <p className="text-base font-inter text-text-secondary">
                 I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
               </p>
@@ -353,7 +493,7 @@ export default function Portfolio() {
             <h2 className="text-4xl font-poppins font-bold text-text-primary text-center mb-8">
               Contact
             </h2>
-            <div className="box-blur p-6 rounded-lg shadow-md max-w-md mx-auto">
+            <div className="card box-blur p-6 rounded-lg shadow-md max-w-md mx-auto">
               <form
                 className="flex flex-col gap-4"
                 onSubmit={(e) => {
