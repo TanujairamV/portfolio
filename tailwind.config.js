@@ -17,7 +17,7 @@ module.exports = {
         poppins: ['Poppins', 'sans-serif'],
       },
       backgroundImage: {
-        'gradient-dark': 'linear-gradient(135deg, #1A1A1A, #2A2A2A, #3A3A3A)',
+        'gradient-dark': 'linear-gradient(135deg, #1A1A1A, #4B0082, #2A2A2A)',
         'gradient-nav': 'linear-gradient(135deg, rgba(26,26,26,0.9), rgba(58,58,58,0.7))',
       },
       fontSize: {
