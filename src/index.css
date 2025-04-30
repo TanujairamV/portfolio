@@ -25,6 +25,10 @@ html.dark {
   --box-bg: rgba(45, 45, 45, 0.9);
 }
 
+html.dark .text-text-primary {
+  color: var(--text-primary);
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not(.dark) {
     --background: #1C1C1C;
@@ -53,9 +57,10 @@ body {
 
 .frosted-bg {
   background: var(--frosted-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   min-height: 100vh;
+  isolation: isolate;
 }
 
 .box-blur {
@@ -74,6 +79,63 @@ body {
 
 .container {
   @apply max-w-4xl mx-auto;
+}
+
+/* Loader */
+#loader {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+/* Card animations */
+.card {
+  --anim: none;
+  animation: var(--anim);
+}
+
+@keyframes cardLightGradient {
+  from {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(238, 209, 255, 0.8));
+  }
+  to {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(238, 209, 255, 0.9));
+  }
+}
+
+@keyframes cardDarkGradient {
+  from {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(16, 11, 22, 0.8));
+  }
+  to {
+    background: linear-gradient(135deg, rgba(45, 45, 45, 0.9), rgba(16, 11, 22, 0.9));
+  }
+}
+
+/* Cursor animations */
+.follow {
+  animation: followLightGradient 0.3s ease-in-out forwards;
+}
+
+html.dark .follow {
+  animation: followDarkGradient 0.3s ease-in-out forwards;
+}
+
+@keyframes followLightGradient {
+  from {
+    box-shadow: 0 0 10px rgba(123, 44, 191, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(123, 44, 191, 0.7);
+  }
+}
+
+@keyframes followDarkGradient {
+  from {
+    box-shadow: 0 0 10px rgba(179, 146, 172, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(179, 146, 172, 0.7);
+  }
 }
 
 /* Ensure single navbar */
