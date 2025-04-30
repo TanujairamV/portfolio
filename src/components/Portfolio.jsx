@@ -29,13 +29,14 @@ export default function Portfolio() {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isCursorHovering, setIsCursorHovering] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const loaderTextRef = useRef(null);
 
   const particleConfigs = useMemo(() => ({
     light: {
       particles: {
         number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#7C3AED" }, // Vibrant purple
+        color: { value: "#7C3AED" },
         shape: { type: "circle" },
         opacity: { value: 0.6, anim: { enable: true, speed: 1, opacity_min: 0.3, sync: false } },
         size: {
@@ -133,23 +134,36 @@ export default function Portfolio() {
 
   // Cursor movement logic
   useEffect(() => {
+    if (isMobile) return;
+
     console.log('Setting up cursor movement');
+    let rafId = null;
+
     const handleMouseMove = (e) => {
       const scrollY = window.scrollY || window.pageYOffset;
-      setCursorPosition({ x: e.clientX, y: e.clientY + scrollY });
-      console.log('Mouse moved:', { x: e.clientX, y: e.clientY, scrollY });
+      const newX = e.clientX;
+      const newY = e.clientY + scrollY;
+      setCursorPosition({ x: newX, y: newY });
+      console.log('Mouse moved:', { x: newX, y: newY, scrollY });
     };
 
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
-      setCursorPosition((prev) => ({ ...prev, y: prev.y + scrollY }));
-      console.log('Scrolled:', { scrollY });
+      setCursorPosition((prev) => {
+        const newY = prev.y + scrollY - (window.scrollY || window.pageYOffset);
+        console.log('Scrolled:', { x: prev.x, y: newY, scrollY });
+        return { x: prev.x, y: newY };
+      });
+    };
+
+    const updateCursor = () => {
+      rafId = requestAnimationFrame(updateCursor);
     };
 
     const handleMouseEnter = () => setIsCursorHovering(true);
     const handleMouseLeave = () => setIsCursorHovering(false);
 
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.body.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('scroll', handleScroll, { passive: true });
     const hoverElements = document.querySelectorAll('a, button');
     hoverElements.forEach((el) => {
@@ -157,15 +171,27 @@ export default function Portfolio() {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
+    updateCursor();
+
     return () => {
       console.log('Cleaning up cursor movement');
-      document.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
+      document.body.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('scroll', handleScroll);
       hoverElements.forEach((el) => {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
     };
+  }, [isMobile]);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Main effect for time, theme, particles, and loader
@@ -285,21 +311,23 @@ export default function Portfolio() {
         {/* Frosted Background Wrapper */}
         <div className="frosted-bg min-h-screen text-text-primary relative z-10">
           {/* Custom Cursor */}
-          <div
-            className={`follow fixed top-0 left-0 pointer-events-none z-[10000] rounded-full transition-all duration-100 ease-out ${
-              isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12 border border-[rgba(128,128,128,0.3)]'
-            }`}
-            style={{
-              transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
-              mixBlendMode: 'difference',
-              background: 'transparent',
-            }}
-          >
+          {!isMobile && (
             <div
-              className="absolute inset-0 rounded-full"
-              style={{ background: isDarkMode ? '#FFFFFF' : '#000000', mixBlendMode: 'difference' }}
-            />
-          </div>
+              className={`follow fixed top-0 left-0 pointer-events-none z-[10001] rounded-full transition-all duration-100 ease-out will-change-transform ${
+                isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12 border border-[rgba(128,128,128,0.3)]'
+              }`}
+              style={{
+                transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
+                mixBlendMode: 'difference',
+                background: 'transparent',
+              }}
+            >
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{ background: isDarkMode ? '#FFFFFF' : '#000000', mixBlendMode: 'difference' }}
+              />
+            </div>
+          )}
 
           {/* Navigation Bar */}
           <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg shadow-md">
@@ -399,7 +427,7 @@ export default function Portfolio() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="card box-blur p-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}>
               <h1 className="text-6xl sm:text-7xl font-poppins font-extrabold text-text-primary mb-4">
                 Tanu
               </h1>
@@ -455,7 +483,7 @@ export default function Portfolio() {
                 Projects
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gradient-to-br from-card-bg to-[rgba(124,58,237,0.05)]">
+                <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300`}>
                   <h3 className="text-2xl font-poppins font-bold text-text-primary mb-3">
                     Project 1
                   </h3>
@@ -471,7 +499,7 @@ export default function Portfolio() {
                     View on GitHub
                   </a>
                 </div>
-                <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 bg-gradient-to-br from-card-bg to-[rgba(124,58,237,0.05)]">
+                <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300`}>
                   <h3 className="text-2xl font-poppins font-bold text-text-primary mb-3">
                     Project 2
                   </h3>
@@ -504,7 +532,7 @@ export default function Portfolio() {
               <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Skills
               </h2>
-              <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}>
                 <ul className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-lg font-inter text-text-primary">
                   <li>React</li>
                   <li>Node.js</li>
@@ -530,7 +558,7 @@ export default function Portfolio() {
               <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 About Me
               </h2>
-              <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}>
                 <p className="text-lg font-inter text-text-secondary">
                   I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
                 </p>
@@ -551,7 +579,7 @@ export default function Portfolio() {
               <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Contact
               </h2>
-              <div className="card box-blur p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-lg mx-auto">
+              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-lg mx-auto`}>
                 <form
                   className="flex flex-col gap-6"
                   onSubmit={(e) => {
