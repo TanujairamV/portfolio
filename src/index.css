@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;600;700;800&family=Dancing+Script:wght@700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: linear-gradient(135deg, #F7F7FA, #E5E7EB);
+  --background: linear-gradient(135deg, #EDE9FE, #F5F3FF);
   --text-primary: #000000;
-  --text-secondary: #6B7280;
-  --accent-purple: #6B46C1;
+  --text-secondary: #4B5563;
+  --accent-purple: #7C3AED;
   --card-bg: #FFFFFF;
   --input-bg: #F3F4F6;
-  --frosted-bg: rgba(255, 255, 255, 0.9);
-  --box-bg: rgba(255, 255, 255, 0.95);
+  --frosted-bg: rgba(255, 255, 255, 0.92);
+  --box-bg: rgba(255, 255, 255, 0.96);
 }
 
 html.dark {
@@ -57,28 +57,28 @@ body {
 
 .frosted-bg {
   background: var(--frosted-bg);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   min-height: 100vh;
   isolation: isolate;
 }
 
 .box-blur {
   background: var(--box-bg);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .btn-primary {
-  @apply bg-[var(--accent-purple)] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#805AD5] hover:scale-105 transition-all duration-300;
+  @apply bg-[var(--accent-purple)] text-white font-medium py-2 px-6 rounded-lg hover:bg-[#9F67FF] hover:scale-105 transition-all duration-300;
 }
 
 .btn-secondary {
-  @apply border border-[var(--accent-purple)] text-[var(--text-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[var(--accent-purple)] hover:text-white hover:scale-105 transition-all duration-300;
+  @apply border border-[var(--accent-purple)] text-[var(--text-primary)] font-medium py-2 px-6 rounded-lg hover:bg-[var(--accent-purple)] hover:text-white hover:scale-105 transition-all duration-300;
 }
 
 .container {
-  @apply max-w-4xl mx-auto;
+  @apply max-w-5xl mx-auto;
 }
 
 /* Loader */
@@ -95,13 +95,13 @@ body {
 
 @keyframes cardLightGradient {
   0% {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 232, 255, 0.95));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 243, 255, 0.96));
   }
   50% {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(237, 213, 255, 0.9));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(237, 233, 254, 0.92));
   }
   100% {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 232, 255, 0.95));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 243, 255, 0.96));
   }
 }
 
@@ -117,7 +117,7 @@ body {
 /* Cursor animations */
 .follow {
   animation: followLightGradient 0.3s ease-in-out forwards;
-  z-index: 9999 !important;
+  z-index: 10000 !important;
 }
 
 html.dark .follow {
@@ -126,19 +126,19 @@ html.dark .follow {
 
 @keyframes followLightGradient {
   from {
-    box-shadow: 0 0 10px rgba(123, 44, 191, 0.5);
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
   }
   to {
-    box-shadow: 0 0 15px rgba(123, 44, 191, 0.7);
+    box-shadow: 0 0 18px rgba(124, 58, 237, 0.7);
   }
 }
 
 @keyframes followDarkGradient {
   from {
-    box-shadow: 0 0 10px rgba(179, 146, 172, 0.5);
+    box-shadow: 0 0 12px rgba(179, 146, 172, 0.5);
   }
   to {
-    box-shadow: 0 0 15px rgba(179, 146, 172, 0.7);
+    box-shadow: 0 0 18px rgba(179, 146, 172, 0.7);
   }
 }
 
