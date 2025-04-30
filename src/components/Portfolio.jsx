@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import ThemeToggle from './ThemeToggle';
 
 export default function Portfolio() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -28,10 +27,10 @@ export default function Portfolio() {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
-    // Hide intro after 3 seconds
+    // Hide intro after 4 seconds
     const introTimer = setTimeout(() => {
       setShowIntro(false);
-    }, 3000);
+    }, 4000);
 
     return () => {
       clearInterval(timer);
@@ -51,8 +50,11 @@ export default function Portfolio() {
     { name: 'Contact', href: '#contact' },
   ];
 
+  // Split "Tanu" for letter-by-letter animation
+  const tanuLetters = ['T', 'a', 'n', 'u'];
+
   return (
-    <div className="bg-gradient-to-br from-[#1A1A1A] via-[#4B0082] to-[#2A2A2A] relative">
+    <div className="bg-gradient-to-br from-[#1A1A1A] via-[#4B0082] to-[#2A2A2A] relative min-h-full">
       {/* Custom Cursor */}
       <div
         className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-transform duration-100 ease-out ${
@@ -73,28 +75,41 @@ export default function Portfolio() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <motion.span
-            className="text-5xl font-dancing text-text-primary"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 0 }}
-            transition={{ duration: 0.5, delay: 2 }}
-          >
-            Hello, I am 
-          </motion.span>
-          <motion.span
-            className="text-5xl font-dancing text-text-primary"
-            initial={{ opacity: 1, x: 0, y: 0 }}
-            animate={{
-              opacity: 1,
-              x: -window.innerWidth / 2 + 50,
-              y: -window.innerHeight / 2 + 30,
-              scale: 0.5,
-            }}
-            transition={{ duration: 1, delay: 2.5 }}
-            onAnimationComplete={() => setShowIntro(false)}
-          >
-            Tanu
-          </motion.span>
+          <svg className="text-5xl font-dancing text-text-primary" width="300" height="100">
+            <text
+              x="0"
+              y="50"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="write-animation"
+            >
+              Hello, I am
+            </text>
+          </svg>
+          <div className="ml-2 flex">
+            {tanuLetters.map((letter, index) => (
+              <motion.span
+                key={index}
+                className="text-5xl font-dancing text-text-primary"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  x: index === 0 ? -window.innerWidth / 2 + 50 : 0,
+                  y: index === 0 ? -window.innerHeight / 2 + 30 : 0,
+                  scale: index === 0 ? 0.5 : 1,
+                }}
+                transition={{
+                  opacity: { duration: 0.3, delay: 1 + index * 0.2 },
+                  x: { duration: 1, delay: 3 },
+                  y: { duration: 1, delay: 3 },
+                  scale: { duration: 1, delay: 3 },
+                }}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </div>
         </motion.div>
       )}
 
@@ -102,30 +117,22 @@ export default function Portfolio() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, delay: showIntro ? 3.5 : 0 }}
+        transition={{ duration: 0.5, delay: showIntro ? 4 : 0 }}
         className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-[rgba(26,26,26,0.9)] to-[rgba(58,58,58,0.7)] backdrop-blur-md"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="container mx-auto px-4 flex items-center justify-between h-16">
-          {/* Logo and Name */}
+          {/* Name (No Logo) */}
           <a
             href="#home"
-            className="text-2.25rem font-montserrat font-extrabold text-text-primary flex items-center gap-2"
+            className="text-2.25rem font-montserrat font-extrabold text-text-primary"
             aria-label="Tanujairam Home"
           >
             <motion.span
-              className="text-accent-purple"
               initial={{ opacity: showIntro ? 0 : 1 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: showIntro ? 3.5 : 0 }}
-            >
-              T
-            </motion.span>
-            <motion.span
-              initial={{ opacity: showIntro ? 0 : 1 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: showIntro ? 3.5 : 0 }}
+              transition={{ duration: 0.5, delay: showIntro ? 4 : 0 }}
             >
               Tanujairam
             </motion.span>
@@ -195,17 +202,12 @@ export default function Portfolio() {
         )}
       </motion.nav>
 
-      {/* Theme Toggle */}
-      <div className="fixed top-20 right-4 z-50">
-        <ThemeToggle />
-      </div>
-
       {/* Hero Section */}
       <motion.div
         id="home"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
+        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
         className="section w-[90%] md:w-[600px] mx-auto mt-28 flex flex-col items-center text-center text-text-primary"
         role="banner"
         aria-label="Portfolio introduction"
@@ -261,7 +263,7 @@ export default function Portfolio() {
         id="about"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
+        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="About"
       >
@@ -276,7 +278,7 @@ export default function Portfolio() {
         id="projects"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
+        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="Projects"
       >
@@ -318,7 +320,7 @@ export default function Portfolio() {
         id="contact"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
+        transition={{ duration: 0.6, delay: showIntro ? 4 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="Contact"
       >
