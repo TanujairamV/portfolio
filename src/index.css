@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -27,11 +27,11 @@ body {
 }
 
 .btn-primary {
-  @apply bg-[var(--accent-purple)] text-[var(--text-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[#805AD5] transition-colors shadow-md;
+  @apply bg-[var(--accent-purple)] text-white font-medium py-2 px-4 rounded-lg hover:bg-[#805AD5] transition-colors shadow-md;
 }
 
 .btn-secondary {
-  @apply border border-[var(--accent-purple)] text-[var(--text-primary)] font-medium py-2 px-4 rounded-lg hover:bg-[var(--accent-purple)] hover:text-[var(--text-primary)] transition-colors shadow-md;
+  @apply border border-[var(--accent-purple)] text-white font-medium py-2 px-4 rounded-lg hover:bg-[var(--accent-purple)] transition-colors shadow-md;
 }
 
 .section {
@@ -39,11 +39,7 @@ body {
 }
 
 .container {
-  @apply max-w-7xl;
-}
-
-.text-2\.25rem {
-  font-size: 2.25rem;
+  @apply max-w-7xl mx-auto;
 }
 
 /* Writing animation for SVG text */
@@ -59,12 +55,11 @@ body {
   }
 }
 
-/* Hide duplicate navbars */
+/* Ensure single navbar */
 nav:not(:first-of-type) {
   display: none !important;
 }
 
-/* Ensure no extra space below navbar */
 nav {
   margin: 0 !important;
   padding-bottom: 0 !important;
