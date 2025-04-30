@@ -64,3 +64,10 @@ nav {
   margin: 0 !important;
   padding-bottom: 0 !important;
 }
+
+/* Ensure black screen covers entire viewport */
+.bg-black {
+  background: #000000 !important;
+  width: 100vw;
+  height: 100vh;
+}
