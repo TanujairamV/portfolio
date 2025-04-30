@@ -155,13 +155,17 @@ export default function Portfolio() {
 
     // Cursor movement
     const handleMouseMove = (e) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
+      // Adjust for scroll offset
+      const scrollY = window.scrollY || window.pageYOffset;
+      setCursorPosition({ x: e.clientX, y: e.clientY + scrollY });
+      console.log('Mouse moved:', { x: e.clientX, y: e.clientY, scrollY });
     };
 
     const handleMouseEnter = () => setIsCursorHovering(true);
     const handleMouseLeave = () => setIsCursorHovering(false);
 
-    window.addEventListener('mousemove', handleMouseMove);
+    // Bind to window to ensure global tracking
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     const hoverElements = document.querySelectorAll('a, button');
     hoverElements.forEach((el) => {
       el.addEventListener('mouseenter', handleMouseEnter);
@@ -247,6 +251,7 @@ export default function Portfolio() {
     const section = document.querySelector(href);
     section.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
+    console.log('Navigated to:', href);
   };
 
   return (
