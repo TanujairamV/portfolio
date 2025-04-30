@@ -7,6 +7,7 @@ export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,8 +28,14 @@ export default function Portfolio() {
       el.addEventListener('mouseleave', handleMouseLeave);
     });
 
+    // Hide intro after 3 seconds
+    const introTimer = setTimeout(() => {
+      setShowIntro(false);
+    }, 3000);
+
     return () => {
       clearInterval(timer);
+      clearTimeout(introTimer);
       window.removeEventListener('mousemove', handleMouseMove);
       hoverElements.forEach((el) => {
         el.removeEventListener('mouseenter', handleMouseEnter);
@@ -58,11 +65,44 @@ export default function Portfolio() {
         }}
       />
 
+      {/* Intro Animation */}
+      {showIntro && (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center z-[1000]"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.span
+            className="text-5xl font-dancing text-text-primary"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 2 }}
+          >
+            Hello, I am&nbsp;
+          </motion.span>
+          <motion.span
+            className="text-5xl font-dancing text-text-primary"
+            initial={{ opacity: 1, x: 0, y: 0 }}
+            animate={{
+              opacity: 1,
+              x: -window.innerWidth / 2 + 50,
+              y: -window.innerHeight / 2 + 30,
+              scale: 0.5,
+            }}
+            transition={{ duration: 1, delay: 2.5 }}
+            onAnimationComplete={() => setShowIntro(false)}
+          >
+            Tanu
+          </motion.span>
+        </motion.div>
+      )}
+
       {/* Translucent Navigation Bar */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, delay: showIntro ? 3.5 : 0 }}
         className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-[rgba(26,26,26,0.9)] to-[rgba(58,58,58,0.7)] backdrop-blur-md"
         role="navigation"
         aria-label="Main navigation"
@@ -74,7 +114,21 @@ export default function Portfolio() {
             className="text-2.25rem font-montserrat font-extrabold text-text-primary flex items-center gap-2"
             aria-label="Tanujairam Home"
           >
-            <span className="text-accent-purple">T</span>Tanujairam
+            <motion.span
+              className="text-accent-purple"
+              initial={{ opacity: showIntro ? 0 : 1 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: showIntro ? 3.5 : 0 }}
+            >
+              T
+            </motion.span>
+            <motion.span
+              initial={{ opacity: showIntro ? 0 : 1 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: showIntro ? 3.5 : 0 }}
+            >
+              Tanujairam
+            </motion.span>
           </a>
 
           {/* Navigation Links (Desktop) */}
@@ -151,7 +205,7 @@ export default function Portfolio() {
         id="home"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
         className="section w-[90%] md:w-[600px] mx-auto mt-28 flex flex-col items-center text-center text-text-primary"
         role="banner"
         aria-label="Portfolio introduction"
@@ -207,7 +261,7 @@ export default function Portfolio() {
         id="about"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="About"
       >
@@ -222,7 +276,7 @@ export default function Portfolio() {
         id="projects"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto text-text-primary"
         aria-label="Projects"
       >
@@ -264,7 +318,7 @@ export default function Portfolio() {
         id="contact"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
+        transition={{ duration: 0.6, delay: showIntro ? 3.5 : 0 }}
         className="section w-[90%] md:w-[800px] mx-auto mb-10 text-text-primary"
         aria-label="Contact"
       >
