@@ -5,14 +5,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #F0F0F0;
+  --background: linear-gradient(135deg, #F7F7FA, #E5E7EB);
   --text-primary: #000000;
-  --text-secondary: #4B5563;
+  --text-secondary: #6B7280;
   --accent-purple: #6B46C1;
   --card-bg: #FFFFFF;
   --input-bg: #F3F4F6;
-  --frosted-bg: rgba(255, 255, 255, 0.85);
-  --box-bg: rgba(255, 255, 255, 0.9);
+  --frosted-bg: rgba(255, 255, 255, 0.9);
+  --box-bg: rgba(255, 255, 255, 0.95);
 }
 
 html.dark {
@@ -65,8 +65,8 @@ body {
 
 .box-blur {
   background: var(--box-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
 }
 
 .btn-primary {
@@ -94,11 +94,14 @@ body {
 }
 
 @keyframes cardLightGradient {
-  from {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(238, 209, 255, 0.8));
+  0% {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 232, 255, 0.95));
   }
-  to {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(238, 209, 255, 0.9));
+  50% {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(237, 213, 255, 0.9));
+  }
+  100% {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 232, 255, 0.95));
   }
 }
 
@@ -114,7 +117,7 @@ body {
 /* Cursor animations */
 .follow {
   animation: followLightGradient 0.3s ease-in-out forwards;
-  z-index: 9999 !important; /* Ensure cursor is above all content */
+  z-index: 9999 !important;
 }
 
 html.dark .follow {
