@@ -65,13 +65,14 @@ export default function Portfolio() {
         }}
       />
 
-      {/* Intro Animation */}
+      {/* Intro Animation with Black Screen */}
       {showIntro && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center z-[1000]"
+          className="fixed inset-0 bg-black flex items-center justify-center z-[1000]"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, delay: 3.5 }}
         >
           <svg className="text-5xl font-dancing text-text-primary" width="300" height="100">
             <text
@@ -82,7 +83,7 @@ export default function Portfolio() {
               strokeWidth="2"
               className="write-animation"
             >
-              Hello, I am
+              Hello, I'm
             </text>
           </svg>
           <div className="ml-2 flex">
@@ -94,8 +95,8 @@ export default function Portfolio() {
                 animate={{
                   opacity: 1,
                   x: index === 0 ? -window.innerWidth / 2 + 50 : 0,
-                  y: index === 0 ? -window.innerHeight / 2 + 30 : 0,
-                  scale: index === 0 ? 0.5 : 1,
+                  y: index === 0 ? -window.innerHeight / 2 + 50 : 0,
+                  scale: index === 0 ? 0.8 : 1,
                 }}
                 transition={{
                   opacity: { duration: 0.3, delay: 1 + index * 0.2 },
@@ -124,14 +125,14 @@ export default function Portfolio() {
           <a
             href="#home"
             className="text-2xl font-montserrat font-extrabold text-text-primary"
-            aria-label="Tanujairam Home"
+            aria-label="Tanu Home"
           >
             <motion.span
               initial={{ opacity: showIntro ? 0 : 1 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: showIntro ? 4 : 0 }}
             >
-              Tanujairam
+              Tanu
             </motion.span>
           </a>
 
@@ -201,7 +202,7 @@ export default function Portfolio() {
         className="section w-[90%] md:w-[600px] mx-auto mt-20 flex flex-col items-center text-center text-text-primary"
       >
         <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
-          Hey, I'm Tanujairam
+          Hey, I'm Tanu
         </h1>
         <p className="text-lg mb-6 text-text-secondary font-inter font-medium">
           Designer. Creator. Innovator.
