@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "builds": [
     {
       "src": "package.json",
@@ -12,15 +11,13 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/"
     }
   ],
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "TAILWIND_MODE": "build"
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
-  }
+  ]
 }
