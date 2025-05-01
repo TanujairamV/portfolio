@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 
-export default function NavBar({ isMenuOpen, setIsMenuOpen, isDarkMode, setIsDarkMode, particleConfigs, time }) {
+export default function NavBar({ isMenuOpen, setIsMenuOpen, isDarkMode, setIsDarkMode, time }) {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Projects', href: '#projects' },
@@ -66,7 +66,6 @@ export default function NavBar({ isMenuOpen, setIsMenuOpen, isDarkMode, setIsDar
             <ThemeToggle
               isDarkMode={isDarkMode}
               setIsDarkMode={setIsDarkMode}
-              particleConfigs={particleConfigs}
             />
             <div className="text-text-primary font-poppins text-lg" aria-live="polite">
               {time}
