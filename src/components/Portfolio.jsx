@@ -22,13 +22,99 @@ class ErrorBoundary extends Component {
   }
 }
 
+// Cursor Component
+function Cursor({ isMobile, isDarkMode }) {
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isCursorHovering, setIsCursorHovering] = useState(false);
+  const [isCursorVisible, setIsCursorVisible] = useState(true);
+
+  useEffect(() => {
+    if (isMobile) return;
+
+    console.log('Setting up cursor movement');
+    let rafId = null;
+
+    const handleMouseMove = (e) => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const newX = e.clientX;
+      const newY = e.clientY + scrollY;
+      setCursorPosition({ x: newX, y: newY });
+      console.log('Mouse moved:', { x: newX, y: newY, scrollY });
+    };
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      setCursorPosition((prev) => {
+        const newY = prev.y + scrollY - (window.scrollY || window.pageYOffset);
+        console.log('Scrolled:', { x: prev.x, y: newY, scrollY });
+        return { x: prev.x, y: newY };
+      });
+    };
+
+    const handleMouseEnter = () => {
+      setIsCursorVisible(true);
+      console.log('Mouse entered viewport');
+    };
+
+    const handleMouseLeave = () => {
+      setIsCursorVisible(false);
+      console.log('Mouse left viewport');
+    };
+
+    const handleHoverEnter = () => setIsCursorHovering(true);
+    const handleHoverLeave = () => setIsCursorHovering(false);
+
+    const updateCursor = () => {
+      rafId = requestAnimationFrame(updateCursor);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.body.addEventListener('mouseenter', handleMouseEnter);
+    document.body.addEventListener('mouseleave', handleMouseLeave);
+    const hoverElements = document.querySelectorAll('a, button, input, textarea');
+    hoverElements.forEach((el) => {
+      el.addEventListener('mouseenter', handleHoverEnter);
+      el.addEventListener('mouseleave', handleHoverLeave);
+    });
+
+    updateCursor();
+
+    return () => {
+      console.log('Cleaning up cursor movement');
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+      document.body.removeEventListener('mouseenter', handleMouseEnter);
+      document.body.removeEventListener('mouseleave', handleMouseLeave);
+      hoverElements.forEach((el) => {
+        el.removeEventListener('mouseenter', handleHoverEnter);
+        el.removeEventListener('mouseleave', handleHoverLeave);
+      });
+    };
+  }, [isMobile]);
+
+  if (isMobile || !isCursorVisible) return null;
+
+  return (
+    <div
+      className={`follow fixed top-0 left-0 pointer-events-none z-[10001] rounded-full transition-all duration-100 ease-out will-change-transform ${
+        isCursorHovering ? 'w-16 h-16 border-[3px]' : 'w-12 h-12 border-2'
+      }`}
+      style={{
+        transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
+        mixBlendMode: 'difference',
+        borderColor: '#FFFFFF',
+        background: 'white',
+      }}
+    />
+  );
+}
+
 export default function Portfolio() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [isCursorHovering, setIsCursorHovering] = useState(false);
-  const [isCursorVisible, setIsCursorVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [formErrors, setFormErrors] = useState({});
@@ -117,90 +203,35 @@ export default function Portfolio() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 
   const animateLoaderText = (element) => {
-    console.log('Animating loader text');
+    console.log('Animating loader text: Tanujairam');
     const value = element.dataset.value;
-    let iteration = 0;
+    const letters = value.split('');
+    let revealedCount = 0;
 
-    const interval = setInterval(() => {
-      element.innerText = value
-        .split("")
-        .map((_, index) => {
-          if (index < iteration) return value[index];
-          return chars[Math.floor(Math.random() * chars.length)];
-        })
-        .join("");
+    const revealLetter = (index) => {
+      if (index >= letters.length) return;
 
-      if (iteration >= value.length) clearInterval(interval);
-      iteration += 3 / value.length;
-    }, 30);
+      const letterSpan = element.children[index];
+      let iteration = 0;
+      const maxIterations = 30;
+
+      const scrambleInterval = setInterval(() => {
+        if (iteration >= maxIterations) {
+          letterSpan.innerText = letters[index];
+          clearInterval(scrambleInterval);
+          revealedCount++;
+          if (revealedCount < letters.length) {
+            revealLetter(index + 1);
+          }
+        } else {
+          letterSpan.innerText = chars[Math.floor(Math.random() * chars.length)];
+          iteration++;
+        }
+      }, 50);
+    };
+
+    revealLetter(0);
   };
-
-  // Cursor movement logic
-  useEffect(() => {
-    if (isMobile) return;
-
-    console.log('Setting up cursor movement');
-    let rafId = null;
-
-    const handleMouseMove = (e) => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const newX = e.clientX;
-      const newY = e.clientY + scrollY;
-      setCursorPosition({ x: newX, y: newY });
-      console.log('Mouse moved:', { x: newX, y: newY, scrollY });
-    };
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      setCursorPosition((prev) => {
-        const newY = prev.y + scrollY - (window.scrollY || window.pageYOffset);
-        console.log('Scrolled:', { x: prev.x, y: newY, scrollY });
-        return { x: prev.x, y: newY };
-      });
-    };
-
-    const handleMouseEnter = () => {
-      setIsCursorVisible(true);
-      console.log('Mouse entered viewport');
-    };
-
-    const handleMouseLeave = () => {
-      setIsCursorVisible(false);
-      console.log('Mouse left viewport');
-    };
-
-    const handleHoverEnter = () => setIsCursorHovering(true);
-    const handleHoverLeave = () => setIsCursorHovering(false);
-
-    const updateCursor = () => {
-      rafId = requestAnimationFrame(updateCursor);
-    };
-
-    document.body.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('scroll', handleScroll, { passive: true });
-    document.body.addEventListener('mouseenter', handleMouseEnter);
-    document.body.addEventListener('mouseleave', handleMouseLeave);
-    const hoverElements = document.querySelectorAll('a, button');
-    hoverElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleHoverEnter);
-      el.addEventListener('mouseleave', handleHoverLeave);
-    });
-
-    updateCursor();
-
-    return () => {
-      console.log('Cleaning up cursor movement');
-      cancelAnimationFrame(rafId);
-      document.body.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('scroll', handleScroll);
-      document.body.removeEventListener('mouseenter', handleMouseEnter);
-      document.body.removeEventListener('mouseleave', handleMouseLeave);
-      hoverElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleHoverEnter);
-        el.removeEventListener('mouseleave', handleHoverLeave);
-      });
-    };
-  }, [isMobile]);
 
   // Detect mobile devices
   useEffect(() => {
@@ -222,7 +253,7 @@ export default function Portfolio() {
     const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
     setIsDarkMode(initialDarkMode);
-    console.log('Initial theme:', initialDarkMode ? 'dark' : 'light');
+    console.log('Initial theme:', initialDarkMode ? 'dark' : 'light', 'System prefers dark:', systemDarkMode);
     document.documentElement.classList.toggle('dark', initialDarkMode);
     try {
       console.log('Initializing particles.js');
@@ -351,10 +382,19 @@ export default function Portfolio() {
             <h1
               id="loader-text"
               ref={loaderTextRef}
-              data-value="Tanu"
-              className="text-6xl font-poppins font-bold text-white"
+              data-value="Tanujairam"
+              className="text-6xl font-poppins font-bold text-white flex"
             >
-              Tanu
+              {'Tanujairam'.split('').map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.2, duration: 0.3 }}
+                >
+                  {char}
+                </motion.span>
+              ))}
             </h1>
           </div>
         )}
@@ -362,18 +402,7 @@ export default function Portfolio() {
         {/* Frosted Background Wrapper */}
         <div className="frosted-bg min-h-screen text-text-primary relative z-10">
           {/* Custom Cursor */}
-          {!isMobile && isCursorVisible && (
-            <div
-              className={`follow fixed top-0 left-0 pointer-events-none z-[10001] rounded-full transition-all duration-100 ease-out will-change-transform ${
-                isCursorHovering ? 'w-16 h-16 border-[3px]' : 'w-12 h-12 border-2'
-              } ${isDarkMode ? 'border-white' : 'border-black'}`}
-              style={{
-                transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
-                mixBlendMode: isDarkMode ? 'difference' : 'normal',
-                background: 'transparent',
-              }}
-            />
-          )}
+          <Cursor isMobile={isMobile} isDarkMode={isDarkMode} />
 
           {/* Navigation Bar */}
           <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg shadow-md">
@@ -409,7 +438,7 @@ export default function Portfolio() {
                   className="text-text-primary hover:text-accent-purple transition-colors duration-300"
                   aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                 >
-                  {isDarkMode ? (
+                  {window.matchMedia('(prefers-color-scheme: dark)').matches && !isDarkMode ? (
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
