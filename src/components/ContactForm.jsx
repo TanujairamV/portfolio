@@ -5,6 +5,7 @@ import emailjs from 'emailjs-com';
 export default function ContactForm({ isDarkMode }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -12,6 +13,7 @@ export default function ContactForm({ isDarkMode }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     emailjs
       .send(
         'YOUR_SERVICE_ID',
@@ -25,15 +27,24 @@ export default function ContactForm({ isDarkMode }) {
           setFormData({ name: '', email: '', message: '' });
         },
         () => {
-          setStatus('Failed to send message.');
+          setStatus('Failed to send message. Please try again.');
         }
-      );
+      )
+      .finally(() => {
+        setIsSubmitting(false);
+        setTimeout(() => setStatus(''), 3000);
+      });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="name" className="block text-lg mb-1">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <motion.div
+        className="relative"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <label htmlFor="name" className="block text-lg font-inter mb-2 text-gray-600 dark:text-gray-300">
           Name
         </label>
         <input
@@ -43,11 +54,17 @@ export default function ContactForm({ isDarkMode }) {
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          className="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          placeholder="Your Name"
         />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-lg mb-1">
+      </motion.div>
+      <motion.div
+        className="relative"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <label htmlFor="email" className="block text-lg font-inter mb-2 text-gray-600 dark:text-gray-300">
           Email
         </label>
         <input
@@ -57,11 +74,17 @@ export default function ContactForm({ isDarkMode }) {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          className="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          placeholder="Your Email"
         />
-      </div>
-      <div>
-        <label htmlFor="message" className="block text-lg mb-1">
+      </motion.div>
+      <motion.div
+        className="relative"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <label htmlFor="message" className="block text-lg font-inter mb-2 text-gray-600 dark:text-gray-300">
           Message
         </label>
         <textarea
@@ -70,21 +93,34 @@ export default function ContactForm({ isDarkMode }) {
           value={formData.message}
           onChange={handleChange}
           required
-          className="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-          rows="4"
+          className="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          rows="5"
+          placeholder="Your Message"
         />
-      </div>
+      </motion.div>
       <motion.button
         type="submit"
-        className="w-full p-3 rounded-lg bg-purple-500 text-white hover:bg-purple-600 transition-colors"
+        disabled={isSubmitting}
+        className={`w-full p-3 rounded-lg bg-purple-500 text-white font-inter text-lg hover:bg-purple-600 transition-colors ${
+          isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
         whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
       >
-        Send Message
+        {isSubmitting ? 'Sending...' : 'Send Message'}
       </motion.button>
       {status && (
-        <p className={`text-center ${status.includes('success') ? 'text-green-500' : 'text-red-500'}`}>
+        <motion.p
+          className={`text-center font-inter ${status.includes('success') ? 'text-green-500' : 'text-red-500'}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
           {status}
-        </p>
+        </motion.p>
       )}
     </form>
   );
