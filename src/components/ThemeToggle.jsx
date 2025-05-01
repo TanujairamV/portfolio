@@ -1,64 +1,29 @@
-import { useEffect } from 'react';
-import particlesJS from 'particles.js';
+import { motion } from 'framer-motion';
 
-export default function ThemeToggle({ isDarkMode, setIsDarkMode, particleConfigs }) {
-  const toggleDarkMode = () => {
-    console.log('Toggling dark mode, current state:', isDarkMode);
+export default function ThemeToggle({ isDarkMode, setIsDarkMode }) {
+  const toggleTheme = () => {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
-    document.documentElement.classList.toggle('dark', newMode);
     localStorage.setItem('darkMode', newMode);
-    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.92)');
-    document.documentElement.style.setProperty('--text-primary', newMode ? '#FFFFFF' : '#000000');
-    document.body.style.color = newMode ? '#FFFFFF' : '#000000';
-    try {
-      const particlesDiv = document.getElementById('particles-js');
-      particlesDiv.innerHTML = '';
-      particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-      particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#F5F3FF';
-      console.log('Particles.js reinitialized for theme:', newMode ? 'dark' : 'light');
-    } catch (error) {
-      console.error('Particles.js toggle failed:', error);
-    }
-    console.log('New dark mode state:', newMode, 'Class list:', document.documentElement.classList.toString());
+    document.documentElement.classList.toggle('dark', newMode);
   };
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleThemeChange = (e) => {
-      if (!localStorage.getItem('darkMode')) {
-        const newMode = e.matches;
-        setIsDarkMode(newMode);
-        document.documentElement.classList.toggle('dark', newMode);
-        try {
-          document.getElementById('particles-js').innerHTML = '';
-          particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-          document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#F5F3FF';
-          console.log('System theme changed to:', newMode ? 'dark' : 'light');
-        } catch (error) {
-          console.error('Particles.js reinitialization failed:', error);
-        }
-      }
-    };
-    mediaQuery.addEventListener('change', handleThemeChange);
-    return () => mediaQuery.removeEventListener('change', handleThemeChange);
-  }, [setIsDarkMode, particleConfigs]);
-
   return (
-    <button
-      onClick={toggleDarkMode}
-      className="text-text-primary hover:text-accent-purple transition-colors duration-300"
+    <motion.button
+      onClick={toggleTheme}
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+      whileHover={{ scale: 1.1 }}
       aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
     >
-      {window.matchMedia('(prefers-color-scheme: dark)').matches && !isDarkMode ? (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      {isDarkMode ? (
+        <svg className="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zm-7.07-3.93a1 1 0 011.41 0l1.41 1.41a1 1 0 11-1.41 1.41l-1.41-1.41a1 1 0 010-1.41zm12.72 0a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 11-1.41-1.41l1.41-1.41a1 1 0 010-1.41zM3 12a1 1 0 011-1h2a1 1 0 110 2H4a1 1 0 01-1-1zm16 0a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm-3.93-7.07a1 1 0 011.41 0l1.41 1.41a1 1 0 11-1.41 1.41l-1.41-1.41a1 1 0 010-1.41zm-8.48 0a1 1 0 011.41 1.41L6.34 7.76a1 1 0 11-1.41-1.41l1.41-1.41a1 1 0 010-1.41zM12 8a4 4 0 100 8 4 4 0 000-8z" />
         </svg>
       ) : (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        <svg className="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8 0-1.85.63-3.55 1.69-4.9a6.008 6.008 0 019.21 4.9c0 4.42-3.58 8-8 8z" />
         </svg>
       )}
-    </button>
+    </motion.button>
   );
 }
