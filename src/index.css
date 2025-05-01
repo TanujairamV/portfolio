@@ -47,6 +47,7 @@ html, body {
   height: 100%;
   overflow-x: hidden;
   cursor: none;
+  overflow: visible !important;
 }
 
 @media (max-width: 768px) {
@@ -70,6 +71,7 @@ body {
   -webkit-backdrop-filter: blur(5px);
   min-height: 100vh;
   isolation: isolate;
+  overflow: visible !important;
 }
 
 .box-blur {
@@ -136,30 +138,17 @@ body {
 
 /* Cursor animations */
 .follow {
-  animation: followLightGradient 0.3s ease-in-out forwards;
+  animation: followGradient 0.3s ease-in-out forwards;
   z-index: 10001 !important;
   will-change: transform;
 }
 
-html.dark .follow {
-  animation: followDarkGradient 0.3s ease-in-out forwards;
-}
-
-@keyframes followLightGradient {
+@keyframes followGradient {
   from {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
   }
   to {
-    box-shadow: 0 0 18px rgba(0, 0, 0, 0.5);
-  }
-}
-
-@keyframes followDarkGradient {
-  from {
-    box-shadow: 0 0 12px rgba(179, 146, 172, 0.5);
-  }
-  to {
-    box-shadow: 0 0 18px rgba(179, 146, 172, 0.7);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.5);
   }
 }
 
