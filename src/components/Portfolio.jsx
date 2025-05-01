@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo, Component } from 'react';
+import { useState, useEffect, Component } from 'react';
 import { motion } from 'framer-motion';
-import particlesJS from 'particles.js';
 import Scrambler from './Scrambler';
 import Cursor from './Cursor';
 import NavBar from './NavBar';
 import ContactForm from './ContactForm';
+import Particles from './Particles';
 
 // Error Boundary Component
 class ErrorBoundary extends Component {
@@ -33,85 +33,6 @@ export default function Portfolio() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  const particleConfigs = useMemo(() => ({
-    light: {
-      particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#7C3AED" },
-        shape: { type: "circle" },
-        opacity: { value: 0.6, anim: { enable: true, speed: 1, opacity_min: 0.3, sync: false } },
-        size: {
-          value: 3.5,
-          anim: { enable: true, speed: 2, size_min: 1.5, sync: true },
-        },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#7C3AED",
-          opacity: 0.5,
-          width: 0.8,
-        },
-        move: {
-          enable: true,
-          speed: 2.5,
-          attract: { enable: true, rotateX: 1200, rotateY: 800 },
-        },
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "repulse" },
-          onclick: { enable: true, mode: "bubble" },
-          resize: true,
-        },
-        modes: {
-          bubble: { distance: 350, size: 6, duration: 0.8, opacity: 0.7, speed: 2 },
-        },
-      },
-      retina_detect: true,
-    },
-    dark: {
-      particles: {
-        number: { value: 100, density: { enable: true, value_area: 800 } },
-        color: { value: "#b392ac" },
-        shape: {
-          type: "polygon",
-          polygon: { nb_sides: 6 },
-        },
-        opacity: { value: 0.75 },
-        size: {
-          value: 2,
-          anim: { enable: true, speed: 5, size_min: 1, sync: true },
-        },
-        line_linked: {
-          enable: true,
-          distance: 125,
-          color: "#ffffff",
-          opacity: 0.75,
-          width: 0.5,
-        },
-        move: {
-          enable: true,
-          speed: 5,
-          attract: { enable: true, rotateX: 1500, rotateY: 900 },
-        },
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "grab" },
-          onclick: { enable: true, mode: "bubble" },
-          resize: true,
-        },
-        modes: {
-          grab: { distance: 300, line_linked: { opacity: 1 } },
-          bubble: { distance: 300, size: 5, duration: 0.75, opacity: 8, speed: 3 },
-        },
-      },
-      retina_detect: true,
-    },
-  }), []);
-
   // Detect mobile devices
   useEffect(() => {
     const handleResize = () => {
@@ -123,7 +44,7 @@ export default function Portfolio() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Main effect for time, theme, particles, and loader
+  // Main effect for time, theme, and loader
   useEffect(() => {
     console.log('Portfolio: useEffect running for main setup');
     const timer = setInterval(() => {
@@ -136,13 +57,6 @@ export default function Portfolio() {
     setIsDarkMode(initialDarkMode);
     console.log('Portfolio: Initial theme:', initialDarkMode ? 'dark' : 'light', 'System prefers dark:', systemDarkMode);
     document.documentElement.classList.toggle('dark', initialDarkMode);
-    try {
-      console.log('Portfolio: Initializing particles.js');
-      particlesJS('particles-js', particleConfigs[initialDarkMode ? 'dark' : 'light']);
-      document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#F5F3FF';
-    } catch (error) {
-      console.error('Portfolio: Particles.js initialization failed:', error);
-    }
 
     console.log('Portfolio: Requesting fullscreen');
     document.documentElement.requestFullscreen().catch((err) => console.log('Portfolio: Fullscreen error:', err));
@@ -156,13 +70,13 @@ export default function Portfolio() {
       console.log('Portfolio: Cleaning up main useEffect');
       clearInterval(timer);
     };
-  }, [particleConfigs]);
+  }, []);
 
   return (
     <ErrorBoundary>
       <div className="min-h-screen relative">
         {/* Particles Background */}
-        <div id="particles-js" className="absolute inset-0 z-0"></div>
+        <Particles isDarkMode={isDarkMode} />
 
         {/* Loader */}
         {isLoading && (
@@ -182,7 +96,6 @@ export default function Portfolio() {
             setIsMenuOpen={setIsMenuOpen}
             isDarkMode={isDarkMode}
             setIsDarkMode={setIsDarkMode}
-            particleConfigs={particleConfigs}
             time={time}
           />
 
