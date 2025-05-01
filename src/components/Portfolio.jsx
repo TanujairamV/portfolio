@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import particlesJS from 'particles.js';
 import Scrambler from './Scrambler';
 import Cursor from './Cursor';
-import ThemeToggle from './ThemeToggle';
 import NavBar from './NavBar';
 import ContactForm from './ContactForm';
 
@@ -116,7 +115,9 @@ export default function Portfolio() {
   // Detect mobile devices
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const newMobile = window.innerWidth <= 768;
+      setIsMobile(newMobile);
+      console.log('Portfolio: Window resized, isMobile:', newMobile, 'Width:', window.innerWidth);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -124,7 +125,7 @@ export default function Portfolio() {
 
   // Main effect for time, theme, particles, and loader
   useEffect(() => {
-    console.log('useEffect running for main setup');
+    console.log('Portfolio: useEffect running for main setup');
     const timer = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
@@ -133,26 +134,26 @@ export default function Portfolio() {
     const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
     setIsDarkMode(initialDarkMode);
-    console.log('Initial theme:', initialDarkMode ? 'dark' : 'light', 'System prefers dark:', systemDarkMode);
+    console.log('Portfolio: Initial theme:', initialDarkMode ? 'dark' : 'light', 'System prefers dark:', systemDarkMode);
     document.documentElement.classList.toggle('dark', initialDarkMode);
     try {
-      console.log('Initializing particles.js');
+      console.log('Portfolio: Initializing particles.js');
       particlesJS('particles-js', particleConfigs[initialDarkMode ? 'dark' : 'light']);
       document.getElementById('particles-js').style.backgroundColor = initialDarkMode ? '#100b16' : '#F5F3FF';
     } catch (error) {
-      console.error('Particles.js initialization failed:', error);
+      console.error('Portfolio: Particles.js initialization failed:', error);
     }
 
-    console.log('Requesting fullscreen');
-    document.documentElement.requestFullscreen().catch((err) => console.log('Fullscreen error:', err));
+    console.log('Portfolio: Requesting fullscreen');
+    document.documentElement.requestFullscreen().catch((err) => console.log('Portfolio: Fullscreen error:', err));
     setTimeout(() => {
-      console.log('Hiding loader');
+      console.log('Portfolio: Hiding loader');
       setIsLoading(false);
-      document.exitFullscreen().catch((err) => console.log('Exit fullscreen error:', err));
+      document.exitFullscreen().catch((err) => console.log('Portfolio: Exit fullscreen error:', err));
     }, 3000);
 
     return () => {
-      console.log('Cleaning up main useEffect');
+      console.log('Portfolio: Cleaning up main useEffect');
       clearInterval(timer);
     };
   }, [particleConfigs]);
@@ -176,7 +177,14 @@ export default function Portfolio() {
           <Cursor isMobile={isMobile} isDarkMode={isDarkMode} />
 
           {/* Navigation Bar */}
-          <NavBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+          <NavBar
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            isDarkMode={isDarkMode}
+            setIsDarkMode={setIsDarkMode}
+            particleConfigs={particleConfigs}
+            time={time}
+          />
 
           {/* Hero Section */}
           <motion.section
@@ -344,18 +352,6 @@ export default function Portfolio() {
               <ContactForm isDarkMode={isDarkMode} />
             </div>
           </motion.section>
-
-          {/* Theme Toggle and Time Display */}
-          <div className="fixed top-4 right-6 flex items-center gap-6 z-50">
-            <ThemeToggle
-              isDarkMode={isDarkMode}
-              setIsDarkMode={setIsDarkMode}
-              particleConfigs={particleConfigs}
-            />
-            <div className="text-text-primary font-poppins text-lg" aria-live="polite">
-              {time}
-            </div>
-          </div>
         </div>
       </div>
     </ErrorBoundary>
