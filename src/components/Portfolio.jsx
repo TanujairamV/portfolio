@@ -2,6 +2,10 @@ import { useState, useEffect, useMemo, Component } from 'react';
 import { motion } from 'framer-motion';
 import particlesJS from 'particles.js';
 import Scrambler from './Scrambler';
+import Cursor from './Cursor';
+import ThemeToggle from './ThemeToggle';
+import NavBar from './NavBar';
+import ContactForm from './ContactForm';
 
 // Error Boundary Component
 class ErrorBoundary extends Component {
@@ -23,103 +27,12 @@ class ErrorBoundary extends Component {
   }
 }
 
-// Cursor Component
-function Cursor({ isMobile, isDarkMode }) {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [isCursorHovering, setIsCursorHovering] = useState(false);
-  const [isCursorVisible, setIsCursorVisible] = useState(true);
-
-  useEffect(() => {
-    if (isMobile) return;
-
-    console.log('Setting up cursor movement');
-    let rafId = null;
-
-    const handleMouseMove = (e) => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const newX = e.clientX;
-      const newY = e.clientY + scrollY;
-      setCursorPosition({ x: newX, y: newY });
-      console.log('Mouse moved:', { x: newX, y: newY, scrollY });
-    };
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset;
-      setCursorPosition((prev) => {
-        const newY = prev.y + scrollY - (window.scrollY || window.pageYOffset);
-        console.log('Scrolled:', { x: prev.x, y: newY, scrollY });
-        return { x: prev.x, y: newY };
-      });
-    };
-
-    const handleMouseEnter = () => {
-      setIsCursorVisible(true);
-      console.log('Mouse entered viewport');
-    };
-
-    const handleMouseLeave = () => {
-      setIsCursorVisible(false);
-      console.log('Mouse left viewport');
-    };
-
-    const handleHoverEnter = () => setIsCursorHovering(true);
-    const handleHoverLeave = () => setIsCursorHovering(false);
-
-    const updateCursor = () => {
-      rafId = requestAnimationFrame(updateCursor);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    document.body.addEventListener('mouseenter', handleMouseEnter);
-    document.body.addEventListener('mouseleave', handleMouseLeave);
-    const hoverElements = document.querySelectorAll('a, button, input, textarea');
-    hoverElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleHoverEnter);
-      el.addEventListener('mouseleave', handleHoverLeave);
-    });
-
-    updateCursor();
-
-    return () => {
-      console.log('Cleaning up cursor movement');
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-      document.body.removeEventListener('mouseenter', handleMouseEnter);
-      document.body.removeEventListener('mouseleave', handleMouseLeave);
-      hoverElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleHoverEnter);
-        el.removeEventListener('mouseleave', handleHoverLeave);
-      });
-    };
-  }, [isMobile]);
-
-  if (isMobile || !isCursorVisible) return null;
-
-  return (
-    <div
-      className={`follow fixed top-0 left-0 pointer-events-none z-[10001] rounded-full transition-all duration-100 ease-out will-change-transform ${
-        isCursorHovering ? 'w-16 h-16 border-[3px]' : 'w-12 h-12 border-2'
-      }`}
-      style={{
-        transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
-        mixBlendMode: 'difference',
-        borderColor: '#FFFFFF',
-        background: 'white',
-      }}
-    />
-  );
-}
-
 export default function Portfolio() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const particleConfigs = useMemo(() => ({
     light: {
@@ -238,101 +151,11 @@ export default function Portfolio() {
       document.exitFullscreen().catch((err) => console.log('Exit fullscreen error:', err));
     }, 3000);
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleThemeChange = (e) => {
-      if (!localStorage.getItem('darkMode')) {
-        const newMode = e.matches;
-        setIsDarkMode(newMode);
-        document.documentElement.classList.toggle('dark', newMode);
-        try {
-          document.getElementById('particles-js').innerHTML = '';
-          particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-          document.getElementById('particles-js').style.backgroundColor = newMode ? '#100b16' : '#F5F3FF';
-          console.log('System theme changed to:', newMode ? 'dark' : 'light');
-        } catch (error) {
-          console.error('Particles.js reinitialization failed:', error);
-        }
-      }
-    };
-    mediaQuery.addEventListener('change', handleThemeChange);
-
     return () => {
       console.log('Cleaning up main useEffect');
       clearInterval(timer);
-      mediaQuery.removeEventListener('change', handleThemeChange);
     };
   }, [particleConfigs]);
-
-  const toggleDarkMode = () => {
-    console.log('Toggling dark mode, current state:', isDarkMode);
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    document.documentElement.classList.toggle('dark', newMode);
-    localStorage.setItem('darkMode', newMode);
-    document.documentElement.style.setProperty('--frosted-bg', newMode ? 'rgba(26, 26, 26, 0.85)' : 'rgba(255, 255, 255, 0.92)');
-    document.documentElement.style.setProperty('--text-primary', newMode ? '#FFFFFF' : '#000000');
-    document.body.style.color = newMode ? '#FFFFFF' : '#000000';
-    try {
-      const particlesDiv = document.getElementById('particles-js');
-      particlesDiv.innerHTML = '';
-      particlesJS('particles-js', particleConfigs[newMode ? 'dark' : 'light']);
-      particlesDiv.style.backgroundColor = newMode ? '#100b16' : '#F5F3FF';
-      console.log('Particles.js reinitialized for theme:', newMode ? 'dark' : 'light');
-    } catch (error) {
-      console.error('Particles.js toggle failed:', error);
-    }
-    console.log('New dark mode state:', newMode, 'Class list:', document.documentElement.classList.toString());
-  };
-
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'About', href: '#about' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
-    const section = document.querySelector(href);
-    section.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
-    console.log('Navigated to:', href);
-  };
-
-  const validateForm = (formData) => {
-    const errors = {};
-    if (!formData.name.trim()) errors.name = 'Name is required';
-    if (!formData.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Email is invalid';
-    }
-    if (!formData.message.trim()) errors.message = 'Message is required';
-    return errors;
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    const formData = {
-      name: e.target[0].value,
-      email: e.target[1].value,
-      message: e.target[2].value,
-    };
-    const errors = validateForm(formData);
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      setIsSubmitting(false);
-      return;
-    }
-    setFormErrors({});
-    setTimeout(() => {
-      alert('Form submitted successfully (placeholder)');
-      setIsSubmitting(false);
-      e.target.reset();
-    }, 1000);
-  };
 
   return (
     <ErrorBoundary>
@@ -353,94 +176,7 @@ export default function Portfolio() {
           <Cursor isMobile={isMobile} isDarkMode={isDarkMode} />
 
           {/* Navigation Bar */}
-          <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg shadow-md">
-            <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-              <a
-                href="#home"
-                className="text-3xl font-dancing font-bold text-text-primary hover:text-accent-purple transition-colors duration-300"
-                onClick={(e) => handleNavClick(e, '#home')}
-                aria-label="Tanu Home"
-              >
-                Tanu
-              </a>
-
-              <ul className="hidden md:flex space-x-8 items-center">
-                {navLinks.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.href)}
-                      className="text-text-primary font-poppins text-lg hover:text-accent-purple hover:scale-110 transition-all duration-300 relative group"
-                      aria-label={link.name}
-                    >
-                      {link.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-1 bg-accent-purple group-hover:w-full transition-all duration-300"></span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="flex items-center gap-6">
-                <button
-                  onClick={toggleDarkMode}
-                  className="text-text-primary hover:text-accent-purple transition-colors duration-300"
-                  aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                >
-                  {window.matchMedia('(prefers-color-scheme: dark)').matches && !isDarkMode ? (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                  )}
-                </button>
-                <div className="text-text-primary font-poppins text-lg" aria-live="polite">
-                  {time}
-                </div>
-              </div>
-
-              <button
-                className="md:hidden text-text-primary focus:outline-none"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label="Toggle mobile menu"
-                aria-expanded={isMenuOpen}
-              >
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d={isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {isMenuOpen && (
-              <motion.ul
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
-                transition={{ duration: 0.3 }}
-                className="md:hidden bg-background/95 backdrop-blur-lg absolute top-16 left-0 right-0 flex flex-col items-center py-6 shadow-md"
-              >
-                {navLinks.map((link) => (
-                  <li key={link.name} className="py-3">
-                    <a
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.href)}
-                      className="text-text-primary font-poppins text-lg hover:text-accent-purple transition-colors duration-300"
-                      aria-label={link.name}
-                    >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </motion.ul>
-            )}
-          </nav>
+          <NavBar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
           {/* Hero Section */}
           <motion.section
@@ -483,7 +219,10 @@ export default function Portfolio() {
               </div>
               <a
                 href="#projects"
-                onClick={(e) => handleNavClick(e, '#projects')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="btn-primary font-inter text-lg px-6 py-3"
                 aria-label="View my projects"
               >
@@ -602,133 +341,21 @@ export default function Portfolio() {
               <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Contact
               </h2>
-              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-xl mx-auto`}>
-                <form
-                  className="flex flex-col gap-6"
-                  onSubmit={handleFormSubmit}
-                  noValidate
-                >
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                  >
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full p-4 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg peer"
-                      aria-label="Name"
-                      aria-describedby="name-error"
-                      required
-                    />
-                    <label
-                      htmlFor="name"
-                      className="absolute left-4 top-4 text-text-secondary font-inter text-lg transition-all duration-300 peer-focus:-translate-y-7 peer-focus:text-sm peer-focus:text-accent-purple peer-valid:-translate-y-7 peer-valid:text-sm peer-valid:text-accent-purple"
-                    >
-                      Name
-                    </label>
-                    {formErrors.name && (
-                      <p id="name-error" className="text-red-500 text-sm mt-1" role="alert">
-                        {formErrors.name}
-                      </p>
-                    )}
-                  </motion.div>
-
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full p-4 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg peer"
-                      aria-label="Email"
-                      aria-describedby="email-error"
-                      required
-                    />
-                    <label
-                      htmlFor="email"
-                      className="absolute left-4 top-4 text-text-secondary font-inter text-lg transition-all duration-300 peer-focus:-translate-y-7 peer-focus:text-sm peer-focus:text-accent-purple peer-valid:-translate-y-7 peer-valid:text-sm peer-valid:text-accent-purple"
-                    >
-                      Email
-                    </label>
-                    {formErrors.email && (
-                      <p id="email-error" className="text-red-500 text-sm mt-1" role="alert">
-                        {formErrors.email}
-                      </p>
-                    )}
-                  </motion.div>
-
-                  <motion.div
-                    className="relative"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    <textarea
-                      id="message"
-                      rows="5"
-                      className="w-full p-4 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg peer"
-                      aria-label="Message"
-                      aria-describedby="message-error"
-                      required
-                    ></textarea>
-                    <label
-                      htmlFor="message"
-                      className="absolute left-4 top-4 text-text-secondary font-inter text-lg transition-all duration-300 peer-focus:-translate-y-7 peer-focus:text-sm peer-focus:text-accent-purple peer-valid:-translate-y-7 peer-valid:text-sm peer-valid:text-accent-purple"
-                    >
-                      Message
-                    </label>
-                    {formErrors.message && (
-                      <p id="message-error" className="text-red-500 text-sm mt-1" role="alert">
-                        {formErrors.message}
-                      </p>
-                    )}
-                  </motion.div>
-
-                  <motion.button
-                    type="submit"
-                    className="btn-primary font-inter text-xl py-4 rounded-lg flex items-center justify-center gap-2"
-                    disabled={isSubmitting}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(124, 58, 237, 0.5)' }}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <svg
-                          className="animate-spin w-5 h-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Sending...
-                      </>
-                    ) : (
-                      'Send Message'
-                    )}
-                  </motion.button>
-                </form>
-              </div>
+              <ContactForm isDarkMode={isDarkMode} />
             </div>
           </motion.section>
+
+          {/* Theme Toggle and Time Display */}
+          <div className="fixed top-4 right-6 flex items-center gap-6 z-50">
+            <ThemeToggle
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
+              particleConfigs={particleConfigs}
+            />
+            <div className="text-text-primary font-poppins text-lg" aria-live="polite">
+              {time}
+            </div>
+          </div>
         </div>
       </div>
     </ErrorBoundary>
