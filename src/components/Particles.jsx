@@ -1,16 +1,6 @@
-"use client";
-
 import React, { useRef, useEffect, useState } from "react";
-import { useMousePosition } from "@/util/mouse";
-
-interface ParticlesProps {
-  className?: string;
-  quantity?: number;
-  staticity?: number;
-  ease?: number;
-  refresh?: boolean;
-  isDarkMode?: boolean;
-}
+import { useMousePosition } from "../util/mouse";
+import PropTypes from "prop-types";
 
 export default function Particles({
   className = "",
@@ -19,14 +9,14 @@ export default function Particles({
   ease = 50,
   refresh = false,
   isDarkMode = false,
-}: ParticlesProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasContainerRef = useRef<HTMLDivElement>(null);
-  const context = useRef<CanvasRenderingContext2D | null>(null);
-  const circles = useRef<any[]>([]);
+}) {
+  const canvasRef = useRef(null);
+  const canvasContainerRef = useRef(null);
+  const context = useRef(null);
+  const circles = useRef([]);
   const mousePosition = useMousePosition();
-  const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
+  const mouse = useRef({ x: 0, y: 0 });
+  const canvasSize = useRef({ w: 0, h: 0 });
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
 
   useEffect(() => {
@@ -69,19 +59,6 @@ export default function Particles({
     }
   };
 
-  type Circle = {
-    x: number;
-    y: number;
-    translateX: number;
-    translateY: number;
-    size: number;
-    alpha: number;
-    targetAlpha: number;
-    dx: number;
-    dy: number;
-    magnetism: number;
-  };
-
   const resizeCanvas = () => {
     if (canvasContainerRef.current && canvasRef.current && context.current) {
       circles.current.length = 0;
@@ -95,7 +72,7 @@ export default function Particles({
     }
   };
 
-  const circleParams = (): Circle => {
+  const circleParams = () => {
     const x = Math.floor(Math.random() * canvasSize.current.w);
     const y = Math.floor(Math.random() * canvasSize.current.h);
     const translateX = 0;
@@ -120,7 +97,7 @@ export default function Particles({
     };
   };
 
-  const drawCircle = (circle: Circle, update = false) => {
+  const drawCircle = (circle, update = false) => {
     if (context.current) {
       const { x, y, translateX, translateY, size, alpha } = circle;
       context.current.translate(translateX, translateY);
@@ -158,13 +135,7 @@ export default function Particles({
     }
   };
 
-  const remapValue = (
-    value: number,
-    start1: number,
-    end1: number,
-    start2: number,
-    end2: number,
-  ): number => {
+  const remapValue = (value, start1, end1, start2, end2) => {
     const remapped =
       ((value - start1) * (end2 - start2)) / (end1 - start1) + start2;
     return remapped > 0 ? remapped : 0;
@@ -172,7 +143,7 @@ export default function Particles({
 
   const animate = () => {
     clearContext();
-    circles.current.forEach((circle: Circle, i: number) => {
+    circles.current.forEach((circle, i) => {
       // Handle the alpha value
       const edge = [
         circle.x + circle.translateX - circle.size, // distance from left edge
@@ -235,9 +206,18 @@ export default function Particles({
       className={`${className} absolute inset-0 z-0`}
       ref={canvasContainerRef}
       aria-hidden="true"
-      style={{ pointerEvents: 'none' }}
+      style={{ pointerEvents: "none" }}
     >
       <canvas ref={canvasRef} />
     </div>
   );
 }
+
+Particles.propTypes = {
+  className: PropTypes.string,
+  quantity: PropTypes.number,
+  staticity: PropTypes.number,
+  ease: PropTypes.number,
+  refresh: PropTypes.bool,
+  isDarkMode: PropTypes.bool,
+};
