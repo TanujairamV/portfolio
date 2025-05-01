@@ -35,6 +35,7 @@ export default function Cursor({ isMobile, isDarkMode }) {
     const handleHoverLeave = () => setIsCursorHovering(false);
 
     const updateCursor = () => {
+      console.log('Cursor: Updating, isVisible:', isCursorVisible); // Debug visibility
       rafId = requestAnimationFrame(updateCursor);
     };
 
