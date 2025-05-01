@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, useMemo, Component } from 'react';
+import { useState, useEffect, useMemo, Component } from 'react';
 import { motion } from 'framer-motion';
 import particlesJS from 'particles.js';
+import Scrambler from './Scrambler';
 
 // Error Boundary Component
 class ErrorBoundary extends Component {
@@ -119,7 +120,6 @@ export default function Portfolio() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const loaderTextRef = useRef(null);
 
   const particleConfigs = useMemo(() => ({
     light: {
@@ -200,39 +200,6 @@ export default function Portfolio() {
     },
   }), []);
 
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
-
-  const animateLoaderText = (element) => {
-    console.log('Animating loader text: Tanujairam');
-    const value = element.dataset.value;
-    const letters = value.split('');
-    let revealedCount = 0;
-
-    const revealLetter = (index) => {
-      if (index >= letters.length) return;
-
-      const letterSpan = element.children[index];
-      let iteration = 0;
-      const maxIterations = 30;
-
-      const scrambleInterval = setInterval(() => {
-        if (iteration >= maxIterations) {
-          letterSpan.innerText = letters[index];
-          clearInterval(scrambleInterval);
-          revealedCount++;
-          if (revealedCount < letters.length) {
-            revealLetter(index + 1);
-          }
-        } else {
-          letterSpan.innerText = chars[Math.floor(Math.random() * chars.length)];
-          iteration++;
-        }
-      }, 50);
-    };
-
-    revealLetter(0);
-  };
-
   // Detect mobile devices
   useEffect(() => {
     const handleResize = () => {
@@ -265,9 +232,6 @@ export default function Portfolio() {
 
     console.log('Requesting fullscreen');
     document.documentElement.requestFullscreen().catch((err) => console.log('Fullscreen error:', err));
-    if (loaderTextRef.current) {
-      setTimeout(() => animateLoaderText(loaderTextRef.current), 500);
-    }
     setTimeout(() => {
       console.log('Hiding loader');
       setIsLoading(false);
@@ -379,23 +343,7 @@ export default function Portfolio() {
         {/* Loader */}
         {isLoading && (
           <div id="loader" className="fixed inset-0 bg-black flex items-center justify-center z-[10000] transition-opacity duration-500">
-            <h1
-              id="loader-text"
-              ref={loaderTextRef}
-              data-value="Tanujairam"
-              className="text-6xl font-poppins font-bold text-white flex"
-            >
-              {'Tanujairam'.split('').map((char, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.2, duration: 0.3 }}
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </h1>
+            <Scrambler text="Tanujairam" />
           </div>
         )}
 
