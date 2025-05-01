@@ -6,27 +6,29 @@ export default function Cursor({ isMobile, isDarkMode }) {
   const [isCursorVisible, setIsCursorVisible] = useState(true);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile) {
+      console.log('Cursor: Mobile detected, hiding cursor. Window width:', window.innerWidth);
+      return;
+    }
 
-    console.log('Setting up cursor movement');
+    console.log('Cursor: Setting up cursor movement');
     let rafId = null;
 
     const handleMouseMove = (e) => {
-      // Use clientX, clientY directly (viewport coordinates)
       const newX = e.clientX;
       const newY = e.clientY;
       setCursorPosition({ x: newX, y: newY });
-      console.log('Mouse moved:', { x: newX, y: newY });
+      console.log('Cursor: Mouse moved:', { x: newX, y: newY, isVisible: isCursorVisible });
     };
 
     const handleMouseEnter = () => {
       setIsCursorVisible(true);
-      console.log('Mouse entered viewport');
+      console.log('Cursor: Mouse entered document');
     };
 
     const handleMouseLeave = () => {
       setIsCursorVisible(false);
-      console.log('Mouse left viewport');
+      console.log('Cursor: Mouse left document');
     };
 
     const handleHoverEnter = () => setIsCursorHovering(true);
@@ -36,16 +38,16 @@ export default function Cursor({ isMobile, isDarkMode }) {
       rafId = requestAnimationFrame(updateCursor);
     };
 
-    // Debounce mousemove to prevent jitter
+    // Debounce mousemove
     let timeoutId;
     const debouncedMouseMove = (e) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => handleMouseMove(e), 10);
     };
 
-    window.addEventListener('mousemove', debouncedMouseMove, { passive: true });
-    document.body.addEventListener('mouseenter', handleMouseEnter);
-    document.body.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mousemove', debouncedMouseMove, { passive: true });
+    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', handleMouseLeave);
     const hoverElements = document.querySelectorAll('a, button, input, textarea');
     hoverElements.forEach((el) => {
       el.addEventListener('mouseenter', handleHoverEnter);
@@ -55,11 +57,11 @@ export default function Cursor({ isMobile, isDarkMode }) {
     updateCursor();
 
     return () => {
-      console.log('Cleaning up cursor movement');
+      console.log('Cursor: Cleaning up cursor movement');
       cancelAnimationFrame(rafId);
-      window.removeEventListener('mousemove', debouncedMouseMove);
-      document.body.removeEventListener('mouseenter', handleMouseEnter);
-      document.body.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mousemove', debouncedMouseMove);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       hoverElements.forEach((el) => {
         el.removeEventListener('mouseenter', handleHoverEnter);
         el.removeEventListener('mouseleave', handleHoverLeave);
@@ -72,7 +74,7 @@ export default function Cursor({ isMobile, isDarkMode }) {
 
   return (
     <div
-      className={`follow fixed top-0 left-0 pointer-events-none z-[10001] rounded-full transition-all duration-100 ease-out will-change-transform ${
+      className={`follow fixed top-0 left-0 pointer-events-none z-[99999] rounded-full transition-all duration-100 ease-out will-change-transform ${
         isCursorHovering ? 'w-16 h-16 border-[3px]' : 'w-12 h-12 border-2'
       }`}
       style={{
@@ -80,6 +82,7 @@ export default function Cursor({ isMobile, isDarkMode }) {
         mixBlendMode: 'difference',
         borderColor: '#FFFFFF',
         background: 'white',
+        outline: '1px solid red', // Debug outline
       }}
     />
   );
