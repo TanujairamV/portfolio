@@ -28,8 +28,11 @@ export default function Portfolio() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isCursorHovering, setIsCursorHovering] = useState(false);
+  const [isCursorVisible, setIsCursorVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const loaderTextRef = useRef(null);
 
   const particleConfigs = useMemo(() => ({
@@ -156,19 +159,31 @@ export default function Portfolio() {
       });
     };
 
+    const handleMouseEnter = () => {
+      setIsCursorVisible(true);
+      console.log('Mouse entered viewport');
+    };
+
+    const handleMouseLeave = () => {
+      setIsCursorVisible(false);
+      console.log('Mouse left viewport');
+    };
+
+    const handleHoverEnter = () => setIsCursorHovering(true);
+    const handleHoverLeave = () => setIsCursorHovering(false);
+
     const updateCursor = () => {
       rafId = requestAnimationFrame(updateCursor);
     };
 
-    const handleMouseEnter = () => setIsCursorHovering(true);
-    const handleMouseLeave = () => setIsCursorHovering(false);
-
     document.body.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('scroll', handleScroll, { passive: true });
+    document.body.addEventListener('mouseenter', handleMouseEnter);
+    document.body.addEventListener('mouseleave', handleMouseLeave);
     const hoverElements = document.querySelectorAll('a, button');
     hoverElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleMouseEnter);
-      el.addEventListener('mouseleave', handleMouseLeave);
+      el.addEventListener('mouseenter', handleHoverEnter);
+      el.addEventListener('mouseleave', handleHoverLeave);
     });
 
     updateCursor();
@@ -178,9 +193,11 @@ export default function Portfolio() {
       cancelAnimationFrame(rafId);
       document.body.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('scroll', handleScroll);
+      document.body.removeEventListener('mouseenter', handleMouseEnter);
+      document.body.removeEventListener('mouseleave', handleMouseLeave);
       hoverElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
+        el.removeEventListener('mouseenter', handleHoverEnter);
+        el.removeEventListener('mouseleave', handleHoverLeave);
       });
     };
   }, [isMobile]);
@@ -288,6 +305,40 @@ export default function Portfolio() {
     console.log('Navigated to:', href);
   };
 
+  const validateForm = (formData) => {
+    const errors = {};
+    if (!formData.name.trim()) errors.name = 'Name is required';
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'Email is invalid';
+    }
+    if (!formData.message.trim()) errors.message = 'Message is required';
+    return errors;
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const formData = {
+      name: e.target[0].value,
+      email: e.target[1].value,
+      message: e.target[2].value,
+    };
+    const errors = validateForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setIsSubmitting(false);
+      return;
+    }
+    setFormErrors({});
+    setTimeout(() => {
+      alert('Form submitted successfully (placeholder)');
+      setIsSubmitting(false);
+      e.target.reset();
+    }, 1000);
+  };
+
   return (
     <ErrorBoundary>
       <div className="min-h-screen relative">
@@ -311,22 +362,17 @@ export default function Portfolio() {
         {/* Frosted Background Wrapper */}
         <div className="frosted-bg min-h-screen text-text-primary relative z-10">
           {/* Custom Cursor */}
-          {!isMobile && (
+          {!isMobile && isCursorVisible && (
             <div
               className={`follow fixed top-0 left-0 pointer-events-none z-[10001] rounded-full transition-all duration-100 ease-out will-change-transform ${
-                isCursorHovering ? 'w-16 h-16 border-2 border-accent-purple' : 'w-12 h-12 border border-[rgba(128,128,128,0.3)]'
-              }`}
+                isCursorHovering ? 'w-16 h-16 border-[3px]' : 'w-12 h-12 border-2'
+              } ${isDarkMode ? 'border-white' : 'border-black'}`}
               style={{
                 transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
-                mixBlendMode: 'difference',
+                mixBlendMode: isDarkMode ? 'difference' : 'normal',
                 background: 'transparent',
               }}
-            >
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{ background: isDarkMode ? '#FFFFFF' : '#000000', mixBlendMode: 'difference' }}
-              />
-            </div>
+            />
           )}
 
           {/* Navigation Bar */}
@@ -579,41 +625,129 @@ export default function Portfolio() {
               <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
                 Contact
               </h2>
-              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-lg mx-auto`}>
+              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-xl mx-auto`}>
                 <form
                   className="flex flex-col gap-6"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    alert('Form submission placeholder');
-                  }}
+                  onSubmit={handleFormSubmit}
+                  noValidate
                 >
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    className="p-3 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg"
-                    aria-label="Name"
-                    required
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="p-3 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg"
-                    aria-label="Email"
-                    required
-                  />
-                  <textarea
-                    placeholder="Message"
-                    rows="5"
-                    className="p-3 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg"
-                    aria-label="Message"
-                    required
-                  ></textarea>
-                  <button
-                    type="submit"
-                    className="btn-primary font-inter text-lg py-3"
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
                   >
-                    Send Message
-                  </button>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full p-4 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg peer"
+                      aria-label="Name"
+                      aria-describedby="name-error"
+                      required
+                    />
+                    <label
+                      htmlFor="name"
+                      className="absolute left-4 top-4 text-text-secondary font-inter text-lg transition-all duration-300 peer-focus:-translate-y-7 peer-focus:text-sm peer-focus:text-accent-purple peer-valid:-translate-y-7 peer-valid:text-sm peer-valid:text-accent-purple"
+                    >
+                      Name
+                    </label>
+                    {formErrors.name && (
+                      <p id="name-error" className="text-red-500 text-sm mt-1" role="alert">
+                        {formErrors.name}
+                      </p>
+                    )}
+                  </motion.div>
+
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full p-4 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg peer"
+                      aria-label="Email"
+                      aria-describedby="email-error"
+                      required
+                    />
+                    <label
+                      htmlFor="email"
+                      className="absolute left-4 top-4 text-text-secondary font-inter text-lg transition-all duration-300 peer-focus:-translate-y-7 peer-focus:text-sm peer-focus:text-accent-purple peer-valid:-translate-y-7 peer-valid:text-sm peer-valid:text-accent-purple"
+                    >
+                      Email
+                    </label>
+                    {formErrors.email && (
+                      <p id="email-error" className="text-red-500 text-sm mt-1" role="alert">
+                        {formErrors.email}
+                      </p>
+                    )}
+                  </motion.div>
+
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <textarea
+                      id="message"
+                      rows="5"
+                      className="w-full p-4 rounded-lg bg-input-bg text-text-primary border border-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent-purple font-inter text-lg peer"
+                      aria-label="Message"
+                      aria-describedby="message-error"
+                      required
+                    ></textarea>
+                    <label
+                      htmlFor="message"
+                      className="absolute left-4 top-4 text-text-secondary font-inter text-lg transition-all duration-300 peer-focus:-translate-y-7 peer-focus:text-sm peer-focus:text-accent-purple peer-valid:-translate-y-7 peer-valid:text-sm peer-valid:text-accent-purple"
+                    >
+                      Message
+                    </label>
+                    {formErrors.message && (
+                      <p id="message-error" className="text-red-500 text-sm mt-1" role="alert">
+                        {formErrors.message}
+                      </p>
+                    )}
+                  </motion.div>
+
+                  <motion.button
+                    type="submit"
+                    className="btn-primary font-inter text-xl py-4 rounded-lg flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    whileHover={{ scale: 1.1, boxShadow: '0 0 15px rgba(124, 58, 237, 0.5)' }}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="animate-spin w-5 h-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      'Send Message'
+                    )}
+                  </motion.button>
                 </form>
               </div>
             </div>
