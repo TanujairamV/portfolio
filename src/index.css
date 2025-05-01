@@ -2,91 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --frosted-bg: rgba(255, 255, 255, 0.92);
-  --text-primary: #000000;
-  --text-secondary: #4B5563;
-  --accent-purple: #7C3AED;
-}
-
-.dark {
-  --frosted-bg: rgba(26, 26, 26, 0.85);
-  --text-primary: #FFFFFF;
-  --text-secondary: #D1D5DB;
-  --accent-purple: #b392ac;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-.frosted-bg {
-  background: var(--frosted-bg);
+.glassmorphic-card {
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  overflow: visible;
-}
-
-.card {
-  background: var(--frosted-bg);
-  border-radius: 1rem;
-  padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-light {
-  border: 2px solid #E5E7EB;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.box-blur {
-  background: rgba(45, 45, 45, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.btn-primary {
-  background: linear-gradient(90deg, #7C3AED, #4C1D95);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.5);
-}
-
-input, textarea {
-  background: rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.dark input, .dark textarea {
-  background: rgba(45, 45, 45, 0.5);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Ensure no clipping */
-section {
-  overflow: visible;
-}
-
-/* Canvas styles */
-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* Debug styles */
-nav {
-  outline: 1px solid blue; /* Remove after testing */
+body {
+  @apply bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100;
 }
