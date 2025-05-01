@@ -1,52 +1,26 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Cursor({ isMobile, isDarkMode }) {
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const [isCursorHovering, setIsCursorHovering] = useState(false);
-  const [isCursorVisible, setIsCursorVisible] = useState(true);
-
-  const handleMouseMove = useCallback((e) => {
-    const newX = e.clientX;
-    const newY = e.clientY;
-    setCursorPosition({ x: newX, y: newY });
-    console.log('Cursor: Mouse moved:', { x: newX, y: newY, isVisible: isCursorVisible });
-  }, [isCursorVisible]);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (isMobile) {
-      console.log('Cursor: Mobile detected, hiding cursor. Window width:', window.innerWidth);
+      setIsVisible(false);
       return;
     }
 
-    console.log('Cursor: Setting up cursor movement');
-    let rafId = null;
-
-    const handleMouseEnter = () => {
-      setIsCursorVisible(true);
-      console.log('Cursor: Mouse entered document');
+    const handleMouseMove = (e) => {
+      setPosition({ x: e.clientX, y: e.clientY });
     };
 
-    const handleMouseLeave = () => {
-      setIsCursorVisible(false);
-      console.log('Cursor: Mouse left document');
-    };
+    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleHoverEnter = () => setIsHovering(true);
+    const handleHoverLeave = () => setIsHovering(false);
 
-    const handleHoverEnter = () => setIsCursorHovering(true);
-    const handleHoverLeave = () => setIsCursorHovering(false);
-
-    const updateCursor = () => {
-      console.log('Cursor: Updating, isVisible:', isCursorVisible); // Debug visibility
-      rafId = requestAnimationFrame(updateCursor);
-    };
-
-    // Debounce mousemove
-    let timeoutId;
-    const debouncedMouseMove = (e) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => handleMouseMove(e), 10);
-    };
-
-    document.addEventListener('mousemove', debouncedMouseMove, { passive: true });
+    document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
     const hoverElements = document.querySelectorAll('a, button, input, textarea');
@@ -55,35 +29,28 @@ export default function Cursor({ isMobile, isDarkMode }) {
       el.addEventListener('mouseleave', handleHoverLeave);
     });
 
-    updateCursor();
-
     return () => {
-      console.log('Cursor: Cleaning up cursor movement');
-      cancelAnimationFrame(rafId);
-      document.removeEventListener('mousemove', debouncedMouseMove);
+      document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseenter', handleMouseEnter);
       document.removeEventListener('mouseleave', handleMouseLeave);
       hoverElements.forEach((el) => {
         el.removeEventListener('mouseenter', handleHoverEnter);
         el.removeEventListener('mouseleave', handleHoverLeave);
       });
-      clearTimeout(timeoutId);
     };
-  }, [isMobile, isCursorVisible, handleMouseMove]);
+  }, [isMobile]);
 
-  if (isMobile || !isCursorVisible) return null;
+  if (!isVisible || isMobile) return null;
 
   return (
     <div
-      className={`follow fixed top-0 left-0 pointer-events-none z-[99999] rounded-full transition-all duration-100 ease-out will-change-transform ${
-        isCursorHovering ? 'w-16 h-16 border-[3px]' : 'w-12 h-12 border-2'
+      className={`fixed pointer-events-none z-[99999] rounded-full transition-all duration-200 ${
+        isHovering ? 'w-12 h-12 border-4' : 'w-8 h-8 border-2'
       }`}
       style={{
-        transform: `translate(${cursorPosition.x - (isCursorHovering ? 32 : 24)}px, ${cursorPosition.y - (isCursorHovering ? 32 : 24)}px)`,
-        mixBlendMode: 'difference',
-        borderColor: '#FFFFFF',
-        background: 'white',
-        outline: '1px solid red', // Debug outline, remove after testing
+        transform: `translate(${position.x - (isHovering ? 24 : 16)}px, ${position.y - (isHovering ? 24 : 16)}px)`,
+        borderColor: isDarkMode ? '#ffffff' : '#000000',
+        background: isHovering ? 'rgba(124, 58, 237, 0.2)' : 'transparent',
       }}
     />
   );
