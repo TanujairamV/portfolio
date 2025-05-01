@@ -1,9 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function Cursor({ isMobile, isDarkMode }) {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isCursorHovering, setIsCursorHovering] = useState(false);
   const [isCursorVisible, setIsCursorVisible] = useState(true);
+
+  const handleMouseMove = useCallback((e) => {
+    const newX = e.clientX;
+    const newY = e.clientY;
+    setCursorPosition({ x: newX, y: newY });
+    console.log('Cursor: Mouse moved:', { x: newX, y: newY, isVisible: isCursorVisible });
+  }, [isCursorVisible]);
 
   useEffect(() => {
     if (isMobile) {
@@ -13,13 +20,6 @@ export default function Cursor({ isMobile, isDarkMode }) {
 
     console.log('Cursor: Setting up cursor movement');
     let rafId = null;
-
-    const handleMouseMove = (e) => {
-      const newX = e.clientX;
-      const newY = e.clientY;
-      setCursorPosition({ x: newX, y: newY });
-      console.log('Cursor: Mouse moved:', { x: newX, y: newY, isVisible: isCursorVisible });
-    };
 
     const handleMouseEnter = () => {
       setIsCursorVisible(true);
@@ -68,7 +68,7 @@ export default function Cursor({ isMobile, isDarkMode }) {
       });
       clearTimeout(timeoutId);
     };
-  }, [isMobile]);
+  }, [isMobile, isCursorVisible, handleMouseMove]);
 
   if (isMobile || !isCursorVisible) return null;
 
@@ -82,7 +82,7 @@ export default function Cursor({ isMobile, isDarkMode }) {
         mixBlendMode: 'difference',
         borderColor: '#FFFFFF',
         background: 'white',
-        outline: '1px solid red', // Debug outline
+        outline: '1px solid red', // Debug outline, remove after testing
       }}
     />
   );
