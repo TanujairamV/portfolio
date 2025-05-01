@@ -4,7 +4,7 @@ import Scrambler from './Scrambler';
 import Cursor from './Cursor';
 import NavBar from './NavBar';
 import ContactForm from './ContactForm';
-import Particles from './Particles';
+import Particles from './Particles'; // Explicitly correct import
 
 // Error Boundary Component
 class ErrorBoundary extends Component {
