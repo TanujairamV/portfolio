@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
+import { loadSlim } from 'tsparticles-slim';
 
 export default function ParticlesBackground({ isDarkMode }) {
   const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
+    await loadSlim(engine);
   }, []);
 
   return (
@@ -14,7 +14,7 @@ export default function ParticlesBackground({ isDarkMode }) {
       options={{
         background: {
           color: {
-            value: isDarkMode ? '#1a202c' : '#f7fafc',
+            value: isDarkMode ? '#111827' : '#ffffff',
           },
         },
         fpsLimit: 120,
@@ -26,7 +26,7 @@ export default function ParticlesBackground({ isDarkMode }) {
           },
           modes: {
             push: { quantity: 4 },
-            repulse: { distance: 200, duration: 0.4 },
+            repulse: { distance: 150, duration: 0.4 },
           },
         },
         particles: {
@@ -35,9 +35,9 @@ export default function ParticlesBackground({ isDarkMode }) {
           },
           links: {
             color: isDarkMode ? '#b392ac' : '#7C3AED',
-            distance: 150,
+            distance: 120,
             enable: true,
-            opacity: 0.5,
+            opacity: 0.4,
             width: 1,
           },
           move: {
@@ -45,16 +45,16 @@ export default function ParticlesBackground({ isDarkMode }) {
             enable: true,
             outModes: { default: 'bounce' },
             random: false,
-            speed: 2,
+            speed: 1.5,
             straight: false,
           },
           number: {
             density: { enable: true, area: 800 },
-            value: 80,
+            value: 100,
           },
-          opacity: { value: 0.5 },
+          opacity: { value: 0.4 },
           shape: { type: 'circle' },
-          size: { value: { min: 1, max: 5 } },
+          size: { value: { min: 1, max: 4 } },
         },
         detectRetina: true,
       }}
