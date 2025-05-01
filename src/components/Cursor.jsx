@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 export default function Cursor({ isMobile, isDarkMode }) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -20,10 +21,10 @@ export default function Cursor({ isMobile, isDarkMode }) {
     const handleHoverEnter = () => setIsHovering(true);
     const handleHoverLeave = () => setIsHovering(false);
 
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
-    const hoverElements = document.querySelectorAll('a, button, input, textarea');
+    const hoverElements = document.querySelectorAll('a, button, input, textarea, .project-card');
     hoverElements.forEach((el) => {
       el.addEventListener('mouseenter', handleHoverEnter);
       el.addEventListener('mouseleave', handleHoverLeave);
@@ -43,15 +44,17 @@ export default function Cursor({ isMobile, isDarkMode }) {
   if (!isVisible || isMobile) return null;
 
   return (
-    <div
-      className={`fixed pointer-events-none z-[99999] rounded-full transition-all duration-200 ${
-        isHovering ? 'w-12 h-12 border-4' : 'w-8 h-8 border-2'
+    <motion.div
+      className={`fixed pointer-events-none z-[99999] rounded-full transition-colors duration-200 ${
+        isHovering ? 'w-10 h-10 border-2' : 'w-6 h-6 border'
       }`}
       style={{
-        transform: `translate(${position.x - (isHovering ? 24 : 16)}px, ${position.y - (isHovering ? 24 : 16)}px)`,
+        transform: `translate(${position.x - (isHovering ? 20 : 12)}px, ${position.y - (isHovering ? 20 : 12)}px)`,
         borderColor: isDarkMode ? '#ffffff' : '#000000',
-        background: isHovering ? 'rgba(124, 58, 237, 0.2)' : 'transparent',
+        background: isHovering ? 'rgba(124, 58, 237, 0.15)' : 'transparent',
       }}
+      animate={{ scale: isHovering ? 1.2 : 1 }}
+      transition={{ duration: 0.2 }}
     />
   );
 }
