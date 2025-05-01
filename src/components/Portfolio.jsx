@@ -1,223 +1,272 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useMousePosition } from "../util/mouse";
-import PropTypes from "prop-types";
+import { useState, useEffect, Component } from 'react';
+import { motion } from 'framer-motion';
+import Scrambler from './Scrambler';
+import Cursor from './Cursor';
+import NavBar from './NavBar';
+import ContactForm from './ContactForm';
+import Particles from './Particles';
 
-export default function Particles({
-  className = "",
-  quantity = 30,
-  staticity = 50,
-  ease = 50,
-  refresh = false,
-  isDarkMode = false,
-}) {
-  const canvasRef = useRef(null);
-  const canvasContainerRef = useRef(null);
-  const context = useRef(null);
-  const circles = useRef([]);
-  const mousePosition = useMousePosition();
-  const mouse = useRef({ x: 0, y: 0 });
-  const canvasSize = useRef({ w: 0, h: 0 });
-  const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
+// Error Boundary Component
+class ErrorBoundary extends Component {
+  state = { hasError: false };
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      context.current = canvasRef.current.getContext("2d");
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('ErrorBoundary caught:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1 className="text-center text-2xl mt-10">Something went wrong. Please try refreshing.</h1>;
     }
-    initCanvas();
-    animate();
-    window.addEventListener("resize", initCanvas);
+    return this.props.children;
+  }
+}
+
+export default function Portfolio() {
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const handleResize = () => {
+      const newMobile = window.innerWidth <= 768;
+      setIsMobile(newMobile);
+      console.log('Portfolio: Window resized, isMobile:', newMobile, 'Width:', window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Main effect for time, theme, and loader
+  useEffect(() => {
+    console.log('Portfolio: useEffect running for main setup');
+    const timer = setInterval(() => {
+      setTime(new Date().toLocaleTimeString());
+    }, 1000);
+
+    const savedMode = localStorage.getItem('darkMode');
+    const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialDarkMode = savedMode ? savedMode === 'true' : systemDarkMode;
+    setIsDarkMode(initialDarkMode);
+    console.log('Portfolio: Initial theme:', initialDarkMode ? 'dark' : 'light', 'System prefers dark:', systemDarkMode);
+    document.documentElement.classList.toggle('dark', initialDarkMode);
+
+    console.log('Portfolio: Requesting fullscreen');
+    document.documentElement.requestFullscreen().catch((err) => console.log('Portfolio: Fullscreen error:', err));
+    setTimeout(() => {
+      console.log('Portfolio: Hiding loader');
+      setIsLoading(false);
+      document.exitFullscreen().catch((err) => console.log('Portfolio: Exit fullscreen error:', err));
+    }, 3000);
 
     return () => {
-      window.removeEventListener("resize", initCanvas);
+      console.log('Portfolio: Cleaning up main useEffect');
+      clearInterval(timer);
     };
   }, []);
 
-  useEffect(() => {
-    onMouseMove();
-  }, [mousePosition.x, mousePosition.y]);
-
-  useEffect(() => {
-    initCanvas();
-  }, [refresh, isDarkMode]);
-
-  const initCanvas = () => {
-    resizeCanvas();
-    drawParticles();
-  };
-
-  const onMouseMove = () => {
-    if (canvasRef.current) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const { w, h } = canvasSize.current;
-      const x = mousePosition.x - rect.left - w / 2;
-      const y = mousePosition.y - rect.top - h / 2;
-      const inside = x < w / 2 && x > -w / 2 && y < h / 2 && y > -h / 2;
-      if (inside) {
-        mouse.current.x = x;
-        mouse.current.y = y;
-      }
-    }
-  };
-
-  const resizeCanvas = () => {
-    if (canvasContainerRef.current && canvasRef.current && context.current) {
-      circles.current.length = 0;
-      canvasSize.current.w = canvasContainerRef.current.offsetWidth;
-      canvasSize.current.h = canvasContainerRef.current.offsetHeight;
-      canvasRef.current.width = canvasSize.current.w * dpr;
-      canvasRef.current.height = canvasSize.current.h * dpr;
-      canvasRef.current.style.width = `${canvasSize.current.w}px`;
-      canvasRef.current.style.height = `${canvasSize.current.h}px`;
-      context.current.scale(dpr, dpr);
-    }
-  };
-
-  const circleParams = () => {
-    const x = Math.floor(Math.random() * canvasSize.current.w);
-    const y = Math.floor(Math.random() * canvasSize.current.h);
-    const translateX = 0;
-    const translateY = 0;
-    const size = Math.floor(Math.random() * 2) + 0.1;
-    const alpha = 0;
-    const targetAlpha = parseFloat((Math.random() * 0.6 + 0.1).toFixed(1));
-    const dx = (Math.random() - 0.5) * 0.2;
-    const dy = (Math.random() - 0.5) * 0.2;
-    const magnetism = 0.1 + Math.random() * 4;
-    return {
-      x,
-      y,
-      translateX,
-      translateY,
-      size,
-      alpha,
-      targetAlpha,
-      dx,
-      dy,
-      magnetism,
-    };
-  };
-
-  const drawCircle = (circle, update = false) => {
-    if (context.current) {
-      const { x, y, translateX, translateY, size, alpha } = circle;
-      context.current.translate(translateX, translateY);
-      context.current.beginPath();
-      context.current.arc(x, y, size, 0, 2 * Math.PI);
-      context.current.fillStyle = isDarkMode
-        ? `rgba(179, 146, 172, ${alpha})` // #b392ac
-        : `rgba(124, 58, 237, ${alpha})`; // #7C3AED
-      context.current.fill();
-      context.current.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      if (!update) {
-        circles.current.push(circle);
-      }
-    }
-  };
-
-  const clearContext = () => {
-    if (context.current) {
-      context.current.clearRect(
-        0,
-        0,
-        canvasSize.current.w,
-        canvasSize.current.h,
-      );
-    }
-  };
-
-  const drawParticles = () => {
-    clearContext();
-    const particleCount = quantity;
-    for (let i = 0; i < particleCount; i++) {
-      const circle = circleParams();
-      drawCircle(circle);
-    }
-  };
-
-  const remapValue = (value, start1, end1, start2, end2) => {
-    const remapped =
-      ((value - start1) * (end2 - start2)) / (end1 - start1) + start2;
-    return remapped > 0 ? remapped : 0;
-  };
-
-  const animate = () => {
-    clearContext();
-    circles.current.forEach((circle, i) => {
-      // Handle the alpha value
-      const edge = [
-        circle.x + circle.translateX - circle.size, // distance from left edge
-        canvasSize.current.w - circle.x - circle.translateX - circle.size, // distance from right edge
-        circle.y + circle.translateY - circle.size, // distance from top edge
-        canvasSize.current.h - circle.y - circle.translateY - circle.size, // distance from bottom edge
-      ];
-      const closestEdge = edge.reduce((a, b) => Math.min(a, b));
-      const remapClosestEdge = parseFloat(
-        remapValue(closestEdge, 0, 20, 0, 1).toFixed(2),
-      );
-      if (remapClosestEdge > 1) {
-        circle.alpha += 0.02;
-        if (circle.alpha > circle.targetAlpha) {
-          circle.alpha = circle.targetAlpha;
-        }
-      } else {
-        circle.alpha = circle.targetAlpha * remapClosestEdge;
-      }
-      circle.x += circle.dx;
-      circle.y += circle.dy;
-      circle.translateX +=
-        (mouse.current.x / (staticity / circle.magnetism) - circle.translateX) /
-        ease;
-      circle.translateY +=
-        (mouse.current.y / (staticity / circle.magnetism) - circle.translateY) /
-        ease;
-      // circle gets out of the canvas
-      if (
-        circle.x < -circle.size ||
-        circle.x > canvasSize.current.w + circle.size ||
-        circle.y < -circle.size ||
-        circle.y > canvasSize.current.h + circle.size
-      ) {
-        // remove the circle from the array
-        circles.current.splice(i, 1);
-        // create a new circle
-        const newCircle = circleParams();
-        drawCircle(newCircle);
-        // update the circle position
-      } else {
-        drawCircle(
-          {
-            ...circle,
-            x: circle.x,
-            y: circle.y,
-            translateX: circle.translateX,
-            translateY: circle.translateY,
-            alpha: circle.alpha,
-          },
-          true,
-        );
-      }
-    });
-    window.requestAnimationFrame(animate);
-  };
-
   return (
-    <div
-      className={`${className} absolute inset-0 z-0`}
-      ref={canvasContainerRef}
-      aria-hidden="true"
-      style={{ pointerEvents: "none" }}
-    >
-      <canvas ref={canvasRef} />
-    </div>
+    <ErrorBoundary>
+      <div className="min-h-screen relative">
+        {/* Particles Background */}
+        <Particles isDarkMode={isDarkMode} />
+
+        {/* Loader */}
+        {isLoading && (
+          <div id="loader" className="fixed inset-0 bg-black flex items-center justify-center z-[10000] transition-opacity duration-500">
+            <Scrambler text="Tanujairam" />
+          </div>
+        )}
+
+        {/* Frosted Background Wrapper */}
+        <div className="frosted-bg min-h-screen text-text-primary relative z-10">
+          {/* Custom Cursor */}
+          <Cursor isMobile={isMobile} isDarkMode={isDarkMode} />
+
+          {/* Navigation Bar */}
+          <NavBar
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            isDarkMode={isDarkMode}
+            setIsDarkMode={setIsDarkMode}
+            time={time}
+          />
+
+          {/* Hero Section */}
+          <motion.section
+            id="home"
+            className="min-h-screen flex items-center justify-center text-center px-6 pt-20"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7 }}
+          >
+            <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}>
+              <h1 className="text-6xl sm:text-7xl font-poppins font-extrabold text-text-primary mb-4">
+                Tanu
+              </h1>
+              <p className="text-2xl font-inter text-text-secondary mb-8">
+                Student | Developer | Innovator
+              </p>
+              <div className="flex justify-center gap-6 mb-8">
+                <a
+                  href="https://github.com/tanujairam"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub profile"
+                  className="text-text-primary hover:text-accent-purple transition-colors duration-300 transform hover:scale-110"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.66-.22.66-.49v-1.71c-2.78.6-3.36-1.34-3.36-1.34-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.564 9.564 0 0112 6.8c.85.004 1.71.11 2.52.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.56.84.56 1.69v2.5c0 .27.16.59.67.5A10.013 10.013 0 0022 12c0-5.52-4.48-10-10-10z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://linkedin.com/in/tanujairam"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn profile"
+                  className="text-text-primary hover:text-accent-purple transition-colors duration-300 transform hover:scale-110"
+                >
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9.36h3.41v1.52h.05c.48-.91 1.65-1.87 3.39-1.87 3.62 0 4.29 2.38 4.29 5.48v6.96zM5.34 7.83c-1.15 0-2.08-.93-2.08-2.08s.93-2.08 2.08-2.08 2.08.93 2.08 2.08-.93 2.08-2.08 2.08zm1.78 12.62H3.56V9.36h3.56v11.09zM22 0H2C.9 0 0 .9 0 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z" />
+                  </svg>
+                </a>
+              </div>
+              <a
+                href="#projects"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="btn-primary font-inter text-lg px-6 py-3"
+                aria-label="View my projects"
+              >
+                View My Work
+              </a>
+            </div>
+          </motion.section>
+
+          {/* Projects Section */}
+          <motion.section
+            id="projects"
+            className="py-20 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="container mx-auto">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
+                Projects
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300`}>
+                  <h3 className="text-2xl font-poppins font-bold text-text-primary mb-3">
+                    Project 1
+                  </h3>
+                  <p className="text-lg font-inter text-text-secondary mb-4">
+                    A web application built with React and Node.js to streamline user workflows.
+                  </p>
+                  <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent-purple hover:underline font-inter text-lg"
+                  >
+                    View on GitHub
+                  </a>
+                </div>
+                <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300`}>
+                  <h3 className="text-2xl font-poppins font-bold text-text-primary mb-3">
+                    Project 2
+                  </h3>
+                  <p className="text-lg font-inter text-text-secondary mb-4">
+                    A mobile app developed with Flutter for seamless cross-platform performance.
+                  </p>
+                  <a
+                    href="https://github.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent-purple hover:underline font-inter text-lg"
+                  >
+                    View on GitHub
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Skills Section */}
+          <motion.section
+            id="skills"
+            className="py-20 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="container mx-auto">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
+                Skills
+              </h2>
+              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}>
+                <ul className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-lg font-inter text-text-primary">
+                  <li>React</li>
+                  <li>Node.js</li>
+                  <li>JavaScript</li>
+                  <li>Tailwind CSS</li>
+                  <li>Flutter</li>
+                  <li>Git</li>
+                </ul>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* About Section */}
+          <motion.section
+            id="about"
+            className="py-20 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="container mx-auto">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
+                About Me
+              </h2>
+              <div className={`card ${isDarkMode ? 'box-blur' : 'card-light'} p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}>
+                <p className="text-lg font-inter text-text-secondary">
+                  I'm a passionate student and developer with a focus on creating intuitive and visually appealing web and mobile applications. I love exploring new technologies and building projects that solve real-world problems.
+                </p>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Contact Section */}
+          <motion.section
+            id="contact"
+            className="py-20 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="container mx-auto">
+              <h2 className="text-5xl font-poppins font-extrabold text-text-primary text-center mb-12">
+                Contact
+              </h2>
+              <ContactForm isDarkMode={isDarkMode} />
+            </div>
+          </motion.section>
+        </div>
+      </div>
+    </ErrorBoundary>
   );
 }
-
-Particles.propTypes = {
-  className: PropTypes.string,
-  quantity: PropTypes.number,
-  staticity: PropTypes.number,
-  ease: PropTypes.number,
-  refresh: PropTypes.bool,
-  isDarkMode: PropTypes.bool,
-};
