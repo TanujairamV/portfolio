@@ -7,15 +7,19 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^10.16.4",
+    "gsap": "^3.12.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
     "react-parallax-tilt": "^1.7.2",
+    "react-scroll-parallax": "^3.4.2",
     "react-tsparticles": "^2.12.2",
     "tsparticles": "^2.12.0"
   },
