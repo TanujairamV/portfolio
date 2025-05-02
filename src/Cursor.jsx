@@ -18,7 +18,7 @@ function Cursor() {
     };
 
     const unhoverCursor = () => {
-      gsap.to(cursorRef.current, { scale: 1, opacity: 0.7 });
+      gsap.to(cursorRef.current, { scale: 1, opacity: 1 });
     };
 
     window.addEventListener('mousemove', moveCursor);
@@ -39,7 +39,7 @@ function Cursor() {
   return (
     <div
       ref={cursorRef}
-      className="fixed cursor-glass"
+      className="fixed cursor-inverted"
       style={{ transform: 'translate(-50%, -50%)' }}
     />
   );
