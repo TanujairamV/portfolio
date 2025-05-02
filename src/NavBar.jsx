@@ -13,7 +13,7 @@ function NavBar() {
   ];
 
   return (
-    <nav className="fixed top-0 w-full bg-gray-900 bg-opacity-80 backdrop-blur-md z-40">
+    <nav className="fixed top-0 w-full navbar-glass z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -53,7 +53,7 @@ function NavBar() {
       </div>
       {isOpen && (
         <motion.div
-          className="sm:hidden"
+          className="sm:hidden navbar-glass"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
