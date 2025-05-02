@@ -1,13 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto:wght@400;500;700&family=Fira+Sans:wght@400;600&family=Montserrat:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto:wght@400;500;700&family=Fira+Sans:wght@400;600&family=Montserrat:wght@400;600;700&family=Dancing+Script:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --neon-blue: #00f0ff;
-  --neon-pink: #ff00cc;
-}
 
 /* Hide default cursor */
 html, body {
@@ -19,13 +14,13 @@ body {
   @apply bg-black text-white;
 }
 
-section, .glass-card, .btn, .navbar-glass {
+section, .glass-card, .btn, .navbar-glass, #intro {
   @apply bg-black text-white;
 }
 
 /* Light theme */
 @media (prefers-color-scheme: light) {
-  body, section, .glass-card, .btn, .navbar-glass {
+  body, section, .glass-card, .btn, .navbar-glass, #intro {
     @apply bg-gray-100 text-gray-900;
   }
   .glass-card {
@@ -40,12 +35,12 @@ section, .glass-card, .btn, .navbar-glass {
 }
 
 /* Override for explicit dark mode */
-body.dark, body.dark section, body.dark .glass-card, body.dark .btn, body.dark .navbar-glass {
+body.dark, body.dark section, body.dark .glass-card, body.dark .btn, body.dark .navbar-glass, body.dark #intro {
   @apply bg-black text-white;
 }
 
 /* Override for explicit light mode */
-body.light, body.light section, body.light .glass-card, body.light .btn, body.light .navbar-glass {
+body.light, body.light section, body.light .glass-card, body.light .btn, body.light .navbar-glass, body.light #intro {
   @apply bg-gray-100 text-gray-900;
 }
 
@@ -67,11 +62,15 @@ body.light .text-secondary {
 }
 
 .btn {
-  @apply px-6 py-2 rounded-full bg-gradient-to-r from-neon-blue to-neon-pink font-roboto font-semibold hover:scale-105 transition-transform;
+  @apply px-6 py-2 rounded-full bg-gray-800 text-white font-roboto font-semibold hover:bg-gray-700 hover:scale-105 transition-transform;
+}
+
+body.light .btn {
+  @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
 }
 
 .glass-card {
-  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 rounded-lg p-6 shadow-lg;
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 rounded-lg p-6 shadow-lg font-fira-sans;
 }
 
 .navbar-glass {
@@ -80,6 +79,14 @@ body.light .text-secondary {
 
 .cursor-glass {
   @apply w-10 h-10 rounded-full bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 pointer-events-none z-50;
+}
+
+.social-icon {
+  @apply text-gray-300 hover:text-white transition-colors;
+}
+
+body.light .social-icon {
+  @apply text-gray-600 hover:text-gray-900;
 }
 
 .font-inter {
@@ -96,4 +103,8 @@ body.light .text-secondary {
 
 .font-montserrat {
   font-family: 'Montserrat', sans-serif;
+}
+
+.font-dancing-script {
+  font-family: 'Dancing Script', cursive;
 }
