@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Space+Grotesk:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,7 +11,7 @@
 
 /* Dark theme (default) */
 body {
-  @apply bg-gray-900 text-white;
+  @apply bg-black text-white;
 }
 
 /* Light theme */
@@ -32,7 +32,7 @@ body {
 
 /* Override for explicit dark mode */
 body.dark {
-  @apply bg-gray-900 text-white;
+  @apply bg-black text-white;
 }
 
 /* Override for explicit light mode */
@@ -49,13 +49,17 @@ body.light {
 }
 
 .navbar-glass {
-  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20;
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 rounded-full px-6 py-2 mx-auto max-w-4xl;
 }
 
-.font-inter {
-  font-family: 'Inter', sans-serif;
+.cursor-invert {
+  @apply w-8 h-8 rounded-full mix-blend-difference bg-white pointer-events-none z-50;
 }
 
-.font-poppins {
-  font-family: 'Poppins', sans-serif;
+.font-manrope {
+  font-family: 'Manrope', sans-serif;
+}
+
+.font-space-grotesk {
+  font-family: 'Space Grotesk', sans-serif;
 }
