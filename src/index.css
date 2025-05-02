@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chillax:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&family=General+Sans:wght@400;500;600&family=Satoshi:wght@400;500;700&family=Clash+Grotesk:wght@600&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css');
 
 @tailwind base;
 @tailwind components;
@@ -80,7 +81,7 @@ body.light .btn {
 
 /* Glass card */
 .glass-card {
-  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-[#1A1A1A] rounded-lg p-6 shadow-lg font-chillax hover:scale-105 transition-transform duration-300;
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-[#1A1A1A] rounded-2xl p-6 shadow-lg font-chillax hover:scale-105 transition-transform duration-300;
 }
 
 body.light .glass-card {
@@ -113,6 +114,20 @@ body.light .cursor-inverted {
 
 body.light .social-icon {
   @apply text-[#7E57C2] hover:text-[#FF4081];
+}
+
+/* Signature style */
+.signature {
+  @apply font-clash-grotesk text-heading text-3xl italic transform -rotate-2;
+}
+
+/* Skill bubble */
+.skill-bubble {
+  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#D1D1D1] font-chillax hover:bg-[#FF6AC1] hover:text-[#0D0D0D] transition-all duration-300;
+}
+
+body.light .skill-bubble {
+  @apply bg-[#E0E0E0] text-[#1A1A1A] hover:bg-[#FF4081] hover:text-[#FAFAFA];
 }
 
 /* Font classes */
