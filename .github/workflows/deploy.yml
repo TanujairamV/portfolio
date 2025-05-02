@@ -13,8 +13,12 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - name: Install dependencies
-        run: npm install
+      - name: Verify repository contents
+        run: ls -R
+      - name: Install dependencies and generate package-lock.json
+        run: npm install --package-lock
+      - name: Verify package-lock.json
+        run: ls -l package-lock.json || echo "package-lock.json not found"
       - name: Build
         run: npm run build
         env:
