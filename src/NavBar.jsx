@@ -28,14 +28,14 @@ function NavBar() {
 
   return (
     <nav className="fixed top-4 left-0 right-0 navbar-glass z-40">
-      <div className="flex justify-between items-center h-12">
+      <div className="flex items-center h-12">
         <div className="flex items-center">
-          <a href="#hero" className="flex-shrink-0 flex items-center text-xl font-montserrat text-neon-blue">
+          <span className="text-sm font-inter text-secondary mr-4">{currentTime}</span>
+          <a href="#hero" className="flex-shrink-0 flex items-center text-2xl font-dancing-script text-primary">
             Tanujairam
           </a>
-          <span className="ml-4 text-sm font-inter text-secondary">{currentTime}</span>
         </div>
-        <div className="hidden sm:ml-6 sm:flex sm:space-x-6">
+        <div className="flex-1 flex justify-center sm:ml-6 sm:space-x-6 hidden sm:flex">
           {[
             { name: 'Home', href: '#hero' },
             { name: 'About', href: '#about' },
@@ -46,25 +46,25 @@ function NavBar() {
             <a
               key={item.name}
               href={item.href}
-              className="inline-flex items-center px-1 text-sm font-inter text-primary hover:text-neon-blue transition-colors"
+              className="inline-flex items-center px-2 text-sm font-inter text-primary hover:text-secondary transition-colors"
             >
               {item.name}
             </a>
           ))}
+        </div>
+        <div className="flex items-center">
           <button
             onClick={toggleTheme}
-            className="inline-flex items-center p-2 text-primary hover:text-neon-blue"
+            className="inline-flex items-center p-2 text-primary hover:text-secondary hidden sm:flex"
             aria-label="Toggle theme"
           >
             {theme === 'system' && <FaDesktop />}
             {theme === 'light' && <FaSun />}
             {theme === 'dark' && <FaMoon />}
           </button>
-        </div>
-        <div className="-mr-2 flex items-center sm:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-neon-blue focus:outline-none"
+            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-secondary focus:outline-none sm:hidden"
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? (
@@ -97,7 +97,7 @@ function NavBar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-neon-blue hover:bg-gray-800"
+                className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-secondary hover:bg-gray-800"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -105,7 +105,7 @@ function NavBar() {
             ))}
             <button
               onClick={toggleTheme}
-              className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-neon-blue hover:bg-gray-800"
+              className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-secondary hover:bg-gray-800"
             >
               {theme === 'system' ? 'System Theme' : theme === 'light' ? 'Light Theme' : 'Dark Theme'}
             </button>
