@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,8 +9,35 @@
   --neon-pink: #ff00cc;
 }
 
+/* Dark theme (default) */
 body {
   @apply bg-gray-900 text-white;
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+  body {
+    @apply bg-gray-100 text-gray-900;
+  }
+  .glass-card {
+    @apply bg-white bg-opacity-20 border-gray-300;
+  }
+  .btn {
+    @apply text-white;
+  }
+  .navbar-glass {
+    @apply bg-white bg-opacity-20 border-gray-300;
+  }
+}
+
+/* Override for explicit dark mode */
+body.dark {
+  @apply bg-gray-900 text-white;
+}
+
+/* Override for explicit light mode */
+body.light {
+  @apply bg-gray-100 text-gray-900;
 }
 
 .btn {
@@ -17,6 +46,10 @@ body {
 
 .glass-card {
   @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 rounded-lg p-6 shadow-lg;
+}
+
+.navbar-glass {
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20;
 }
 
 .font-inter {
