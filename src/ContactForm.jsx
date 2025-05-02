@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/browser';
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -17,10 +17,10 @@ function ContactForm() {
     e.preventDefault();
     emailjs
       .send(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS Service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS Template ID
+        'your_service_id',
+        'your_template_id',
         formData,
-        'YOUR_USER_ID' // Replace with your EmailJS User ID
+        'your_public_key'
       )
       .then(
         () => {
@@ -37,7 +37,7 @@ function ContactForm() {
     <div className="max-w-lg mx-auto mt-8">
       <form onSubmit={handleSubmit} className="glass-card">
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium">
+          <label htmlFor="name" className="block text-primary font-inter">
             Name
           </label>
           <input
@@ -46,12 +46,12 @@ function ContactForm() {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            className="w-full px-3 py-2 bg-transparent border border-gray-300 rounded-md text-primary focus:outline-none focus:border-gray-500"
             required
-            className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-neon-blue focus:border-neon-blue"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium">
+          <label htmlFor="email" className="block text-primary font-inter">
             Email
           </label>
           <input
@@ -60,12 +60,12 @@ function ContactForm() {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            className="w-full px-3 py-2 bg-transparent border border-gray-300 rounded-md text-primary focus:outline-none focus:border-gray-500"
             required
-            className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-neon-blue focus:border-neon-blue"
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="message" className="block text-sm font-medium">
+          <label htmlFor="message" className="block text-primary font-inter">
             Message
           </label>
           <textarea
@@ -73,15 +73,15 @@ function ContactForm() {
             name="message"
             value={formData.message}
             onChange={handleChange}
-            required
+            className="w-full px-3 py-2 bg-transparent border border-gray-300 rounded-md text-primary focus:outline-none focus:border-gray-500"
             rows="4"
-            className="mt-1 block w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-neon-blue focus:border-neon-blue"
+            required
           ></textarea>
         </div>
-        <button type="submit" className="btn w-full">
+        <button type="submit" className="btn">
           Send Message
         </button>
-        {status && <p className="mt-4 text-center text-sm">{status}</p>}
+        {status && <p className="mt-4 text-secondary font-inter">{status}</p>}
       </form>
     </div>
   );
