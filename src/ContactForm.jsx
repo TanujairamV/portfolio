@@ -17,10 +17,10 @@ function ContactForm() {
     e.preventDefault();
     emailjs
       .send(
-        'your_service_id',
-        'your_template_id',
+        'service_93dx3kc',
+        'template_0azsdc9',
         formData,
-        'your_public_key'
+        'cSsgnQAXJHC5uk2ew'
       )
       .then(
         () => {
