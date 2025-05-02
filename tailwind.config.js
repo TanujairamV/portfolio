@@ -5,15 +5,12 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        'neon-blue': '#00f0ff',
-        'neon-pink': '#ff00cc',
-      },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
         roboto: ['Roboto', 'sans-serif'],
         'fira-sans': ['Fira Sans', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
+        'dancing-script': ['Dancing Script', 'cursive'],
       },
     },
   },
