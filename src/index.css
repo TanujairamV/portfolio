@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --neon-blue: #00f0ff;
+  --neon-pink: #ff00cc;
+}
+
+body {
+  @apply bg-gray-900 text-white;
+}
+
+.btn {
+  @apply px-6 py-2 rounded-full bg-gradient-to-r from-neon-blue to-neon-pink text-gray-900 font-semibold hover:scale-105 transition-transform;
+}
+
+.glass-card {
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 rounded-lg p-6 shadow-lg;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
