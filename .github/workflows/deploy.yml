@@ -1,5 +1,4 @@
 name: Deploy to GitHub Pages
-
 on:
   push:
     branches: [main]
@@ -10,11 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Verify repository contents
+        run: ls -R
+      - name: Check package.json in root
+        run: test -f package.json && echo "package.json found in root" || echo "package.json missing in root"
       - name: Create fallback package.json if missing
         run: |
           if [ ! -f package.json ]; then
-            echo '{
+            cat << 'EOF' > package.json
+            {
               "name": "portfolio",
               "private": true,
               "version": "0.0.0",
@@ -57,20 +64,28 @@ jobs:
                 "tailwindcss": "^3.3.3",
                 "vite": "^4.4.5"
               }
-            }' > package.json
+            }
+            EOF
+            echo "Created fallback package.json"
           fi
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
+      - name: Validate package.json
+        run: test -f package.json && (cat package.json && jq . package.json || echo "package.json invalid") || echo "Skipping validation: package.json not found"
+      - name: Install dependencies and generate package-lock.json
+        run: npm install --package-lock
+      - name: Verify package-lock.json
+        run: ls -l package-lock.json || echo "package-lock.json not generated"
+      - name: Build with error logging
+        run: npm run build || (echo "Build failed"; cat vite.log; exit 1)
         env:
           VITE_BASE: /portfolio/
-
+      - name: Inspect index.html
+        run: cat dist/index.html || echo "index.html not found in dist/"
+      - name: Verify dist contents
+        run: ls -R dist/
+      - name: Check asset paths
+        run: grep -E 'src="/portfolio/assets/.*\.js"' dist/index.html || echo "No JS assets found in index.html"
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
