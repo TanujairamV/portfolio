@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from 'react';
 import { motion } from 'framer-motion';
+import { FaInstagram, FaTelegram, FaTwitter, FaEnvelope, FaGithub } from 'react-icons/fa';
 import ParticlesBackground from './ParticlesBackground.jsx';
 import NavBar from './NavBar.jsx';
 import Cursor from './Cursor.jsx';
@@ -60,7 +61,7 @@ function Portfolio() {
         <section id="hero" className="min-h-screen flex items-center justify-center">
           <div className="text-center max-w-3xl mx-auto px-4">
             <motion.h1
-              className="text-5xl font-montserrat text-neon-blue"
+              className="text-5xl font-montserrat text-primary"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -91,6 +92,28 @@ function Portfolio() {
             >
               <a href="https://github.com/TanujairamV" className="btn">GitHub</a>
               <a href="mailto:tanujairam.v@gmail.com" className="btn">Email</a>
+            </motion.div>
+            <motion.div
+              className="mt-6 flex justify-center space-x-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
+              <a href="https://instagram.com/yourusername" className="social-icon">
+                <FaInstagram size={24} />
+              </a>
+              <a href="https://t.me/yourusername" className="social-icon">
+                <FaTelegram size={24} />
+              </a>
+              <a href="https://x.com/yourusername" className="social-icon">
+                <FaTwitter size={24} />
+              </a>
+              <a href="mailto:tanujairam.v@gmail.com" className="social-icon">
+                <FaEnvelope size={24} />
+              </a>
+              <a href="https://github.com/TanujairamV" className="social-icon">
+                <FaGithub size={24} />
+              </a>
             </motion.div>
           </div>
         </section>
