@@ -30,8 +30,7 @@ function NavBar() {
     <nav className="fixed top-4 left-0 right-0 navbar-glass z-40">
       <div className="flex items-center h-12">
         <div className="flex items-center">
-          <span className="text-sm font-inter text-secondary mr-4">{currentTime}</span>
-          <a href="#hero" className="flex-shrink-0 flex items-center text-2xl font-dancing-script text-primary">
+          <a href="#hero" className="flex-shrink-0 flex items-center text-2xl font-clash-grotesk text-heading">
             Tanujairam
           </a>
         </div>
@@ -46,16 +45,17 @@ function NavBar() {
             <a
               key={item.name}
               href={item.href}
-              className="inline-flex items-center px-2 text-sm font-inter text-primary hover:text-secondary transition-colors"
+              className="inline-flex items-center px-2 text-sm font-chillax text-link hover:text-[#FF6AC1] transition-colors duration-300"
             >
               {item.name}
             </a>
           ))}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center space-x-4">
+          <span className="text-sm font-chillax text-[#D1D1D1]">{currentTime}</span>
           <button
             onClick={toggleTheme}
-            className="inline-flex items-center p-2 text-primary hover:text-secondary hidden sm:flex"
+            className="inline-flex items-center p-2 text-link hover:text-[#FF6AC1] hidden sm:flex"
             aria-label="Toggle theme"
           >
             {theme === 'system' && <FaDesktop />}
@@ -64,7 +64,7 @@ function NavBar() {
           </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-secondary focus:outline-none sm:hidden"
+            className="inline-flex items-center justify-center p-2 rounded-md text-link hover:text-[#FF6AC1] focus:outline-none sm:hidden"
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? (
@@ -97,7 +97,7 @@ function NavBar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-secondary hover:bg-gray-800"
+                className="block pl-3 pr-4 py-2 text-base font-chillax text-link hover:text-[#FF6AC1] hover:bg-[#1A1A1A]"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -105,7 +105,7 @@ function NavBar() {
             ))}
             <button
               onClick={toggleTheme}
-              className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-secondary hover:bg-gray-800"
+              className="block pl-3 pr-4 py-2 text-base font-chillax text-link hover:text-[#FF6AC1] hover:bg-[#1A1A1A]"
             >
               {theme === 'system' ? 'System Theme' : theme === 'light' ? 'Light Theme' : 'Dark Theme'}
             </button>
