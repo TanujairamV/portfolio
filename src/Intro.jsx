@@ -18,19 +18,20 @@ function Intro({ onComplete }) {
       },
       duration: 2,
       onComplete: () => {
-        setTimeout(onComplete, 500); // Delay before transitioning
+        setTimeout(onComplete, 500);
       },
     });
   }, [onComplete]);
 
   return (
     <motion.div
-      className="min-h-screen flex items-center justify-center bg-gray-900 text-white"
+      id="intro"
+      className="min-h-screen flex items-center justify-center text-primary"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 ref={nameRef} className="text-5xl font-poppins"></h1>
+      <h1 ref={nameRef} className="text-5xl font-montserrat"></h1>
     </motion.div>
   );
 }
