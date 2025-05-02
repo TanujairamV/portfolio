@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from 'react';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaTelegram, FaTwitter, FaEnvelope, FaGithub } from 'react-icons/fa';
+import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from 'react-icons/fa';
+import { TypeAnimation } from 'react-type-animation';
 import ParticlesBackground from './ParticlesBackground.jsx';
 import NavBar from './NavBar.jsx';
 import Cursor from './Cursor.jsx';
@@ -68,14 +69,26 @@ function Portfolio() {
             >
               Tanujairam
             </motion.h1>
-            <motion.p
+            <motion.div
               className="mt-4 text-xl font-chillax text-[#D1D1D1]"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Student, Developer, Innovator
-            </motion.p>
+              <TypeAnimation
+                sequence={[
+                  'Student',
+                  1000,
+                  'Developer',
+                  1000,
+                  'Innovator',
+                  1000,
+                ]}
+                wrapper="span"
+                speed={50}
+                repeat={Infinity}
+              />
+            </motion.div>
             <motion.p
               className="mt-6 text-lg font-chillax text-[#D1D1D1]"
               initial={{ y: 20, opacity: 0 }}
@@ -99,14 +112,14 @@ function Portfolio() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
             >
-              <a href="https://instagram.com/yourusername" className="social-icon">
+              <a href="https://instagram.com/tanujairam.v" className="social-icon">
                 <FaInstagram size={24} />
               </a>
-              <a href="https://t.me/yourusername" className="social-icon">
+              <a href="https://t.me/Tanujairam" className="social-icon">
                 <FaTelegram size={24} />
               </a>
-              <a href="https://x.com/yourusername" className="social-icon">
-                <FaTwitter size={24} />
+              <a href="https://discord.com/users/Tanujairam" className="social-icon">
+                <FaDiscord size={24} />
               </a>
               <a href="mailto:tanujairam.v@gmail.com" className="social-icon">
                 <FaEnvelope size={24} />
