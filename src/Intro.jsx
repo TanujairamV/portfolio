@@ -26,12 +26,12 @@ function Intro({ onComplete }) {
   return (
     <motion.div
       id="intro"
-      className="min-h-screen flex items-center justify-center text-primary"
+      className="min-h-screen flex items-center justify-center text-heading"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 ref={nameRef} className="text-5xl font-montserrat"></h1>
+      <h1 ref={nameRef} className="text-5xl font-clash-grotesk"></h1>
     </motion.div>
   );
 }
