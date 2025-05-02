@@ -1,32 +1,94 @@
-import Particles from 'react-tsparticles';
-import { loadSlim } from 'tsparticles-slim';
-import { useCallback } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
+import { loadSlim } from '@tsparticles/slim';
 
 function ParticlesBackground() {
-  const particlesInit = useCallback(async (engine) => {
-    await loadSlim(engine);
+  const particlesRef = useRef(null);
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    });
   }, []);
+
+  const options = useMemo(
+    () => ({
+      background: {
+        color: {
+          value: 'transparent',
+        },
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: {
+            enable: true,
+            mode: 'push',
+          },
+          onHover: {
+            enable: true,
+            mode: 'repulse',
+          },
+        },
+        modes: {
+          push: {
+            quantity: 4,
+          },
+          repulse: {
+            distance: 200,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: isDarkMode ? '#D1D1D1' : '#7E57C2',
+        },
+        links: {
+          color: isDarkMode ? '#D1D1D1' : '#7E57C2',
+          distance: 150,
+          enable: true,
+          opacity: 0.5,
+          width: 1,
+        },
+        move: {
+          direction: 'none',
+          enable: true,
+          outModes: {
+            default: 'bounce',
+          },
+          random: false,
+          speed: 2,
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+          },
+          value: 80,
+        },
+        opacity: {
+          value: 0.5,
+        },
+        shape: {
+          type: 'circle',
+        },
+        size: {
+          value: { min: 1, max: 5 },
+        },
+      },
+      detectRetina: true,
+    }),
+    [isDarkMode]
+  );
 
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
-      options={{
-        background: { color: { value: 'transparent' } },
-        fpsLimit: 60,
-        particles: {
-          number: { value: 50, density: { enable: true, value_area: 800 } },
-          color: { value: '#ffffff' },
-          shape: { type: 'circle' },
-          opacity: { value: 0.5, random: true },
-          size: { value: 3, random: true },
-          move: { enable: true, speed: 1, direction: 'none', random: true },
-        },
-        interactivity: {
-          events: { onHover: { enable: true, mode: 'repulse' }, onClick: { enable: true, mode: 'push' } },
-          modes: { repulse: { distance: 100 }, push: { quantity: 4 } },
-        },
-      }}
+      ref={particlesRef}
+      options={options}
+      className="absolute inset-0 z-0"
     />
   );
 }
