@@ -50,7 +50,7 @@ function Portfolio() {
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <motion.div
-        className="min-h-screen font-inter"
+        className="min-h-screen font-chillax"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -61,7 +61,7 @@ function Portfolio() {
         <section id="hero" className="min-h-screen flex items-center justify-center">
           <div className="text-center max-w-3xl mx-auto px-4">
             <motion.h1
-              className="text-5xl font-montserrat text-primary"
+              className="text-5xl font-clash-grotesk text-heading"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -69,7 +69,7 @@ function Portfolio() {
               Tanujairam
             </motion.h1>
             <motion.p
-              className="mt-4 text-xl font-inter text-primary"
+              className="mt-4 text-xl font-chillax text-[#D1D1D1]"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -77,7 +77,7 @@ function Portfolio() {
               Student, Developer, Innovator
             </motion.p>
             <motion.p
-              className="mt-6 text-lg font-inter text-secondary"
+              className="mt-6 text-lg font-chillax text-[#D1D1D1]"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -118,13 +118,13 @@ function Portfolio() {
           </div>
         </section>
         <section id="about" className="py-20">
-          <h2 className="text-3xl text-center font-montserrat text-primary">About Me</h2>
-          <p className="mt-4 max-w-2xl mx-auto text-center font-inter text-secondary">
+          <h2 className="text-3xl text-center font-clash-grotesk text-heading">About Me</h2>
+          <p className="mt-4 max-w-2xl mx-auto text-center font-chillax text-[#D1D1D1]">
             I'm a 16-year-old Grade 12 student passionate about coding, building projects, and exploring technology.
           </p>
         </section>
-        <section id="projects" className="py-20 bg-gray-800">
-          <h2 className="text-3xl text-center font-montserrat text-primary">Projects</h2>
+        <section id="projects" className="py-20 bg-[#1A1A1A]">
+          <h2 className="text-3xl text-center font-clash-grotesk text-heading">Projects</h2>
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {projects.map((project) => (
               <ProjectCard key={project.name} {...project} />
@@ -132,15 +132,15 @@ function Portfolio() {
           </div>
         </section>
         <section id="skills" className="py-20">
-          <h2 className="text-3xl text-center font-montserrat text-primary">Skills</h2>
+          <h2 className="text-3xl text-center font-clash-grotesk text-heading">Skills</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             {skills.map((skill) => (
               <SkillBubble key={skill} skill={skill} />
             ))}
           </div>
         </section>
-        <section id="contact" className="py-20 bg-gray-800">
-          <h2 className="text-3xl text-center font-montserrat text-primary">Contact</h2>
+        <section id="contact" className="py-20 bg-[#1A1A1A]">
+          <h2 className="text-3xl text-center font-clash-grotesk text-heading">Contact</h2>
           <ContactForm />
         </section>
         <Footer />
