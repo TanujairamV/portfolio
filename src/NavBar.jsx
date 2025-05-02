@@ -30,7 +30,7 @@ function NavBar() {
     <nav className="fixed top-4 left-0 right-0 navbar-glass z-40">
       <div className="flex items-center h-12">
         <div className="flex items-center">
-          <a href="#hero" className="flex-shrink-0 flex items-center text-2xl font-clash-grotesk text-heading">
+          <a href="#hero" className="flex-shrink-0 flex items-center signature">
             Tanujairam
           </a>
         </div>
