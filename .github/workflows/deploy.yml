@@ -1,4 +1,5 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
     branches: [main]
@@ -7,20 +8,27 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
+
       - name: Verify repository contents
         run: ls -R
-      - name: Find package.json
-        run: find . -name package.json || echo "No package.json found in any directory"
-      - name: Check package.json in root
+
+      - name: Find any package.json
+        run: find . -name package.json || echo "No package.json found"
+
+      - name: Check for package.json in root
         run: test -f package.json && echo "package.json found in root" || echo "package.json missing in root"
+
       - name: Validate package.json
-        run: test -f package.json && (cat package.json && jq . package.json || echo "package.json invalid") || echo "Skipping validation: package.json not found"
+        run: test -f package.json && (cat package.json && jq . package.json || echo "Invalid JSON") || echo "No package.json to validate"
+
       - name: Create fallback package.json if missing
         run: |
           if [ ! -f package.json ]; then
@@ -68,20 +76,29 @@ jobs:
                 "vite": "^4.4.5"
               }
             }' > package.json
-            echo "Created fallback package.json"
+            echo "Fallback package.json created"
           fi
-      - name: Install dependencies and generate package-lock.json
-        run: npm install --package-lock
-      - name: Verify package-lock.json
-        run: ls -l package-lock.json || echo "package-lock.json not generated"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check if gh-pages is installed
+        run: npx gh-pages --version || echo "gh-pages not installed"
+
       - name: Build
         run: npm run build
         env:
           VITE_BASE: /portfolio/
+
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
+
+      - name: Add .nojekyll
+        run: touch dist/.nojekyll
+
       - name: Verify dist contents
         run: ls -R dist/
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
