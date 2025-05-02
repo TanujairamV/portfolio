@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        roboto: ['Roboto', 'sans-serif'],
-        'fira-sans': ['Fira Sans', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif'],
-        'dancing-script': ['Dancing Script', 'cursive'],
+        chillax: ['Chillax', 'sans-serif'],
+        'plus-jakarta': ['Plus Jakarta Sans', 'sans-serif'],
+        'general-sans': ['General Sans', 'sans-serif'],
+        satoshi: ['Satoshi', 'sans-serif'],
+        'clash-grotesk': ['Clash Grotesk', 'sans-serif'],
       },
     },
   },
