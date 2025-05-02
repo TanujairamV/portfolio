@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import ParticlesBackground from './ParticlesBackground.jsx';
 import NavBar from './NavBar.jsx';
 import Cursor from './Cursor.jsx';
@@ -8,24 +7,28 @@ import ContactForm from './ContactForm.jsx';
 import ProjectCard from './ProjectCard.jsx';
 import SkillBubble from './SkillBubble.jsx';
 import Footer from './Footer.jsx';
+import Intro from './Intro.jsx';
 import './index.css';
 
-gsap.registerPlugin(ScrambleTextPlugin);
-
 function Portfolio() {
-  const nameRef = useRef(null);
+  const [showIntro, setShowIntro] = useState(true);
+  const [theme, setTheme] = useState('system');
 
+  // Detect system theme
   useEffect(() => {
-    gsap.to(nameRef.current, {
-      scrambleText: {
-        text: 'Tanujairam',
-        chars: '01ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        revealDelay: 0.5,
-        speed: 0.3,
-      },
-      duration: 2,
-    });
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = () => {
+      setTheme(mediaQuery.matches ? 'dark' : 'light');
+    };
+    handleChange();
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
+
+  // Apply theme to body
+  useEffect(() => {
+    document.body.className = theme === 'system' ? '' : theme;
+  }, [theme]);
 
   const projects = [
     { name: 'gr11prctl', url: 'https://github.com/TanujairamV/gr11prctl', tech: ['Python', 'Bash'] },
@@ -35,19 +38,55 @@ function Portfolio() {
 
   const skills = ['Python', 'Bash', 'Shell', 'Selenium', 'Git', 'GitHub', 'WSL'];
 
+  if (showIntro) {
+    return <Intro onComplete={() => setShowIntro(false)} />;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white font-inter">
+    <motion.div
+      className="min-h-screen font-inter"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <Cursor />
       <ParticlesBackground />
       <NavBar />
-      <section id="hero" className="h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 ref={nameRef} className="text-5xl font-poppins">Tanujairam</h1>
-          <p className="mt-4 text-xl">Student, Developer, Innovator</p>
-          <div className="mt-6 space-x-4">
+      <section id="hero" className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-3xl mx-auto px-4">
+          <motion.h1
+            className="text-5xl font-poppins text-neon-blue"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            Tanujairam
+          </motion.h1>
+          <motion.p
+            className="mt-4 text-xl font-inter"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Student, Developer, Innovator
+          </motion.p>
+          <motion.p
+            className="mt-6 text-lg font-inter text-gray-400"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Crafting innovative solutions with Python, Bash, and modern web technologies. Passionate about building impactful projects and exploring the frontiers of tech.
+          </motion.p>
+          <motion.div
+            className="mt-8 space-x-4"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
             <a href="https://github.com/TanujairamV" className="btn">GitHub</a>
             <a href="mailto:tanujairam.v@gmail.com" className="btn">Email</a>
-          </div>
+          </motion.div>
         </div>
       </section>
       <section id="about" className="py-20">
@@ -77,7 +116,7 @@ function Portfolio() {
         <ContactForm />
       </section>
       <Footer />
-    </div>
+    </motion.div>
   );
 }
 
