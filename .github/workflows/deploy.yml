@@ -15,80 +15,16 @@ jobs:
           cache: 'npm'
       - name: Verify repository contents
         run: ls -R
-      - name: Check package.json in root
-        run: test -f package.json && echo "package.json found in root" || echo "package.json missing in root"
-      - name: Create fallback package.json if missing
-        run: |
-          if [ ! -f package.json ]; then
-            cat << 'EOF' > package.json
-            {
-              "name": "portfolio",
-              "private": true,
-              "version": "0.0.0",
-              "homepage": "https://TanujairamV.github.io/portfolio",
-              "type": "module",
-              "scripts": {
-                "dev": "vite",
-                "build": "vite build",
-                "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-                "format": "prettier --write .",
-                "preview": "vite preview",
-                "deploy": "vite build && gh-pages -d dist"
-              },
-              "dependencies": {
-                "aos": "^2.3.4",
-                "emailjs-com": "^3.2.0",
-                "framer-motion": "^10.16.4",
-                "gsap": "^3.12.2",
-                "react": "^18.2.0",
-                "react-dom": "^18.2.0",
-                "react-icons": "^4.10.1",
-                "react-parallax-tilt": "^1.7.2",
-                "react-scroll-parallax": "^3.4.2",
-                "react-tsparticles": "^2.12.2",
-                "tsparticles-slim": "^2.12.0"
-              },
-              "devDependencies": {
-                "@types/react": "^18.2.15",
-                "@types/react-dom": "^18.2.7",
-                "@vitejs/plugin-react": "^4.0.3",
-                "autoprefixer": "^10.4.14",
-                "eslint": "^8.45.0",
-                "eslint-config-prettier": "^9.0.0",
-                "eslint-plugin-react": "^7.32.2",
-                "eslint-plugin-react-hooks": "^4.6.0",
-                "eslint-plugin-react-refresh": "^0.4.3",
-                "gh-pages": "^5.0.0",
-                "postcss": "^8.4.27",
-                "prettier": "^3.0.0",
-                "tailwindcss": "^3.3.3",
-                "vite": "^4.4.5"
-              }
-            }
-            EOF
-            echo "Created fallback package.json"
-          fi
-      - name: Validate package.json
-        run: test -f package.json && (cat package.json && jq . package.json || echo "package.json invalid") || echo "Skipping validation: package.json not found"
-      - name: Install dependencies and generate package-lock.json
+      - name: Install dependencies
         run: npm install --package-lock
-      - name: Verify package-lock.json
-        run: ls -l package-lock.json || echo "package-lock.json not generated"
-      - name: Build with error logging
-        run: |
-          npm run build || {
-            echo "Build failed"
-            if [ -f vite.log ]; then cat vite.log; fi
-            exit 1
-          }
+      - name: Build
+        run: npm run build
         env:
           VITE_BASE: /portfolio/
       - name: Inspect index.html
-        run: cat dist/index.html || echo "index.html not found in dist/"
+        run: cat dist/index.html || echo "index.html not found"
       - name: Verify dist contents
         run: ls -R dist/
-      - name: Check asset paths
-        run: grep -E 'src="/portfolio/assets/.*\.js"' dist/index.html || echo "No JS assets found in index.html"
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
       - name: Deploy to GitHub Pages
