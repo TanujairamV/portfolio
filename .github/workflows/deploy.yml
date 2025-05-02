@@ -75,7 +75,12 @@ jobs:
       - name: Verify package-lock.json
         run: ls -l package-lock.json || echo "package-lock.json not generated"
       - name: Build with error logging
-        run: npm run build || (echo "Build failed"; cat vite.log; exit 1)
+        run: |
+          npm run build || {
+            echo "Build failed"
+            if [ -f vite.log ]; then cat vite.log; fi
+            exit 1
+          }
         env:
           VITE_BASE: /portfolio/
       - name: Inspect index.html
