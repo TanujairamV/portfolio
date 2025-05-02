@@ -9,4 +9,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
   },
+  css: {
+    postcss: './postcss.config.js',
+  },
 });
