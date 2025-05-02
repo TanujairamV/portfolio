@@ -10,8 +10,8 @@ module.exports = {
         'neon-pink': '#ff00cc',
       },
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif'],
+        manrope: ['Manrope', 'sans-serif'],
+        'space-grotesk': ['Space Grotesk', 'sans-serif'],
       },
     },
   },
