@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaSun, FaMoon, FaDesktop } from 'react-icons/fa';
 import { ThemeContext } from './Portfolio.jsx';
@@ -6,14 +6,17 @@ import { ThemeContext } from './Portfolio.jsx';
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useContext(ThemeContext);
+  const [currentTime, setCurrentTime] = useState('');
 
-  const navItems = [
-    { name: 'Home', href: '#hero' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const toggleTheme = () => {
     setTheme((prev) => {
@@ -26,24 +29,31 @@ function NavBar() {
   return (
     <nav className="fixed top-4 left-0 right-0 navbar-glass z-40">
       <div className="flex justify-between items-center h-12">
-        <div className="flex">
-          <a href="#hero" className="flex-shrink-0 flex items-center text-xl font-space-grotesk text-neon-blue">
+        <div className="flex items-center">
+          <a href="#hero" className="flex-shrink-0 flex items-center text-xl font-montserrat text-neon-blue">
             Tanujairam
           </a>
+          <span className="ml-4 text-sm font-inter text-secondary">{currentTime}</span>
         </div>
         <div className="hidden sm:ml-6 sm:flex sm:space-x-6">
-          {navItems.map((item) => (
+          {[
+            { name: 'Home', href: '#hero' },
+            { name: 'About', href: '#about' },
+            { name: 'Projects', href: '#projects' },
+            { name: 'Skills', href: '#skills' },
+            { name: 'Contact', href: '#contact' },
+          ].map((item) => (
             <a
               key={item.name}
               href={item.href}
-              className="inline-flex items-center px-1 text-sm font-manrope text-white hover:text-neon-blue transition-colors"
+              className="inline-flex items-center px-1 text-sm font-inter text-primary hover:text-neon-blue transition-colors"
             >
               {item.name}
             </a>
           ))}
           <button
             onClick={toggleTheme}
-            className="inline-flex items-center p-2 text-white hover:text-neon-blue"
+            className="inline-flex items-center p-2 text-primary hover:text-neon-blue"
             aria-label="Toggle theme"
           >
             {theme === 'system' && <FaDesktop />}
@@ -54,7 +64,7 @@ function NavBar() {
         <div className="-mr-2 flex items-center sm:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-neon-blue focus:outline-none"
+            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-neon-blue focus:outline-none"
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? (
@@ -77,11 +87,17 @@ function NavBar() {
           transition={{ duration: 0.3 }}
         >
           <div className="pt-2 pb-3 space-y-1">
-            {navItems.map((item) => (
+            {[
+              { name: 'Home', href: '#hero' },
+              { name: 'About', href: '#about' },
+              { name: 'Projects', href: '#projects' },
+              { name: 'Skills', href: '#skills' },
+              { name: 'Contact', href: '#contact' },
+            ].map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className="block pl-3 pr-4 py-2 text-base font-manrope text-white hover:text-neon-blue hover:bg-gray-800"
+                className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-neon-blue hover:bg-gray-800"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -89,7 +105,7 @@ function NavBar() {
             ))}
             <button
               onClick={toggleTheme}
-              className="block pl-3 pr-4 py-2 text-base font-manrope text-white hover:text-neon-blue hover:bg-gray-800"
+              className="block pl-3 pr-4 py-2 text-base font-inter text-primary hover:text-neon-blue hover:bg-gray-800"
             >
               {theme === 'system' ? 'System Theme' : theme === 'light' ? 'Light Theme' : 'Dark Theme'}
             </button>
