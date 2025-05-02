@@ -13,10 +13,16 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
         env:
           VITE_BASE: /portfolio/
+      - name: Copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
+      - name: Verify dist contents
+        run: ls -R dist/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -24,5 +30,3 @@ jobs:
           publish_dir: ./dist
           publish_branch: gh-pages
           force_orphan: true
-      - name: Verify dist contents
-        run: ls -R dist/
