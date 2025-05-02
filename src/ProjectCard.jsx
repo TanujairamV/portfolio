@@ -7,8 +7,8 @@ function ProjectCard({ name, url, tech }) {
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.3 }}
     >
-      <h3 className="text-xl font-montserrat text-primary">{name}</h3>
-      <p className="mt-2 text-secondary font-inter">{tech.join(', ')}</p>
+      <h3 className="text-xl font-clash-grotesk text-heading">{name}</h3>
+      <p className="mt-2 text-[#D1D1D1] font-chillax">{tech.join(', ')}</p>
       <a
         href={url}
         className="mt-4 inline-block btn"
