@@ -18,13 +18,6 @@ function ParticlesBackground() {
       color: {
         value: "#6B46C1",
       },
-      links: {
-        color: "#6B46C1",
-        distance: 150,
-        enable: true,
-        opacity: 0.5,
-        width: 1,
-      },
       move: {
         direction: "none",
         enable: true,
@@ -32,7 +25,7 @@ function ParticlesBackground() {
           default: "bounce",
         },
         random: true,
-        speed: 3,
+        speed: 2.5,
         straight: false,
       },
       number: {
@@ -40,16 +33,16 @@ function ParticlesBackground() {
           enable: true,
           area: 800,
         },
-        value: 90,
+        value: 80,
       },
       opacity: {
-        value: 0.5,
+        value: 0.4,
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 1, max: 5 },
+        value: { min: 1, max: 4 },
       },
     },
     detectRetina: true,
