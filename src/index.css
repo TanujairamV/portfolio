@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Chillax:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&family=General+Sans:wght@400;500;600&family=Satoshi:wght@400;500;700&family=Clash+Grotesk:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chillax:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&family=General+Sans:wght@400;500;600&family=Satoshi:wght@400;500;700&family=Clash+Grotesk:wght@600&family=Space+Grotesk:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css');
 @import url('https://unpkg.com/aos@2.3.4/dist/aos.css');
 
@@ -11,25 +11,35 @@ html, body {
   cursor: none;
 }
 
+/* Hide cursor on mobile */
+@media (max-width: 640px) {
+  html, body {
+    cursor: default;
+  }
+  .cursor-inverted {
+    display: none;
+  }
+}
+
 /* Dark theme (default) */
 body {
-  @apply bg-[#0D0D0D] text-[#D1D1D1];
+  @apply bg-[#0D0D0D] text-[#FFFFFF];
 }
 
 section, .glass-card, .btn, .navbar-glass, #intro {
-  @apply bg-[#0D0D0D] text-[#D1D1D1];
+  @apply bg-[#0D0D0D] text-[#FFFFFF];
 }
 
 /* Light theme */
 @media (prefers-color-scheme: light) {
   body, section, .glass-card, .btn, .navbar-glass, #intro {
-    @apply bg-[#FAFAFA] text-[#1A1A1A];
+    @apply bg-[#FAFAFA] text-[#000000];
   }
   .glass-card {
     @apply bg-white bg-opacity-20 border-[#E0E0E0];
   }
   .btn {
-    @apply text-[#1A1A1A];
+    @apply text-[#000000];
   }
   .navbar-glass {
     @apply bg-white bg-opacity-20 border-[#E0E0E0];
@@ -38,29 +48,29 @@ section, .glass-card, .btn, .navbar-glass, #intro {
 
 /* Override for explicit dark mode */
 body.dark, body.dark section, body.dark .glass-card, body.dark .btn, body.dark .navbar-glass, body.dark #intro {
-  @apply bg-[#0D0D0D] text-[#D1D1D1];
+  @apply bg-[#0D0D0D] text-[#FFFFFF];
 }
 
 /* Override for explicit light mode */
 body.light, body.light section, body.light .glass-card, body.light .btn, body.light .navbar-glass, body.light #intro {
-  @apply bg-[#FAFAFA] text-[#1A1A1A];
+  @apply bg-[#FAFAFA] text-[#000000];
 }
 
 /* Text styles */
 .text-heading {
-  @apply text-[#8AFFEF] font-clash-grotesk;
+  @apply text-[#FFFFFF] font-space-grotesk;
 }
 
 body.light .text-heading {
-  @apply text-[#3F8CFF];
+  @apply text-[#000000];
 }
 
 .text-link {
-  @apply text-[#A076F9];
+  @apply text-[#FFFFFF];
 }
 
 body.light .text-link {
-  @apply text-[#7E57C2];
+  @apply text-[#000000];
 }
 
 .text-link:hover {
@@ -73,11 +83,11 @@ body.light .text-link:hover {
 
 /* Button */
 .btn {
-  @apply px-6 py-2 rounded-full bg-[#1A1A1A] text-[#D1D1D1] font-chillax font-medium hover:bg-[#FF6AC1] hover:text-[#0D0D0D] hover:scale-105 transition-all duration-300;
+  @apply px-6 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-chillax font-medium hover:bg-[#FF6AC1] hover:text-[#000000] hover:scale-105 transition-all duration-300;
 }
 
 body.light .btn {
-  @apply bg-[#E0E0E0] text-[#1A1A1A] hover:bg-[#FF4081] hover:text-[#FAFAFA];
+  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FF4081] hover:text-[#FFFFFF];
 }
 
 /* Glass card */
@@ -91,11 +101,20 @@ body.light .glass-card {
 
 /* Navbar */
 .navbar-glass {
-  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-[#1A1A1A] rounded-full px-6 py-2 mx-auto max-w-4xl;
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-[#1A1A1A] rounded-full px-4 py-2 mx-auto max-w-4xl flex items-center justify-between;
 }
 
 body.light .navbar-glass {
   @apply border-[#E0E0E0] bg-opacity-20;
+}
+
+@media (max-width: 640px) {
+  .navbar-glass {
+    @apply px-3 py-2;
+  }
+  .navbar-glass .flex {
+    @apply justify-between w-full;
+  }
 }
 
 /* Cursor */
@@ -110,25 +129,31 @@ body.light .cursor-inverted {
 
 /* Social icons */
 .social-icon {
-  @apply text-[#A076F9] hover:text-[#FF6AC1] transition-all duration-300 hover:scale-110;
+  @apply text-[#FFFFFF] hover:text-[#FF6AC1] transition-all duration-300 hover:scale-110 z-50;
 }
 
 body.light .social-icon {
-  @apply text-[#7E57C2] hover:text-[#FF4081];
+  @apply text-[#000000] hover:text-[#FF4081];
 }
 
 /* Signature style */
 .signature {
-  @apply font-clash-grotesk text-heading text-3xl italic transform -rotate-2;
+  @apply font-playfair-display text-heading text-2xl italic transform -rotate-2;
+}
+
+@media (max-width: 640px) {
+  .signature {
+    @apply text-xl;
+  }
 }
 
 /* Skill bubble */
 .skill-bubble {
-  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#D1D1D1] font-chillax hover:bg-[#FF6AC1] hover:text-[#0D0D0D] transition-all duration-300;
+  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-chillax hover:bg-[#FF6AC1] hover:text-[#000000] transition-all duration-300;
 }
 
 body.light .skill-bubble {
-  @apply bg-[#E0E0E0] text-[#1A1A1A] hover:bg-[#FF4081] hover:text-[#FAFAFA];
+  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FF4081] hover:text-[#FFFFFF];
 }
 
 /* Font classes */
@@ -150,4 +175,12 @@ body.light .skill-bubble {
 
 .font-clash-grotesk {
   font-family: 'Clash Grotesk', sans-serif;
+}
+
+.font-space-grotesk {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-playfair-display {
+  font-family: 'Playfair Display', serif;
 }
