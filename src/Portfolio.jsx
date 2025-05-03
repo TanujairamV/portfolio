@@ -22,9 +22,9 @@ function Portfolio() {
 
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 1200,
       once: true,
-      easing: 'ease-in-out',
+      easing: 'ease-in-out-cubic',
     });
   }, []);
 
@@ -89,57 +89,57 @@ function Portfolio() {
           className="min-h-screen font-inter bg-dark dark:bg-dark light:bg-light"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
           <Cursor />
-          <Parallax translateY={[-15, 15]} speed={-15}>
+          <Parallax translateY={[-20, 20]} speed={-20}>
             <ParticlesBackground />
           </Parallax>
           <NavBar />
           <section id="hero" className="min-h-screen flex items-center justify-center relative">
             <div className="text-center max-w-3xl mx-auto px-4">
               <motion.h1
-                className="text-6xl font-cabinet-grotesk text-heading"
-                initial={{ y: 20, opacity: 0 }}
+                className="text-7xl font-cabinet-grotesk text-heading"
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
               >
                 Tanujairam
               </motion.h1>
               <motion.div
-                className="mt-3 text-2xl font-ranade text-heading"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-4 text-3xl font-ranade text-heading"
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
               >
                 <TypeAnimation
                   sequence={['Student', 1000, 'Developer', 1000, 'Innovator', 1000]}
                   wrapper="span"
-                  speed={40}
+                  speed={30}
                   repeat={Infinity}
                 />
               </motion.div>
               <motion.p
-                className="mt-4 text-base font-inter text-subheading max-w-xl mx-auto leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-5 text-lg font-inter text-subheading max-w-lg mx-auto leading-relaxed"
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+                transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
               >
                 16-year-old developer crafting automation scripts and web apps with Python and Bash.
               </motion.p>
               <motion.div
-                className="mt-6 flex space-x-3 justify-center"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-7 flex space-x-4 justify-center"
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+                transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
               >
                 <motion.a
                   href="https://github.com/TanujairamV"
                   className="btn glass-btn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, rotate: 3 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.15, rotate: 4 }}
+                  whileTap={{ scale: 0.85 }}
                 >
                   GitHub
                 </motion.a>
@@ -148,68 +148,74 @@ function Portfolio() {
                   className="btn glass-btn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, rotate: -3 }}
-                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.15, rotate: -4 }}
+                  whileTap={{ scale: 0.85 }}
                 >
                   Email
                 </motion.a>
               </motion.div>
               <motion.div
-                className="mt-5 flex justify-center space-x-4"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-6 flex justify-center space-x-5"
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
+                transition={{ duration: 0.8, delay: 0.8, ease: 'easeOut' }}
               >
                 <a href="https://instagram.com/tanujairam.v" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
-                  <FaInstagram size={22} />
+                  <FaInstagram size={24} />
                 </a>
                 <a href="https://t.me/Tanujairam" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
-                  <FaTelegram size={22} />
+                  <FaTelegram size={24} />
                 </a>
                 <a href="https://discord.com/users/Tanujairam" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
-                  <FaDiscord size={22} />
+                  <FaDiscord size={24} />
                 </a>
                 <a href="mailto:tanujairam.v@gmail.com" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
-                  <FaEnvelope size={22} />
+                  <FaEnvelope size={24} />
                 </a>
                 <a href="https://github.com/TanujairamV" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
-                  <FaGithub size={22} />
+                  <FaGithub size={24} />
                 </a>
               </motion.div>
             </div>
           </section>
-          <section id="about" className="py-16" data-aos="fade-up" data-aos-delay="100">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">About Me</h2>
-            <div className="mt-6 max-w-2xl mx-auto text-center font-inter text-subheading px-4">
-              <p className="text-base leading-relaxed">
+          <section id="about" className="py-14" data-aos="fade-up" data-aos-delay="150">
+            <h2 className="text-5xl text-center font-space-grotesk text-heading">About Me</h2>
+            <div className="mt-7 max-w-2xl mx-auto text-center font-inter text-subheading px-4">
+              <p className="text-lg leading-relaxed">
                 I’m Tanujairam, a 16-year-old Grade 12 student from India passionate about coding.
               </p>
-              <p className="mt-3 text-base leading-relaxed">
+              <p className="mt-4 text-lg leading-relaxed">
                 I specialize in Python, Bash, and web technologies, building automation tools and contributing to open-source projects.
               </p>
             </div>
           </section>
-          <section id="projects" className="py-16" data-aos="zoom-in" data-aos-delay="200">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">Projects</h2>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto px-4">
-              {projects.map((project) => (
-                <Parallax key={project.name} translateY={[-8, 8]} scale={[1, 1.05]} speed={8}>
-                  <ProjectCard {...project} />
+          <section id="projects" className="py-14" data-aos="zoom-in" data-aos-delay="250">
+            <h2 className="text-5xl text-center font-space-grotesk text-heading">Projects</h2>
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-6xl mx-auto px-4">
+              {projects.map((project, index) => (
+                <Parallax key={project.name} translateY={[-10, 10]} scale={[1, 1.06]} speed={10}>
+                  <ProjectCard {...project} aosDelay={300 + index * 100} />
                 </Parallax>
               ))}
             </div>
           </section>
-          <section id="skills" className="py-16" data-aos="fade-up" data-aos-delay="300">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">Skills</h2>
-            <div className="mt-6 max-w-3xl mx-auto px-4 flex flex-wrap gap-3 justify-center">
-              {skills.map((skill) => (
-                <SkillBubble key={skill.name} skill={skill.name} proficiency={skill.proficiency} level={skill.level} />
+          <section id="skills" className="py-14" data-aos="fade-up" data-aos-delay="350">
+            <h2 className="text-5xl text-center font-space-grotesk text-heading">Skills</h2>
+            <div className="mt-7 max-w-3xl mx-auto px-4 flex flex-wrap gap-3 justify-center">
+              {skills.map((skill, index) => (
+                <SkillBubble
+                  key={skill.name}
+                  skill={skill.name}
+                  proficiency={skill.proficiency}
+                  level={skill.level}
+                  aosDelay={400 + index * 50}
+                />
               ))}
             </div>
           </section>
-          <section id="contact" className="py-16" data-aos="zoom-in" data-aos-delay="400">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">Contact</h2>
-            <div className="mt-6 max-w-md mx-auto px-4">
+          <section id="contact" className="py-14" data-aos="zoom-in" data-aos-delay="450">
+            <h2 className="text-5xl text-center font-space-grotesk text-heading">Contact</h2>
+            <div className="mt-7 max-w-md mx-auto px-4">
               <ContactForm />
             </div>
           </section>
