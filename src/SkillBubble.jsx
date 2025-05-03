@@ -1,26 +1,9 @@
-import { motion } from 'framer-motion';
-
-function SkillBubble({ skill }) {
-  const iconMap = {
-    Python: 'devicon-python-plain',
-    Bash: 'devicon-bash-plain',
-    Shell: 'devicon-bash-plain',
-    Selenium: 'devicon-selenium-original',
-    Git: 'devicon-git-plain',
-    GitHub: 'devicon-github-original',
-    WSL: 'devicon-linux-plain',
-  };
-
+function SkillBubble({ skill, proficiency }) {
   return (
-    <motion.div
-      className="skill-bubble"
-      whileHover={{ scale: 1.1, rotate: 5 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ duration: 0.3 }}
-    >
-      <i className={`${iconMap[skill]} text-xl`}></i>
-      <span>{skill}</span>
-    </motion.div>
+    <div className="skill-bubble">
+      <span className="text-sm font-inter">{skill}</span>
+      <span className="text-xs font-inter opacity-70">({proficiency})</span>
+    </div>
   );
 }
 
