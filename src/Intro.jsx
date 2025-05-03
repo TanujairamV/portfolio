@@ -1,37 +1,23 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { motion } from 'framer-motion';
 
-gsap.registerPlugin(ScrambleTextPlugin);
-
 function Intro({ onComplete }) {
-  const nameRef = useRef(null);
-
-  useEffect(() => {
-    gsap.to(nameRef.current, {
-      scrambleText: {
-        text: 'Tanujairam',
-        chars: '01ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        revealDelay: 0.5,
-        speed: 0.3,
-      },
-      duration: 2,
-      onComplete: () => {
-        setTimeout(onComplete, 500);
-      },
-    });
-  }, [onComplete]);
-
   return (
     <motion.div
       id="intro"
-      className="min-h-screen flex items-center justify-center text-heading"
+      className="fixed inset-0 flex items-center justify-center bg-dark z-50"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      animate={{ opacity: 0 }}
+      transition={{ duration: 1.2, delay: 1.5 }}
+      onAnimationComplete={onComplete}
     >
-      <h1 ref={nameRef} className="text-5xl font-clash-grotesk"></h1>
+      <motion.h1
+        className="text-5xl font-cabinet-grotesk text-heading"
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
+        Tanujairam
+      </motion.h1>
     </motion.div>
   );
 }
