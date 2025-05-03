@@ -1,14 +1,22 @@
+import { motion } from 'framer-motion';
+
 function SkillBubble({ skill, proficiency, level }) {
   return (
-    <div className="flex flex-col gap-2 mb-4 w-full max-w-md">
-      <div className="flex justify-between items-center">
-        <span className="text-base font-inter">{skill}</span>
-        <span className="text-sm font-inter opacity-70">{proficiency}</span>
+    <motion.div
+      className="skill-bubble my-2"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <span className="text-sm font-inter">{skill}</span>
+      <span className="text-xs font-inter">({proficiency})</span>
+      <div className="progress-bar w-32">
+        <div
+          className="progress-bar-fill"
+          style={{ width: `${level}%` }}
+        ></div>
       </div>
-      <div className="progress-bar">
-        <div className="progress-bar-fill" style={{ width: `${level}%` }}></div>
-      </div>
-    </div>
+    </motion.div>
   );
 }
 
