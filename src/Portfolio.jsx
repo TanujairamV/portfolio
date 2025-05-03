@@ -22,7 +22,7 @@ function Portfolio() {
 
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 800,
       once: true,
       easing: 'ease-in-out',
     });
@@ -49,21 +49,21 @@ function Portfolio() {
       name: 'gr11prctl',
       url: 'https://github.com/TanujairamV/gr11prctl',
       tech: ['Python', 'Bash'],
-      description: 'A Grade 11 project automating system tasks with Python and Bash, featuring file management and process automation.',
+      description: 'Grade 11 project automating tasks with Python and Bash.',
       image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'rupi',
       url: 'https://github.com/TanujairamV/rupi',
       tech: ['Python', 'Shell'],
-      description: 'A CLI tool streamlining repetitive tasks with Python and Shell scripting for Linux productivity.',
+      description: 'CLI tool for task automation in Linux with Python and Shell.',
       image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'Instagram Bot',
       url: 'https://github.com/TanujairamV/instagram-bot',
       tech: ['Python', 'Selenium'],
-      description: 'An automated Instagram bot using Selenium and Python for tasks like liking posts and following users.',
+      description: 'Automated Instagram bot using Selenium and Python.',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
   ];
@@ -89,56 +89,56 @@ function Portfolio() {
           className="min-h-screen font-inter"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
           <Cursor />
-          <Parallax translateY={[-15, 15]} speed={-10}>
+          <Parallax translateY={[-10, 10]} speed={-10}>
             <ParticlesBackground />
           </Parallax>
           <NavBar />
           <section id="hero" className="min-h-screen flex items-center justify-center relative">
-            <div className="text-center max-w-5xl mx-auto px-4">
+            <div className="text-center max-w-4xl mx-auto px-4">
               <motion.h1
-                className="text-7xl font-cabinet-grotesk text-heading"
-                initial={{ y: 20, opacity: 0 }}
+                className="text-6xl font-cabinet-grotesk text-heading"
+                initial={{ y: 15, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
               >
                 Tanujairam
               </motion.h1>
               <motion.div
-                className="mt-4 text-3xl font-ranade text-white dark:text-white light:text-black"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-3 text-2xl font-ranade text-white dark:text-white light:text-black"
+                initial={{ y: 15, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
               >
                 <TypeAnimation
                   sequence={['Student', 1000, 'Developer', 1000, 'Innovator', 1000]}
                   wrapper="span"
-                  speed={40}
+                  speed={50}
                   repeat={Infinity}
                 />
               </motion.div>
               <motion.p
-                className="mt-6 text-xl font-inter text-white dark:text-white light:text-black max-w-3xl mx-auto leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-5 text-lg font-inter text-white dark:text-white light:text-black max-w-2xl mx-auto leading-relaxed"
+                initial={{ y: 15, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+                transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
               >
-                I’m a 16-year-old developer crafting innovative solutions with Python, Bash, and web technologies. Passionate about automation, open-source, and pushing tech boundaries.
+                16-year-old developer building solutions with Python, Bash, and web tech. Passionate about automation and open-source.
               </motion.p>
               <motion.div
-                className="mt-8 flex space-x-4 justify-center"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-6 flex space-x-3 justify-center"
+                initial={{ y: 15, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+                transition={{ duration: 0.5, delay: 0.6, ease: 'easeOut' }}
               >
                 <motion.a
                   href="https://github.com/TanujairamV"
                   className="btn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, rotate: 2 }}
+                  whileHover={{ scale: 1.08, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   GitHub
@@ -148,68 +148,68 @@ function Portfolio() {
                   className="btn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, rotate: -2 }}
+                  whileHover={{ scale: 1.08, rotate: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Email
                 </motion.a>
               </motion.div>
               <motion.div
-                className="mt-6 flex justify-center space-x-4"
-                initial={{ y: 20, opacity: 0 }}
+                className="mt-5 flex justify-center space-x-3"
+                initial={{ y: 15, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}
+                transition={{ duration: 0.5, delay: 0.8, ease: 'easeOut' }}
               >
                 <a href="https://instagram.com/tanujairam.v" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaInstagram size={28} />
+                  <FaInstagram size={24} />
                 </a>
                 <a href="https://t.me/Tanujairam" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaTelegram size={28} />
+                  <FaTelegram size={24} />
                 </a>
                 <a href="https://discord.com/users/Tanujairam" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaDiscord size={28} />
+                  <FaDiscord size={24} />
                 </a>
                 <a href="mailto:tanujairam.v@gmail.com" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaEnvelope size={28} />
+                  <FaEnvelope size={24} />
                 </a>
                 <a href="https://github.com/TanujairamV" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaGithub size={28} />
+                  <FaGithub size={24} />
                 </a>
               </motion.div>
             </div>
           </section>
-          <section id="about" className="py-20" data-aos="fade-up" data-aos-delay="100">
-            <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">About Me</h2>
-            <div className="mt-6 max-w-4xl mx-auto text-center font-inter text-white dark:text-white light:text-black px-4">
-              <p className="text-lg leading-relaxed">
-                I’m Tanujairam, a 16-year-old Grade 12 student from India with a passion for coding and technology. My journey started with Python, building automation scripts, and has expanded to Bash, Shell scripting, and web development.
+          <section id="about" className="py-16" data-aos="fade-up" data-aos-delay="100">
+            <h2 className="text-4xl text-center font-space-grotesk text-heading">About Me</h2>
+            <div className="mt-5 max-w-3xl mx-auto text-center font-inter text-white dark:text-white light:text-black px-4">
+              <p className="text-base leading-relaxed">
+                I’m Tanujairam, a 16-year-old Grade 12 student from India passionate about coding. I started with Python, building automation scripts, and now explore Bash, Shell, and web development.
               </p>
-              <p className="mt-4 text-lg leading-relaxed">
-                I thrive on solving real-world problems through code, from streamlining workflows to creating interactive web apps. Outside coding, I’m an avid learner, experimenting with Linux, contributing to open-source, and staying updated with tech trends.
+              <p className="mt-3 text-base leading-relaxed">
+                I love solving problems through code, from scripts to web apps. I’m an avid learner, experimenting with Linux and contributing to open-source projects.
               </p>
             </div>
           </section>
-          <section id="projects" className="py-20" data-aos="zoom-in" data-aos-delay="200">
-            <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Projects</h2>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-7xl mx-auto px-4">
+          <section id="projects" className="py-16" data-aos="zoom-in" data-aos-delay="200">
+            <h2 className="text-4xl text-center font-space-grotesk text-heading">Projects</h2>
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-6xl mx-auto px-4">
               {projects.map((project) => (
-                <Parallax key={project.name} translateY={[-8, 8]} scale={[1, 1.03]} speed={5}>
+                <Parallax key={project.name} translateY={[-5, 5]} scale={[1, 1.02]} speed={5}>
                   <ProjectCard {...project} />
                 </Parallax>
               ))}
             </div>
           </section>
-          <section id="skills" className="py-20" data-aos="fade-up" data-aos-delay="300">
-            <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Skills</h2>
-            <div className="mt-6 max-w-5xl mx-auto px-4">
+          <section id="skills" className="py-16" data-aos="fade-up" data-aos-delay="300">
+            <h2 className="text-4xl text-center font-space-grotesk text-heading">Skills</h2>
+            <div className="mt-5 max-w-4xl mx-auto px-4">
               {skills.map((skill) => (
                 <SkillBubble key={skill.name} skill={skill.name} proficiency={skill.proficiency} level={skill.level} />
               ))}
             </div>
           </section>
-          <section id="contact" className="py-20" data-aos="zoom-in" data-aos-delay="400">
-            <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Contact</h2>
-            <div className="mt-6 max-w-xl mx-auto px-4">
+          <section id="contact" className="py-16" data-aos="zoom-in" data-aos-delay="400">
+            <h2 className="text-4xl text-center font-space-grotesk text-heading">Contact</h2>
+            <div className="mt-5 max-w-lg mx-auto px-4">
               <ContactForm />
             </div>
           </section>
