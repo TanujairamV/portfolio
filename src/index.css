@@ -113,7 +113,9 @@ body.light .navbar-glass {
     @apply px-3 py-2;
   }
   .navbar-glass .flex {
-    @apply justify-between w-full;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
