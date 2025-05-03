@@ -49,21 +49,21 @@ function Portfolio() {
       name: 'gr11prctl',
       url: 'https://github.com/TanujairamV/gr11prctl',
       tech: ['Python', 'Bash'],
-      description: 'Grade 11 project for system task automation.',
+      description: 'Grade 11 project automating system tasks.',
       image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'rupi',
       url: 'https://github.com/TanujairamV/rupi',
       tech: ['Python', 'Shell'],
-      description: 'CLI tool for Linux task automation.',
+      description: 'CLI tool for Linux automation.',
       image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'Instagram Bot',
       url: 'https://github.com/TanujairamV/instagram-bot',
       tech: ['Python', 'Selenium'],
-      description: 'Automated Instagram bot with Selenium.',
+      description: 'Automated Instagram bot using Selenium.',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
   ];
@@ -107,7 +107,7 @@ function Portfolio() {
                 Tanujairam
               </motion.h1>
               <motion.div
-                className="mt-2 text-2xl font-ranade text-white dark:text-white light:text-black"
+                className="mt-2 text-xl font-ranade text-white dark:text-white light:text-black"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
@@ -191,7 +191,7 @@ function Portfolio() {
           </section>
           <section id="projects" className="py-12" data-aos="zoom-in" data-aos-delay="200">
             <h2 className="text-3xl text-center font-space-grotesk text-heading">Projects</h2>
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 max-w-6xl mx-auto px-4">
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-5xl mx-auto px-4">
               {projects.map((project) => (
                 <Parallax key={project.name} translateY={[-5, 5]} scale={[1, 1.02]} speed={5}>
                   <ProjectCard {...project} />
@@ -201,7 +201,7 @@ function Portfolio() {
           </section>
           <section id="skills" className="py-12" data-aos="fade-up" data-aos-delay="300">
             <h2 className="text-3xl text-center font-space-grotesk text-heading">Skills</h2>
-            <div className="mt-4 max-w-4xl mx-auto px-4">
+            <div className="mt-4 max-w-3xl mx-auto px-4">
               {skills.map((skill) => (
                 <SkillBubble key={skill.name} skill={skill.name} proficiency={skill.proficiency} level={skill.level} />
               ))}
@@ -209,7 +209,7 @@ function Portfolio() {
           </section>
           <section id="contact" className="py-12" data-aos="zoom-in" data-aos-delay="400">
             <h2 className="text-3xl text-center font-space-grotesk text-heading">Contact</h2>
-            <div className="mt-4 max-w-lg mx-auto px-4">
+            <div className="mt-4 max-w-md mx-auto px-4">
               <ContactForm />
             </div>
           </section>
