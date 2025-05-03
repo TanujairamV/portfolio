@@ -95,7 +95,7 @@ function Portfolio() {
           transition={{ duration: 0.7 }}
         >
           <Cursor />
-          <Parallax translateY={[-30, 30]} speed={-10}>
+          <Parallax translateY={[-20, 20]} speed={-10}>
             <ParticlesBackground />
           </Parallax>
           <NavBar />
@@ -188,7 +188,7 @@ function Portfolio() {
               </motion.div>
             </div>
           </section>
-          <section id="about" className="py-12" data-aos="fade-up" data-aos-delay="100">
+          <section id="about" className="py-16" data-aos="fade-up" data-aos-delay="100">
             <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">About Me</h2>
             <div className="mt-8 max-w-4xl mx-auto text-center font-inter text-white dark:text-white light:text-black px-4">
               <p className="text-lg leading-relaxed">
@@ -199,17 +199,17 @@ function Portfolio() {
               </p>
             </div>
           </section>
-          <section id="projects" className="py-12" data-aos="zoom-in" data-aos-delay="200">
+          <section id="projects" className="py-16" data-aos="zoom-in" data-aos-delay="200">
             <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Projects</h2>
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto px-4">
               {projects.map((project) => (
-                <Parallax key={project.name} translateY={[-15, 15]} scale={[1, 1.1]} speed={5}>
+                <Parallax key={project.name} translateY={[-10, 10]} scale={[1, 1.05]} speed={5}>
                   <ProjectCard {...project} />
                 </Parallax>
               ))}
             </div>
           </section>
-          <section id="skills" className="py-12" data-aos="fade-up" data-aos-delay="300">
+          <section id="skills" className="py-16" data-aos="fade-up" data-aos-delay="300">
             <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Skills</h2>
             <div className="mt-8 max-w-5xl mx-auto px-4">
               {skills.map((skill) => (
@@ -217,7 +217,7 @@ function Portfolio() {
               ))}
             </div>
           </section>
-          <section id="contact" className="py-12" data-aos="zoom-in" data-aos-delay="400">
+          <section id="contact" className="py-16" data-aos="zoom-in" data-aos-delay="400">
             <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Contact</h2>
             <div className="mt-8 max-w-xl mx-auto px-4">
               <ContactForm />
