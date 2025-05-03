@@ -13,7 +13,7 @@ function ParticlesBackground() {
         value: "transparent",
       },
     },
-    fpsLimit: 120,
+    fpsLimit: 144,
     particles: {
       color: {
         value: "#6B46C1",
@@ -25,24 +25,24 @@ function ParticlesBackground() {
           default: "bounce",
         },
         random: true,
-        speed: 0.8,
+        speed: 0.7,
         straight: false,
       },
       number: {
         density: {
           enable: true,
-          area: 600,
+          area: 500,
         },
-        value: 80,
+        value: 100,
       },
       opacity: {
-        value: { min: 0.3, max: 0.6 },
+        value: { min: 0.2, max: 0.7 },
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 0.5, max: 2.5 },
+        value: { min: 0.4, max: 2.8 },
       },
     },
     detectRetina: true,
