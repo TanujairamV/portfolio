@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
-import { loadSlim } from '@tsparticles/slim';
+import { loadSlim } from 'tsparticles-slim';
 
 function ParticlesBackground() {
   const particlesRef = useRef(null);
