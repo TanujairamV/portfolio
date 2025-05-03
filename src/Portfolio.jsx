@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from 'react';
 import { motion } from 'framer-motion';
 import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from 'react-icons/fa';
 import { TypeAnimation } from 'react-type-animation';
+import AOS from 'aos';
 import ParticlesBackground from './ParticlesBackground.jsx';
 import NavBar from './NavBar.jsx';
 import Cursor from './Cursor.jsx';
@@ -17,6 +18,14 @@ export const ThemeContext = createContext();
 function Portfolio() {
   const [showIntro, setShowIntro] = useState(true);
   const [theme, setTheme] = useState('system');
+
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
 
   // Detect system theme
   useEffect(() => {
@@ -62,7 +71,7 @@ function Portfolio() {
         <section id="hero" className="min-h-screen flex items-center justify-center">
           <div className="text-center max-w-3xl mx-auto px-4">
             <motion.h1
-              className="text-5xl font-clash-grotesk text-heading"
+              className="text-5xl font-space-grotesk text-heading"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -70,7 +79,7 @@ function Portfolio() {
               Tanujairam
             </motion.h1>
             <motion.div
-              className="mt-4 text-xl font-chillax text-[#D1D1D1]"
+              className="mt-4 text-xl font-chillax text-[#FFFFFF]"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -90,7 +99,7 @@ function Portfolio() {
               />
             </motion.div>
             <motion.p
-              className="mt-6 text-lg font-chillax text-[#D1D1D1]"
+              className="mt-6 text-lg font-chillax text-[#FFFFFF]"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -103,8 +112,8 @@ function Portfolio() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <a href="https://github.com/TanujairamV" className="btn">GitHub</a>
-              <a href="mailto:tanujairam.v@gmail.com" className="btn">Email</a>
+              <a href="https://github.com/TanujairamV" className="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="mailto:tanujairam.v@gmail.com" className="btn" target="_blank" rel="noopener noreferrer">Email</a>
             </motion.div>
             <motion.div
               className="mt-6 flex justify-center space-x-4"
@@ -112,48 +121,48 @@ function Portfolio() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
             >
-              <a href="https://instagram.com/tanujairam.v" className="social-icon">
+              <a href="https://instagram.com/tanujairam.v" className="social-icon" target="_blank" rel="noopener noreferrer">
                 <FaInstagram size={24} />
               </a>
-              <a href="https://t.me/Tanujairam" className="social-icon">
+              <a href="https://t.me/Tanujairam" className="social-icon" target="_blank" rel="noopener noreferrer">
                 <FaTelegram size={24} />
               </a>
-              <a href="https://discord.com/users/Tanujairam" className="social-icon">
+              <a href="https://discord.com/users/Tanujairam" className="social-icon" target="_blank" rel="noopener noreferrer">
                 <FaDiscord size={24} />
               </a>
-              <a href="mailto:tanujairam.v@gmail.com" className="social-icon">
+              <a href="mailto:tanujairam.v@gmail.com" className="social-icon" target="_blank" rel="noopener noreferrer">
                 <FaEnvelope size={24} />
               </a>
-              <a href="https://github.com/TanujairamV" className="social-icon">
+              <a href="https://github.com/TanujairamV" className="social-icon" target="_blank" rel="noopener noreferrer">
                 <FaGithub size={24} />
               </a>
             </motion.div>
           </div>
         </section>
-        <section id="about" className="py-20">
-          <h2 className="text-3xl text-center font-clash-grotesk text-heading">About Me</h2>
-          <p className="mt-4 max-w-2xl mx-auto text-center font-chillax text-[#D1D1D1]">
+        <section id="about" className="py-20" data-aos="fade-up">
+          <h2 className="text-3xl text-center font-space-grotesk text-heading">About Me</h2>
+          <p className="mt-4 max-w-2xl mx-auto text-center font-chillax text-[#FFFFFF]">
             I'm a 16-year-old Grade 12 student passionate about coding, building projects, and exploring technology.
           </p>
         </section>
-        <section id="projects" className="py-20 bg-[#1A1A1A]">
-          <h2 className="text-3xl text-center font-clash-grotesk text-heading">Projects</h2>
+        <section id="projects" className="py-20 bg-[#1A1A1A]" data-aos="fade-up">
+          <h2 className="text-3xl text-center font-space-grotesk text-heading">Projects</h2>
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {projects.map((project) => (
               <ProjectCard key={project.name} {...project} />
             ))}
           </div>
         </section>
-        <section id="skills" className="py-20">
-          <h2 className="text-3xl text-center font-clash-grotesk text-heading">Skills</h2>
+        <section id="skills" className="py-20" data-aos="fade-up">
+          <h2 className="text-3xl text-center font-space-grotesk text-heading">Skills</h2>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             {skills.map((skill) => (
               <SkillBubble key={skill} skill={skill} />
             ))}
           </div>
         </section>
-        <section id="contact" className="py-20 bg-[#1A1A1A]">
-          <h2 className="text-3xl text-center font-clash-grotesk text-heading">Contact</h2>
+        <section id="contact" className="py-20 bg-[#1A1A1A]" data-aos="fade-up">
+          <h2 className="text-3xl text-center font-space-grotesk text-heading">Contact</h2>
           <ContactForm />
         </section>
         <Footer />
