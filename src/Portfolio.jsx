@@ -67,7 +67,7 @@ function Portfolio() {
       url: 'https://github.com/TanujairamV/instagram-bot',
       tech: ['Python', 'Selenium'],
       description: 'An automated bot for Instagram, built with Selenium and Python, capable of performing tasks like liking posts and following users.',
-      image: 'https://images.unsplash.com/photo-1516321165247-7b6c236531fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
   ];
 
