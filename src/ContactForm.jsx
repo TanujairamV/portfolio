@@ -1,89 +1,62 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import { motion } from 'framer-motion';
 
 function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [status, setStatus] = useState('');
+  const form = useRef();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
-    emailjs
-      .send(
-        'service_93dx3kc',
-        'template_0azsdc9',
-        formData,
-        'cSsgnQAXJHC5uk2ew'
-      )
-      .then(
-        () => {
-          setStatus('Message sent successfully!');
-          setFormData({ name: '', email: '', message: '' });
-        },
-        () => {
-          setStatus('Failed to send message. Please try again.');
-        }
-      );
+
+    emailjs.sendForm('service_93dx3kc', 'template_0azsdc9', form.current, 'cSsgnQAXJHC5uk2ew')
+      .then((result) => {
+        console.log(result.text);
+        alert('Message sent successfully!');
+        form.current.reset();
+      }, (error) => {
+        console.log(error.text);
+        alert('Failed to send message. Please try again.');
+      });
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-8">
-      <form onSubmit={handleSubmit} className="glass-card">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-[#D1D1D1] font-chillax">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-3 py-2 bg-transparent border border-[#1A1A1A] rounded-md text-[#D1D1D1] focus:outline-none focus:border-[#A076F9]"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-[#D1D1D1] font-chillax">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-3 py-2 bg-transparent border border-[#1A1A1A] rounded-md text-[#D1D1D1] focus:outline-none focus:border-[#A076F9]"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="message" className="block text-[#D1D1D1] font-chillax">
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            className="w-full px-3 py-2 bg-transparent border border-[#1A1A1A] rounded-md text-[#D1D1D1] focus:outline-none focus:border-[#A076F9]"
-            rows="4"
-            required
-          ></textarea>
-        </div>
-        <button type="submit" className="btn">
-          Send Message
-        </button>
-        {status && <p className="mt-4 text-[#D1D1D1] font-chillax">{status}</p>}
-      </form>
-    </div>
+    <motion.form
+      ref={form}
+      onSubmit={sendEmail}
+      className="glass-card p-8"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="mb-6">
+        <label className="block text-base font-inter text-subheading">Name</label>
+        <input
+          type="text"
+          name="user_name"
+          className="w-full p-3.5 mt-1.5 bg-transparent border border-accent/40 rounded-lg font-inter text-heading focus:outline-none focus:border-hover"
+          required
+        />
+      </div>
+      <div className="mb-6">
+        <label className="block text-base font-inter text-subheading">Email</label>
+        <input
+          type="email"
+          name="user_email"
+          className="w-full p-3.5 mt-1.5 bg-transparent border border-accent/40 rounded-lg font-inter text-heading focus:outline-none focus:border-hover"
+          required
+        />
+      </div>
+      <div className="mb-6">
+        <label className="block text-base font-inter text-subheading">Message</label>
+        <textarea
+          name="message"
+          className="w-full p-3.5 mt-1.5 bg-transparent border border-accent/40 rounded-lg font-inter text-heading focus:outline-none focus:border-hover"
+          rows="6"
+          required
+        ></textarea>
+      </div>
+      <button type="submit" className="btn glass-btn w-full">Send Message</button>
+    </motion.form>
   );
 }
 
