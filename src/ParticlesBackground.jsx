@@ -43,13 +43,13 @@ function ParticlesBackground() {
       },
       particles: {
         color: {
-          value: isDarkMode ? '#FFFFFF' : '#7E57C2',
+          value: isDarkMode ? '#FFFFFF' : '#6B46C1',
         },
         links: {
-          color: isDarkMode ? '#FFFFFF' : '#7E57C2',
+          color: isDarkMode ? '#FFFFFF' : '#6B46C1',
           distance: 150,
           enable: true,
-          opacity: 0.5,
+          opacity: 0.4,
           width: 1,
         },
         move: {
@@ -62,20 +62,28 @@ function ParticlesBackground() {
           speed: 2,
           straight: false,
         },
+        rotate: {
+          value: { min: 0, max: 360 },
+          animation: {
+            enable: true,
+            speed: 5,
+            sync: false,
+          },
+        },
         number: {
           density: {
             enable: true,
           },
-          value: 80,
+          value: 100,
         },
         opacity: {
-          value: 0.5,
+          value: 0.4,
         },
         shape: {
           type: 'circle',
         },
         size: {
-          value: { min: 1, max: 5 },
+          value: { min: 1, max: 6 },
         },
       },
       detectRetina: true,
