@@ -43,10 +43,10 @@ function ParticlesBackground() {
       },
       particles: {
         color: {
-          value: isDarkMode ? '#D1D1D1' : '#7E57C2',
+          value: isDarkMode ? '#FFFFFF' : '#7E57C2',
         },
         links: {
-          color: isDarkMode ? '#D1D1D1' : '#7E57C2',
+          color: isDarkMode ? '#FFFFFF' : '#7E57C2',
           distance: 150,
           enable: true,
           opacity: 0.5,
