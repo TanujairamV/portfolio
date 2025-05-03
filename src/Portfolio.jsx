@@ -47,12 +47,38 @@ function Portfolio() {
   }, [theme]);
 
   const projects = [
-    { name: 'gr11prctl', url: 'https://github.com/TanujairamV/gr11prctl', tech: ['Python', 'Bash'] },
-    { name: 'rupi', url: 'https://github.com/TanujairamV/rupi', tech: ['Python', 'Shell'] },
-    { name: 'Instagram Bot', url: 'https://github.com/TanujairamV/instagram-bot', tech: ['Python', 'Selenium'] },
+    {
+      name: 'gr11prctl',
+      url: 'https://github.com/TanujairamV/gr11prctl',
+      tech: ['Python', 'Bash'],
+      description: 'A practical project for Grade 11, focusing on automation scripts using Python and Bash.',
+      image: 'https://via.placeholder.com/300x200?text=gr11prctl',
+    },
+    {
+      name: 'rupi',
+      url: 'https://github.com/TanujairamV/rupi',
+      tech: ['Python', 'Shell'],
+      description: 'A utility tool for streamlining repetitive tasks with Python and Shell scripting.',
+      image: 'https://via.placeholder.com/300x200?text=rupi',
+    },
+    {
+      name: 'Instagram Bot',
+      url: 'https://github.com/TanujairamV/instagram-bot',
+      tech: ['Python', 'Selenium'],
+      description: 'An automated bot for Instagram interactions, built with Selenium and Python.',
+      image: 'https://via.placeholder.com/300x200?text=Instagram+Bot',
+    },
   ];
 
-  const skills = ['Python', 'Bash', 'Shell', 'Selenium', 'Git', 'GitHub', 'WSL'];
+  const skills = [
+    { name: 'Python', proficiency: 'Advanced' },
+    { name: 'Bash', proficiency: 'Intermediate' },
+    { name: 'Shell', proficiency: 'Intermediate' },
+    { name: 'Selenium', proficiency: 'Beginner' },
+    { name: 'Git', proficiency: 'Intermediate' },
+    { name: 'GitHub', proficiency: 'Intermediate' },
+    { name: 'WSL', proficiency: 'Beginner' },
+  ];
 
   if (showIntro) {
     return <Intro onComplete={() => setShowIntro(false)} />;
@@ -73,9 +99,9 @@ function Portfolio() {
           </Parallax>
           <NavBar />
           <section id="hero" className="min-h-screen flex items-center justify-center relative">
-            <div className="text-center max-w-3xl mx-auto px-4">
+            <div className="text-center max-w-4xl mx-auto px-4">
               <motion.h1
-                className="text-5xl font-cabinet-grotesk text-heading"
+                className="text-6xl font-cabinet-grotesk text-heading"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -83,7 +109,7 @@ function Portfolio() {
                 Tanujairam
               </motion.h1>
               <motion.div
-                className="mt-4 text-xl font-ranade text-white dark:text-white light:text-black"
+                className="mt-4 text-2xl font-ranade text-white dark:text-white light:text-black"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -103,7 +129,7 @@ function Portfolio() {
                 />
               </motion.div>
               <motion.p
-                className="mt-6 text-lg font-inter text-white dark:text-white light:text-black"
+                className="mt-6 text-xl font-inter text-white dark:text-white light:text-black max-w-2xl mx-auto"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -161,15 +187,20 @@ function Portfolio() {
               </motion.div>
             </div>
           </section>
-          <section id="about" className="py-20" data-aos="fade-right">
-            <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">About Me</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-center font-inter text-white dark:text-white light:text-black">
-              I'm a 16-year-old Grade 12 student passionate about coding, building projects, and exploring technology.
-            </p>
+          <section id="about" className="py-16" data-aos="fade-right">
+            <h2 className="text-4xl text-center font-cabinet-grotesk text-heading">About Me</h2>
+            <div className="mt-6 max-w-3xl mx-auto text-center font-inter text-white dark:text-white light:text-black">
+              <p className="text-lg">
+                I'm a 16-year-old Grade 12 student from India, deeply passionate about coding and technology. My journey began with Python, and I've since explored Bash, Shell scripting, and web development. I love building automation tools and experimenting with innovative solutions.
+              </p>
+              <p className="mt-4 text-lg">
+                When I'm not coding, you can find me tinkering with Linux environments, contributing to open-source projects, or learning about the latest tech trends. My goal is to create impactful projects that solve real-world problems.
+              </p>
+            </div>
           </section>
-          <section id="projects" className="py-20 bg-[#1A1A1A] dark:bg-[#1A1A1A] light:bg-gray-200" data-aos="zoom-in">
-            <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">Projects</h2>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <section id="projects" className="py-16 bg-[#1A1A1A] dark:bg-[#1A1A1A] light:bg-gray-200" data-aos="zoom-in">
+            <h2 className="text-4xl text-center font-cabinet-grotesk text-heading">Projects</h2>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
               {projects.map((project) => (
                 <Parallax key={project.name} translateY={[-10, 10]} scale={[1, 1.05]}>
                   <ProjectCard {...project} />
@@ -177,17 +208,19 @@ function Portfolio() {
               ))}
             </div>
           </section>
-          <section id="skills" className="py-20" data-aos="fade-left">
-            <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">Skills</h2>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <section id="skills" className="py-16" data-aos="fade-left">
+            <h2 className="text-4xl text-center font-cabinet-grotesk text-heading">Skills</h2>
+            <div className="mt-8 flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
               {skills.map((skill) => (
-                <SkillBubble key={skill} skill={skill} />
+                <SkillBubble key={skill.name} skill={skill.name} proficiency={skill.proficiency} />
               ))}
             </div>
           </section>
-          <section id="contact" className="py-20 bg-[#1A1A1A] dark:bg-[#1A1A1A] light:bg-gray-200" data-aos="zoom-in">
-            <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">Contact</h2>
-            <ContactForm />
+          <section id="contact" className="py-16 bg-[#1A1A1A] dark:bg-[#1A1A1A] light:bg-gray-200" data-aos="zoom-in">
+            <h2 className="text-4xl text-center font-cabinet-grotesk text-heading">Contact</h2>
+            <div className="mt-8 max-w-2xl mx-auto px-4">
+              <ContactForm />
+            </div>
           </section>
           <Footer />
         </motion.div>
