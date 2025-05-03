@@ -1,46 +1,28 @@
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
+import { motion } from 'framer-motion';
 
 function Cursor() {
   const cursorRef = useRef(null);
 
   useEffect(() => {
-    const moveCursor = (e) => {
-      gsap.to(cursorRef.current, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-      });
+    const handleMouseMove = (e) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
+      }
     };
 
-    const hoverCursor = () => {
-      gsap.to(cursorRef.current, { scale: 1.5, opacity: 0.8 });
-    };
-
-    const unhoverCursor = () => {
-      gsap.to(cursorRef.current, { scale: 1, opacity: 1 });
-    };
-
-    window.addEventListener('mousemove', moveCursor);
-    document.querySelectorAll('a, button').forEach((el) => {
-      el.addEventListener('mouseenter', hoverCursor);
-      el.addEventListener('mouseleave', unhoverCursor);
-    });
-
-    return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      document.querySelectorAll('a, button').forEach((el) => {
-        el.removeEventListener('mouseenter', hoverCursor);
-        el.removeEventListener('mouseleave', unhoverCursor);
-      });
-    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
-    <div
+    <motion.div
       ref={cursorRef}
-      className="fixed cursor-inverted"
-      style={{ transform: 'translate(-50%, -50%)' }}
+      className="cursor-inverted fixed"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.3 }}
     />
   );
 }
