@@ -3,13 +3,5 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.VITE_BASE || '/portfolio/',
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: true,
-  },
-  css: {
-    postcss: './postcss.config.cjs',
-  },
+  base: '/portfolio/',
 });
