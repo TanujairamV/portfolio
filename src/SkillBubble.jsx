@@ -14,7 +14,8 @@ function SkillBubble({ skill }) {
   return (
     <motion.div
       className="skill-bubble"
-      whileHover={{ scale: 1.1 }}
+      whileHover={{ scale: 1.1, rotate: 5 }}
+      whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.3 }}
     >
       <i className={`${iconMap[skill]} text-xl`}></i>
