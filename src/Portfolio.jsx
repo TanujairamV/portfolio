@@ -83,7 +83,7 @@ function Portfolio() {
                 Tanujairam
               </motion.h1>
               <motion.div
-                className="mt-4 text-xl font-ranade text-[#FFFFFF]"
+                className="mt-4 text-xl font-ranade text-white dark:text-white light:text-black"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -103,7 +103,7 @@ function Portfolio() {
                 />
               </motion.div>
               <motion.p
-                className="mt-6 text-lg font-inter text-[#FFFFFF]"
+                className="mt-6 text-lg font-inter text-white dark:text-white light:text-black"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -111,7 +111,7 @@ function Portfolio() {
                 Crafting innovative solutions with Python, Bash, and modern web technologies. Passionate about building impactful projects and exploring the frontiers of tech.
               </motion.p>
               <motion.div
-                className="mt-8 space-x-4"
+                className="mt-8 flex space-x-4 justify-center"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
@@ -163,11 +163,11 @@ function Portfolio() {
           </section>
           <section id="about" className="py-20" data-aos="fade-right">
             <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">About Me</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-center font-inter text-[#FFFFFF]">
+            <p className="mt-4 max-w-2xl mx-auto text-center font-inter text-white dark:text-white light:text-black">
               I'm a 16-year-old Grade 12 student passionate about coding, building projects, and exploring technology.
             </p>
           </section>
-          <section id="projects" className="py-20 bg-[#1A1A1A]" data-aos="zoom-in">
+          <section id="projects" className="py-20 bg-[#1A1A1A] dark:bg-[#1A1A1A] light:bg-gray-200" data-aos="zoom-in">
             <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">Projects</h2>
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {projects.map((project) => (
@@ -185,7 +185,7 @@ function Portfolio() {
               ))}
             </div>
           </section>
-          <section id="contact" className="py-20 bg-[#1A1A1A]" data-aos="zoom-in">
+          <section id="contact" className="py-20 bg-[#1A1A1A] dark:bg-[#1A1A1A] light:bg-gray-200" data-aos="zoom-in">
             <h2 className="text-3xl text-center font-cabinet-grotesk text-heading">Contact</h2>
             <ContactForm />
           </section>
