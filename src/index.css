@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Chillax:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&family=General+Sans:wght@400;500;600&family=Satoshi:wght@400;500;700&family=Clash+Grotesk:wght@600&family=Space+Grotesk:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chillax:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;700&family=General+Sans:wght@400;500;600&family=Satoshi:wght@400;500;700&family=Clash+Grotesk:wght@600&family=Space+Grotesk:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;700&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css');
 @import url('https://unpkg.com/aos@2.3.4/dist/aos.css');
 
@@ -56,6 +56,16 @@ body.light, body.light section, body.light .glass-card, body.light .btn, body.li
   @apply bg-[#FAFAFA] text-[#000000];
 }
 
+/* Hero gradient overlay */
+#hero {
+  position: relative;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.2), rgba(10, 10, 10, 0.1));
+}
+
+body.light #hero {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+}
+
 /* Text styles */
 .text-heading {
   @apply text-[#FFFFFF] font-space-grotesk;
@@ -74,38 +84,42 @@ body.light .text-link {
 }
 
 .text-link:hover {
-  @apply text-[#FF6AC1];
+  @apply text-[#FFD700];
 }
 
 body.light .text-link:hover {
-  @apply text-[#FF4081];
+  @apply text-[#FFD700];
 }
 
 /* Button */
 .btn {
-  @apply px-6 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-chillax font-medium hover:bg-[#FF6AC1] hover:text-[#000000] hover:scale-105 transition-all duration-300;
+  @apply px-6 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-inter font-medium hover:bg-[#FFD700] hover:text-[#000000] hover:scale-105 transition-all duration-300;
 }
 
 body.light .btn {
-  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FF4081] hover:text-[#FFFFFF];
+  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FFD700] hover:text-[#000000];
 }
 
 /* Glass card */
 .glass-card {
-  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-[#1A1A1A] rounded-2xl p-6 shadow-lg font-chillax hover:scale-105 transition-transform duration-300;
+  @apply bg-white bg-opacity-15 backdrop-blur-2xl border border-[#1A1A1A] rounded-2xl p-6 shadow-xl font-inter hover:scale-105 transition-transform duration-300;
+  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.3), rgba(255, 215, 0, 0.3)) 1;
 }
 
 body.light .glass-card {
-  @apply border-[#E0E0E0] bg-opacity-20;
+  @apply border-[#E0E0E0] bg-opacity-25;
+  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.3)) 1;
 }
 
 /* Navbar */
 .navbar-glass {
-  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-[#1A1A1A] rounded-full px-4 py-2 mx-auto max-w-4xl flex items-center justify-between;
+  @apply bg-white bg-opacity-15 backdrop-blur-2xl border border-[#1A1A1A] rounded-full px-4 py-2 mx-auto max-w-4xl flex items-center justify-between shadow-xl;
+  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.3), rgba(255, 215, 0, 0.3)) 1;
 }
 
 body.light .navbar-glass {
-  @apply border-[#E0E0E0] bg-opacity-20;
+  @apply border-[#E0E0E0] bg-opacity-25;
+  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.3)) 1;
 }
 
 @media (max-width: 640px) {
@@ -131,11 +145,11 @@ body.light .cursor-inverted {
 
 /* Social icons */
 .social-icon {
-  @apply text-[#FFFFFF] hover:text-[#FF6AC1] transition-all duration-300 hover:scale-110 z-50;
+  @apply text-[#FFFFFF] hover:text-[#FFD700] transition-all duration-300 hover:scale-110 z-50;
 }
 
 body.light .social-icon {
-  @apply text-[#000000] hover:text-[#FF4081];
+  @apply text-[#000000] hover:text-[#FFD700];
 }
 
 /* Signature style */
@@ -151,11 +165,11 @@ body.light .social-icon {
 
 /* Skill bubble */
 .skill-bubble {
-  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-chillax hover:bg-[#FF6AC1] hover:text-[#000000] transition-all duration-300;
+  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-inter hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300;
 }
 
 body.light .skill-bubble {
-  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FF4081] hover:text-[#FFFFFF];
+  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FFD700] hover:text-[#000000];
 }
 
 /* Font classes */
@@ -185,4 +199,8 @@ body.light .skill-bubble {
 
 .font-playfair-display {
   font-family: 'Playfair Display', serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
 }
