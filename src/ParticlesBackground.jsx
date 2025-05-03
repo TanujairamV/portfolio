@@ -25,7 +25,7 @@ function ParticlesBackground() {
           default: "bounce",
         },
         random: true,
-        speed: 2.5,
+        speed: 2,
         straight: false,
       },
       number: {
@@ -33,16 +33,16 @@ function ParticlesBackground() {
           enable: true,
           area: 800,
         },
-        value: 80,
+        value: 70,
       },
       opacity: {
-        value: 0.4,
+        value: 0.3,
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 1, max: 4 },
+        value: { min: 1, max: 3 },
       },
     },
     detectRetina: true,
