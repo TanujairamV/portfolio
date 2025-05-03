@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import Particles from 'react-tsparticles';
+import Particles from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
 
 function ParticlesBackground() {
@@ -13,10 +13,10 @@ function ParticlesBackground() {
         value: "transparent",
       },
     },
-    fpsLimit: 144,
+    fpsLimit: 165,
     particles: {
       color: {
-        value: "#6B46C1",
+        value: ["#6B46C1", "#FF6AC1"],
       },
       move: {
         direction: "none",
@@ -25,24 +25,24 @@ function ParticlesBackground() {
           default: "bounce",
         },
         random: true,
-        speed: 0.7,
+        speed: 0.6,
         straight: false,
       },
       number: {
         density: {
           enable: true,
-          area: 500,
+          area: 450,
         },
-        value: 100,
+        value: 120,
       },
       opacity: {
-        value: { min: 0.2, max: 0.7 },
+        value: { min: 0.15, max: 0.75 },
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 0.4, max: 2.8 },
+        value: { min: 0.3, max: 3 },
       },
     },
     detectRetina: true,
