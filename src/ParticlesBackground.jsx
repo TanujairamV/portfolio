@@ -28,11 +28,11 @@ function ParticlesBackground() {
       },
       modes: {
         push: {
-          quantity: 4,
+          quantity: 5,
         },
         repulse: {
-          distance: 150,
-          duration: 0.4,
+          distance: 200,
+          duration: 0.5,
         },
       },
     },
@@ -42,10 +42,10 @@ function ParticlesBackground() {
       },
       links: {
         color: "#6B46C1",
-        distance: 150,
+        distance: 160,
         enable: true,
-        opacity: 0.5,
-        width: 1,
+        opacity: 0.6,
+        width: 1.2,
       },
       move: {
         direction: "none",
@@ -53,8 +53,8 @@ function ParticlesBackground() {
         outModes: {
           default: "bounce",
         },
-        random: false,
-        speed: 3,
+        random: true,
+        speed: 4,
         straight: false,
       },
       number: {
@@ -62,16 +62,18 @@ function ParticlesBackground() {
           enable: true,
           area: 800,
         },
-        value: 80,
+        value: 100,
       },
       opacity: {
-        value: 0.5,
+        value: 0.6,
+        random: { enable: true, minimumValue: 0.3 },
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 1, max: 5 },
+        value: { min: 1, max: 6 },
+        random: true,
       },
     },
     detectRetina: true,
