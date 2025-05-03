@@ -12,9 +12,10 @@ module.exports = {
         'space-grotesk': ['Space Grotesk', 'sans-serif'],
       },
       colors: {
-        dark: '#0A0A0A',
-        light: '#F5F5F5',
+        dark: '#080808',
+        light: '#F8F8F8',
         accent: '#6B46C1',
+        secondary: '#FF6AC1',
         hover: '#FFD700',
       },
     },
