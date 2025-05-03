@@ -39,14 +39,14 @@ section, .glass-card, .btn, .navbar-glass, #intro {
     color: #000000;
   }
   .glass-card {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
     border: 1px solid #E0E0E0;
   }
   .btn {
     color: #000000;
   }
   .navbar-glass {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.2);
     border: 1px solid #E0E0E0;
   }
 }
@@ -66,20 +66,20 @@ body.light, body.light section, body.light .glass-card, body.light .btn, body.li
 /* Hero gradient overlay */
 #hero {
   position: relative;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.5), rgba(10, 10, 10, 0.2));
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.4), rgba(10, 10, 10, 0.1));
 }
 
 body.light #hero {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 215, 0, 0.15));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 215, 0, 0.1));
 }
 
 /* Section backgrounds */
 #about, #skills {
-  background: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(10, 10, 10, 0.9));
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.85), rgba(10, 10, 10, 0.85));
 }
 
 body.light #about, body.light #skills {
-  background: linear-gradient(135deg, rgba(240, 240, 240, 0.95), rgba(255, 255, 255, 0.95));
+  background: linear-gradient(135deg, rgba(240, 240, 240, 0.9), rgba(255, 255, 255, 0.9));
 }
 
 #projects, #contact {
@@ -118,65 +118,65 @@ body.light .text-link:hover {
 
 /* Button */
 .btn {
-  padding: 0.6rem 1.5rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 9999px;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   background: linear-gradient(45deg, #FF6AC1, #FFD700);
   backdrop-filter: blur(25px);
-  border: 2px solid transparent;
-  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.5), rgba(255, 215, 0, 0.5)) 1;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.4), rgba(255, 215, 0, 0.4)) 1;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
 }
 
 body.light .btn {
   color: #000000;
   background: linear-gradient(45deg, #FF4081, #FFD700);
-  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.5), rgba(255, 215, 0, 0.5)) 1;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.4)) 1;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 body.light .btn:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Glass card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(25px);
-  border: 2px solid transparent;
-  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.5), rgba(255, 215, 0, 0.5)) 1;
-  border-radius: 1.25rem;
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.4), rgba(255, 215, 0, 0.4)) 1;
+  border-radius: 1rem;
   padding: 0;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
   font-family: 'Inter', sans-serif;
   transition: transform 0.3s, box-shadow 0.3s;
   overflow: hidden;
 }
 
 .glass-card:hover {
-  transform: scale(1.08);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 body.light .glass-card {
-  background: rgba(255, 255, 255, 0.25);
-  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.5), rgba(255, 215, 0, 0.5)) 1;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.2);
+  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.4)) 1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Project card specific styles */
 .project-card-image {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
   display: block;
 }
@@ -187,57 +187,57 @@ body.light .glass-card {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
-  opacity: 0.8;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+  opacity: 0.7;
 }
 
 body.light .project-card-overlay {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.4));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3));
 }
 
 .project-card-content {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .project-card-tech {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   border-radius: 9999px;
-  padding: 0.4rem 1rem;
-  font-size: 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 body.light .project-card-tech {
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Navbar */
 .navbar-glass {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(25px);
-  border: 2px solid transparent;
-  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.5), rgba(255, 215, 0, 0.5)) 1;
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.4), rgba(255, 215, 0, 0.4)) 1;
   border-radius: 9999px;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   margin: 0 auto;
   max-width: 72rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 body.light .navbar-glass {
-  background: rgba(255, 255, 255, 0.25);
-  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.5), rgba(255, 215, 0, 0.5)) 1;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.2);
+  border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.4), rgba(255, 215, 0, 0.4)) 1;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 640px) {
   .navbar-glass {
-    padding: 0.4rem 0.8rem;
+    padding: 0.3rem 0.6rem;
   }
   .navbar-glass .flex {
     display: flex;
@@ -248,20 +248,20 @@ body.light .navbar-glass {
 
 /* Cursor */
 .cursor-inverted {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
   mix-blend-mode: difference;
   pointer-events: none;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 30px 20px rgba(255, 255, 255, 0.6);
-  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 25px 15px rgba(255, 255, 255, 0.5);
+  opacity: 0.75;
 }
 
 body.light .cursor-inverted {
-  background: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 30px 20px rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 25px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Social icons */
@@ -272,7 +272,7 @@ body.light .cursor-inverted {
 
 .social-icon:hover {
   color: #FFD700;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 body.light .social-icon {
@@ -286,14 +286,14 @@ body.light .social-icon:hover {
 /* Signature style */
 .signature {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-style: italic;
   transform: rotate(-3deg);
 }
 
 @media (max-width: 640px) {
   .signature {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 }
 
@@ -301,10 +301,10 @@ body.light .social-icon:hover {
 .skill-bubble {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
@@ -314,11 +314,11 @@ body.light .social-icon:hover {
 .skill-bubble:hover {
   background: #FFD700;
   color: #000000;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 body.light .skill-bubble {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   color: #000000;
 }
 
@@ -329,20 +329,20 @@ body.light .skill-bubble:hover {
 
 /* Progress bar */
 .progress-bar {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 9999px;
-  height: 0.4rem;
+  height: 0.3rem;
   overflow: hidden;
 }
 
 .progress-bar-fill {
   background: linear-gradient(90deg, #FF6AC1, #FFD700);
   height: 100%;
-  transition: width 0.4s ease-in-out;
+  transition: width 0.3s ease-in-out;
 }
 
 body.light .progress-bar {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 body.light .progress-bar-fill {
