@@ -27,14 +27,14 @@ function NavBar() {
   };
 
   return (
-    <nav className="fixed top-4 left-0 right-0 navbar-glass z-40">
-      <div className="flex items-center h-12">
+    <nav className="fixed top-6 left-0 right-0 navbar-glass z-40">
+      <div className="flex items-center h-14">
         <div className="flex items-center">
-          <a href="#hero" className="flex-shrink-0 flex items-center font-dancing-script text-2xl italic -rotate-3 text-heading">
+          <a href="#hero" className="flex-shrink-0 flex items-center font-dancing-script text-3xl italic -rotate-3 text-heading">
             Tanujairam
           </a>
         </div>
-        <div className="flex-1 flex justify-center sm:ml-6 sm:space-x-6 hidden sm:flex">
+        <div className="flex-1 flex justify-center sm:ml-8 sm:space-x-8 hidden sm:flex">
           {[
             { name: 'Home', href: '#hero' },
             { name: 'About', href: '#about' },
@@ -45,22 +45,22 @@ function NavBar() {
             <a
               key={item.name}
               href={item.href}
-              className="inline-flex items-center px-2 text-sm font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] transition-colors duration-300"
+              className="inline-flex items-center px-3 text-base font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] transition-colors duration-300"
             >
               {item.name}
             </a>
           ))}
         </div>
-        <div className="flex items-center space-x-2 sm:space-x-4">
-          <span className="text-sm font-inter text-white dark:text-white sm:text-white">{currentTime}</span>
+        <div className="flex items-center space-x-3 sm:space-x-6">
+          <span className="text-base font-inter text-white dark:text-white sm:text-white">{currentTime}</span>
           <button
             onClick={toggleTheme}
             className="inline-flex items-center p-2 text-white dark:text-white light:text-black hover:text-[#FFD700] hidden sm:flex"
             aria-label="Toggle theme"
           >
-            {theme === 'system' && <FaDesktop />}
-            {theme === 'light' && <FaSun />}
-            {theme === 'dark' && <FaMoon />}
+            {theme === 'system' && <FaDesktop size={24} />}
+            {theme === 'light' && <FaSun size={24} />}
+            {theme === 'dark' && <FaMoon size={24} />}
           </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -68,11 +68,11 @@ function NavBar() {
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? (
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
@@ -81,12 +81,12 @@ function NavBar() {
       </div>
       {isOpen && (
         <motion.div
-          className="sm:hidden navbar-glass mt-2 rounded-2xl"
-          initial={{ opacity: 0, y: -10 }}
+          className="sm:hidden navbar-glass mt-3 rounded-3xl"
+          initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.4 }}
         >
-          <div className="pt-2 pb-3 space-y-1">
+          <div className="pt-3 pb-4 space-y-2">
             {[
               { name: 'Home', href: '#hero' },
               { name: 'About', href: '#about' },
@@ -97,7 +97,7 @@ function NavBar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="block pl-3 pr-4 py-2 text-base font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-gray-200"
+                className="block pl-4 pr-5 py-2 text-lg font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-gray-200"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -105,7 +105,7 @@ function NavBar() {
             ))}
             <button
               onClick={toggleTheme}
-              className="block pl-3 pr-4 py-2 text-base font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-gray-200"
+              className="block pl-4 pr-5 py-2 text-lg font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-gray-200"
             >
               {theme === 'system' ? 'System Theme' : theme === 'light' ? 'Light Theme' : 'Dark Theme'}
             </button>
