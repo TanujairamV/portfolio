@@ -117,7 +117,8 @@ body.light .glass-card {
 
 /* Navbar */
 .navbar-glass {
-  @apply bg-white bg-opacity-15 backdrop-blur-2xl border border-[#1A1A1A] rounded-full px-4 py-2 mx-auto max-w-4xl flex items-center justify-between shadow-xl;
+  @apply bg-white bg-opacity-15 backdrop-blur-2xl border border-[#1A1A1A] rounded-full px-4 py-2 mx-auto max-w-4xl items-center justify-between shadow-xl;
+  display: flex;
   border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.3), rgba(255, 215, 0, 0.3)) 1;
 }
 
@@ -169,7 +170,8 @@ body.light .social-icon {
 
 /* Skill bubble */
 .skill-bubble {
-  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-inter hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300;
+  display: flex;
+  @apply items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-inter hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300;
 }
 
 body.light .skill-bubble {
