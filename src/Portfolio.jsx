@@ -53,21 +53,21 @@ function Portfolio() {
       url: 'https://github.com/TanujairamV/gr11prctl',
       tech: ['Python', 'Bash'],
       description: 'A Grade 11 project focused on automating system tasks using Python and Bash scripts. Features include file management and process automation.',
-      image: 'https://via.placeholder.com/400x250?text=gr11prctl+Project',
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'rupi',
       url: 'https://github.com/TanujairamV/rupi',
       tech: ['Python', 'Shell'],
       description: 'A command-line tool for streamlining repetitive tasks with Python and Shell scripting, enhancing productivity in Linux environments.',
-      image: 'https://via.placeholder.com/400x250?text=rupi+Project',
+      image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'Instagram Bot',
       url: 'https://github.com/TanujairamV/instagram-bot',
       tech: ['Python', 'Selenium'],
       description: 'An automated bot for Instagram, built with Selenium and Python, capable of performing tasks like liking posts and following users.',
-      image: 'https://via.placeholder.com/400x250?text=Instagram+Bot+Project',
+      image: 'https://images.unsplash.com/photo-1516321165247-7b6c236531fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
   ];
 
@@ -201,7 +201,7 @@ function Portfolio() {
           </section>
           <section id="projects" className="py-12" data-aos="zoom-in" data-aos-delay="200">
             <h2 className="text-5xl text-center font-cabinet-grotesk text-heading">Projects</h2>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto px-4">
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
               {projects.map((project) => (
                 <Parallax key={project.name} translateY={[-15, 15]} scale={[1, 1.1]} speed={5}>
                   <ProjectCard {...project} />
