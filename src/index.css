@@ -2,10 +2,6 @@
 @import url('https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css');
 @import url('https://unpkg.com/aos@2.3.4/dist/aos.css');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* Hide default cursor */
 html, body {
   cursor: none;
@@ -23,40 +19,48 @@ html, body {
 
 /* Dark theme (default) */
 body {
-  @apply bg-[#0D0D0D] text-[#FFFFFF];
+  background: #0D0D0D;
+  color: #FFFFFF;
 }
 
 section, .glass-card, .btn, .navbar-glass, #intro {
-  @apply bg-[#0D0D0D] text-[#FFFFFF];
+  background: #0D0D0D;
+  color: #FFFFFF;
 }
 
 /* Light theme */
 @media (prefers-color-scheme: light) {
   body {
-    @apply bg-[#FFFFFF] text-[#000000];
+    background: #FFFFFF;
+    color: #000000;
   }
   section, .glass-card, .btn, .navbar-glass, #intro {
-    @apply bg-[#FFFFFF] text-[#000000];
+    background: #FFFFFF;
+    color: #000000;
   }
   .glass-card {
-    @apply bg-white bg-opacity-20 border-[#E0E0E0];
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid #E0E0E0;
   }
   .btn {
-    @apply text-[#000000];
+    color: #000000;
   }
   .navbar-glass {
-    @apply bg-white bg-opacity-20 border-[#E0E0E0];
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid #E0E0E0;
   }
 }
 
 /* Override for explicit dark mode */
 body.dark, body.dark section, body.dark .glass-card, body.dark .btn, body.dark .navbar-glass, body.dark #intro {
-  @apply bg-[#0D0D0D] text-[#FFFFFF];
+  background: #0D0D0D;
+  color: #FFFFFF;
 }
 
 /* Override for explicit light mode */
 body.light, body.light section, body.light .glass-card, body.light .btn, body.light .navbar-glass, body.light #intro {
-  @apply bg-[#FFFFFF] text-[#000000];
+  background: #FFFFFF;
+  color: #000000;
 }
 
 /* Hero gradient overlay */
@@ -71,73 +75,110 @@ body.light #hero {
 
 /* Text styles */
 .text-heading {
-  @apply text-[#FFFFFF] font-cabinet-grotesk;
+  color: #FFFFFF;
+  font-family: 'Cabinet Grotesk', sans-serif;
 }
 
 body.light .text-heading {
-  @apply text-[#000000];
+  color: #000000;
 }
 
 .text-link {
-  @apply text-[#FFFFFF];
+  color: #FFFFFF;
 }
 
 body.light .text-link {
-  @apply text-[#000000];
+  color: #000000;
 }
 
 .text-link:hover {
-  @apply text-[#FFD700];
+  color: #FFD700;
 }
 
 body.light .text-link:hover {
-  @apply text-[#FFD700];
+  color: #FFD700;
 }
 
 /* Button */
 .btn {
-  @apply px-6 py-2 rounded-full text-[#FFFFFF] font-inter font-medium hover:scale-105 transition-all duration-300 bg-opacity-10 backdrop-blur-3xl border border-[#1A1A1A];
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
   background: linear-gradient(45deg, #FF6AC1, #FFD700);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid transparent;
   border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.3), rgba(255, 215, 0, 0.3)) 1;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 body.light .btn {
-  @apply text-[#000000] bg-opacity-20 border-[#E0E0E0];
-  background: linear-gradient(45deg, #FF4081, #FFD700);
+  color: #000000;
+  background: rgba(255, 255, 255, 0.2);
   border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.3)) 1;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+body.light .btn:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
 /* Glass card */
 .glass-card {
-  @apply bg-white bg-opacity-10 backdrop-blur-3xl border border-[#1A1A1A] rounded-2xl p-6 shadow-2xl font-inter hover:scale-105 transition-transform duration-300;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid transparent;
   border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.3), rgba(255, 215, 0, 0.3)) 1;
+  border-radius: 1rem;
+  padding: 1.5rem;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Inter', sans-serif;
+  transition: transform 0.3s;
+}
+
+.glass-card:hover {
+  transform: scale(1.05);
 }
 
 body.light .glass-card {
-  @apply border-[#E0E0E0] bg-opacity-20;
+  background: rgba(255, 255, 255, 0.2);
   border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.3)) 1;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Navbar */
 .navbar-glass {
-  @apply bg-white bg-opacity-10 backdrop-blur-3xl border border-[#1A1A1A] rounded-full px-4 py-2 mx-auto max-w-4xl flex items-center justify-between shadow-2xl;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid transparent;
   border-image: linear-gradient(45deg, rgba(255, 106, 193, 0.3), rgba(255, 215, 0, 0.3)) 1;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  margin: 0 auto;
+  max-width: 64rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 body.light .navbar-glass {
-  @apply border-[#E0E0E0] bg-opacity-20;
+  background: rgba(255, 255, 255, 0.2);
   border-image: linear-gradient(45deg, rgba(255, 64, 129, 0.3), rgba(255, 215, 0, 0.3)) 1;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 640px) {
   .navbar-glass {
-    @apply px-3 py-2;
+    padding: 0.5rem 0.75rem;
   }
   .navbar-glass .flex {
     display: flex;
@@ -148,7 +189,12 @@ body.light .navbar-glass {
 
 /* Cursor */
 .cursor-inverted {
-  @apply w-8 h-8 rounded-full mix-blend-difference pointer-events-none z-50;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: 50;
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 25px 15px rgba(255, 255, 255, 0.5);
   opacity: 0.7;
@@ -161,31 +207,63 @@ body.light .cursor-inverted {
 
 /* Social icons */
 .social-icon {
-  @apply text-[#FFFFFF] hover:text-[#FFD700] transition-all duration-300 hover:scale-110 z-50;
+  color: #FFFFFF;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.social-icon:hover {
+  color: #FFD700;
+  transform: scale(1.1);
 }
 
 body.light .social-icon {
-  @apply text-[#000000] hover:text-[#FFD700];
+  color: #000000;
+}
+
+body.light .social-icon:hover {
+  color: #FFD700;
 }
 
 /* Signature style */
 .signature {
-  @apply font-dancing-script text-heading text-2xl italic transform -rotate-3;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  font-style: italic;
+  transform: rotate(-3deg);
 }
 
 @media (max-width: 640px) {
   .signature {
-    @apply text-xl;
+    font-size: 1.25rem;
   }
 }
 
 /* Skill bubble */
 .skill-bubble {
-  @apply flex items-center space-x-2 px-4 py-2 rounded-full bg-[#1A1A1A] text-[#FFFFFF] font-inter hover:bg-[#FFD700] hover:text-[#000000] transition-all duration-300;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: #1A1A1A;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.skill-bubble:hover {
+  background: #FFD700;
+  color: #000000;
 }
 
 body.light .skill-bubble {
-  @apply bg-[#E0E0E0] text-[#000000] hover:bg-[#FFD700] hover:text-[#000000];
+  background: #E0E0E0;
+  color: #000000;
+}
+
+body.light .skill-bubble:hover {
+  background: #FFD700;
+  color: #000000;
 }
 
 /* Font classes */
