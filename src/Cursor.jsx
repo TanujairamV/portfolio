@@ -22,7 +22,7 @@ function Cursor() {
       className="cursor-inverted fixed"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4 }}
     />
   );
 }
