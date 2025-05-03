@@ -49,21 +49,21 @@ function Portfolio() {
       name: 'gr11prctl',
       url: 'https://github.com/TanujairamV/gr11prctl',
       tech: ['Python', 'Bash'],
-      description: 'Grade 11 project automating tasks with Python and Bash.',
+      description: 'Grade 11 project for system task automation.',
       image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'rupi',
       url: 'https://github.com/TanujairamV/rupi',
       tech: ['Python', 'Shell'],
-      description: 'CLI tool for task automation in Linux with Python and Shell.',
+      description: 'CLI tool for Linux task automation.',
       image: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
     {
       name: 'Instagram Bot',
       url: 'https://github.com/TanujairamV/instagram-bot',
       tech: ['Python', 'Selenium'],
-      description: 'Automated Instagram bot using Selenium and Python.',
+      description: 'Automated Instagram bot with Selenium.',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     },
   ];
@@ -99,16 +99,16 @@ function Portfolio() {
           <section id="hero" className="min-h-screen flex items-center justify-center relative">
             <div className="text-center max-w-4xl mx-auto px-4">
               <motion.h1
-                className="text-6xl font-cabinet-grotesk text-heading"
-                initial={{ y: 15, opacity: 0 }}
+                className="text-5xl font-cabinet-grotesk text-heading"
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
               >
                 Tanujairam
               </motion.h1>
               <motion.div
-                className="mt-3 text-2xl font-ranade text-white dark:text-white light:text-black"
-                initial={{ y: 15, opacity: 0 }}
+                className="mt-2 text-2xl font-ranade text-white dark:text-white light:text-black"
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
               >
@@ -120,16 +120,16 @@ function Portfolio() {
                 />
               </motion.div>
               <motion.p
-                className="mt-5 text-lg font-inter text-white dark:text-white light:text-black max-w-2xl mx-auto leading-relaxed"
-                initial={{ y: 15, opacity: 0 }}
+                className="mt-4 text-base font-inter text-white dark:text-white light:text-black max-w-2xl mx-auto leading-relaxed"
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
               >
-                16-year-old developer building solutions with Python, Bash, and web tech. Passionate about automation and open-source.
+                16-year-old developer building with Python, Bash, and web tech.
               </motion.p>
               <motion.div
-                className="mt-6 flex space-x-3 justify-center"
-                initial={{ y: 15, opacity: 0 }}
+                className="mt-5 flex space-x-2 justify-center"
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.6, ease: 'easeOut' }}
               >
@@ -138,7 +138,7 @@ function Portfolio() {
                   className="btn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.08, rotate: 2 }}
+                  whileHover={{ scale: 1.05, rotate: 2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   GitHub
@@ -148,50 +148,50 @@ function Portfolio() {
                   className="btn"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.08, rotate: -2 }}
+                  whileHover={{ scale: 1.05, rotate: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Email
                 </motion.a>
               </motion.div>
               <motion.div
-                className="mt-5 flex justify-center space-x-3"
-                initial={{ y: 15, opacity: 0 }}
+                className="mt-4 flex justify-center space-x-2"
+                initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.8, ease: 'easeOut' }}
               >
                 <a href="https://instagram.com/tanujairam.v" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaInstagram size={24} />
+                  <FaInstagram size={20} />
                 </a>
                 <a href="https://t.me/Tanujairam" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaTelegram size={24} />
+                  <FaTelegram size={20} />
                 </a>
                 <a href="https://discord.com/users/Tanujairam" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaDiscord size={24} />
+                  <FaDiscord size={20} />
                 </a>
                 <a href="mailto:tanujairam.v@gmail.com" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaEnvelope size={24} />
+                  <FaEnvelope size={20} />
                 </a>
                 <a href="https://github.com/TanujairamV" className="social-icon" target="_blank" rel="noopener noreferrer">
-                  <FaGithub size={24} />
+                  <FaGithub size={20} />
                 </a>
               </motion.div>
             </div>
           </section>
-          <section id="about" className="py-16" data-aos="fade-up" data-aos-delay="100">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">About Me</h2>
-            <div className="mt-5 max-w-3xl mx-auto text-center font-inter text-white dark:text-white light:text-black px-4">
-              <p className="text-base leading-relaxed">
-                I’m Tanujairam, a 16-year-old Grade 12 student from India passionate about coding. I started with Python, building automation scripts, and now explore Bash, Shell, and web development.
+          <section id="about" className="py-12" data-aos="fade-up" data-aos-delay="100">
+            <h2 className="text-3xl text-center font-space-grotesk text-heading">About Me</h2>
+            <div className="mt-4 max-w-3xl mx-auto text-center font-inter text-white dark:text-white light:text-black px-4">
+              <p className="text-sm leading-relaxed">
+                I’m Tanujairam, a 16-year-old Grade 12 student from India. I code in Python, Bash, and web tech.
               </p>
-              <p className="mt-3 text-base leading-relaxed">
-                I love solving problems through code, from scripts to web apps. I’m an avid learner, experimenting with Linux and contributing to open-source projects.
+              <p className="mt-2 text-sm leading-relaxed">
+                I build automation scripts and web apps, experiment with Linux, and contribute to open-source.
               </p>
             </div>
           </section>
-          <section id="projects" className="py-16" data-aos="zoom-in" data-aos-delay="200">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">Projects</h2>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-w-6xl mx-auto px-4">
+          <section id="projects" className="py-12" data-aos="zoom-in" data-aos-delay="200">
+            <h2 className="text-3xl text-center font-space-grotesk text-heading">Projects</h2>
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 max-w-6xl mx-auto px-4">
               {projects.map((project) => (
                 <Parallax key={project.name} translateY={[-5, 5]} scale={[1, 1.02]} speed={5}>
                   <ProjectCard {...project} />
@@ -199,17 +199,17 @@ function Portfolio() {
               ))}
             </div>
           </section>
-          <section id="skills" className="py-16" data-aos="fade-up" data-aos-delay="300">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">Skills</h2>
-            <div className="mt-5 max-w-4xl mx-auto px-4">
+          <section id="skills" className="py-12" data-aos="fade-up" data-aos-delay="300">
+            <h2 className="text-3xl text-center font-space-grotesk text-heading">Skills</h2>
+            <div className="mt-4 max-w-4xl mx-auto px-4">
               {skills.map((skill) => (
                 <SkillBubble key={skill.name} skill={skill.name} proficiency={skill.proficiency} level={skill.level} />
               ))}
             </div>
           </section>
-          <section id="contact" className="py-16" data-aos="zoom-in" data-aos-delay="400">
-            <h2 className="text-4xl text-center font-space-grotesk text-heading">Contact</h2>
-            <div className="mt-5 max-w-lg mx-auto px-4">
+          <section id="contact" className="py-12" data-aos="zoom-in" data-aos-delay="400">
+            <h2 className="text-3xl text-center font-space-grotesk text-heading">Contact</h2>
+            <div className="mt-4 max-w-lg mx-auto px-4">
               <ContactForm />
             </div>
           </section>
