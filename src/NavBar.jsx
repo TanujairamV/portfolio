@@ -51,8 +51,8 @@ function NavBar() {
             </a>
           ))}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-sm font-chillax text-[#D1D1D1]">{currentTime}</span>
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          <span className="text-sm font-chillax text-[#FFFFFF] sm:text-[#FFFFFF]">{currentTime}</span>
           <button
             onClick={toggleTheme}
             className="inline-flex items-center p-2 text-link hover:text-[#FF6AC1] hidden sm:flex"
