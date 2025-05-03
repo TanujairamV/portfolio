@@ -45,17 +45,17 @@ function NavBar() {
             <a
               key={item.name}
               href={item.href}
-              className="inline-flex items-center px-2 text-sm font-inter text-link hover:text-[#FFD700] transition-colors duration-300"
+              className="inline-flex items-center px-2 text-sm font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] transition-colors duration-300"
             >
               {item.name}
             </a>
           ))}
         </div>
         <div className="flex items-center space-x-2 sm:space-x-4">
-          <span className="text-sm font-inter text-[#FFFFFF] sm:text-[#FFFFFF]">{currentTime}</span>
+          <span className="text-sm font-inter text-white dark:text-white sm:text-white">{currentTime}</span>
           <button
             onClick={toggleTheme}
-            className="inline-flex items-center p-2 text-link hover:text-[#FFD700] hidden sm:flex"
+            className="inline-flex items-center p-2 text-white dark:text-white light:text-black hover:text-[#FFD700] hidden sm:flex"
             aria-label="Toggle theme"
           >
             {theme === 'system' && <FaDesktop />}
@@ -64,7 +64,7 @@ function NavBar() {
           </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="inline-flex items-center justify-center p-2 rounded-md text-link hover:text-[#FFD700] focus:outline-none sm:hidden"
+            className="inline-flex items-center justify-center p-2 rounded-md text-white dark:text-white light:text-black hover:text-[#FFD700] focus:outline-none sm:hidden"
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? (
@@ -97,7 +97,7 @@ function NavBar() {
               <a
                 key={item.name}
                 href={item.href}
-                className="block pl-3 pr-4 py-2 text-base font-inter text-link hover:text-[#FFD700] hover:bg-[#1A1A1A]"
+                className="block pl-3 pr-4 py-2 text-base font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-gray-200"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -105,7 +105,7 @@ function NavBar() {
             ))}
             <button
               onClick={toggleTheme}
-              className="block pl-3 pr-4 py-2 text-base font-inter text-link hover:text-[#FFD700] hover:bg-[#1A1A1A]"
+              className="block pl-3 pr-4 py-2 text-base font-inter text-white dark:text-white light:text-black hover:text-[#FFD700] hover:bg-[#1A1A1A] dark:hover:bg-[#1A1A1A] light:hover:bg-gray-200"
             >
               {theme === 'system' ? 'System Theme' : theme === 'light' ? 'Light Theme' : 'Dark Theme'}
             </button>
