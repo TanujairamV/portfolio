@@ -1,31 +1,26 @@
-import { FaGithub, FaEnvelope } from 'react-icons/fa';
+import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from 'react-icons/fa';
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 py-6 border-t border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} Tanujairam. All rights reserved.
-          </p>
-          <div className="mt-4 flex space-x-6">
-            <a
-              href="https://github.com/TanujairamV"
-              className="text-gray-400 hover:text-neon-blue transition-colors"
-              aria-label="GitHub"
-            >
-              <FaGithub size={24} />
-            </a>
-            <a
-              href="mailto:tanujairam.v@gmail.com"
-              className="text-gray-400 hover:text-neon-blue transition-colors"
-              aria-label="Email"
-            >
-              <FaEnvelope size={24} />
-            </a>
-          </div>
-        </div>
+    <footer className="py-8 text-center font-inter text-subheading">
+      <div className="flex justify-center space-x-4 mb-4">
+        <a href="https://instagram.com/tanujairam.v" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
+          <FaInstagram size={20} />
+        </a>
+        <a href="https://t.me/Tanujairam" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
+          <FaTelegram size={20} />
+        </a>
+        <a href="https://discord.com/users/Tanujairam" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
+          <FaDiscord size={20} />
+        </a>
+        <a href="mailto:tanujairam.v@gmail.com" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
+          <FaEnvelope size={20} />
+        </a>
+        <a href="https://github.com/TanujairamV" className="social-icon glass-icon" target="_blank" rel="noopener noreferrer">
+          <FaGithub size={20} />
+        </a>
       </div>
+      <p className="text-sm">© 2025 Tanujairam. Built with passion.</p>
     </footer>
   );
 }
