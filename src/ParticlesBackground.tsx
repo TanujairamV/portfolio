@@ -1,30 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import Particles from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
-import type { ISourceOptions, Engine } from '@tsparticles/react';
+import type { ISourceOptions, Engine } from '@tsparticles/engine';
+import { tsParticles } from '@tsparticles/engine';
 
 const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    const initParticles = async (engine: Engine) => {
-      await loadSlim(engine);
-    };
-
-    initParticlesEngine(initParticles).then(() => {
+    const initParticles = async () => {
+      await loadSlim(tsParticles); // Load slim preset into the tsParticles engine
       setInit(true);
-    });
-
-    // Optional: prevent memory leaks if the component is unmounted before init completes
-    return () => {
-      setInit(false);
     };
+
+    initParticles();
   }, []);
 
   const particlesOptions = useMemo<ISourceOptions>(
     () => ({
       background: { color: { value: 'transparent' } },
-      fpsLimit: 60, // Lowered from 120 to save resources
+      fpsLimit: 60,
       particles: {
         color: { value: '#6B46C1' },
         move: {
