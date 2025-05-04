@@ -13,10 +13,10 @@ function ParticlesBackground() {
         value: "transparent",
       },
     },
-    fpsLimit: 165,
+    fpsLimit: 120,
     particles: {
       color: {
-        value: ["#6B46C1", "#FF6AC1"],
+        value: "#6B46C1",
       },
       move: {
         direction: "none",
@@ -25,24 +25,24 @@ function ParticlesBackground() {
           default: "bounce",
         },
         random: true,
-        speed: 0.6,
+        speed: 0.2,
         straight: false,
       },
       number: {
         density: {
           enable: true,
-          area: 450,
+          area: 600,
         },
-        value: 120,
+        value: 80,
       },
       opacity: {
-        value: { min: 0.15, max: 0.75 },
+        value: { min: 0.05, max: 0.2 },
       },
       shape: {
         type: "circle",
       },
       size: {
-        value: { min: 0.3, max: 3 },
+        value: { min: 0.1, max: 1 },
       },
     },
     detectRetina: true,
