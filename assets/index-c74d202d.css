@@ -1,0 +1,1 @@
+@tailwind base;@tailwind components;@tailwind utilities;@layer base{:root{--color-seafoam: 167 216 217}html,body{@apply m-0 p-0 min-h-screen;}#root{@apply flex flex-col min-h-screen;}.font-montserrat{font-family:Montserrat,sans-serif}.font-roboto{font-family:Roboto,sans-serif}}
