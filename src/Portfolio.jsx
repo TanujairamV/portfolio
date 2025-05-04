@@ -19,7 +19,7 @@ function Portfolio() {
 
   useEffect(() => {
     AOS.init({
-      duration: 600,
+      duration: 500,
       once: true,
       easing: 'ease-in-out',
     });
@@ -78,47 +78,47 @@ function Portfolio() {
         className="min-h-screen font-inter bg-dark dark:bg-dark light:bg-light"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.3 }}
       >
         <Cursor />
         <ParticlesBackground />
         <NavBar />
         <section id="hero" className="min-h-screen flex items-center justify-center">
-          <div className="text-center max-w-md mx-auto px-4">
+          <div className="text-center max-w-sm mx-auto px-4">
             <motion.h1
-              className="text-4xl font-cabinet-grotesk text-heading"
+              className="text-3xl font-cabinet-grotesk text-heading"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.3 }}
             >
               Tanujairam
             </motion.h1>
             <motion.div
-              className="mt-2 text-lg font-ranade text-heading"
+              className="mt-1 text-base font-ranade text-heading"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
               <TypeAnimation
-                sequence={['Code', 600, 'Create', 600, 'Innovate', 600]}
+                sequence={['Code', 500, 'Create', 500, 'Innovate', 500]}
                 wrapper="span"
-                speed={45}
+                speed={50}
                 repeat={Infinity}
               />
             </motion.div>
             <motion.p
-              className="mt-2 text-sm font-inter text-subheading max-w-xs mx-auto"
+              className="mt-1 text-xs font-inter text-subheading max-w-[16rem] mx-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
             >
               16-year-old building automation tools.
             </motion.p>
             <motion.div
-              className="mt-3 flex space-x-2 justify-center"
+              className="mt-2 flex space-x-2 justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
             >
               <a
                 href="https://github.com/TanujairamV"
@@ -141,58 +141,58 @@ function Portfolio() {
               className="mt-2 flex justify-center space-x-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.4 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
             >
               <a href="https://instagram.com/tanujairam.v" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={16} />
+                <FaInstagram size={14} />
               </a>
               <a href="https://t.me/Tanujairam" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaTelegram size={16} />
+                <FaTelegram size={14} />
               </a>
               <a href="https://discord.com/users/Tanujairam" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaDiscord size={16} />
+                <FaDiscord size={14} />
               </a>
               <a href="mailto:tanujairam.v@gmail.com" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaEnvelope size={16} />
+                <FaEnvelope size={14} />
               </a>
               <a href="https://github.com/TanujairamV" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaGithub size={16} />
+                <FaGithub size={14} />
               </a>
             </motion.div>
           </div>
         </section>
-        <section id="about" className="py-6" data-aos="fade-in" data-aos-delay="50">
-          <h2 className="text-2xl text-center font-space-grotesk text-heading">About</h2>
-          <div className="mt-2 max-w-xs mx-auto text-center font-inter text-subheading px-4 material-card p-3">
-            <p className="text-sm">Tanujairam, 16, India.</p>
-            <p className="mt-1 text-sm">Coding automation with Python & Bash.</p>
+        <section id="about" className="py-4" data-aos="fade-in" data-aos-delay="30">
+          <h2 className="text-xl text-center font-space-grotesk text-heading">About</h2>
+          <div className="mt-1 max-w-xs mx-auto text-center font-inter text-subheading px-4 material-card p-2">
+            <p className="text-xs">Tanujairam, 16, India.</p>
+            <p className="mt-0.5 text-xs">Coding automation with Python & Bash.</p>
           </div>
         </section>
-        <section id="projects" className="py-6" data-aos="slide-up" data-aos-delay="50">
-          <h2 className="text-2xl text-center font-space-grotesk text-heading">Projects</h2>
-          <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-1 max-w-3xl mx-auto px-4">
+        <section id="projects" className="py-4" data-aos="slide-up" data-aos-delay="30">
+          <h2 className="text-xl text-center font-space-grotesk text-heading">Projects</h2>
+          <div className="mt-1 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-0.5 max-w-2xl mx-auto px-4">
             {projects.map((project, index) => (
-              <ProjectCard key={project.name} {...project} aosDelay={50 + index * 50} />
+              <ProjectCard key={project.name} {...project} aosDelay={30 + index * 30} />
             ))}
           </div>
         </section>
-        <section id="skills" className="py-6" data-aos="fade-in" data-aos-delay="50">
-          <h2 className="text-2xl text-center font-space-grotesk text-heading">Skills</h2>
-          <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-1 max-w-3xl mx-auto px-4">
+        <section id="skills" className="py-4" data-aos="fade-in" data-aos-delay="30">
+          <h2 className="text-xl text-center font-space-grotesk text-heading">Skills</h2>
+          <div className="mt-1 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-0.5 max-w-2xl mx-auto px-4">
             {skills.map((skill, index) => (
               <SkillChip
                 key={skill.name}
                 skill={skill.name}
                 proficiency={skill.proficiency}
                 icon={skill.icon}
-                aosDelay={50 + index * 50}
+                aosDelay={30 + index * 30}
               />
             ))}
           </div>
         </section>
-        <section id="contact" className="py-6" data-aos="fade-in" data-aos-delay="50">
-          <h2 className="text-2xl text-center font-space-grotesk text-heading">Contact</h2>
-          <div className="mt-2 max-w-xs mx-auto px-4">
+        <section id="contact" className="py-4" data-aos="fade-in" data-aos-delay="30">
+          <h2 className="text-xl text-center font-space-grotesk text-heading">Contact</h2>
+          <div className="mt-1 max-w-xs mx-auto px-4">
             <ContactForm />
           </div>
         </section>
