@@ -1,6 +1,6 @@
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'class',
+  darkMode: 'media', // Use system theme
   theme: {
     extend: {
       colors: {
