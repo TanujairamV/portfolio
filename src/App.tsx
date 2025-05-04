@@ -12,7 +12,7 @@ const App: React.FC = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  // Custom cursor effect
+  // Minimal custom cursor effect
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -21,54 +21,57 @@ const App: React.FC = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const SocialsButton = () => (
+    <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+      <a href="https://github.com/TanujairamV" className="text-blue-600 dark:text-blue-400 font-roboto hover:underline text-base sm:text-lg">
+        GitHub
+      </a>
+      <a href="mailto:tanujairam.v@gmail.com" className="text-blue-600 dark:text-blue-400 font-roboto hover:underline text-base sm:text-lg">
+        Email
+      </a>
+    </div>
+  );
+
   const renderSection = () => {
     switch (activeSection) {
       case 'home':
         return (
           <motion.section
-            className="flex flex-col items-center justify-center p-8 text-center min-h-[calc(100vh-64px)]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center justify-center px-4 py-12 sm:py-16 text-center min-h-[calc(100vh-80px)] w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <div className="inline-flex items-center justify-center bg-seafoam-200 dark:bg-seafoam-800 rounded-full w-16 h-16 text-2xl font-montserrat">
-              T
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-montserrat font-bold mt-4">Tanujairam</h1>
+            <h1 className="text-4xl sm:text-5xl font-montserrat font-bold">Tanujairam</h1>
             <p className="text-lg sm:text-xl font-roboto text-gray-600 dark:text-gray-300 mt-2">
               Student Developer | Open Source Enthusiast
             </p>
-            <p className="mt-4 max-w-2xl font-roboto text-gray-600 dark:text-gray-300 text-base sm:text-lg">
-              Hey, I'm Tanujairam — a high school student building cool stuff with Python and automation scripts. I love open source, coding late at night, and black coffee.
+            <p className="mt-4 max-w-xl font-roboto text-base sm:text-lg text-gray-500 dark:text-gray-400">
+              A high school student crafting Python tools and automation scripts, passionate about open source and late-night coding.
             </p>
-            <div className="mt-6 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <a href="https://github.com/TanujairamV" className="bg-seafoam-500 text-white px-6 py-2 rounded-full font-roboto hover:bg-seafoam-600 transition">
-                GitHub
-              </a>
-              <a href="mailto:tanujairam.v@gmail.com" className="bg-gray-200 dark:bg-gray-700 px-6 py-2 rounded-full font-roboto hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                Email
-              </a>
+            <div className="mt-6">
+              <SocialsButton />
             </div>
           </motion.section>
         );
       case 'about':
         return (
           <motion.section
-            className="p-8 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            className="px-4 py-12 sm:py-16 max-w-3xl mx-auto w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-montserrat font-bold text-center">About Me</h2>
-            <p className="mt-4 font-roboto text-gray-600 dark:text-gray-300 text-base sm:text-lg">
-              I'm a 16-year-old developer passionate about Python, automation, and open source. I maintain custom ROMs for Android devices and build tools like userbots and Telegram scripts. My achievements include contributing to open-source repos and automating Instagram signups using temp mail APIs.
+            <h2 className="text-3xl sm:text-4xl font-montserrat font-bold text-center">About</h2>
+            <p className="mt-4 font-roboto text-gray-500 dark:text-gray-400 text-base sm:text-lg text-center">
+              I'm a 16-year-old developer focused on Python and automation. I maintain custom Android ROMs and create tools like userbots and Telegram scripts. I’ve contributed to open-source projects and built automation for Instagram signups using temp mail APIs.
             </p>
-            <h3 className="mt-6 text-2xl font-montserrat text-center">Skills</h3>
-            <ul className="mt-4 flex flex-wrap justify-center gap-3 font-roboto">
+            <h3 className="mt-6 text-xl sm:text-2xl font-montserrat text-center">Skills</h3>
+            <ul className="mt-4 flex flex-wrap justify-center gap-2 font-roboto">
               {['Python', 'Bash', 'Git', 'Linux', 'Selenium', 'Tkinter', 'Basic Web Dev'].map(skill => (
-                <li key={skill} className="bg-seafoam-100 dark:bg-seafoam-700 px-4 py-2 rounded-full text-sm sm:text-base">
+                <li key={skill} className="px-3 py-1 border border-gray-200 dark:border-gray-700 rounded text-sm sm:text-base text-gray-600 dark:text-gray-300">
                   {skill}
                 </li>
               ))}
@@ -78,14 +81,14 @@ const App: React.FC = () => {
       case 'projects':
         return (
           <motion.section
-            className="p-8 max-w-5xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            className="px-4 py-12 sm:py-16 max-w-4xl mx-auto w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
             <h2 className="text-3xl sm:text-4xl font-montserrat font-bold text-center">Projects</h2>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="mt-6 space-y-6">
               {[
                 {
                   name: 'gr11prctl',
@@ -106,12 +109,12 @@ const App: React.FC = () => {
                 <motion.a
                   key={project.name}
                   href={project.link}
-                  className="block bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-lg transition"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
+                  className="block border-b border-gray-200 dark:border-gray-700 py-4"
+                  whileHover={{ x: 8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <h3 className="text-xl font-montserrat font-bold">{project.name}</h3>
-                  <p className="mt-2 font-roboto text-gray-600 dark:text-gray-300 text-sm sm:text-base">{project.desc}</p>
+                  <h3 className="text-xl sm:text-2xl font-montserrat font-bold text-gray-800 dark:text-gray-200">{project.name}</h3>
+                  <p className="mt-1 font-roboto text-gray-500 dark:text-gray-400 text-sm sm:text-base">{project.desc}</p>
                 </motion.a>
               ))}
             </div>
@@ -120,20 +123,15 @@ const App: React.FC = () => {
       case 'contact':
         return (
           <motion.section
-            className="p-8 max-w-lg mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            className="px-4 py-12 sm:py-16 max-w-lg mx-auto w-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
             <h2 className="text-3xl sm:text-4xl font-montserrat font-bold text-center">Contact</h2>
-            <div className="mt-6 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md">
-              <p className="font-roboto text-gray-600 dark:text-gray-300 text-base sm:text-lg">
-                Email: <a href="mailto:tanujairam.v@gmail.com" className="text-seafoam-500 hover:underline">tanujairam.v@gmail.com</a>
-              </p>
-              <p className="mt-2 font-roboto text-gray-600 dark:text-gray-300 text-base sm:text-lg">
-                GitHub: <a href="https://github.com/TanujairamV" className="text-seafoam-500 hover:underline">TanujairamV</a>
-              </p>
+            <div className="mt-6 space-y-2 text-center">
+              <SocialsButton />
             </div>
           </motion.section>
         );
@@ -143,23 +141,23 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-900'} font-roboto relative overflow-hidden flex flex-col`}>
+    <div className={`min-h-screen ${theme === 'light' ? 'bg-pearl' : 'bg-gradient-dark'} font-roboto flex flex-col w-full`}>
       {/* Custom Cursor */}
       <motion.div
-        className="fixed w-4 h-4 bg-seafoam-500 rounded-full pointer-events-none z-50"
-        style={{ x: cursorPos.x - 8, y: cursorPos.y - 8 }}
+        className="fixed w-3 h-3 bg-blue-600 dark:bg-blue-400 rounded-full pointer-events-none z-50"
+        style={{ x: cursorPos.x - 6, y: cursorPos.y - 6 }}
         transition={{ type: 'spring', stiffness: 500, damping: 28 }}
       />
       {/* Navigation */}
-      <nav className="bg-white dark:bg-gray-800 p-4 shadow-md sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-xl font-montserrat font-bold text-seafoam-500">Tanujairam</div>
-          <ul className="flex flex-wrap justify-center space-x-4">
+      <nav className="border-b border-gray-200 dark:border-gray-700 p-4 sticky top-0 z-10 bg-pearl dark:bg-gray-900 w-full">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="text-xl font-montserrat font-bold text-gray-800 dark:text-gray-200">Tanujairam</div>
+          <ul className="flex flex-wrap justify-center space-x-4 sm:space-x-6">
             {['home', 'about', 'projects', 'contact'].map(section => (
               <li key={section}>
                 <button
                   onClick={() => setActiveSection(section)}
-                  className={`capitalize font-roboto ${activeSection === section ? 'text-seafoam-500' : 'text-gray-600 dark:text-gray-300'} hover:text-seafoam-500 transition`}
+                  className={`capitalize font-roboto text-base ${activeSection === section ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'} hover:text-blue-600 dark:hover:text-blue-400 transition`}
                 >
                   {section}
                 </button>
@@ -168,20 +166,20 @@ const App: React.FC = () => {
           </ul>
           <button
             onClick={toggleTheme}
-            className="bg-seafoam-500 text-white px-4 py-2 rounded-full font-roboto hover:bg-seafoam-600 transition"
+            className="text-blue-600 dark:text-blue-400 font-roboto hover:underline text-base"
           >
             {theme === 'light' ? 'Dark' : 'Light'}
           </button>
         </div>
       </nav>
       {/* Main Content */}
-      <main className="flex-grow">
+      <main className="flex-grow w-full">
         <AnimatePresence>{renderSection()}</AnimatePresence>
       </main>
       {/* Footer */}
-      <footer className="bg-white dark:bg-gray-800 p-4 text-center">
-        <p className="font-roboto text-gray-600 dark:text-gray-300 text-sm sm:text-base">
-          © 2025 Tanujairam. All rights reserved.
+      <footer className="border-t border-gray-200 dark:border-gray-700 p-4 text-center bg-pearl dark:bg-gray-900 w-full">
+        <p className="font-roboto text-gray-500 dark:text-gray-400 text-sm">
+          © 2025 Tanujairam
         </p>
       </footer>
     </div>
