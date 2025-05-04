@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import Particles from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
 import type { Engine } from '@tsparticles/engine';
@@ -8,35 +8,39 @@ const ParticlesBackground = () => {
     await loadSlim(engine);
   }, []);
 
-  const particlesOptions = {
-    background: { color: { value: "transparent" } },
-    fpsLimit: 120,
-    particles: {
-      color: { value: "#6B46C1" },
-      move: {
-        direction: "none" as const,
-        enable: true,
-        outModes: { default: "bounce" as const },
-        random: true,
-        speed: 0.15,
-        straight: false,
+  const particlesOptions = useMemo(
+    () => ({
+      background: { color: { value: 'transparent' } },
+      fpsLimit: 120,
+      particles: {
+        color: { value: '#6B46C1' },
+        move: {
+          direction: 'none' as const,
+          enable: true,
+          outModes: { default: 'bounce' as const },
+          random: true,
+          speed: 0.15,
+          straight: false,
+        },
+        number: {
+          density: { enable: true, area: 800 },
+          value: 50,
+        },
+        opacity: { value: { min: 0.05, max: 0.1 } },
+        shape: { type: 'circle' as const },
+        size: { value: { min: 0.1, max: 0.8 } },
       },
-      number: {
-        density: { enable: true, area: 800 },
-        value: 50,
-      },
-      opacity: { value: { min: 0.05, max: 0.1 } },
-      shape: { type: "circle" as const },
-      size: { value: { min: 0.1, max: 0.8 } },
-    },
-    detectRetina: true,
-  };
+      detectRetina: true,
+    }),
+    []
+  );
 
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
+      particlesLoaded={() => Promise.resolve()}
       options={particlesOptions}
+      init={particlesInit}
       className="absolute inset-0 z-0"
     />
   );
