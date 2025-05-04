@@ -12,8 +12,8 @@ module.exports = {
         'space-grotesk': ['Space Grotesk', 'sans-serif'],
       },
       colors: {
-        dark: '#080808',
-        light: '#F8F8F8',
+        dark: '#121212',
+        light: '#FFFFFF',
         accent: '#6B46C1',
         secondary: '#FF6AC1',
         hover: '#FFD700',
