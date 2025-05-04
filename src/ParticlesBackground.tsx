@@ -1,12 +1,16 @@
-import { useCallback, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
-import type { ISourceOptions } from '@tsparticles/engine';
+import type { ISourceOptions, Container } from '@tsparticles/engine';
 
 const ParticlesBackground = () => {
-  const particlesInit = useCallback(async () => {
-    await initParticlesEngine(async (engine) => {
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
       await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
     });
   }, []);
 
@@ -37,10 +41,11 @@ const ParticlesBackground = () => {
     []
   );
 
+  if (!init) return null;
+
   return (
     <Particles
       id="tsparticles"
-      init={particlesInit}
       options={particlesOptions}
       className="absolute inset-0 z-0"
     />
