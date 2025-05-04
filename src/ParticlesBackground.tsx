@@ -1,14 +1,16 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import Particles from '@tsparticles/react';
+import { useCallback, useMemo } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
-import type { Engine } from '@tsparticles/engine';
+import type { ISourceOptions } from '@tsparticles/engine';
 
 const ParticlesBackground = () => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+  const particlesInit = useCallback(async () => {
+    await initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    });
   }, []);
 
-  const particlesOptions = useMemo(
+  const particlesOptions = useMemo<ISourceOptions>(
     () => ({
       background: { color: { value: 'transparent' } },
       fpsLimit: 120,
@@ -38,9 +40,8 @@ const ParticlesBackground = () => {
   return (
     <Particles
       id="tsparticles"
-      particlesLoaded={() => Promise.resolve()}
-      options={particlesOptions}
       init={particlesInit}
+      options={particlesOptions}
       className="absolute inset-0 z-0"
     />
   );
