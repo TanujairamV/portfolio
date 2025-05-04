@@ -3,16 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --color-seafoam: 167 216 217;
-  }
-
   html, body {
     @apply m-0 p-0 min-h-screen;
   }
 
   #root {
-    @apply flex flex-col min-h-screen;
+    @apply flex flex-col min-h-screen w-full;
   }
 
   .font-montserrat {
@@ -21,5 +17,9 @@
 
   .font-roboto {
     font-family: 'Roboto', sans-serif;
+  }
+
+  .bg-gradient-dark {
+    background: linear-gradient(180deg, #1A1A1A, #2E2E2E);
   }
 }
