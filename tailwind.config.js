@@ -1,14 +1,21 @@
 module.exports = {
-  content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'media', // Use system theme
+  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+        'cabinet-grotesk': ['Cabinet Grotesk', 'sans-serif'],
+        ranade: ['Ranade', 'sans-serif'],
+        'dancing-script': ['Dancing Script', 'cursive'],
+        'space-grotesk': ['Space Grotesk', 'sans-serif'],
+      },
       colors: {
-        pearl: '#F5F6F5',
-        blue: {
-          400: '#60A5FA',
-          600: '#2563EB',
-        },
+        dark: '#121212',
+        light: '#FFFFFF',
+        accent: '#6B46C1',
+        secondary: '#FF6AC1',
+        hover: '#FFD700',
       },
     },
   },
