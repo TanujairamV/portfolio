@@ -1,29 +1,36 @@
 import { useEffect, useMemo, useState } from 'react';
-import Particles, { initParticlesEngine } from '@tsparticles/react';
+import Particles from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
-import type { ISourceOptions } from '@tsparticles/engine';
+import type { ISourceOptions, Engine } from '@tsparticles/react';
 
 const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
+    const initParticles = async (engine: Engine) => {
       await loadSlim(engine);
-    }).then(() => {
+    };
+
+    initParticlesEngine(initParticles).then(() => {
       setInit(true);
     });
+
+    // Optional: prevent memory leaks if the component is unmounted before init completes
+    return () => {
+      setInit(false);
+    };
   }, []);
 
   const particlesOptions = useMemo<ISourceOptions>(
     () => ({
       background: { color: { value: 'transparent' } },
-      fpsLimit: 120,
+      fpsLimit: 60, // Lowered from 120 to save resources
       particles: {
         color: { value: '#6B46C1' },
         move: {
-          direction: 'none' as const,
+          direction: 'none',
           enable: true,
-          outModes: { default: 'bounce' as const },
+          outModes: { default: 'bounce' },
           random: true,
           speed: 0.15,
           straight: false,
@@ -33,7 +40,7 @@ const ParticlesBackground = () => {
           value: 50,
         },
         opacity: { value: { min: 0.05, max: 0.1 } },
-        shape: { type: 'circle' as const },
+        shape: { type: 'circle' },
         size: { value: { min: 0.1, max: 0.8 } },
       },
       detectRetina: true,
@@ -41,7 +48,7 @@ const ParticlesBackground = () => {
     []
   );
 
-  if (!init) return null;
+  if (!init) return <div className="absolute inset-0 z-0 bg-transparent" />;
 
   return (
     <Particles
