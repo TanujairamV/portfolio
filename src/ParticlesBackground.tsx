@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from 'tsparticles-slim';
-import type { ISourceOptions, Container } from '@tsparticles/engine';
+import type { ISourceOptions } from '@tsparticles/engine';
 
 const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
+    initParticlesEngine(async () => {
+      await loadSlim();
     }).then(() => {
       setInit(true);
     });
