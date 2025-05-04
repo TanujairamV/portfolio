@@ -19,10 +19,10 @@ function Cursor() {
   return (
     <motion.div
       ref={cursorRef}
-      className="cursor-inverted fixed"
+      className="cursor-material fixed"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.2 }}
     />
   );
 }
