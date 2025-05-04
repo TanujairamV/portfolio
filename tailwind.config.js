@@ -4,17 +4,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        seafoam: {
-          100: '#E6F3F3',
-          200: '#CDE7E8',
-          500: '#A7D8D9',
-          600: '#8CC6C7',
-          700: '#70B4B5',
-          800: '#559FA0',
+        pearl: '#F5F6F5',
+        blue: {
+          400: '#60A5FA',
+          600: '#2563EB',
         },
-      },
-      borderRadius: {
-        '2xl': '1rem',
       },
     },
   },
