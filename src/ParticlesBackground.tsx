@@ -7,8 +7,8 @@ const ParticlesBackground = () => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
-    initParticlesEngine(async () => {
-      await loadSlim();
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
     }).then(() => {
       setInit(true);
     });
