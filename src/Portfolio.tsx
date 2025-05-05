@@ -1,211 +1,61 @@
-import { useState, useEffect, createContext } from 'react';
-import { motion } from 'framer-motion';
-import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from 'react-icons/fa';
-import { TypeAnimation } from 'react-type-animation';
-import AOS from 'aos';
+import { useEffect, useState } from 'react';
 import ParticlesBackground from './ParticlesBackground';
+import IntroScreen from './IntroScreen';
 import NavBar from './NavBar';
 import Cursor from './Cursor';
-import ContactForm from './ContactForm';
-import ProjectCard from './ProjectCard';
-import SkillChip from './SkillChip';
-import Footer from './Footer';
-import IntroScreen from './IntroScreen';
-import './index.css';
-import { Project, Skill } from './types';
-
-export const ThemeContext = createContext<{
-  theme: 'system' | 'dark' | 'light';
-  setTheme: (theme: 'system' | 'dark' | 'light') => void;
-}>({ theme: 'system', setTheme: () => {} });
 
 const Portfolio = () => {
-  const [theme, setTheme] = useState<'system' | 'dark' | 'light'>('system');
-  const [showIntro, setShowIntro] = useState(true);
+  const [theme, setTheme] = useState('system');
 
   useEffect(() => {
-    AOS.init({
-      duration: 400,
-      once: true,
-      easing: 'ease-in-out',
-    });
-  }, []);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => {
-      if (theme === 'system') {
-        document.body.className = mediaQuery.matches ? 'dark' : 'light';
+    const applyTheme = () => {
+      if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
       }
     };
-    handleChange();
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+
+    applyTheme();
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', applyTheme);
+
+    return () => mediaQuery.removeEventListener('change', applyTheme);
   }, [theme]);
-
-  useEffect(() => {
-    document.body.className = theme === 'system' ? '' : theme;
-  }, [theme]);
-
-  const projects: Project[] = [
-    {
-      name: 'gr11prctl',
-      url: 'https://github.com/TanujairamV/gr11prctl',
-      tech: ['Python', 'Bash'],
-      description: 'System task automation for Grade 11.',
-    },
-    {
-      name: 'rupi',
-      url: 'https://github.com/TanujairamV/rupi',
-      tech: ['Python', 'Shell'],
-      description: 'CLI tool for Linux automation.',
-    },
-    {
-      name: 'Instagram Bot',
-      url: 'https://github.com/TanujairamV/instagram-bot',
-      tech: ['Python', 'Selenium'],
-      description: 'Automated Instagram bot with Selenium.',
-    },
-  ];
-
-  const skills: Skill[] = [
-    { name: 'Python', proficiency: 'Advanced', icon: 'devicon-python-plain' },
-    { name: 'Bash', proficiency: 'Intermediate', icon: 'devicon-bash-plain' },
-    { name: 'Shell', proficiency: 'Intermediate', icon: 'devicon-linux-plain' },
-    { name: 'Selenium', proficiency: 'Beginner', icon: 'devicon-selenium-original' },
-    { name: 'Git', proficiency: 'Intermediate', icon: 'devicon-git-plain' },
-    { name: 'GitHub', proficiency: 'Intermediate', icon: 'devicon-github-original' },
-    { name: 'WSL', proficiency: 'Beginner', icon: 'devicon-windows8-original' },
-  ];
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {showIntro && <IntroScreen onComplete={() => setShowIntro(false)} />}
-      <motion.div
-        className="min-h-screen font-inter bg-dark dark:bg-dark light:bg-light"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.25 }}
-      >
-        <Cursor />
-        <ParticlesBackground />
-        <NavBar />
-        <section id="hero" className="min-h-screen flex items-center justify-center">
-          <div className="text-center max-w-xs mx-auto px-3">
-            <motion.h1
-              className="text-2xl font-cabinet-grotesk text-heading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-            >
-              Tanujairam
-            </motion.h1>
-            <motion.div
-              className="mt-0.5 text-sm font-ranade text-heading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25, delay: 0.1 }}
-            >
-              <TypeAnimation
-                sequence={['Code', 400, 'Build', 400, 'Innovate', 400]}
-                wrapper="span"
-                speed={50}
-                repeat={Infinity}
-              />
-            </motion.div>
-            <motion.p
-              className="mt-0.5 text-[0.65rem] font-inter text-subheading max-w-[14rem] mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25, delay: 0.2 }}
-            >
-              16-year-old crafting automation tools.
-            </motion.p>
-            <motion.div
-              className="mt-1.5 flex space-x-1.5 justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25, delay: 0.3 }}
-            >
-              <a
-                href="https://github.com/TanujairamV"
-                className="btn material-btn text-[0.65rem]"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub
-              </a>
-              <a
-                href="mailto:tanujairam.v@gmail.com"
-                className="btn material-btn text-[0.65rem]"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Email
-              </a>
-            </motion.div>
-            <motion.div
-              className="mt-1.5 flex justify-center space-x-1.5"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25, delay: 0.4 }}
-            >
-              <a href="https://instagram.com/tanujairam.v" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaInstagram size={12} />
-              </a>
-              <a href="https://t.me/Tanujairam" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaTelegram size={12} />
-              </a>
-              <a href="https://discord.com/users/Tanujairam" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaDiscord size={12} />
-              </a>
-              <a href="mailto:tanujairam.v@gmail.com" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaEnvelope size={12} />
-              </a>
-              <a href="https://github.com/TanujairamV" className="social-icon material-icon" target="_blank" rel="noopener noreferrer">
-                <FaGithub size={12} />
-              </a>
-            </motion.div>
+    <div className="min-h-screen relative">
+      <IntroScreen />
+      <ParticlesBackground />
+      <Cursor />
+      <NavBar setTheme={setTheme} />
+      <main className="container mx-auto px-4 py-12">
+        <section id="hero" className="text-center py-16">
+          <h1 className="mb-4">Hi, I'm Tanuj</h1>
+          <p className="text-subheading">A passionate developer building modern web experiences.</p>
+          <button className="material-btn mt-6">Get in Touch</button>
+        </section>
+        <section id="about" className="py-16">
+          <h2 className="text-center mb-8">About Me</h2>
+          <div className="material-card">
+            <p>I'm a developer with a focus on React, TypeScript, and Tailwind CSS.</p>
           </div>
         </section>
-        <section id="about" className="py-3" data-aos="fade-in" data-aos-delay="20">
-          <h2 className="text-lg text-center font-space-grotesk text-heading">About</h2>
-          <div className="mt-0.5 max-w-[14rem] mx-auto text-center font-inter text-subheading px-3 material-card p-1.5">
-            <p className="text-[0.65rem]">Tanujairam, 16, India.</p>
-            <p className="mt-0.25 text-[0.65rem]">Automating with Python & Bash.</p>
+        <section id="projects" className="py-16">
+          <h2 className="text-center mb-8">Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="material-card">
+              <h3 className="text-xl">Project 1</h3>
+              <p>A cool project built with modern tech.</p>
+            </div>
+            <div className="material-card">
+              <h3 className="text-xl">Project 2</h3>
+              <p>Another awesome project showcasing my skills.</p>
+            </div>
           </div>
         </section>
-        <section id="projects" className="py-3" data-aos="slide-up" data-aos-delay="20">
-          <h2 className="text-lg text-center font-space-grotesk text-heading">Projects</h2>
-          <div className="mt-0.5 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-0.5 max-w-xl mx-auto px-3">
-            {projects.map((project, index) => (
-              <ProjectCard key={project.name} {...project} aosDelay={20 + index * 20} />
-            ))}
-          </div>
-        </section>
-        <section id="skills" className="py-3" data-aos="fade-in" data-aos-delay="20">
-          <h2 className="text-lg text-center font-space-grotesk text-heading">Skills</h2>
-          <div className="mt-0.5 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-0.5 max-w-xl mx-auto px-3">
-            {skills.map((skill, index) => (
-              <SkillChip
-                key={skill.name}
-                skill={skill.name}
-                proficiency={skill.proficiency}
-                icon={skill.icon}
-                aosDelay={20 + index * 20}
-              />
-            ))}
-          </div>
-        </section>
-        <section id="contact" className="py-3" data-aos="fade-in" data-aos-delay="20">
-          <h2 className="text-lg text-center font-space-grotesk text-heading">Contact</h2>
-          <div className="mt-0.5 max-w-[14rem] mx-auto px-3">
-            <ContactForm />
-          </div>
-        </section>
-        <Footer />
-      </motion.div>
-    </ThemeContext.Provider>
+      </main>
+    </div>
   );
 };
 
