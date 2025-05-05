@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "@tsparticles/react": "^3.0.0",
-    "@tsparticles/engine": "^3.0.0",
-    "tsparticles-slim": "^3.0.0",
+    "@tsparticles/react": "^2.11.1",
+    "@tsparticles/engine": "^2.11.1",
+    "tsparticles-slim": "^2.11.1",
     "aos": "^2.3.4",
     "framer-motion": "^11.11.9",
     "react": "^18.3.1",
