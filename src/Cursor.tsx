@@ -1,29 +1,18 @@
 import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useMousePosition } from './util/mouse';
 
 const Cursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const { x, y } = useMousePosition();
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${e.clientX}px`;
-        cursorRef.current.style.top = `${e.clientY}px`;
-      }
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    const cursor = cursorRef.current;
+    if (cursor) {
+      cursor.style.transform = `translate(${x - 16}px, ${y - 16}px)`; // Center the 32px cursor
+    }
+  }, [x, y]);
 
-  return (
-    <motion.div
-      ref={cursorRef}
-      className="cursor-material fixed"
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 0.15 }}
-    />
-  );
+  return <div ref={cursorRef} className="cursor" />;
 };
 
 export default Cursor;
