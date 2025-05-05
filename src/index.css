@@ -30,11 +30,11 @@ body {
 }
 
 .material-card {
-  @apply bg-foreground/5 rounded-md border border-foreground/10;
+  @apply bg-foreground/10 rounded-md border border-foreground/20;
 }
 
 .material-icon {
-  @apply p-1 rounded-full bg-foreground/5 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200;
+  @apply p-1 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200;
 }
 
 h1, h2 {
