@@ -23,19 +23,20 @@
 body {
   @apply bg-background text-foreground;
   font-family: 'Inter', 'sans-serif';
-  font-size: 16px; /* Base font size for better readability */
+  font-size: 18px; /* Larger base font size */
+  line-height: 1.5;
 }
 
 .material-btn {
-  @apply px-4 py-2 rounded-md bg-accent text-foreground text-base hover:bg-secondary transition-colors duration-200;
+  @apply px-6 py-3 rounded-lg bg-accent text-foreground text-lg font-medium hover:bg-secondary transition-colors duration-200;
 }
 
 .material-card {
-  @apply bg-foreground/10 rounded-lg border border-foreground/20 p-6;
+  @apply bg-foreground/10 rounded-xl border border-foreground/20 p-8;
 }
 
 .material-icon {
-  @apply p-2 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-lg;
+  @apply p-3 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-xl;
 }
 
 h1, h2 {
@@ -43,15 +44,15 @@ h1, h2 {
 }
 
 h1 {
-  @apply text-4xl md:text-5xl;
+  @apply text-5xl md:text-6xl;
 }
 
 h2 {
-  @apply text-2xl md:text-3xl;
+  @apply text-3xl md:text-4xl;
 }
 
 p {
-  @apply font-inter text-base md:text-lg;
+  @apply font-inter text-lg md:text-xl;
 }
 
 canvas {
@@ -63,7 +64,8 @@ canvas {
 }
 
 .cursor {
-  @apply fixed w-6 h-6 rounded-full pointer-events-none z-50;
+  @apply fixed w-8 h-8 rounded-full pointer-events-none z-[9999];
   background-color: var(--foreground);
   mix-blend-mode: difference;
+  transition: transform 0.2s ease;
 }
