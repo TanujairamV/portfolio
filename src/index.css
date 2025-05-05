@@ -22,7 +22,7 @@
 
 body {
   @apply bg-background text-foreground;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'sans-serif';
 }
 
 .material-btn {
@@ -49,12 +49,10 @@ canvas {
   @apply absolute inset-0 z-0;
 }
 
-/* Ensure particles are behind content */
 #hero, #about, #projects, #skills, #contact {
   @apply relative z-10;
 }
 
-/* Cursor styling */
 .cursor {
   @apply fixed w-4 h-4 rounded-full pointer-events-none z-50;
   background-color: var(--foreground);
