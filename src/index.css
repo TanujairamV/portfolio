@@ -23,26 +23,35 @@
 body {
   @apply bg-background text-foreground;
   font-family: 'Inter', 'sans-serif';
+  font-size: 16px; /* Base font size for better readability */
 }
 
 .material-btn {
-  @apply px-2 py-1 rounded-md bg-accent text-foreground text-[0.65rem] hover:bg-secondary transition-colors duration-200;
+  @apply px-4 py-2 rounded-md bg-accent text-foreground text-base hover:bg-secondary transition-colors duration-200;
 }
 
 .material-card {
-  @apply bg-foreground/10 rounded-md border border-foreground/20;
+  @apply bg-foreground/10 rounded-lg border border-foreground/20 p-6;
 }
 
 .material-icon {
-  @apply p-1 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200;
+  @apply p-2 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-lg;
 }
 
 h1, h2 {
   @apply font-space-grotesk;
 }
 
+h1 {
+  @apply text-4xl md:text-5xl;
+}
+
+h2 {
+  @apply text-2xl md:text-3xl;
+}
+
 p {
-  @apply font-inter;
+  @apply font-inter text-base md:text-lg;
 }
 
 canvas {
@@ -54,7 +63,7 @@ canvas {
 }
 
 .cursor {
-  @apply fixed w-4 h-4 rounded-full pointer-events-none z-50;
+  @apply fixed w-6 h-6 rounded-full pointer-events-none z-50;
   background-color: var(--foreground);
   mix-blend-mode: difference;
 }
