@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const IntroScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [displayText, setDisplayText] = useState('');
-  const finalText = 'Tanujairam V';
+  const finalText = 'Welcome to My Portfolio';
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   const duration = 3000; // 3 seconds
 
