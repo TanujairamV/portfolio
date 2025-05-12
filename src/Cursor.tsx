@@ -8,7 +8,7 @@ const Cursor = () => {
   useEffect(() => {
     const cursor = cursorRef.current;
     if (cursor) {
-      cursor.style.transform = `translate(${x - 16}px, ${y - 16}px)`; // Center the 32px cursor
+      cursor.style.transform = `translate(${x - 16}px, ${y - 16}px)`;
     }
   }, [x, y]);
 
