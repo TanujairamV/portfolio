@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMousePosition } from './util/mouse';
 
 const Cursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const { x, y } = useMousePosition();
-  const [isVisible, setIsVisible] = useState(true);
 
   // Hide cursor on mobile devices
   const isTouchDevice = 'ontouchstart' in window;
@@ -24,21 +23,18 @@ const Cursor = () => {
       x >= window.innerWidth ||
       y >= window.innerHeight;
 
-    setIsVisible(!isOffScreen);
     cursor.style.visibility = isOffScreen ? 'hidden' : 'visible';
   }, [x, y]);
 
   useEffect(() => {
     // Handle mouse leave event to hide cursor when mouse leaves viewport
     const handleMouseLeave = () => {
-      setIsVisible(false);
       if (cursorRef.current) {
         cursorRef.current.style.visibility = 'hidden';
       }
     };
 
     const handleMouseEnter = () => {
-      setIsVisible(true);
       if (cursorRef.current) {
         cursorRef.current.style.visibility = 'visible';
       }
