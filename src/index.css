@@ -23,20 +23,20 @@
 body {
   @apply bg-background text-foreground;
   font-family: 'Inter', 'sans-serif';
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
 .material-btn {
-  @apply px-8 py-4 rounded-xl bg-accent text-foreground text-xl font-medium hover:bg-secondary transition-colors duration-200;
+  @apply px-6 py-3 rounded-xl bg-accent text-foreground text-base font-medium hover:bg-secondary transition-colors duration-200;
 }
 
 .material-card {
-  @apply bg-foreground/10 rounded-xl border border-foreground/20 p-10;
+  @apply bg-foreground/10 rounded-xl border border-foreground/20 p-6;
 }
 
 .material-icon {
-  @apply p-4 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-2xl;
+  @apply p-3 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-lg;
 }
 
 h1, h2 {
@@ -44,15 +44,15 @@ h1, h2 {
 }
 
 h1 {
-  @apply text-6xl md:text-7xl;
+  @apply text-5xl md:text-6xl;
 }
 
 h2 {
-  @apply text-4xl md:text-5xl;
+  @apply text-3xl md:text-4xl;
 }
 
 p {
-  @apply font-inter text-xl md:text-2xl;
+  @apply font-inter text-base md:text-lg;
 }
 
 .font-dancing-script {
@@ -68,8 +68,8 @@ canvas {
 }
 
 .cursor {
-  @apply fixed w-8 h-8 rounded-full pointer-events-none z-[9999];
+  @apply fixed w-6 h-6 rounded-full pointer-events-none z-[10000];
   background-color: var(--foreground);
   mix-blend-mode: difference;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, visibility 0.2s ease;
 }
