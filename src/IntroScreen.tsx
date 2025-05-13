@@ -42,7 +42,7 @@ const IntroScreen = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background z-[10000]">
-      <h1 className="text-5xl md:text-7xl font-space-grotesk text-foreground animate-pulse">
+      <h1 className="text-4xl md:text-5xl font-space-grotesk text-foreground animate-pulse">
         {displayText}
       </h1>
     </div>
