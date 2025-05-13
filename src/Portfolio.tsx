@@ -4,6 +4,7 @@ import IntroScreen from './IntroScreen';
 import NavBar from './NavBar';
 import Cursor from './Cursor';
 import { ThemeProvider } from './context/ThemeContext';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook } from 'react-icons/fa';
 
 const Portfolio = () => {
   const sectionVariants = {
@@ -26,9 +27,26 @@ const Portfolio = () => {
             animate="visible"
             variants={sectionVariants}
           >
-            <h1 className="mb-4">Hi, I'm Tanuj 👋</h1>
-            <p className="text-subheading">A passionate developer building modern web experiences.</p>
-            <button className="material-btn mt-6">Get in Touch 📧</button>
+            <h1 className="mb-4">Hi, I'm Tanuj</h1>
+            <p className="text-subheading mb-6">A passionate developer building modern web experiences.</p>
+            <div className="flex justify-center space-x-4 mb-6">
+              <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+                <FaGithub />
+              </a>
+              <a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+                <FaLinkedin />
+              </a>
+              <a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+                <FaTwitter />
+              </a>
+              <a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+                <FaInstagram />
+              </a>
+              <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+                <FaFacebook />
+              </a>
+            </div>
+            <button className="material-btn mt-6">Get in Touch</button>
           </motion.section>
           <motion.section
             id="about"
@@ -37,7 +55,7 @@ const Portfolio = () => {
             animate="visible"
             variants={sectionVariants}
           >
-            <h2 className="text-center mb-8">About Me ℹ️</h2>
+            <h2 className="text-center mb-8">About Me</h2>
             <div className="material-card hover:scale-105 transition-transform duration-300">
               <p>I'm a developer with a focus on React, TypeScript, and Tailwind CSS.</p>
             </div>
@@ -49,7 +67,7 @@ const Portfolio = () => {
             animate="visible"
             variants={sectionVariants}
           >
-            <h2 className="text-center mb-8">Projects 🛠️</h2>
+            <h2 className="text-center mb-8">Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="material-card hover:scale-105 transition-transform duration-300">
                 <h3 className="text-xl">Project 1</h3>
@@ -64,9 +82,9 @@ const Portfolio = () => {
         </main>
         <footer className="bg-background/80 py-4 text-center">
           <p className="text-subheading">
-            📧 <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
+            <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
           </p>
-          <p className="text-subheading mt-1">© 2025 Tanuj. All rights reserved.</p>
+          <p className="text-subheading mt-1">2025 Tanuj. All rights reserved.</p>
         </footer>
       </div>
     </ThemeProvider>
