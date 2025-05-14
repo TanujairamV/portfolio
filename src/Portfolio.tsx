@@ -5,8 +5,30 @@ import NavBar from './NavBar';
 import Cursor from './Cursor';
 import { ThemeProvider } from './context/ThemeContext';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaYoutube } from 'react-icons/fa';
+import { useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Portfolio = () => {
+  const form = useRef<HTMLFormElement>(null);
+
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (form.current) {
+      emailjs
+        .sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY')
+        .then(
+          () => {
+            alert('Message sent successfully!');
+            form.current?.reset();
+          },
+          (error) => {
+            alert('Failed to send message: ' + error.text);
+          }
+        );
+    }
+  };
+
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -42,7 +64,7 @@ const Portfolio = () => {
             variants={sectionVariants}
           >
             <motion.h1
-              className="mb-4"
+              className="mb-4 hero-heading"
               initial="hidden"
               animate="visible"
               variants={headingVariants}
@@ -91,8 +113,48 @@ const Portfolio = () => {
             variants={sectionVariants}
           >
             <h2 className="text-center mb-8">About Me</h2>
-            <div className="material-card hover:scale-105 transition-transform duration-300">
-              <p>I'm a developer with a focus on React, TypeScript, and Tailwind CSS.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="material-card hover:scale-105 transition-transform duration-300">
+                <p>I'm a developer with a focus on React, TypeScript, and Tailwind CSS.</p>
+              </div>
+              <div className="profile-card bg-background/30 backdrop-blur-md rounded-xl border border-foreground/20 p-6">
+                <h3 className="text-xl font-space-grotesk mb-2">Tanuj</h3>
+                <p className="text-subheading mb-1">Frontend Developer</p>
+                <p className="text-subheading mb-1">Email: tanuj@example.com</p>
+                <p className="text-subheading">Based in: India</p>
+              </div>
+              <div className="material-card p-6">
+                <h3 className="text-xl font-space-grotesk mb-4">Contact Me</h3>
+                <form ref={form} onSubmit={sendEmail} className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      name="user_name"
+                      placeholder="Your Name"
+                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="user_email"
+                      placeholder="Your Email"
+                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      name="message"
+                      placeholder="Your Message"
+                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading h-32"
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" className="material-btn w-full">Send Message</button>
+                </form>
+              </div>
             </div>
           </motion.section>
           <motion.section
