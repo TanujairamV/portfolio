@@ -13,8 +13,8 @@ const Cursor = () => {
     const cursor = cursorRef.current;
     if (!cursor) return;
 
-    // Update cursor position
-    cursor.style.transform = `translate(${x - 12}px, ${y - 12}px)`; // Center the 24px cursor (w-6 h-6)
+    // Update cursor position (center the 32px cursor: w-8 h-8)
+    cursor.style.transform = `translate(${x - 16}px, ${y - 16}px)`;
 
     // Check if cursor is off-screen
     const isOffScreen =
