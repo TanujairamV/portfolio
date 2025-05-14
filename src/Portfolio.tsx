@@ -4,12 +4,26 @@ import IntroScreen from './IntroScreen';
 import NavBar from './NavBar';
 import Cursor from './Cursor';
 import { ThemeProvider } from './context/ThemeContext';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaYoutube } from 'react-icons/fa';
 
 const Portfolio = () => {
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  const headingVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 120,
+        damping: 15,
+        duration: 0.8,
+      },
+    },
   };
 
   return (
@@ -27,7 +41,14 @@ const Portfolio = () => {
             animate="visible"
             variants={sectionVariants}
           >
-            <h1 className="mb-4">Hi, I'm Tanuj</h1>
+            <motion.h1
+              className="mb-4"
+              initial="hidden"
+              animate="visible"
+              variants={headingVariants}
+            >
+              Hi, I'm Tanuj
+            </motion.h1>
             <p className="text-subheading mb-6">A passionate developer building modern web experiences.</p>
             <div className="flex justify-center space-x-4 mb-6">
               <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
@@ -44,6 +65,20 @@ const Portfolio = () => {
               </a>
               <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
                 <FaFacebook />
+              </a>
+            </div>
+            <div className="flex justify-center mb-6">
+              <a
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 bg-background/30 backdrop-blur-md rounded-xl px-4 py-2 border border-foreground/20 hover:scale-105 transition-transform duration-200"
+              >
+                <FaYoutube className="text-xl text-subheading" />
+                <div>
+                  <p className="text-sm text-subheading">Now Listening To</p>
+                  <p className="text-base text-foreground">Rick Astley - Never Gonna Give You Up</p>
+                </div>
               </a>
             </div>
             <button className="material-btn mt-6">Get in Touch</button>
