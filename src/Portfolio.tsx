@@ -7,37 +7,21 @@ import { ThemeProvider } from './context/ThemeContext';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic } from 'react-icons/fa';
 import { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import { fetchListeningData, TrackData } from './utils/lastFmApi';
 
 const Portfolio = () => {
   const form = useRef<HTMLFormElement>(null);
-  const [nowPlaying, setNowPlaying] = useState({ track: '', artist: '', isPlaying: false });
+  const [listeningData, setListeningData] = useState<TrackData>({ track: '', artist: '', isPlaying: false });
 
-  // Fetch real-time listening data from Last.fm
+  // Fetch real-time "Now Playing" or "Last Listened" data from Last.fm
   useEffect(() => {
-    const fetchNowPlaying = async () => {
-      try {
-        const response = await fetch(
-          'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=YOUR_LASTFM_USERNAME&api_key=YOUR_LASTFM_API_KEY&format=json&limit=1'
-        );
-        const data = await response.json();
-        const track = data.recenttracks.track[0];
-        if (track['@attr']?.nowplaying) {
-          setNowPlaying({
-            track: track.name,
-            artist: track.artist['#text'],
-            isPlaying: true,
-          });
-        } else {
-          setNowPlaying({ track: '', artist: '', isPlaying: false });
-        }
-      } catch (error) {
-        console.error('Error fetching Last.fm data:', error);
-        setNowPlaying({ track: '', artist: '', isPlaying: false });
-      }
+    const updateListeningData = async () => {
+      const data = await fetchListeningData();
+      setListeningData(data);
     };
 
-    fetchNowPlaying();
-    const interval = setInterval(fetchNowPlaying, 30000); // Update every 30 seconds
+    updateListeningData();
+    const interval = setInterval(updateListeningData, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -123,9 +107,13 @@ const Portfolio = () => {
               <div className="listening-widget">
                 <FaMusic className="text-xl text-subheading" />
                 <div>
-                  <p className="text-sm text-subheading">Now Listening To</p>
+                  <p className="text-sm text-subheading">
+                    {listeningData.isPlaying ? 'Now Listening To' : 'Last Listened'}
+                  </p>
                   <p className="text-base text-foreground">
-                    {nowPlaying.isPlaying ? `${nowPlaying.track} - ${nowPlaying.artist}` : 'Not listening'}
+                    {listeningData.track && listeningData.artist
+                      ? `${listeningData.track} - ${listeningData.artist}`
+                      : 'Not listening'}
                   </p>
                 </div>
               </div>
