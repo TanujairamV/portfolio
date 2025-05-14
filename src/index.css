@@ -11,7 +11,16 @@
   --secondary: #FF6AC1;
 }
 
-:root.light {
+html.dark {
+  --background: #0F0F0F;
+  --foreground: #FAFAFA;
+  --subheading: #A1A1AA;
+  --heading: #FAFAFA;
+  --accent: #6B46C1;
+  --secondary: #FF6AC1;
+}
+
+html.light {
   --background: #F5F5F5; /* Soft Pearl */
   --foreground: #0F0F0F;
   --subheading: #71717A;
@@ -73,4 +82,20 @@ canvas {
   mix-blend-mode: difference;
   filter: blur(2px);
   transition: transform 0.2s ease, visibility 0.2s ease;
+}
+
+.hero-heading {
+  background: linear-gradient(to right, #FFFFFF, #D3D3D3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.profile-card {
+  perspective: 1000px;
+  transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: rotateX(10deg) rotateY(10deg);
 }
