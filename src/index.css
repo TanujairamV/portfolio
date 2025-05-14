@@ -68,8 +68,9 @@ canvas {
 }
 
 .cursor {
-  @apply fixed w-6 h-6 rounded-full pointer-events-none z-[10000];
+  @apply fixed w-8 h-8 rounded-full pointer-events-none z-[10000];
   background-color: var(--foreground);
   mix-blend-mode: difference;
+  filter: blur(2px);
   transition: transform 0.2s ease, visibility 0.2s ease;
 }
