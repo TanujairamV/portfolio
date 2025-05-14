@@ -4,12 +4,42 @@ import IntroScreen from './IntroScreen';
 import NavBar from './NavBar';
 import Cursor from './Cursor';
 import { ThemeProvider } from './context/ThemeContext';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaYoutube } from 'react-icons/fa';
-import { useRef } from 'react';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic } from 'react-icons/fa';
+import { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
 const Portfolio = () => {
   const form = useRef<HTMLFormElement>(null);
+  const [nowPlaying, setNowPlaying] = useState({ track: '', artist: '', isPlaying: false });
+
+  // Fetch real-time listening data from Last.fm
+  useEffect(() => {
+    const fetchNowPlaying = async () => {
+      try {
+        const response = await fetch(
+          'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=YOUR_LASTFM_USERNAME&api_key=YOUR_LASTFM_API_KEY&format=json&limit=1'
+        );
+        const data = await response.json();
+        const track = data.recenttracks.track[0];
+        if (track['@attr']?.nowplaying) {
+          setNowPlaying({
+            track: track.name,
+            artist: track.artist['#text'],
+            isPlaying: true,
+          });
+        } else {
+          setNowPlaying({ track: '', artist: '', isPlaying: false });
+        }
+      } catch (error) {
+        console.error('Error fetching Last.fm data:', error);
+        setNowPlaying({ track: '', artist: '', isPlaying: false });
+      }
+    };
+
+    fetchNowPlaying();
+    const interval = setInterval(fetchNowPlaying, 30000); // Update every 30 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,18 +120,15 @@ const Portfolio = () => {
               </a>
             </div>
             <div className="flex justify-center mb-6">
-              <a
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 bg-background/30 backdrop-blur-md rounded-xl px-4 py-2 border border-foreground/20 hover:scale-105 transition-transform duration-200"
-              >
-                <FaYoutube className="text-xl text-subheading" />
+              <div className="listening-widget">
+                <FaMusic className="text-xl text-subheading" />
                 <div>
                   <p className="text-sm text-subheading">Now Listening To</p>
-                  <p className="text-base text-foreground">Rick Astley - Never Gonna Give You Up</p>
+                  <p className="text-base text-foreground">
+                    {nowPlaying.isPlaying ? `${nowPlaying.track} - ${nowPlaying.artist}` : 'Not listening'}
+                  </p>
                 </div>
-              </a>
+              </div>
             </div>
             <button className="material-btn mt-6">Get in Touch</button>
           </motion.section>
@@ -117,11 +144,13 @@ const Portfolio = () => {
               <div className="material-card hover:scale-105 transition-transform duration-300">
                 <p>I'm a developer with a focus on React, TypeScript, and Tailwind CSS.</p>
               </div>
-              <div className="profile-card bg-background/30 backdrop-blur-md rounded-xl border border-foreground/20 p-6">
-                <h3 className="text-xl font-space-grotesk mb-2">Tanuj</h3>
-                <p className="text-subheading mb-1">Frontend Developer</p>
-                <p className="text-subheading mb-1">Email: tanuj@example.com</p>
-                <p className="text-subheading">Based in: India</p>
+              <div className="profile-card flex items-center space-x-4">
+                <div>
+                  <h3 className="text-2xl font-space-grotesk text-white mb-2">Tanuj</h3>
+                  <p className="text-sm text-white/80">Frontend Developer</p>
+                  <p className="text-sm text-white/80">Email: tanuj@example.com</p>
+                  <p className="text-sm text-white/80">Based in: India</p>
+                </div>
               </div>
               <div className="material-card p-6">
                 <h3 className="text-xl font-space-grotesk mb-4">Contact Me</h3>
