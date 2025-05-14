@@ -12,7 +12,7 @@
 }
 
 :root.light {
-  --background: #FAFAFA;
+  --background: #F5F5F5; /* Soft Pearl */
   --foreground: #0F0F0F;
   --subheading: #71717A;
   --heading: #0F0F0F;
