@@ -7,8 +7,8 @@
   --foreground: #FAFAFA;
   --subheading: #A1A1AA;
   --heading: #FAFAFA;
-  --accent: #6B46C1;
-  --secondary: #FF6AC1;
+  --accent: #1E3A8A; /* Deep Blue */
+  --secondary: #3B82F6;
 }
 
 html.dark {
@@ -16,8 +16,8 @@ html.dark {
   --foreground: #FAFAFA;
   --subheading: #A1A1AA;
   --heading: #FAFAFA;
-  --accent: #6B46C1;
-  --secondary: #FF6AC1;
+  --accent: #1E3A8A;
+  --secondary: #3B82F6;
 }
 
 html.light {
@@ -25,15 +25,16 @@ html.light {
   --foreground: #0F0F0F;
   --subheading: #71717A;
   --heading: #0F0F0F;
-  --accent: #FF6AC1;
-  --secondary: #6B46C1;
+  --accent: #3B82F6;
+  --secondary: #1E3A8A;
 }
 
 body {
-  @apply bg-background text-foreground;
-  font-family: 'Inter', 'sans-serif';
+  @apply text-foreground;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   line-height: 1.6;
+  background: linear-gradient(135deg, var(--background) 0%, var(--background) 50%, var(--secondary) 100%);
 }
 
 .material-btn {
@@ -48,7 +49,7 @@ body {
   @apply p-3 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-lg;
 }
 
-h1, h2 {
+h1, h2, h3 {
   @apply font-space-grotesk;
 }
 
@@ -60,8 +61,12 @@ h2 {
   @apply text-3xl md:text-4xl;
 }
 
+h3 {
+  @apply text-xl md:text-2xl;
+}
+
 p {
-  @apply font-inter text-base md:text-lg;
+  @apply text-base md:text-lg;
 }
 
 .font-dancing-script {
@@ -94,8 +99,14 @@ canvas {
 .profile-card {
   perspective: 1000px;
   transition: transform 0.3s ease;
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  @apply backdrop-blur-md rounded-xl border border-foreground/20 p-6 shadow-lg;
 }
 
 .profile-card:hover {
   transform: rotateX(10deg) rotateY(10deg);
+}
+
+.listening-widget {
+  @apply flex items-center space-x-2 bg-background/30 backdrop-blur-md rounded-xl px-4 py-2 border border-foreground/20 hover:scale-105 transition-transform duration-200;
 }
