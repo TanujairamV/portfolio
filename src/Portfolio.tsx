@@ -3,7 +3,7 @@ import ParticlesBackground from './ParticlesBackground';
 import IntroScreen from './IntroScreen';
 import NavBar from './NavBar';
 import Cursor from './Cursor';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic, FaTelegram } from 'react-icons/fa';
 import { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import { fetchListeningData } from './lastFmApi';
@@ -177,38 +177,83 @@ const Portfolio = () => {
             className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
             variants={headingVariants}
           >
-            Hi, I'm Tanuj
+            <motion.span variants={childVariants}>Hi, I'm Tanuj</motion.span>
           </motion.h1>
           <motion.p
             className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
             variants={childVariants}
           >
-            A passionate developer building modern web experiences.
+            <motion.span variants={childVariants}>A passionate developer building modern web experiences.</motion.span>
           </motion.p>
           <motion.div
             className="flex justify-center space-x-4 mb-6"
             variants={childVariants}
           >
-            <motion.a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
-              <FaGithub />
+            <motion.a
+              href="https://github.com/TanujairamV"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}><FaGithub /></motion.span>
             </motion.a>
-            <motion.a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
-              <FaLinkedin />
+            <motion.a
+              href="https://linkedin.com/in/tanujairam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}><FaLinkedin /></motion.span>
             </motion.a>
-            <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
-              <FaTwitter />
+            <motion.a
+              href="https://twitter.com/tanujairam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}><FaTwitter /></motion.span>
             </motion.a>
-            <motion.a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
-              <FaInstagram />
+            <motion.a
+              href="https://instagram.com/tanujairam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}><FaInstagram /></motion.span>
             </motion.a>
-            <motion.a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
-              <FaFacebook />
+            <motion.a
+              href="https://facebook.com/tanujairam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}><FaFacebook /></motion.span>
+            </motion.a>
+            <motion.a
+              href="https://t.me/tanujairam"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}><FaTelegram /></motion.span>
             </motion.a>
           </motion.div>
           <motion.div
-            className="flex justify-center mb-6"
+            className="flex flex-col items-center mb-6"
             variants={childVariants}
           >
+            <motion.p
+              className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover mb-2"
+              variants={childVariants}
+            >
+              <motion.span variants={childVariants}>Now Listening To</motion.span>
+            </motion.p>
             <div
               className="listening-widget relative bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden"
               style={{
@@ -224,7 +269,7 @@ const Portfolio = () => {
                     className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
                     variants={childVariants}
                   >
-                    Loading...
+                    <motion.span variants={childVariants}>Loading...</motion.span>
                   </motion.p>
                 ) : (
                   <>
@@ -236,37 +281,31 @@ const Portfolio = () => {
                     />
                     <div className="flex-1">
                       <motion.p
-                        className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-                        variants={childVariants}
-                      >
-                        Now Listening To
-                      </motion.p>
-                      <motion.p
                         className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
                         variants={childVariants}
                       >
-                        {listeningData.track}
+                        <motion.span variants={childVariants}>{listeningData.track}</motion.span>
                       </motion.p>
                       <motion.p
                         className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
                         variants={childVariants}
                       >
-                        {listeningData.artist}
+                        <motion.span variants={childVariants}>{listeningData.artist}</motion.span>
                       </motion.p>
                       {listeningData.isPlaying && (
                         <motion.div
                           className="visualizer flex space-x-1 mt-2"
                           variants={childVariants}
                         >
-                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1"></div>
-                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2"></div>
-                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3"></div>
-                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4"></div>
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1" variants={childVariants}></motion.div>
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2" variants={childVariants}></motion.div>
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3" variants={childVariants}></motion.div>
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4" variants={childVariants}></motion.div>
                         </motion.div>
                       )}
                     </div>
                     <motion.div variants={childVariants}>
-                      <FaMusic className="text-xl text-subheading invert-on-hover" />
+                      <motion.span variants={childVariants}><FaMusic className="text-xl text-subheading invert-on-hover" /></motion.span>
                     </motion.div>
                   </>
                 )}
@@ -289,7 +328,7 @@ const Portfolio = () => {
             className="material-btn mt-6 invert-on-hover"
             variants={childVariants}
           >
-            Get in Touch
+            <motion.span variants={childVariants}>Get in Touch</motion.span>
           </motion.button>
         </motion.section>
         <motion.section
@@ -425,6 +464,9 @@ const Portfolio = () => {
           </motion.a>
           <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
             <FaTwitter />
+          </motion.a>
+          <motion.a href="https://t.me/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
+            <FaTelegram />
           </motion.a>
         </motion.div>
       </motion.footer>
