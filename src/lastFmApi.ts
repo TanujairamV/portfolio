@@ -1,4 +1,4 @@
-import { TrackData } from '../types';
+import { TrackData } from './types';
 
 export const fetchListeningData = async (): Promise<TrackData> => {
   try {
