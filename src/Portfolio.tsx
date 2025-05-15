@@ -8,8 +8,9 @@ import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic } fro
 import { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 import { fetchListeningData } from './utils/lastFmApi';
-import { TrackData } from './types';
+import { TrackData, Project } from './types';
 import SkillChip from './SkillChip';
+import ProjectCard from './ProjectCard';
 
 const Portfolio = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -78,6 +79,21 @@ const Portfolio = () => {
     'CSS',
     'Node.js',
     'Git'
+  ];
+
+  const projects: Project[] = [
+    {
+      name: 'Project 1',
+      url: 'https://example.com/project1',
+      tech: ['React', 'TypeScript', 'Tailwind CSS'],
+      description: 'A cool project built with modern tech.'
+    },
+    {
+      name: 'Project 2',
+      url: 'https://example.com/project2',
+      tech: ['JavaScript', 'Node.js', 'Express'],
+      description: 'Another awesome project showcasing my skills.'
+    }
   ];
 
   return (
@@ -227,14 +243,9 @@ const Portfolio = () => {
           >
             <h2 className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="material-card bg-background/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300">
-                <h3 className="text-xl font-space-grotesk mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Project 1</h3>
-                <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">A cool project built with modern tech.</p>
-              </div>
-              <div className="material-card bg-background/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300">
-                <h3 className="text-xl font-space-grotesk mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Project 2</h3>
-                <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Another awesome project showcasing my skills.</p>
-              </div>
+              {projects.map((project) => (
+                <ProjectCard key={project.name} project={project} />
+              ))}
             </div>
           </motion.section>
         </main>
