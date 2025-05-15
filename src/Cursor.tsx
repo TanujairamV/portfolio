@@ -1,10 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Cursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const isHoveringInvertElement = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if the screen width is less than 768px (Tailwind's md breakpoint)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return; // Skip cursor logic on mobile
+
     const moveCursor = (e: MouseEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.left = `${e.clientX}px`;
@@ -62,12 +77,14 @@ const Cursor = () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <div
       ref={cursorRef}
-      className="fixed pointer-events-none z-50 w-8 h-8 rounded-full bg-white/20 backdrop-invert backdrop-blur-md border border-white/30 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200"
+      className="hidden md:block fixed pointer-events-none z-50 w-8 h-8 rounded-full bg-white/20 backdrop-invert backdrop-blur-md border border-white/30 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-200"
     />
   );
 };
