@@ -68,48 +68,10 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* Theme-specific styles */
-:root {
-  --foreground: #ffffff;
-  --background: #000000;
-  --accent: #ff6b6b;
-}
-
-[data-theme='light'] {
-  --foreground: #000000;
-  --background: #ffffff;
-  --accent: #e63946;
-}
-
-/* Apply theme colors */
-.text-foreground {
-  color: var(--foreground);
-}
-
-.bg-background {
-  background: var(--background);
-}
-
 .text-accent {
-  color: var(--accent);
-}
-
-.bg-foreground {
-  background: var(--foreground);
+  color: #ff6b6b;
 }
 
 .placeholder-subheading::placeholder {
   color: rgba(255, 255, 255, 0.5);
-}
-
-[data-theme='light'] .text-foreground {
-  color: #000;
-}
-
-[data-theme='light'] .bg-background {
-  background: #fff;
-}
-
-[data-theme='light'] .placeholder-subheading::placeholder {
-  color: rgba(0, 0, 0, 0.5);
 }
