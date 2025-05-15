@@ -2,7 +2,7 @@ export interface TrackData {
   track: string;
   artist: string;
   isPlaying: boolean;
-  imageUrl?: string; // Make imageUrl optional
+  imageUrl: string;
 }
 
 export const fetchListeningData = async (): Promise<TrackData> => {
@@ -11,6 +11,7 @@ export const fetchListeningData = async (): Promise<TrackData> => {
       'https://cors-anywhere.herokuapp.com/http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Tanujairam&api_key=fb511fc171607840e4a48bbd618ef011&format=json&limit=1'
     );
     const data = await response.json();
+    console.log('Last.fm API Response:', data); // Debug log
     if (data.recenttracks && data.recenttracks.track && data.recenttracks.track.length > 0) {
       const track = data.recenttracks.track[0];
       const isPlaying = track['@attr'] && track['@attr'].nowplaying;
@@ -22,9 +23,10 @@ export const fetchListeningData = async (): Promise<TrackData> => {
         imageUrl: imageUrl || 'https://via.placeholder.com/150?text=No+Image'
       };
     }
-    return { track: '', artist: '', isPlaying: false };
+    console.log('No recent tracks found'); // Debug log
+    return { track: '', artist: '', isPlaying: false, imageUrl: '' };
   } catch (error) {
     console.error('Error fetching Last.fm data:', error);
-    return { track: '', artist: '', isPlaying: false };
+    return { track: '', artist: '', isPlaying: false, imageUrl: '' };
   }
 };
