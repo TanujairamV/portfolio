@@ -4,15 +4,15 @@ import { FaHome, FaUser, FaTools, FaProjectDiagram } from 'react-icons/fa';
 const NavBar = () => {
   return (
     <motion.nav
-      className="fixed top-4 w-full z-40 px-4 md:px-6"
+      className="fixed top-4 w-full z-40 px-2 md:px-4"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="flex flex-col md:flex-row items-center justify-between bg-white/10 backdrop-blur-lg border border-white/20 rounded-full py-1 px-2 md:py-2 md:px-4 shadow-lg">
+      <div className="flex flex-col md:flex-row items-center justify-center bg-white/10 backdrop-blur-lg border border-white/20 rounded-full py-2 px-1 md:py-3 md:px-2 shadow-lg">
         <a
           href="/"
-          className="text-2xl md:text-3xl font-dancing-script text-white scale-105 hover:scale-110 transition-transform duration-200 invert-on-hover"
+          className="text-2xl md:text-3xl font-style-script text-white scale-105 hover:scale-110 transition-transform duration-200 invert-on-hover"
         >
           Tanu
         </a>
