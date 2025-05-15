@@ -11,7 +11,12 @@ import { fetchListeningData, TrackData } from './utils/lastFmApi';
 
 const Portfolio = () => {
   const form = useRef<HTMLFormElement>(null);
-  const [listeningData, setListeningData] = useState<TrackData>({ track: '', artist: '', isPlaying: false, imageUrl: '' });
+  const [listeningData, setListeningData] = useState<TrackData>({ 
+    track: '', 
+    artist: '', 
+    isPlaying: false, 
+    imageUrl: '' // Added missing imageUrl property
+  });
 
   // Fetch real-time "Now Playing" or "Last Listened" data from Last.fm
   useEffect(() => {
@@ -21,7 +26,7 @@ const Portfolio = () => {
     };
 
     updateListeningData();
-    const interval = setInterval(updateListeningData, 15000); // Reduced to 15 seconds for faster updates
+    const interval = setInterval(updateListeningData, 15000); // Update every 15 seconds
     return () => clearInterval(interval);
   }, []);
 
