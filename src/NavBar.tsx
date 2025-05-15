@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { FaHome, FaUser, FaTools, FaProjectDiagram } from 'react-icons/fa';
 
 const NavBar = () => {
-  // Use the provided date and time: 12:21 AM IST on May 16, 2025
-  const currentTime = "12:21";
+  // Use the provided date and time: 12:26 AM IST on May 16, 2025
+  const currentTime = "12:26";
   const period = "am";
 
   return (
@@ -61,8 +61,8 @@ const NavBar = () => {
               <FaProjectDiagram size={16} />
             </a>
           </div>
-          {/* Time display */}
-          <div className="text-base text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+          {/* Time display - hidden on mobile */}
+          <div className="hidden md:block text-base text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
             {currentTime} <sup className="text-xs">{period}</sup>
           </div>
         </div>
