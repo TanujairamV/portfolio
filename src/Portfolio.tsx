@@ -11,7 +11,7 @@ import { fetchListeningData, TrackData } from './utils/lastFmApi';
 
 const Portfolio = () => {
   const form = useRef<HTMLFormElement>(null);
-  const [listeningData, setListeningData] = useState<TrackData>({ track: '', artist: '', isPlaying: false });
+  const [listeningData, setListeningData] = useState<TrackData>({ track: '', artist: '', isPlaying: false, imageUrl: '' });
 
   // Fetch real-time "Now Playing" or "Last Listened" data from Last.fm
   useEffect(() => {
@@ -21,7 +21,7 @@ const Portfolio = () => {
     };
 
     updateListeningData();
-    const interval = setInterval(updateListeningData, 30000); // Update every 30 seconds
+    const interval = setInterval(updateListeningData, 15000); // Reduced to 15 seconds for faster updates
     return () => clearInterval(interval);
   }, []);
 
@@ -104,18 +104,26 @@ const Portfolio = () => {
               </a>
             </div>
             <div className="flex justify-center mb-6">
-              <div className="listening-widget">
-                <FaMusic className="text-xl text-subheading" />
-                <div>
-                  <p className="text-sm text-subheading">
+              <div className="listening-widget bg-background/80 backdrop-blur-md rounded-lg p-4 shadow-lg flex items-center space-x-4 w-full max-w-md">
+                <img
+                  src={listeningData.imageUrl}
+                  alt="Album Art"
+                  className="w-16 h-16 rounded-md object-cover"
+                />
+                <div className="flex-1">
+                  <p className="text-sm text-subheading font-space-grotesk">
                     {listeningData.isPlaying ? 'Now Listening To' : 'Last Listened'}
                   </p>
-                  <p className="text-base text-foreground">
+                  <p className="text-lg font-poppins text-foreground font-semibold truncate">
                     {listeningData.track && listeningData.artist
-                      ? `${listeningData.track} - ${listeningData.artist}`
+                      ? listeningData.track
                       : 'Not listening'}
                   </p>
+                  <p className="text-sm text-subheading truncate">
+                    {listeningData.artist || ''}
+                  </p>
                 </div>
+                <FaMusic className="text-xl text-subheading" />
               </div>
             </div>
             <button className="material-btn mt-6">Get in Touch</button>
