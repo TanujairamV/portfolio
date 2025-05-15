@@ -1,38 +1,33 @@
-import { motion } from 'framer-motion';
 import { Project } from './types';
 
-interface ProjectCardProps extends Project {
-  aosDelay: number;
+interface ProjectCardProps {
+  project: Project;
 }
 
-const ProjectCard = ({ name, url, tech, description, aosDelay }: ProjectCardProps) => {
+const ProjectCard = ({ project }: ProjectCardProps) => {
+  const { name, url, tech, description } = project;
+
   return (
-    <motion.div
-      className="material-card p-1.5"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.25 }}
-      data-aos="slide-up"
-      data-aos-delay={aosDelay}
-    >
-      <h3 className="text-[0.65rem] font-cabinet-grotesk text-heading text-center">{name}</h3>
-      <p className="mt-0.25 text-[0.6rem] font-inter text-subheading text-center line-clamp-1">{description}</p>
-      <div className="mt-0.25 flex flex-wrap gap-0.25 justify-center">
-        {tech.map((t) => (
-          <span key={t} className="material-chip">{t}</span>
+    <div className="material-card bg-background/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300">
+      <h3 className="text-xl font-space-grotesk mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">
+        <a href={url} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+          {name}
+        </a>
+      </h3>
+      <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400 mb-4">
+        {description}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {tech.map((t: string) => (
+          <span
+            key={t}
+            className="inline-block bg-foreground/10 text-foreground px-3 py-1 rounded-full text-sm font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+          >
+            {t}
+          </span>
         ))}
       </div>
-      <div className="mt-0.5 flex justify-center">
-        <a
-          href={url}
-          className="btn material-btn text-[0.6rem]"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View
-        </a>
-      </div>
-    </motion.div>
+    </div>
   );
 };
 
