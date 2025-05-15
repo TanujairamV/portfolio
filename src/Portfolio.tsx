@@ -273,12 +273,14 @@ const Portfolio = () => {
               </div>
               {listeningData.isPlaying && (
                 <motion.div
-                  className="absolute bottom-0 left-0 w-full h-1 flex space-x-1 px-4"
+                  className="absolute bottom-0 left-0 w-full h-1 overflow-hidden"
                   variants={childVariants}
                 >
-                  <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer1"></div>
-                  <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer2"></div>
-                  <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer3"></div>
+                  <div className="w-full h-1 flex space-x-1 px-4">
+                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer1"></div>
+                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer2"></div>
+                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer3"></div>
+                  </div>
                 </motion.div>
               )}
             </div>
@@ -298,7 +300,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+            className="text-center mb-8 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             variants={headingVariants}
           >
             About Me
@@ -308,22 +310,22 @@ const Portfolio = () => {
             variants={sectionVariants}
           >
             <motion.div className="material-card hover:scale-105 transition-transform duration-300" variants={childVariants}>
-              <motion.p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
+              <motion.p className="text-base bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
                 I'm a developer with a focus on React, TypeScript, and Tailwind CSS.
               </motion.p>
             </motion.div>
             <motion.div className="profile-card flex items-center space-x-4" variants={childVariants}>
               <motion.div variants={childVariants}>
-                <motion.h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
+                <motion.h3 className="text-3xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
                   Tanuj
                 </motion.h3>
-                <motion.p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Frontend Developer</motion.p>
-                <motion.p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Email: tanuj@example.com</motion.p>
-                <motion.p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Based in: India</motion.p>
+                <motion.p className="text-base text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Frontend Developer</motion.p>
+                <motion.p className="text-base text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Email: tanuj@example.com</motion.p>
+                <motion.p className="text-base text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Based in: India</motion.p>
               </motion.div>
             </motion.div>
             <motion.div className="material-card p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg" variants={childVariants}>
-              <motion.h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Contact Me</motion.h3>
+              <motion.h3 className="text-2xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Contact Me</motion.h3>
               <form ref={form} onSubmit={sendEmail} className="space-y-4">
                 <motion.div variants={childVariants}>
                   <input
@@ -364,7 +366,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+            className="text-center mb-8 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             variants={headingVariants}
           >
             Skills
@@ -386,7 +388,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+            className="text-center mb-8 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             variants={headingVariants}
           >
             Projects
@@ -408,20 +410,20 @@ const Portfolio = () => {
         variants={sectionVariants}
         id="footer"
       >
-        <motion.p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
+        <motion.p className="text-base bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
           <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
         </motion.p>
-        <motion.p className="text-subheading mt-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
+        <motion.p className="text-base mt-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
           2025 Tanuj. All rights reserved.
         </motion.p>
         <motion.div className="flex justify-center space-x-4 mt-4" variants={childVariants}>
-          <motion.a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-subheading hover:text-accent invert-on-hover" variants={childVariants}>
+          <motion.a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
             <FaGithub />
           </motion.a>
-          <motion.a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-subheading hover:text-accent invert-on-hover" variants={childVariants}>
+          <motion.a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
             <FaLinkedin />
           </motion.a>
-          <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-subheading hover:text-accent invert-on-hover" variants={childVariants}>
+          <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
             <FaTwitter />
           </motion.a>
         </motion.div>
