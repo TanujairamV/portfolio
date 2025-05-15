@@ -21,7 +21,6 @@ const ParticlesBackground = () => {
     }
 
     update(mouseX: number, mouseY: number) {
-      // Deflect if cursor is nearby
       const dx = this.x - mouseX;
       const dy = this.y - mouseY;
       const distance = Math.sqrt(dx * dx + dy * dy);
@@ -32,11 +31,9 @@ const ParticlesBackground = () => {
         this.y += (dy / distance) * force * 5;
       }
 
-      // Move particle
       this.x += this.speedX;
       this.y += this.speedY;
 
-      // Wrap around screen edges
       if (this.x < 0) this.x = window.innerWidth;
       if (this.x > window.innerWidth) this.x = 0;
       if (this.y < 0) this.y = window.innerHeight;
@@ -61,7 +58,6 @@ const ParticlesBackground = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Initialize particles
     for (let i = 0; i < particleCount; i++) {
       particles.push(new Particle());
     }
