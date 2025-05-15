@@ -3,7 +3,7 @@ import { TrackData } from './types';
 export const fetchListeningData = async (): Promise<TrackData> => {
   try {
     const response = await fetch(
-      'https://cors-anywhere.herokuapp.com/http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Tanujairam&api_key=fb511fc171607840e4a48bbd618ef011&format=json&limit=1'
+      'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=Tanujairam&api_key=fb511fc171607840e4a48bbd618ef011&format=json&limit=1'
     );
     const data = await response.json();
     console.log('Last.fm API Response:', data);
