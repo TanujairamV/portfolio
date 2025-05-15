@@ -2,22 +2,23 @@ import { useEffect, useRef } from 'react';
 
 const Cursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const isHoveringText = useRef(false);
+  const isHoveringInvertElement = useRef(false);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.left = `${e.clientX}px`;
         cursorRef.current.style.top = `${e.clientY}px`;
-        cursorRef.current.style.opacity = '1'; // Ensure cursor is visible while moving
+        cursorRef.current.style.opacity = '1';
       }
     };
 
     const handleMouseOver = (e: Event) => {
       const target = e.target as HTMLElement;
-      if (target.closest('.text-hoverable')) {
-        isHoveringText.current = true;
+      if (target.closest('.invert-on-hover')) {
+        isHoveringInvertElement.current = true;
         if (cursorRef.current) {
+          cursorRef.current.style.mixBlendMode = 'difference';
           cursorRef.current.style.filter = 'invert(1)';
         }
       }
@@ -25,9 +26,10 @@ const Cursor = () => {
 
     const handleMouseOut = (e: Event) => {
       const target = e.target as HTMLElement;
-      if (target.closest('.text-hoverable')) {
-        isHoveringText.current = false;
+      if (target.closest('.invert-on-hover')) {
+        isHoveringInvertElement.current = false;
         if (cursorRef.current) {
+          cursorRef.current.style.mixBlendMode = 'normal';
           cursorRef.current.style.filter = 'invert(0)';
         }
       }
