@@ -19,14 +19,14 @@ const Portfolio = () => {
     isPlaying: false, 
     imageUrl: ''
   });
-  const [isLoading, setIsLoading] = useState(true); // Added loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const updateListeningData = async () => {
       setIsLoading(true);
       try {
         const data = await fetchListeningData();
-        console.log('Fetched Listening Data:', data); // Debugging
+        console.log('Fetched Listening Data:', data);
         setListeningData(data);
       } catch (error) {
         console.error('Error updating listening data:', error);
@@ -103,7 +103,6 @@ const Portfolio = () => {
     }
   ];
 
-  // Scroll animation logic
   const [visibleSections, setVisibleSections] = useState<string[]>([]);
 
   useEffect(() => {
@@ -141,7 +140,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h1
-            className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600"
+            className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 text-hoverable"
             initial="hidden"
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -149,7 +148,7 @@ const Portfolio = () => {
             Hi, I'm Tanuj
           </motion.h1>
           <motion.p
-            className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600"
+            className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 text-hoverable"
             initial="hidden"
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
@@ -162,19 +161,19 @@ const Portfolio = () => {
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+            <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
               <FaGithub />
             </a>
-            <a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+            <a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
               <FaLinkedin />
             </a>
-            <a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+            <a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
               <FaTwitter />
             </a>
-            <a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+            <a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
               <FaInstagram />
             </a>
-            <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
+            <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
               <FaFacebook />
             </a>
           </motion.div>
@@ -186,7 +185,7 @@ const Portfolio = () => {
           >
             <div className="listening-widget bg-white/80 backdrop-blur-md rounded-lg p-4 shadow-lg flex items-center space-x-4 w-full max-w-md">
               {isLoading ? (
-                <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
                   Loading...
                 </p>
               ) : (
@@ -197,23 +196,23 @@ const Portfolio = () => {
                     className="w-16 h-16 rounded-md object-cover"
                   />
                   <div className="flex-1">
-                    <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
                       Now Listening To
                     </p>
-                    <p className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    <p className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
                       {listeningData.track || 'No Track'}
                     </p>
-                    <p className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    <p className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
                       {listeningData.artist || 'No Artist'}
                     </p>
                   </div>
-                  <FaMusic className="text-xl text-subheading" />
+                  <FaMusic className="text-xl text-subheading text-hoverable" />
                 </>
               )}
             </div>
           </motion.div>
           <motion.button
-            className="material-btn mt-6"
+            className="material-btn mt-6 text-hoverable"
             initial="hidden"
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
@@ -229,7 +228,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400"
+            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable"
             initial="hidden"
             animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -243,22 +242,22 @@ const Portfolio = () => {
             variants={sectionVariants}
           >
             <div className="material-card hover:scale-105 transition-transform duration-300">
-              <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+              <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
                 I'm a developer with a focus on React, TypeScript, and Tailwind CSS.
               </p>
             </div>
             <div className="profile-card flex items-center space-x-4">
               <div>
-                <h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                <h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
                   Tanuj
                 </h3>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Frontend Developer</p>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Email: tanuj@example.com</p>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Based in: India</p>
+                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Frontend Developer</p>
+                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Email: tanuj@example.com</p>
+                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Based in: India</p>
               </div>
             </div>
             <div className="material-card p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg">
-              <h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">Contact Me</h3>
+              <h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Contact Me</h3>
               <form ref={form} onSubmit={sendEmail} className="space-y-4">
                 <div>
                   <input
@@ -286,7 +285,7 @@ const Portfolio = () => {
                     required
                   ></textarea>
                 </div>
-                <button type="submit" className="material-btn w-full">Send Message</button>
+                <button type="submit" className="material-btn w-full text-hoverable">Send Message</button>
               </form>
             </div>
           </motion.div>
@@ -299,7 +298,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400"
+            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable"
             initial="hidden"
             animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -325,7 +324,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400"
+            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable"
             initial="hidden"
             animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -351,10 +350,10 @@ const Portfolio = () => {
         variants={sectionVariants}
         id="footer"
       >
-        <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+        <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
           <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
         </p>
-        <p className="text-subheading mt-1 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+        <p className="text-subheading mt-1 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
           2025 Tanuj. All rights reserved.
         </p>
       </motion.footer>
