@@ -2,7 +2,7 @@ export interface TrackData {
   track: string;
   artist: string;
   isPlaying: boolean;
-  imageUrl: string; // Add image URL for album art
+  imageUrl?: string; // Make imageUrl optional
 }
 
 export const fetchListeningData = async (): Promise<TrackData> => {
@@ -14,18 +14,17 @@ export const fetchListeningData = async (): Promise<TrackData> => {
     if (data.recenttracks && data.recenttracks.track && data.recenttracks.track.length > 0) {
       const track = data.recenttracks.track[0];
       const isPlaying = track['@attr'] && track['@attr'].nowplaying;
-      // Get the largest image from the image array (index 3 is typically the largest)
       const imageUrl = track.image && track.image[3] ? track.image[3]['#text'] : '';
       return {
         track: track.name || 'Unknown Track',
         artist: track.artist['#text'] || 'Unknown Artist',
         isPlaying: isPlaying,
-        imageUrl: imageUrl || 'https://via.placeholder.com/150?text=No+Image' // Fallback image
+        imageUrl: imageUrl || 'https://via.placeholder.com/150?text=No+Image'
       };
     }
-    return { track: '', artist: '', isPlaying: false, imageUrl: '' };
+    return { track: '', artist: '', isPlaying: false };
   } catch (error) {
     console.error('Error fetching Last.fm data:', error);
-    return { track: '', artist: '', isPlaying: false, imageUrl: '' };
+    return { track: '', artist: '', isPlaying: false };
   }
 };
