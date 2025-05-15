@@ -75,3 +75,43 @@ body {
 .placeholder-subheading::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
+
+/* Visualizer animations */
+@keyframes visualizer-bar1 {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+@keyframes visualizer-bar2 {
+  0%, 100% { height: 4px; }
+  50% { height: 12px; }
+  75% { height: 8px; }
+}
+
+@keyframes visualizer-bar3 {
+  0%, 100% { height: 4px; }
+  25% { height: 10px; }
+  50% { height: 16px; }
+}
+
+@keyframes visualizer-bar4 {
+  0%, 100% { height: 4px; }
+  25% { height: 8px; }
+  75% { height: 14px; }
+}
+
+.animate-visualizer-bar1 {
+  animation: visualizer-bar1 1.5s infinite ease-in-out;
+}
+
+.animate-visualizer-bar2 {
+  animation: visualizer-bar2 1.2s infinite ease-in-out;
+}
+
+.animate-visualizer-bar3 {
+  animation: visualizer-bar3 1.8s infinite ease-in-out;
+}
+
+.animate-visualizer-bar4 {
+  animation: visualizer-bar4 1.4s infinite ease-in-out;
+}
