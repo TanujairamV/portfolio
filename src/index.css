@@ -2,111 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #0F0F0F;
-  --foreground: #FAFAFA;
-  --subheading: #A1A1AA;
-  --heading: #FAFAFA;
-  --accent: #1E3A8A; /* Deep Blue */
-  --secondary: #3B82F6;
+/* Hide default cursor */
+html, body {
+  cursor: none !important;
 }
 
-html.dark {
-  --background: #0F0F0F;
-  --foreground: #FAFAFA;
-  --subheading: #A1A1AA;
-  --heading: #FAFAFA;
-  --accent: #1E3A8A;
-  --secondary: #3B82F6;
+* {
+  cursor: none !important;
 }
 
-html.light {
-  --background: #F5F5F5; /* Soft Pearl */
-  --foreground: #0F0F0F;
-  --subheading: #71717A;
-  --heading: #0F0F0F;
-  --accent: #3B82F6;
-  --secondary: #1E3A8A;
-}
-
+/* Global styles */
 body {
-  @apply text-foreground;
+  margin: 0;
   font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  background: linear-gradient(135deg, var(--background) 0%, var(--background) 50%, var(--secondary) 100%);
+  background: #000;
+  color: #fff;
+}
+
+/* Custom styles for components */
+.hero-heading {
+  font-size: 4rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.text-subheading {
+  font-size: 1.25rem;
+  opacity: 0.8;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .material-btn {
-  @apply px-6 py-3 rounded-xl bg-accent text-foreground text-base font-medium hover:bg-secondary transition-colors duration-200;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.material-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 .material-card {
-  @apply bg-foreground/10 rounded-xl border border-foreground/20 p-6;
-}
-
-.material-icon {
-  @apply p-3 rounded-full bg-foreground/10 text-subheading hover:bg-accent hover:text-foreground transition-colors duration-200 text-lg;
-}
-
-h1, h2, h3 {
-  @apply font-space-grotesk;
-}
-
-h1 {
-  @apply text-5xl md:text-6xl;
-}
-
-h2 {
-  @apply text-3xl md:text-4xl;
-}
-
-h3 {
-  @apply text-xl md:text-2xl;
-}
-
-p {
-  @apply text-base md:text-lg;
-}
-
-.font-dancing-script {
-  font-family: 'Dancing Script', cursive;
-}
-
-canvas {
-  @apply absolute inset-0 z-0;
-}
-
-#hero, #about, #projects, #skills, #contact {
-  @apply relative z-10;
-}
-
-.cursor {
-  @apply fixed w-8 h-8 rounded-full pointer-events-none z-[10000];
-  background-color: var(--foreground);
-  mix-blend-mode: difference;
-  filter: blur(2px);
-  transition: transform 0.2s ease, visibility 0.2s ease;
-}
-
-.hero-heading {
-  background: linear-gradient(to right, #FFFFFF, #D3D3D3);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
 }
 
 .profile-card {
-  perspective: 1000px;
-  transition: transform 0.3s ease;
-  background: linear-gradient(135deg, var(--accent), var(--secondary));
-  @apply backdrop-blur-md rounded-xl border border-foreground/20 p-6 shadow-lg;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
 }
 
-.profile-card:hover {
-  transform: rotateX(10deg) rotateY(10deg);
+/* Theme-specific styles */
+:root {
+  --foreground: #ffffff;
+  --background: #000000;
+  --accent: #ff6b6b;
 }
 
-.listening-widget {
-  @apply flex items-center space-x-2 bg-background/30 backdrop-blur-md rounded-xl px-4 py-2 border border-foreground/20 hover:scale-105 transition-transform duration-200;
+[data-theme='light'] {
+  --foreground: #000000;
+  --background: #ffffff;
+  --accent: #e63946;
+}
+
+/* Apply theme colors */
+.text-foreground {
+  color: var(--foreground);
+}
+
+.bg-background {
+  background: var(--background);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-foreground {
+  background: var(--foreground);
+}
+
+.placeholder-subheading::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme='light'] .text-foreground {
+  color: #000;
+}
+
+[data-theme='light'] .bg-background {
+  background: #fff;
+}
+
+[data-theme='light'] .placeholder-subheading::placeholder {
+  color: rgba(0, 0, 0, 0.5);
 }
