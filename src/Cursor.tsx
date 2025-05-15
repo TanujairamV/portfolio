@@ -19,7 +19,8 @@ const Cursor = () => {
         isHoveringInvertElement.current = true;
         if (cursorRef.current) {
           cursorRef.current.style.mixBlendMode = 'difference';
-          cursorRef.current.style.filter = 'invert(1)';
+          cursorRef.current.style.filter = 'invert(1) brightness(1.2)';
+          cursorRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
         }
       }
     };
@@ -31,6 +32,7 @@ const Cursor = () => {
         if (cursorRef.current) {
           cursorRef.current.style.mixBlendMode = 'normal';
           cursorRef.current.style.filter = 'invert(0)';
+          cursorRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
         }
       }
     };
