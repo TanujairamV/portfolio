@@ -7,7 +7,9 @@ import { ThemeProvider } from './context/ThemeContext';
 import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic } from 'react-icons/fa';
 import { useRef, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-import { fetchListeningData, TrackData } from './utils/lastFmApi';
+import { fetchListeningData } from './utils/lastFmApi';
+import { TrackData } from './types';
+import SkillChip from './SkillChip';
 
 const Portfolio = () => {
   const form = useRef<HTMLFormElement>(null);
@@ -21,7 +23,7 @@ const Portfolio = () => {
   useEffect(() => {
     const updateListeningData = async () => {
       const data = await fetchListeningData();
-      console.log('Updated Listening Data:', data); // Debug log
+      console.log('Updated Listening Data:', data);
       setListeningData(data);
     };
 
@@ -67,9 +69,20 @@ const Portfolio = () => {
     },
   };
 
+  const skills = [
+    'React',
+    'TypeScript',
+    'Tailwind CSS',
+    'JavaScript',
+    'HTML',
+    'CSS',
+    'Node.js',
+    'Git'
+  ];
+
   return (
     <ThemeProvider>
-      <div className="min-h-screen relative bg-black"> {/* Removed gradient, set to black for stars */}
+      <div className="min-h-screen relative bg-black">
         <IntroScreen />
         <ParticlesBackground />
         <Cursor />
@@ -157,7 +170,7 @@ const Portfolio = () => {
                   <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Based in: India</p>
                 </div>
               </div>
-              <div className="material-card p-6">
+              <div className="material-card p-6 bg-background/80 backdrop-blur-md rounded-lg shadow-lg">
                 <h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Contact Me</h3>
                 <form ref={form} onSubmit={sendEmail} className="space-y-4">
                   <div>
@@ -165,7 +178,7 @@ const Portfolio = () => {
                       type="text"
                       name="user_name"
                       placeholder="Your Name"
-                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading"
+                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading focus:outline-none focus:ring-2 focus:ring-accent"
                       required
                     />
                   </div>
@@ -174,7 +187,7 @@ const Portfolio = () => {
                       type="email"
                       name="user_email"
                       placeholder="Your Email"
-                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading"
+                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading focus:outline-none focus:ring-2 focus:ring-accent"
                       required
                     />
                   </div>
@@ -182,13 +195,27 @@ const Portfolio = () => {
                     <textarea
                       name="message"
                       placeholder="Your Message"
-                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading h-32"
+                      className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading h-32 focus:outline-none focus:ring-2 focus:ring-accent"
                       required
                     ></textarea>
                   </div>
                   <button type="submit" className="material-btn w-full">Send Message</button>
                 </form>
               </div>
+            </div>
+          </motion.section>
+          <motion.section
+            id="skills"
+            className="py-16"
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+          >
+            <h2 className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Skills</h2>
+            <div className="flex flex-wrap justify-center gap-2">
+              {skills.map((skill) => (
+                <SkillChip key={skill} skill={skill} />
+              ))}
             </div>
           </motion.section>
           <motion.section
@@ -200,18 +227,18 @@ const Portfolio = () => {
           >
             <h2 className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="material-card hover:scale-105 transition-transform duration-300">
-                <h3 className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Project 1</h3>
+              <div className="material-card bg-background/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300">
+                <h3 className="text-xl font-space-grotesk mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Project 1</h3>
                 <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">A cool project built with modern tech.</p>
               </div>
-              <div className="material-card hover:scale-105 transition-transform duration-300">
-                <h3 className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Project 2</h3>
+              <div className="material-card bg-background/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300">
+                <h3 className="text-xl font-space-grotesk mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Project 2</h3>
                 <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Another awesome project showcasing my skills.</p>
               </div>
             </div>
           </motion.section>
         </main>
-        <footer className="bg-background/80 py-4 text-center">
+        <footer className="bg-background/80 backdrop-blur-md py-6 text-center">
           <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">
             <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
           </p>
