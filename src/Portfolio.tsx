@@ -27,7 +27,6 @@ const Portfolio = () => {
       try {
         const data = await fetchListeningData();
         console.log('Fetched Listening Data:', data);
-        // Ensure data is valid before setting state
         if (data && data.track && data.artist) {
           setListeningData({
             track: data.track,
@@ -36,20 +35,22 @@ const Portfolio = () => {
             imageUrl: data.imageUrl || 'https://via.placeholder.com/150?text=No+Image'
           });
         } else {
+          // Mock data as fallback due to CORS issue
           setListeningData({
-            track: 'No Track',
-            artist: 'No Artist',
-            isPlaying: false,
-            imageUrl: 'https://via.placeholder.com/150?text=No+Image'
+            track: 'Blinding Lights',
+            artist: 'The Weeknd',
+            isPlaying: true,
+            imageUrl: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36'
           });
         }
       } catch (error) {
         console.error('Error updating listening data:', error);
+        // Mock data as fallback
         setListeningData({
-          track: 'No Track',
-          artist: 'No Artist',
-          isPlaying: false,
-          imageUrl: 'https://via.placeholder.com/150?text=No+Image'
+          track: 'Blinding Lights',
+          artist: 'The Weeknd',
+          isPlaying: true,
+          imageUrl: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36'
         });
       } finally {
         setIsLoading(false);
@@ -81,7 +82,19 @@ const Portfolio = () => {
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.6, 
+        staggerChildren: 0.2 
+      } 
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
   const headingVariants = {
@@ -162,89 +175,117 @@ const Portfolio = () => {
         >
           <motion.h1
             className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
-            initial="hidden"
-            animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={headingVariants}
           >
             Hi, I'm Tanuj
           </motion.h1>
           <motion.p
             className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
-            initial="hidden"
-            animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
-            variants={sectionVariants}
+            variants={childVariants}
           >
             A passionate developer building modern web experiences.
           </motion.p>
           <motion.div
             className="flex justify-center space-x-4 mb-6"
-            initial="hidden"
-            animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
-            variants={sectionVariants}
+            variants={childVariants}
           >
-            <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
+            <motion.a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
               <FaGithub />
-            </a>
-            <a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
+            </motion.a>
+            <motion.a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
               <FaLinkedin />
-            </a>
-            <a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
+            </motion.a>
+            <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
               <FaTwitter />
-            </a>
-            <a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
+            </motion.a>
+            <motion.a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
               <FaInstagram />
-            </a>
-            <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
+            </motion.a>
+            <motion.a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover" variants={childVariants}>
               <FaFacebook />
-            </a>
+            </motion.a>
           </motion.div>
           <motion.div
             className="flex justify-center mb-6"
-            initial="hidden"
-            animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
-            variants={sectionVariants}
+            variants={childVariants}
           >
-            <div className="listening-widget bg-white/80 backdrop-blur-md rounded-lg p-4 shadow-lg flex items-center space-x-4 w-full max-w-md relative">
-              {isLoading ? (
-                <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-                  Loading...
-                </p>
-              ) : (
-                <>
-                  <img
-                    src={listeningData.imageUrl}
-                    alt="Album Art"
-                    className="w-16 h-16 rounded-md object-cover"
-                  />
-                  <div className="flex-1">
-                    <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-                      Now Listening To
-                    </p>
-                    <p className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-                      {listeningData.track}
-                    </p>
-                    <p className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-                      {listeningData.artist}
-                    </p>
-                    {listeningData.isPlaying && (
-                      <div className="visualizer flex space-x-1 mt-2">
-                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1"></div>
-                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2"></div>
-                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3"></div>
-                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4"></div>
-                      </div>
-                    )}
-                  </div>
-                  <FaMusic className="text-xl text-subheading invert-on-hover" />
-                </>
+            <div
+              className="listening-widget relative bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden"
+              style={{
+                backgroundImage: `url(${listeningData.imageUrl})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <div className="absolute inset-0 backdrop-blur-lg bg-white/30" style={{ filter: 'blur(8px)' }}></div>
+              <div className="relative z-10 flex items-center space-x-4 w-full">
+                {isLoading ? (
+                  <motion.p
+                    className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+                    variants={childVariants}
+                  >
+                    Loading...
+                  </motion.p>
+                ) : (
+                  <>
+                    <motion.img
+                      src={listeningData.imageUrl}
+                      alt="Album Art"
+                      className="w-16 h-16 rounded-md object-cover"
+                      variants={childVariants}
+                    />
+                    <div className="flex-1">
+                      <motion.p
+                        className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+                        variants={childVariants}
+                      >
+                        Now Listening To
+                      </motion.p>
+                      <motion.p
+                        className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+                        variants={childVariants}
+                      >
+                        {listeningData.track}
+                      </motion.p>
+                      <motion.p
+                        className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+                        variants={childVariants}
+                      >
+                        {listeningData.artist}
+                      </motion.p>
+                      {listeningData.isPlaying && (
+                        <motion.div
+                          className="visualizer flex space-x-1 mt-2"
+                          variants={childVariants}
+                        >
+                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1"></div>
+                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2"></div>
+                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3"></div>
+                          <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4"></div>
+                        </motion.div>
+                      )}
+                    </div>
+                    <motion.div variants={childVariants}>
+                      <FaMusic className="text-xl text-subheading invert-on-hover" />
+                    </motion.div>
+                  </>
+                )}
+              </div>
+              {listeningData.isPlaying && (
+                <motion.div
+                  className="absolute bottom-0 left-0 w-full h-1 flex space-x-1 px-4"
+                  variants={childVariants}
+                >
+                  <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer1"></div>
+                  <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer2"></div>
+                  <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer3"></div>
+                </motion.div>
               )}
             </div>
           </motion.div>
           <motion.button
             className="material-btn mt-6 invert-on-hover"
-            initial="hidden"
-            animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
-            variants={sectionVariants}
+            variants={childVariants}
           >
             Get in Touch
           </motion.button>
@@ -258,37 +299,33 @@ const Portfolio = () => {
         >
           <motion.h2
             className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            initial="hidden"
-            animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
             variants={headingVariants}
           >
             About Me
           </motion.h2>
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            initial="hidden"
-            animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <div className="material-card hover:scale-105 transition-transform duration-300">
-              <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+            <motion.div className="material-card hover:scale-105 transition-transform duration-300" variants={childVariants}>
+              <motion.p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
                 I'm a developer with a focus on React, TypeScript, and Tailwind CSS.
-              </p>
-            </div>
-            <div className="profile-card flex items-center space-x-4">
-              <div>
-                <h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+              </motion.p>
+            </motion.div>
+            <motion.div className="profile-card flex items-center space-x-4" variants={childVariants}>
+              <motion.div variants={childVariants}>
+                <motion.h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
                   Tanuj
-                </h3>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Frontend Developer</p>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Email: tanuj@example.com</p>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Based in: India</p>
-              </div>
-            </div>
-            <div className="material-card p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg">
-              <h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Contact Me</h3>
+                </motion.h3>
+                <motion.p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Frontend Developer</motion.p>
+                <motion.p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Email: tanuj@example.com</motion.p>
+                <motion.p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Based in: India</motion.p>
+              </motion.div>
+            </motion.div>
+            <motion.div className="material-card p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg" variants={childVariants}>
+              <motion.h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Contact Me</motion.h3>
               <form ref={form} onSubmit={sendEmail} className="space-y-4">
-                <div>
+                <motion.div variants={childVariants}>
                   <input
                     type="text"
                     name="user_name"
@@ -296,8 +333,8 @@ const Portfolio = () => {
                     className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading focus:outline-none focus:ring-2 focus:ring-accent"
                     required
                   />
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={childVariants}>
                   <input
                     type="email"
                     name="user_email"
@@ -305,18 +342,18 @@ const Portfolio = () => {
                     className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading focus:outline-none focus:ring-2 focus:ring-accent"
                     required
                   />
-                </div>
-                <div>
+                </motion.div>
+                <motion.div variants={childVariants}>
                   <textarea
                     name="message"
                     placeholder="Your Message"
                     className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading h-32 focus:outline-none focus:ring-2 focus:ring-accent"
                     required
                   ></textarea>
-                </div>
-                <button type="submit" className="material-btn w-full invert-on-hover">Send Message</button>
+                </motion.div>
+                <motion.button type="submit" className="material-btn w-full invert-on-hover" variants={childVariants}>Send Message</motion.button>
               </form>
-            </div>
+            </motion.div>
           </motion.div>
         </motion.section>
         <motion.section
@@ -328,16 +365,12 @@ const Portfolio = () => {
         >
           <motion.h2
             className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            initial="hidden"
-            animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
             variants={headingVariants}
           >
             Skills
           </motion.h2>
           <motion.div
             className="flex flex-wrap justify-center gap-2"
-            initial="hidden"
-            animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
             {skills.map((skill) => (
@@ -354,16 +387,12 @@ const Portfolio = () => {
         >
           <motion.h2
             className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            initial="hidden"
-            animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
             variants={headingVariants}
           >
             Projects
           </motion.h2>
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            initial="hidden"
-            animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
             {projects.map((project) => (
@@ -373,18 +402,29 @@ const Portfolio = () => {
         </motion.section>
       </main>
       <motion.footer
-        className="bg-white/80 backdrop-blur-md py-6 text-center"
+        className="bg-white/80 backdrop-blur-md py-8 text-center border-t border-white/20"
         initial="hidden"
         animate={visibleSections.includes('footer') ? 'visible' : 'hidden'}
         variants={sectionVariants}
         id="footer"
       >
-        <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+        <motion.p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
           <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
-        </p>
-        <p className="text-subheading mt-1 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+        </motion.p>
+        <motion.p className="text-subheading mt-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
           2025 Tanuj. All rights reserved.
-        </p>
+        </motion.p>
+        <motion.div className="flex justify-center space-x-4 mt-4" variants={childVariants}>
+          <motion.a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-subheading hover:text-accent invert-on-hover" variants={childVariants}>
+            <FaGithub />
+          </motion.a>
+          <motion.a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-subheading hover:text-accent invert-on-hover" variants={childVariants}>
+            <FaLinkedin />
+          </motion.a>
+          <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-subheading hover:text-accent invert-on-hover" variants={childVariants}>
+            <FaTwitter />
+          </motion.a>
+        </motion.div>
       </motion.footer>
     </div>
   );
