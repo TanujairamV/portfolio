@@ -16,8 +16,8 @@ const ParticlesBackground = () => {
       this.x = Math.random() * window.innerWidth;
       this.y = Math.random() * window.innerHeight;
       this.size = Math.random() * 3 + 1;
-      this.speedX = Math.random() * 2 - 1;
-      this.speedY = Math.random() * 2 - 1;
+      this.speedX = Math.random() * 0.5 - 0.25; // Reduced speed for floating effect
+      this.speedY = Math.random() * 0.5 - 0.25; // Reduced speed for floating effect
     }
 
     update(mouseX: number, mouseY: number) {
@@ -27,8 +27,8 @@ const ParticlesBackground = () => {
       const maxDistance = 100;
       if (distance < maxDistance) {
         const force = (maxDistance - distance) / maxDistance;
-        this.x += (dx / distance) * force * 5;
-        this.y += (dy / distance) * force * 5;
+        this.x += (dx / distance) * force * 2; // Reduced force for subtler interaction
+        this.y += (dy / distance) * force * 2; // Reduced force for subtler interaction
       }
 
       this.x += this.speedX;
