@@ -27,7 +27,7 @@ const IntroScreen = () => {
       }
     };
 
-    const interval = setInterval(scramble, 50); // Reduced from typical 100ms to 50ms for faster scrambling
+    const interval = setInterval(scramble, 50);
     return () => clearInterval(interval);
   }, []);
 
