@@ -27,9 +27,30 @@ const Portfolio = () => {
       try {
         const data = await fetchListeningData();
         console.log('Fetched Listening Data:', data);
-        setListeningData(data);
+        // Ensure data is valid before setting state
+        if (data && data.track && data.artist) {
+          setListeningData({
+            track: data.track,
+            artist: data.artist,
+            isPlaying: data.isPlaying || false,
+            imageUrl: data.imageUrl || 'https://via.placeholder.com/150?text=No+Image'
+          });
+        } else {
+          setListeningData({
+            track: 'No Track',
+            artist: 'No Artist',
+            isPlaying: false,
+            imageUrl: 'https://via.placeholder.com/150?text=No+Image'
+          });
+        }
       } catch (error) {
         console.error('Error updating listening data:', error);
+        setListeningData({
+          track: 'No Track',
+          artist: 'No Artist',
+          isPlaying: false,
+          imageUrl: 'https://via.placeholder.com/150?text=No+Image'
+        });
       } finally {
         setIsLoading(false);
       }
@@ -140,7 +161,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h1
-            className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 text-hoverable"
+            className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
             initial="hidden"
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -148,7 +169,7 @@ const Portfolio = () => {
             Hi, I'm Tanuj
           </motion.h1>
           <motion.p
-            className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 text-hoverable"
+            className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
             initial="hidden"
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
@@ -161,19 +182,19 @@ const Portfolio = () => {
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
+            <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
               <FaGithub />
             </a>
-            <a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
+            <a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
               <FaLinkedin />
             </a>
-            <a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
+            <a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
               <FaTwitter />
             </a>
-            <a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
+            <a href="https://instagram.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
               <FaInstagram />
             </a>
-            <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 text-hoverable">
+            <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover">
               <FaFacebook />
             </a>
           </motion.div>
@@ -183,9 +204,9 @@ const Portfolio = () => {
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <div className="listening-widget bg-white/80 backdrop-blur-md rounded-lg p-4 shadow-lg flex items-center space-x-4 w-full max-w-md">
+            <div className="listening-widget bg-white/80 backdrop-blur-md rounded-lg p-4 shadow-lg flex items-center space-x-4 w-full max-w-md relative">
               {isLoading ? (
-                <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
+                <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
                   Loading...
                 </p>
               ) : (
@@ -196,23 +217,31 @@ const Portfolio = () => {
                     className="w-16 h-16 rounded-md object-cover"
                   />
                   <div className="flex-1">
-                    <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
+                    <p className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
                       Now Listening To
                     </p>
-                    <p className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
-                      {listeningData.track || 'No Track'}
+                    <p className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+                      {listeningData.track}
                     </p>
-                    <p className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
-                      {listeningData.artist || 'No Artist'}
+                    <p className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+                      {listeningData.artist}
                     </p>
+                    {listeningData.isPlaying && (
+                      <div className="visualizer flex space-x-1 mt-2">
+                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1"></div>
+                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2"></div>
+                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3"></div>
+                        <div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4"></div>
+                      </div>
+                    )}
                   </div>
-                  <FaMusic className="text-xl text-subheading text-hoverable" />
+                  <FaMusic className="text-xl text-subheading invert-on-hover" />
                 </>
               )}
             </div>
           </motion.div>
           <motion.button
-            className="material-btn mt-6 text-hoverable"
+            className="material-btn mt-6 invert-on-hover"
             initial="hidden"
             animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
@@ -228,7 +257,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable"
+            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             initial="hidden"
             animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -242,22 +271,22 @@ const Portfolio = () => {
             variants={sectionVariants}
           >
             <div className="material-card hover:scale-105 transition-transform duration-300">
-              <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
+              <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
                 I'm a developer with a focus on React, TypeScript, and Tailwind CSS.
               </p>
             </div>
             <div className="profile-card flex items-center space-x-4">
               <div>
-                <h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
+                <h3 className="text-2xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
                   Tanuj
                 </h3>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Frontend Developer</p>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Email: tanuj@example.com</p>
-                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Based in: India</p>
+                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Frontend Developer</p>
+                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Email: tanuj@example.com</p>
+                <p className="text-sm text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Based in: India</p>
               </div>
             </div>
             <div className="material-card p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg">
-              <h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">Contact Me</h3>
+              <h3 className="text-xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">Contact Me</h3>
               <form ref={form} onSubmit={sendEmail} className="space-y-4">
                 <div>
                   <input
@@ -285,7 +314,7 @@ const Portfolio = () => {
                     required
                   ></textarea>
                 </div>
-                <button type="submit" className="material-btn w-full text-hoverable">Send Message</button>
+                <button type="submit" className="material-btn w-full invert-on-hover">Send Message</button>
               </form>
             </div>
           </motion.div>
@@ -298,7 +327,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable"
+            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             initial="hidden"
             animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -324,7 +353,7 @@ const Portfolio = () => {
           variants={sectionVariants}
         >
           <motion.h2
-            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable"
+            className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             initial="hidden"
             animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
             variants={headingVariants}
@@ -350,10 +379,10 @@ const Portfolio = () => {
         variants={sectionVariants}
         id="footer"
       >
-        <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
+        <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
           <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
         </p>
-        <p className="text-subheading mt-1 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-hoverable">
+        <p className="text-subheading mt-1 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
           2025 Tanuj. All rights reserved.
         </p>
       </motion.footer>
