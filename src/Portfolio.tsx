@@ -34,24 +34,9 @@ const Portfolio = () => {
             isPlaying: data.isPlaying || false,
             imageUrl: data.imageUrl || 'https://via.placeholder.com/150?text=No+Image'
           });
-        } else {
-          // Mock data as fallback due to CORS issue
-          setListeningData({
-            track: 'Blinding Lights',
-            artist: 'The Weeknd',
-            isPlaying: true,
-            imageUrl: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36'
-          });
         }
       } catch (error) {
         console.error('Error updating listening data:', error);
-        // Mock data as fallback
-        setListeningData({
-          track: 'Blinding Lights',
-          artist: 'The Weeknd',
-          isPlaying: true,
-          imageUrl: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36'
-        });
       } finally {
         setIsLoading(false);
       }
@@ -255,7 +240,7 @@ const Portfolio = () => {
               <motion.span variants={childVariants}>Now Listening To</motion.span>
             </motion.p>
             <div
-              className="listening-widget relative bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden"
+              className="listening-widget relative bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden pb-5"
               style={{
                 backgroundImage: `url(${listeningData.imageUrl})`,
                 backgroundSize: 'cover',
@@ -299,7 +284,7 @@ const Portfolio = () => {
                         >
                           <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1" variants={childVariants}></motion.div>
                           <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2" variants={childVariants}></motion.div>
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3" variants={childVariants}></motion.div>
+                          <motion.div className "w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3" variants={childVariants}></motion.div>
                           <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4" variants={childVariants}></motion.div>
                         </motion.div>
                       )}
@@ -443,7 +428,7 @@ const Portfolio = () => {
         </motion.section>
       </main>
       <motion.footer
-        className="bg-white/80 backdrop-blur-md py-8 text-center border-t border-white/20"
+        className="bg-white/80 backdrop-blur-md py-8 text-center border-t border-white/20 mt-12"
         initial="hidden"
         animate={visibleSections.includes('footer') ? 'visible' : 'hidden'}
         variants={sectionVariants}
