@@ -239,13 +239,14 @@ const Portfolio = () => {
             >
               <motion.span variants={childVariants}>Now Listening To</motion.span>
             </motion.p>
-            <div
+            <motion.div
               className="listening-widget relative bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden pb-5"
               style={{
                 backgroundImage: `url(${listeningData.imageUrl})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
+              variants={childVariants}
             >
               <div className="absolute inset-0 backdrop-blur-lg bg-white/30" style={{ filter: 'blur(8px)' }}></div>
               <div className="relative z-10 flex items-center space-x-4 w-full">
@@ -257,7 +258,7 @@ const Portfolio = () => {
                     <motion.span variants={childVariants}>Loading...</motion.span>
                   </motion.p>
                 ) : (
-                  <>
+                  <motion.div className="flex items-center space-x-4 w-full" variants={childVariants}>
                     <motion.img
                       src={listeningData.imageUrl}
                       alt="Album Art"
@@ -282,17 +283,17 @@ const Portfolio = () => {
                           className="visualizer flex space-x-1 mt-2"
                           variants={childVariants}
                         >
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1" variants={childVariants}></motion.div>
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2" variants={childVariants}></motion.div>
-                          <motion.div className "w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3" variants={childVariants}></motion.div>
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4" variants={childVariants}></motion.div>
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1" variants={childVariants} />
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2" variants={childVariants} />
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3" variants={childVariants} />
+                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4" variants={childVariants} />
                         </motion.div>
                       )}
                     </div>
                     <motion.div variants={childVariants}>
                       <motion.span variants={childVariants}><FaMusic className="text-xl text-subheading invert-on-hover" /></motion.span>
                     </motion.div>
-                  </>
+                  </motion.div>
                 )}
               </div>
               {listeningData.isPlaying && (
@@ -301,13 +302,13 @@ const Portfolio = () => {
                   variants={childVariants}
                 >
                   <div className="w-full h-1 flex space-x-1 px-4">
-                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer1"></div>
-                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer2"></div>
-                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer3"></div>
+                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer1" />
+                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer2" />
+                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer3" />
                   </div>
                 </motion.div>
               )}
-            </div>
+            </motion.div>
           </motion.div>
           <motion.button
             className="material-btn mt-6 invert-on-hover"
