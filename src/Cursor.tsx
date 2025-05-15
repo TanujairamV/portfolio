@@ -1,55 +1,28 @@
 import { useEffect, useRef } from 'react';
-import { useMousePosition } from './util/mouse';
 
 const Cursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const { x, y } = useMousePosition();
-
-  // Hide cursor on mobile devices
-  const isTouchDevice = 'ontouchstart' in window;
-  if (isTouchDevice) return null;
 
   useEffect(() => {
-    const cursor = cursorRef.current;
-    if (!cursor) return;
-
-    // Update cursor position (center the 32px cursor: w-8 h-8)
-    cursor.style.transform = `translate(${x - 16}px, ${y - 16}px)`;
-
-    // Check if cursor is off-screen
-    const isOffScreen =
-      x <= 0 ||
-      y <= 0 ||
-      x >= window.innerWidth ||
-      y >= window.innerHeight;
-
-    cursor.style.visibility = isOffScreen ? 'hidden' : 'visible';
-  }, [x, y]);
-
-  useEffect(() => {
-    // Handle mouse leave event to hide cursor when mouse leaves viewport
-    const handleMouseLeave = () => {
+    const moveCursor = (e: MouseEvent) => {
       if (cursorRef.current) {
-        cursorRef.current.style.visibility = 'hidden';
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
       }
     };
 
-    const handleMouseEnter = () => {
-      if (cursorRef.current) {
-        cursorRef.current.style.visibility = 'visible';
-      }
-    };
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
-
+    window.addEventListener('mousemove', moveCursor);
     return () => {
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
+      window.removeEventListener('mousemove', moveCursor);
     };
   }, []);
 
-  return <div ref={cursorRef} className="cursor" />;
+  return (
+    <div
+      ref={cursorRef}
+      className="fixed pointer-events-none z-50 w-6 h-6 rounded-full border-2 border-white/50 bg-transparent transform -translate-x-1/2 -translate-y-1/2"
+    />
+  );
 };
 
 export default Cursor;
