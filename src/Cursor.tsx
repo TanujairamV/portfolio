@@ -1,12 +1,26 @@
-import { useMousePosition } from './mouse';
+import { useEffect, useRef } from 'react';
 
 const Cursor = () => {
-  const { x, y } = useMousePosition();
+  const cursorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const moveCursor = (e: MouseEvent) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
+      }
+    };
+
+    window.addEventListener('mousemove', moveCursor);
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+    };
+  }, []);
 
   return (
     <div
-      className="fixed pointer-events-none z-50 w-8 h-8 rounded-full mix-blend-difference bg-white/20 backdrop-blur-md border border-white/30"
-      style={{ left: x, top: y, transform: 'translate(-50%, -50%)' }}
+      ref={cursorRef}
+      className="fixed pointer-events-none z-50 w-8 h-8 rounded-full bg-white/20 backdrop-invert backdrop-blur-md border border-white/30 transform -translate-x-1/2 -translate-y-1/2"
     />
   );
 };
