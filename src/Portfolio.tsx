@@ -135,7 +135,7 @@ const Portfolio = () => {
             variants={sectionVariants}
           >
             <motion.h1
-              className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+              className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 dark:from-white dark:to-gray-600"
               initial="hidden"
               animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
               variants={headingVariants}
@@ -143,7 +143,7 @@ const Portfolio = () => {
               Hi, I'm Tanuj
             </motion.h1>
             <motion.p
-              className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+              className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 dark:from-white dark:to-gray-600"
               initial="hidden"
               animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
               variants={sectionVariants}
@@ -275,7 +275,7 @@ const Portfolio = () => {
                   <button type="submit" className="material-btn w-full">Send Message</button>
                 </form>
               </div>
-            </motion.div> {/* Added closing tag here */}
+            </motion.div>
           </motion.section>
           <motion.section
             id="skills"
