@@ -275,7 +275,7 @@ const Portfolio = () => {
                   <button type="submit" className="material-btn w-full">Send Message</button>
                 </form>
               </div>
-            </div>
+            </motion.div> {/* Added closing tag here */}
           </motion.section>
           <motion.section
             id="skills"
