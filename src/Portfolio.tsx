@@ -96,6 +96,29 @@ const Portfolio = () => {
     }
   ];
 
+  // Scroll animation logic
+  const [visibleSections, setVisibleSections] = useState<string[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => [...prev, entry.target.id]);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
   return (
     <ThemeProvider>
       <div className="min-h-screen relative bg-black">
@@ -108,21 +131,31 @@ const Portfolio = () => {
             id="hero"
             className="text-center py-16"
             initial="hidden"
-            animate="visible"
+            animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
             <motion.h1
               className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
               initial="hidden"
-              animate="visible"
+              animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
               variants={headingVariants}
             >
               Hi, I'm Tanuj
             </motion.h1>
-            <p className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">
+            <motion.p
+              className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+              initial="hidden"
+              animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
               A passionate developer building modern web experiences.
-            </p>
-            <div className="flex justify-center space-x-4 mb-6">
+            </motion.p>
+            <motion.div
+              className="flex justify-center space-x-4 mb-6"
+              initial="hidden"
+              animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
               <a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
                 <FaGithub />
               </a>
@@ -138,8 +171,13 @@ const Portfolio = () => {
               <a href="https://facebook.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200">
                 <FaFacebook />
               </a>
-            </div>
-            <div className="flex justify-center mb-6">
+            </motion.div>
+            <motion.div
+              className="flex justify-center mb-6"
+              initial="hidden"
+              animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
               <div className="listening-widget bg-background/80 backdrop-blur-md rounded-lg p-4 shadow-lg flex items-center space-x-4 w-full max-w-md">
                 <img
                   src={listeningData.imageUrl}
@@ -159,18 +197,37 @@ const Portfolio = () => {
                 </div>
                 <FaMusic className="text-xl text-subheading" />
               </div>
-            </div>
-            <button className="material-btn mt-6">Get in Touch</button>
+            </motion.div>
+            <motion.button
+              className="material-btn mt-6"
+              initial="hidden"
+              animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
+              Get in Touch
+            </motion.button>
           </motion.section>
           <motion.section
             id="about"
             className="py-16"
             initial="hidden"
-            animate="visible"
+            animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <h2 className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">About Me</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.h2
+              className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+              initial="hidden"
+              animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
+              variants={headingVariants}
+            >
+              About Me
+            </motion.h2>
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              initial="hidden"
+              animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
               <div className="material-card hover:scale-105 transition-transform duration-300">
                 <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">
                   I'm a developer with a focus on React, TypeScript, and Tailwind CSS.
@@ -224,39 +281,69 @@ const Portfolio = () => {
             id="skills"
             className="py-16"
             initial="hidden"
-            animate="visible"
+            animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <h2 className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Skills</h2>
-            <div className="flex flex-wrap justify-center gap-2">
+            <motion.h2
+              className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+              initial="hidden"
+              animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
+              variants={headingVariants}
+            >
+              Skills
+            </motion.h2>
+            <motion.div
+              className="flex flex-wrap justify-center gap-2"
+              initial="hidden"
+              animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
               {skills.map((skill) => (
                 <SkillChip key={skill} skill={skill} />
               ))}
-            </div>
+            </motion.div>
           </motion.section>
           <motion.section
             id="projects"
             className="py-16"
             initial="hidden"
-            animate="visible"
+            animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
             variants={sectionVariants}
           >
-            <h2 className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">Projects</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.h2
+              className="text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400"
+              initial="hidden"
+              animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
+              variants={headingVariants}
+            >
+              Projects
+            </motion.h2>
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              initial="hidden"
+              animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
+              variants={sectionVariants}
+            >
               {projects.map((project) => (
                 <ProjectCard key={project.name} project={project} />
               ))}
-            </div>
+            </motion.div>
           </motion.section>
         </main>
-        <footer className="bg-background/80 backdrop-blur-md py-6 text-center">
+        <motion.footer
+          className="bg-background/80 backdrop-blur-md py-6 text-center"
+          initial="hidden"
+          animate={visibleSections.includes('footer') ? 'visible' : 'hidden'}
+          variants={sectionVariants}
+          id="footer"
+        >
           <p className="text-subheading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">
             <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
           </p>
           <p className="text-subheading mt-1 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 dark:from-white dark:to-gray-400">
             2025 Tanuj. All rights reserved.
           </p>
-        </footer>
+        </motion.footer>
       </div>
     </ThemeProvider>
   );
