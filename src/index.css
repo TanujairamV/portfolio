@@ -115,3 +115,31 @@ body {
 .animate-visualizer-bar4 {
   animation: visualizer-bar4 1.4s infinite ease-in-out;
 }
+
+/* Line visualizer animations */
+@keyframes line-visualizer1 {
+  0%, 100% { transform: scaleX(0.8); opacity: 0.6; }
+  50% { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes line-visualizer2 {
+  0%, 100% { transform: scaleX(0.9); opacity: 0.7; }
+  50% { transform: scaleX(1.1); opacity: 1; }
+}
+
+@keyframes line-visualizer3 {
+  0%, 100% { transform: scaleX(0.7); opacity: 0.5; }
+  50% { transform: scaleX(1.2); opacity: 1; }
+}
+
+.animate-line-visualizer1 {
+  animation: line-visualizer1 2s infinite ease-in-out;
+}
+
+.animate-line-visualizer2 {
+  animation: line-visualizer2 1.8s infinite ease-in-out;
+}
+
+.animate-line-visualizer3 {
+  animation: line-visualizer3 2.2s infinite ease-in-out;
+}
