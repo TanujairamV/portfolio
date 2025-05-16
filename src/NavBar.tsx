@@ -2,18 +2,18 @@ import { motion } from 'framer-motion';
 import { FaHome, FaUser, FaTools, FaProjectDiagram } from 'react-icons/fa';
 
 const NavBar = () => {
-  // Use the provided date and time: 12:26 AM IST on May 16, 2025
-  const currentTime = "12:26";
-  const period = "am";
+  // Use the provided date and time: 04:55 PM IST on May 16, 2025
+  const currentTime = "04:55";
+  const period = "pm";
 
   return (
     <motion.nav
-      className="fixed top-4 w-full z-40 px-2 md:px-4"
+      className="fixed top-6 w-full z-50 px-4 md:px-6"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="flex items-center justify-between bg-white/10 backdrop-blur-lg border border-white/20 rounded-full py-2 px-1 md:py-3 md:px-2 shadow-lg">
+      <div className="flex items-center justify-between bg-gradient-to-r from-gray-800 to-gray-900 backdrop-blur-lg border border-white/20 rounded-full py-2 md:py-3 px-4 shadow-lg hover:scale-[1.01] transition-transform duration-300">
         <a
           href="/"
           className="text-2xl md:text-3xl font-style-script text-white scale-105 hover:scale-110 transition-transform duration-200 invert-on-hover"
