@@ -45,11 +45,11 @@ export interface Project {
 }
 
 export const socials: Socials = {
-  github: 'https://github.com/TanujairamV',
-  linkedin: 'https://linkedin.com/in/tanujairam',
-  email: 'tanujairam.v@gmail.com',
-  phone: '+91-9876543210',
-  location: 'Chennai, India',
+  github: 'https://github.com/exampleuser',
+  linkedin: 'https://linkedin.com/in/exampleuser',
+  email: 'exampleuser@gmail.com',
+  phone: '+00-0000000000',
+  location: 'Sample City, Country',
 };
 
 export const skills: Skill[] = [
@@ -69,23 +69,23 @@ export const experiences: Experience[] = [
   {
     id: 'exp1',
     title: 'Frontend Developer Intern',
-    company: 'Tech Solutions Pvt Ltd',
+    company: 'Fictional Tech Corp',
     start: '2024-01-01',
     end: '2024-04-30',
     responsibilities: [
-      'Developed interactive UIs using React and TailwindCSS',
-      'Collaborated with designers to implement pixel-perfect pages',
-      'Optimized web applications for performance and scalability',
+      'Built UI components using React and TailwindCSS',
+      'Worked closely with backend engineers',
+      'Improved website performance by 20%',
     ],
   },
   {
     id: 'exp2',
     title: 'Open Source Contributor',
-    company: 'GitHub',
+    company: 'Open Collective',
     start: '2023-06-15',
     responsibilities: [
-      'Contributed bug fixes to popular repositories',
-      'Reviewed and merged community pull requests',
+      'Fixed bugs in JavaScript projects',
+      'Reviewed community pull requests',
     ],
   },
 ];
@@ -93,73 +93,73 @@ export const experiences: Experience[] = [
 export const education: Education[] = [
   {
     id: 'edu1',
-    degree: '12th Grade (CBSE)',
-    school: 'ABC Senior Secondary School',
+    degree: 'Higher Secondary Education',
+    school: 'Springfield High School',
     start: '2022-06-01',
     end: '2023-05-01',
-    details: 'Science stream with Computer Science. Member of coding club.',
+    details: 'Science stream, member of coding club.',
   },
   {
     id: 'edu2',
-    degree: '10th Grade (CBSE)',
-    school: 'ABC Senior Secondary School',
+    degree: 'Secondary Education',
+    school: 'Springfield High School',
     start: '2020-06-01',
     end: '2021-05-01',
-    details: 'Scored 95% overall, topped in Computer Science.',
+    details: 'Graduated with distinction.',
   },
 ];
 
 export const certifications: Certification[] = [
   {
     id: 'cert1',
-    name: 'JavaScript Algorithms and Data Structures',
-    issuer: 'freeCodeCamp',
+    name: 'Frontend Developer Certification',
+    issuer: 'Example Online Academy',
     date: '2023-03-15',
-    url: 'https://www.freecodecamp.org/certification/fcc123/javascript-algorithms-and-data-structures',
+    url: 'https://example.com/cert/frontend-developer',
   },
   {
     id: 'cert2',
     name: 'Responsive Web Design',
-    issuer: 'freeCodeCamp',
+    issuer: 'Example Online Academy',
     date: '2023-02-10',
-    url: 'https://www.freecodecamp.org/certification/fcc123/responsive-web-design',
+    url: 'https://example.com/cert/web-design',
   },
 ];
 
 export const projects: Project[] = [
   {
     id: 'proj1',
-    title: 'Personal Portfolio',
-    description: 'A modern responsive portfolio website to showcase my projects and skills.',
-    techStack: ['React', 'TypeScript', 'TailwindCSS', 'Framer Motion'],
-    url: 'https://github.com/TanujairamV/portfolio',
+    title: 'Sample Portfolio',
+    description: 'A simple, responsive portfolio site template.',
+    techStack: ['React', 'TypeScript', 'TailwindCSS'],
+    url: 'https://github.com/exampleuser/sample-portfolio',
   },
   {
     id: 'proj2',
     title: 'Weather App',
-    description: 'A real-time weather dashboard consuming OpenWeatherMap API.',
+    description: 'A weather dashboard using public APIs.',
     techStack: ['React', 'CSS', 'API'],
-    url: 'https://github.com/TanujairamV/weather-app',
+    url: 'https://github.com/exampleuser/weather-app',
   },
   {
     id: 'proj3',
-    title: 'Markdown Blog',
-    description: 'A static blog generator that renders markdown files as blog posts.',
+    title: 'Blog Platform',
+    description: 'A static blog generator for markdown posts.',
     techStack: ['Node.js', 'Express', 'React'],
-    url: 'https://github.com/TanujairamV/markdown-blog',
+    url: 'https://github.com/exampleuser/blog-platform',
   },
   {
     id: 'proj4',
-    title: 'Task Tracker',
-    description: 'A simple task tracker with CRUD operations and local storage support.',
+    title: 'Task Manager',
+    description: 'A task manager app with CRUD and local storage.',
     techStack: ['JavaScript', 'HTML', 'CSS'],
-    url: 'https://github.com/TanujairamV/task-tracker',
+    url: 'https://github.com/exampleuser/task-manager',
   },
   {
     id: 'proj5',
-    title: 'Portfolio Starter Template',
-    description: 'A customizable React portfolio template for developers.',
+    title: 'Starter Template',
+    description: 'A starter template for modern web projects.',
     techStack: ['React', 'TypeScript', 'Vite'],
-    url: 'https://github.com/TanujairamV/portfolio-template',
+    url: 'https://github.com/exampleuser/starter-template',
   },
 ];
