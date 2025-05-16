@@ -1,5 +1,8 @@
-import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from 'react-icons/fa';
+import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from "react-icons/fa";
 
+/**
+ * Social media links configuration.
+ */
 const socialLinks = [
   { href: "https://instagram.com/tanujairam.v", icon: FaInstagram, label: "Instagram" },
   { href: "https://t.me/Tanujairam", icon: FaTelegram, label: "Telegram" },
@@ -8,7 +11,10 @@ const socialLinks = [
   { href: "https://github.com/TanujairamV", icon: FaGithub, label: "GitHub" },
 ];
 
-const Footer = () => (
+/**
+ * Footer component displaying social links and copyright.
+ */
+const Footer: React.FC = () => (
   <footer className="py-3 text-center font-inter text-subheading">
     <nav aria-label="Social media links">
       <ul className="flex justify-center space-x-1.5 mb-1 list-none p-0 m-0">
@@ -27,7 +33,9 @@ const Footer = () => (
         ))}
       </ul>
     </nav>
-    <p className="text-[0.65rem] text-gray-500 select-none">© 2025 Tanujairam</p>
+    <p className="text-[0.65rem] text-gray-500 select-none">
+      © 2025 Tanujairam
+    </p>
   </footer>
 );
 
