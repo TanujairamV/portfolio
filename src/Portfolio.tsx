@@ -28,6 +28,7 @@ const Portfolio = () => {
         const data = await fetchListeningData();
         console.log('Fetched Listening Data:', data);
         if (data && data.track && data.artist) {
+          console.log('Setting imageUrl:', data.imageUrl); // Debug log for imageUrl
           setListeningData({
             track: data.track,
             artist: data.artist,
@@ -43,7 +44,7 @@ const Portfolio = () => {
     };
 
     updateListeningData();
-    // Removed setInterval to fetch only once on mount
+    // Fetch only once on mount (no setInterval)
   }, []);
 
   const sendEmail = (e: React.FormEvent) => {
@@ -248,7 +249,7 @@ const Portfolio = () => {
               }}
               variants={childVariants}
             >
-              <div className="absolute inset-0 backdrop-blur-lg bg-black/50" style={{ filter: 'blur(8px)' }}></div>
+              <div className="absolute inset-0 backdrop-blur-lg bg-black/60" style={{ filter: 'blur(8px)' }}></div>
               <div className="relative z-10 flex items-center space-x-4 w-full">
                 {isLoading ? (
                   <motion.p
@@ -260,10 +261,12 @@ const Portfolio = () => {
                 ) : (
                   <motion.div className="flex items-center space-x-4 w-full" variants={childVariants}>
                     <motion.img
+                      key={listeningData.imageUrl} // Force re-render if imageUrl changes
                       src={listeningData.imageUrl || 'https://via.placeholder.com/150?text=No+Image'}
                       alt="Album Art"
                       className="w-16 h-16 rounded-md object-cover"
                       onError={(e) => {
+                        console.log('Image failed to load, falling back to placeholder');
                         e.currentTarget.src = 'https://via.placeholder.com/150?text=No+Image';
                       }}
                       variants={childVariants}
