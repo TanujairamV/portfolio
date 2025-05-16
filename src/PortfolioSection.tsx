@@ -162,12 +162,15 @@ const PortfolioSection: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4">Projects</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
-              <ProjectCard key={project.id} project={{
-                name: project.title || (project as any).name,
-                url: project.url,
-                tech: project.techStack || (project as any).tech,
-                description: project.description,
-              }} />
+              <ProjectCard
+                key={project.id}
+                project={{
+                  name: project.title || "Untitled Project",
+                  url: project.url ?? "https://example.com",
+                  tech: project.techStack ?? [],
+                  description: project.description ?? "No description available.",
+                }}
+              />
             ))}
           </div>
           {projects.length > 4 && (
