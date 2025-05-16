@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const IntroScreen = () => {
-  const [text, setText] = useState('');
+/**
+ * Intro screen with animated, scrambling text.
+ */
+const IntroScreen: React.FC = () => {
+  const [text, setText] = useState("");
   const [isVisible, setIsVisible] = useState(true);
-  const finalText = 'Tanujairam V';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const finalText = "Tanujairam V";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   useEffect(() => {
     let charIndex = 0;
