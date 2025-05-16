@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion';
 import { Project } from './types';
+import React from 'react';
 
 interface ProjectCardProps {
   project: Project;
 }
+
+// Utility class for consistent gradient text styling
+const gradientTextClass =
+  'bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover';
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
   const { name, url, tech, description } = project;
@@ -15,27 +20,35 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <motion.h3 className="text-2xl font-space-grotesk mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" transition={{ duration: 0.3 }}>
-        <a href={url} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
+      <h3 className={`text-2xl font-space-grotesk mb-2 ${gradientTextClass}`}>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-accent"
+          aria-label={`Visit ${name}`}
+          title={`Visit ${name}`}
+        >
           {name}
         </a>
-      </motion.h3>
-      <motion.p className="text-base bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 mb-4 invert-on-hover" transition={{ duration: 0.3 }}>
+      </h3>
+
+      <p className={`text-base mb-4 font-light ${gradientTextClass}`}>
         {description}
-      </motion.p>
-      <motion.div className="flex flex-wrap gap-2" transition={{ duration: 0.3 }}>
-        {tech.map((t: string) => (
-          <motion.span
+      </p>
+
+      <div className="flex flex-wrap gap-2">
+        {tech.map((t) => (
+          <span
             key={t}
-            className="inline-block bg-foreground/10 text-foreground px-3 py-1 rounded-full text-base font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            transition={{ duration: 0.3 }}
+            className={`inline-block bg-foreground/10 text-foreground px-3 py-1 rounded-full text-base font-space-grotesk ${gradientTextClass}`}
           >
             {t}
-          </motion.span>
+          </span>
         ))}
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
 
-export default ProjectCard;
+export default React.memo(ProjectCard);
