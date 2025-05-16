@@ -1,42 +1,35 @@
-import { TrackData } from './types';
+import { useState, useEffect } from 'react';
 
-export const fetchListeningData = async (): Promise<TrackData> => {
-  try {
-    const response = await fetch('https://inquisitive-gamefowl-tanujairam-tg-e1360444.koyeb.app/api/lastfm');
-    
-    // Check if the response is successful
-    if (!response.ok) {
-      console.error(`Proxy API request failed with status: ${response.status} ${response.statusText}`);
-      throw new Error('Proxy API request failed');
-    }
+const LastFM = () => {
+  const [track, setTrack] = useState(null);
 
-    const data = await response.json();
-    console.log('Proxy API Response:', data);
-
-    if (data.recenttracks && data.recenttracks.track && data.recenttracks.track.length > 0) {
-      const track = data.recenttracks.track[0];
-      const isPlaying = track['@attr']?.nowplaying === 'true'; // Ensure proper check for nowplaying
-      const imageUrl = track.image?.[3]?.['#text'] || 'https://via.placeholder.com/150?text=No+Image';
-      return {
-        track: track.name || 'Unknown Track',
-        artist: track.artist?.['#text'] || 'Unknown Artist',
-        isPlaying: !!isPlaying, // Ensure boolean value
-        imageUrl
-      };
-    }
-
-    console.log('No recent tracks found in proxy response');
-    return { track: '', artist: '', isPlaying: false, imageUrl: '' };
-  } catch (error) {
-    console.error('Error fetching data from proxy:', error);
-    
-    // Fallback to mock data if the proxy fails
-    console.log('Falling back to mock data due to proxy failure');
-    return {
-      track: 'Blinding Lights',
-      artist: 'The Weeknd',
-      isPlaying: true,
-      imageUrl: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36'
+  useEffect(() => {
+    const fetchTrack = async () => {
+      try {
+        const response = await fetch('https://your-lastfm-proxy.herokuapp.com/api/recent-tracks');
+        const data = await response.json();
+        setTrack(data);
+      } catch (error) {
+        console.error('Error fetching Last.fm data:', error);
+      }
     };
+
+    fetchTrack();
+  }, []);
+
+  if (!track) {
+    return <div>Loading...</div>;
   }
+
+  return (
+    <div className="lastfm-section">
+      <h3>Now Playing</h3>
+      <img src={track.image} alt={`${track.name} by ${track.artist}`} className="w-32 h-32 object-cover" />
+      <p>{track.name} by {track.artist}</p>
+      <p>Album: {track.album}</p>
+      <a href={track.url} target="_blank" rel="noopener noreferrer">Listen on Last.fm</a>
+    </div>
+  );
 };
+
+export default LastFM;
