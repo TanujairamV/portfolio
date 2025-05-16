@@ -13,6 +13,11 @@ import {
   education,
   certifications,
   projects,
+  Skill,
+  Experience,
+  Education,
+  Certification,
+  Project
 } from "./data";
 
 const PortfolioSection: React.FC = () => {
@@ -90,7 +95,7 @@ const PortfolioSection: React.FC = () => {
         <section id="skills" className="mb-16">
           <h2 className="text-2xl font-bold mb-4">Skills</h2>
           <div className="flex flex-wrap gap-3">
-            {skills.map((skill) => (
+            {skills.map((skill: Skill) => (
               <SkillChip skill={skill.name} key={skill.name} />
             ))}
           </div>
@@ -99,14 +104,14 @@ const PortfolioSection: React.FC = () => {
         {/* Experience */}
         <section id="experience" className="mb-16">
           <h2 className="text-2xl font-bold mb-4">Experience</h2>
-          {experiences.map(exp => (
+          {experiences.map((exp: Experience) => (
             <div key={exp.id} className="mb-6">
               <h3 className="text-xl font-semibold">{exp.title} @ {exp.company}</h3>
               <p className="text-gray-400 text-sm mb-1">
                 {exp.start} — {exp.end || "Present"}
               </p>
               <ul className="list-disc ml-5 text-gray-200">
-                {exp.responsibilities.map((r, i) => (
+                {exp.responsibilities.map((r: string, i: number) => (
                   <li key={i}>{r}</li>
                 ))}
               </ul>
@@ -117,7 +122,7 @@ const PortfolioSection: React.FC = () => {
         {/* Education */}
         <section id="education" className="mb-16">
           <h2 className="text-2xl font-bold mb-4">Education</h2>
-          {education.map(edu => (
+          {education.map((edu: Education) => (
             <div key={edu.id} className="mb-6">
               <h3 className="text-lg font-semibold">
                 {edu.degree} - {edu.school}
@@ -134,7 +139,7 @@ const PortfolioSection: React.FC = () => {
         <section id="certifications" className="mb-16">
           <h2 className="text-2xl font-bold mb-4">Certifications</h2>
           <ul className="list-disc ml-5">
-            {certifications.map(cert => (
+            {certifications.map((cert: Certification) => (
               <li key={cert.id} className="mb-2">
                 <a
                   href={cert.url}
@@ -156,11 +161,11 @@ const PortfolioSection: React.FC = () => {
         <section id="projects" className="mb-16">
           <h2 className="text-2xl font-bold mb-4">Projects</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            {(showAllProjects ? projects : projects.slice(0, 4)).map(project => (
+            {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
               <ProjectCard key={project.id} project={{
-                name: project.title || project.name,
+                name: project.title || (project as any).name,
                 url: project.url,
-                tech: project.techStack || project.tech,
+                tech: project.techStack || (project as any).tech,
                 description: project.description,
               }} />
             ))}
