@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const NavBar = () => {
   // State to store the current time and period (am/pm)
-  const [currentTime, setCurrentTime] = useState("05:19");
+  const [currentTime, setCurrentTime] = useState("10:40");
   const [period, setPeriod] = useState("pm");
 
   // State to control navbar visibility after intro screen
@@ -41,7 +41,7 @@ const NavBar = () => {
 
   return (
     <motion.nav
-      className="fixed top-6 w-1/3 mx-auto z-50 px-3 md:px-4"
+      className="fixed top-6 max-w-md mx-auto z-50 px-4 md:px-6"
       initial={{ opacity: 0, y: -20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
