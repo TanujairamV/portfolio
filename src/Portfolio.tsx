@@ -43,8 +43,7 @@ const Portfolio = () => {
     };
 
     updateListeningData();
-    const interval = setInterval(updateListeningData, 15000);
-    return () => clearInterval(interval);
+    // Removed setInterval to fetch only once on mount
   }, []);
 
   const sendEmail = (e: React.FormEvent) => {
@@ -240,15 +239,16 @@ const Portfolio = () => {
               <motion.span variants={childVariants}>Now Listening To</motion.span>
             </motion.p>
             <motion.div
-              className="listening-widget relative bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden pb-5"
+              className="listening-widget relative rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden pb-5"
               style={{
-                backgroundImage: `url(${listeningData.imageUrl})`,
+                backgroundImage: listeningData.imageUrl ? `url(${listeningData.imageUrl})` : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                backgroundColor: listeningData.imageUrl ? 'transparent' : 'rgba(255, 255, 255, 0.8)', // Fallback to white if no image
               }}
               variants={childVariants}
             >
-              <div className="absolute inset-0 backdrop-blur-lg bg-white/30" style={{ filter: 'blur(8px)' }}></div>
+              <div className="absolute inset-0 backdrop-blur-lg bg-black/50" style={{ filter: 'blur(8px)' }}></div>
               <div className="relative z-10 flex items-center space-x-4 w-full">
                 {isLoading ? (
                   <motion.p
@@ -260,23 +260,26 @@ const Portfolio = () => {
                 ) : (
                   <motion.div className="flex items-center space-x-4 w-full" variants={childVariants}>
                     <motion.img
-                      src={listeningData.imageUrl}
+                      src={listeningData.imageUrl || 'https://via.placeholder.com/150?text=No+Image'}
                       alt="Album Art"
                       className="w-16 h-16 rounded-md object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://via.placeholder.com/150?text=No+Image';
+                      }}
                       variants={childVariants}
                     />
                     <div className="flex-1">
                       <motion.p
-                        className="text-lg font-poppins text-foreground font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+                        className="text-lg font-poppins text-white font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
                         variants={childVariants}
                       >
-                        <motion.span variants={childVariants}>{listeningData.track}</motion.span>
+                        <motion.span variants={childVariants}>{listeningData.track || 'Unknown Track'}</motion.span>
                       </motion.p>
                       <motion.p
                         className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
                         variants={childVariants}
                       >
-                        <motion.span variants={childVariants}>{listeningData.artist}</motion.span>
+                        <motion.span variants={childVariants}>{listeningData.artist || 'Unknown Artist'}</motion.span>
                       </motion.p>
                       {listeningData.isPlaying && (
                         <motion.div
