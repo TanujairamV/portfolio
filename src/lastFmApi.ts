@@ -24,44 +24,27 @@ const LastFM = () => {
   }, []);
 
   if (error) {
-    return (
-      <div className="lastfm-section text-red-500 bg-black/30 rounded-xl p-4 text-sm">
-        {error}
-      </div>
-    );
+    return <div className="lastfm-section text-red-500">{error}</div>;
   }
 
   if (!track) {
-    return (
-      <div className="lastfm-section bg-black/30 rounded-xl p-4 text-white text-sm">
-        Fetching track...
-      </div>
-    );
+    return <div className="lastfm-section">Loading...</div>;
   }
 
   return (
-    <div className="lastfm-section bg-black/30 backdrop-blur-xl text-white rounded-2xl shadow-md p-5 flex flex-col items-center gap-3 max-w-xs mx-auto">
-      <h3 className="text-lg font-semibold text-white/90">🎵 Now Playing</h3>
+    <div className="lastfm-section">
+      <h3>Now Playing</h3>
       <img
         src={track.image}
         alt={`${track.name} by ${track.artist}`}
-        className="w-32 h-32 object-cover rounded-md border border-white/20"
+        className="w-32 h-32 object-cover"
         onError={(e) => {
           e.currentTarget.src = 'https://via.placeholder.com/300x300?text=No+Image';
         }}
       />
-      <p className="text-center text-sm font-medium">
-        {track.name} <br /> <span className="text-white/60">by {track.artist}</span>
-      </p>
-      <p className="text-xs text-white/50 italic">Album: {track.album}</p>
-      <a
-        href={track.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-accent underline hover:text-accent/80 transition text-sm mt-1"
-      >
-        Listen on Last.fm →
-      </a>
+      <p>{track.name} by {track.artist}</p>
+      <p>Album: {track.album}</p>
+      <a href={track.url} target="_blank" rel="noopener noreferrer">Listen on Last.fm</a>
     </div>
   );
 };
