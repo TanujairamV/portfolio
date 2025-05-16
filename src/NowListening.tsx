@@ -4,7 +4,6 @@ import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -15,19 +14,15 @@ const NowListening: React.FC = () => {
           setLoading(false);
         }
       })
-      .catch((e) => {
-        if (mounted) {
-          setError("Unable to fetch now playing track.");
-          setLoading(false);
-        }
+      .catch(() => {
+        setLoading(false);
       });
     return () => {
       mounted = false;
     };
   }, []);
 
-  if (loading) return null;
-  if (error || !track) return null;
+  if (loading || !track) return null;
 
   return (
     <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500/30 to-purple-600/30 mb-8 shadow-lg backdrop-blur-sm">
