@@ -4,8 +4,9 @@ import ParticlesBackground from "./ParticlesBackground";
 import Footer from "./Footer";
 import SkillChip from "./SkillChip";
 import ProjectCard from "./ProjectCard";
-import Cursor from "./AnimatedCursor";
+import AnimatedCursor from "./AnimatedCursor";
 import IntroScreen from "./IntroScreen";
+import NowListening from "./NowListening";
 import {
   socials,
   skills,
@@ -24,13 +25,16 @@ const PortfolioSection: React.FC = () => {
   const [showAllProjects, setShowAllProjects] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
       <IntroScreen />
       <ParticlesBackground />
-      <Cursor />
+      <AnimatedCursor />
       <Navbar />
 
       <main className="relative z-10 max-w-3xl mx-auto pt-36 pb-16 px-4 md:px-8">
+        {/* Now Listening */}
+        <NowListening />
+
         {/* Hero Section */}
         <section id="hero" className="text-center mb-20">
           <img
@@ -38,10 +42,10 @@ const PortfolioSection: React.FC = () => {
             alt="TanujairamV"
             className="mx-auto w-32 h-32 rounded-full border-4 border-white/30 shadow-xl mb-5"
           />
-          <h1 className="text-4xl font-bold font-space-grotesk mb-2">
+          <h1 className="text-4xl font-bold mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>
             Tanujairam V
           </h1>
-          <p className="text-lg text-gray-200 mb-6">
+          <p className="text-lg text-gray-200 mb-6" style={{ fontFamily: "'Pacifico', cursive" }}>
             Developer | Student | Creator
           </p>
           <div className="flex justify-center gap-4 mb-2">
@@ -86,14 +90,14 @@ const PortfolioSection: React.FC = () => {
               </a>
             )}
           </div>
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-sm" style={{ fontFamily: "'Roboto Mono', monospace" }}>
             {socials.location}
           </p>
         </section>
 
         {/* Skills */}
         <section id="skills" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4">Skills</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Skills</h2>
           <div className="flex flex-wrap gap-3">
             {skills.map((skill: Skill) => (
               <SkillChip skill={skill.name} key={skill.name} />
@@ -103,7 +107,7 @@ const PortfolioSection: React.FC = () => {
 
         {/* Experience */}
         <section id="experience" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4">Experience</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Experience</h2>
           {experiences.map((exp: Experience) => (
             <div key={exp.id} className="mb-6">
               <h3 className="text-xl font-semibold">{exp.title} @ {exp.company}</h3>
@@ -121,7 +125,7 @@ const PortfolioSection: React.FC = () => {
 
         {/* Education */}
         <section id="education" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4">Education</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Education</h2>
           {education.map((edu: Education) => (
             <div key={edu.id} className="mb-6">
               <h3 className="text-lg font-semibold">
@@ -137,7 +141,7 @@ const PortfolioSection: React.FC = () => {
 
         {/* Certifications */}
         <section id="certifications" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4">Certifications</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Certifications</h2>
           <ul className="list-disc ml-5">
             {certifications.map((cert: Certification) => (
               <li key={cert.id} className="mb-2">
@@ -159,7 +163,7 @@ const PortfolioSection: React.FC = () => {
 
         {/* Projects */}
         <section id="projects" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4">Projects</h2>
+          <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>Projects</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
               <ProjectCard
