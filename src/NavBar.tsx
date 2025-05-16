@@ -1,101 +1,93 @@
-import { motion } from 'framer-motion';
-import { FaHome, FaUser, FaTools, FaProjectDiagram } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { motion } from "framer-motion";
+import { FaHome, FaUser, FaTools, FaProjectDiagram } from "react-icons/fa";
+import { useState, useEffect } from "react";
+
+const navItems = [
+  { href: "#hero", label: "Home", icon: <FaHome size={18} /> },
+  { href: "#about", label: "About", icon: <FaUser size={18} /> },
+  { href: "#skills", label: "Skills", icon: <FaTools size={18} /> },
+  { href: "#projects", label: "Projects", icon: <FaProjectDiagram size={18} /> },
+];
 
 const NavBar = () => {
-  // State to store the current time and period (am/pm)
-  const [currentTime, setCurrentTime] = useState("10:57");
-  const [period, setPeriod] = useState("pm");
-
-  // State to control navbar visibility after intro screen
+  const [currentTime, setCurrentTime] = useState("12:00");
+  const [period, setPeriod] = useState("am");
   const [isVisible, setIsVisible] = useState(false);
 
-  // Fetch the current time from the user's system on component mount
+  // Real-time clock
   useEffect(() => {
-    const fetchTime = () => {
+    const updateClock = () => {
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
-
-      // Determine period (am/pm) and convert to 12-hour format
       const periodValue = hours >= 12 ? "pm" : "am";
-      const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
-      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
       const formattedTime = `${formattedHours}:${formattedMinutes}`;
-
       setCurrentTime(formattedTime);
       setPeriod(periodValue);
     };
 
-    fetchTime();
-  }, []); // Empty dependency array ensures this runs only once on mount
+    updateClock();
+    const intervalId = setInterval(updateClock, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
-  // Delay the navbar appearance until after the intro screen (assumed 2 seconds)
+  // Delay navbar visibility after intro
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 2000); // Delay of 2 seconds to match intro screen duration
-
-    return () => clearTimeout(timer); // Cleanup timer on unmount
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <motion.nav
-      className="fixed top-6 w-full px-4 md:px-6 z-50"
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-3xl px-2"
       initial={{ opacity: 0, y: -20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="flex items-center justify-between bg-black/20 backdrop-blur-2xl border border-white/30 rounded-3xl py-2 px-2 shadow-md hover:scale-[1.01] transition-transform duration-300">
+      <div className="flex items-center justify-between bg-black/30 backdrop-blur-xl border border-white/20 rounded-full py-2 px-4 shadow-lg">
+        {/* Brand */}
         <a
           href="/"
-          className="text-lg md:text-xl font-style-script text-white scale-105 hover:scale-110 transition-transform duration-200 invert-on-hover"
+          className="text-base md:text-lg font-style-script text-white font-semibold hover:scale-110 transition-transform duration-200"
         >
           Tanu
         </a>
-        <div className="flex items-center space-x-4 md:space-x-6">
-          {/* Text links for desktop */}
-          <div className="flex items-center space-x-4 md:space-x-6">
-            <a
-              href="#hero"
-              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            >
-              Home
-            </a>
-            <a
-              href="#about"
-              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            >
-              About
-            </a>
-            <a
-              href="#skills"
-              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            >
-              Skills
-            </a>
-            <a
-              href="#projects"
-              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            >
-              Projects
-            </a>
-            {/* Icons for mobile */}
-            <a href="#hero" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaHome size={12} />
-            </a>
-            <a href="#about" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaUser size={12} />
-            </a>
-            <a href="#skills" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaTools size={12} />
-            </a>
-            <a href="#projects" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaProjectDiagram size={12} />
-            </a>
+
+        {/* Navigation */}
+        <div className="flex items-center gap-4 md:gap-6">
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-4">
+            {navItems.map(({ href, label }) => (
+              <a
+                key={label}
+                href={href}
+                className="text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 transition-all duration-200"
+              >
+                {label}
+              </a>
+            ))}
           </div>
-          {/* Time display - hidden on mobile */}
-          <div className="hidden md:block text-xs text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+
+          {/* Mobile icons */}
+          <div className="flex md:hidden items-center gap-3">
+            {navItems.map(({ href, icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                className="text-white hover:text-accent transition-all duration-200"
+              >
+                {icon}
+              </a>
+            ))}
+          </div>
+
+          {/* Clock */}
+          <div className="hidden md:block text-xs text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
             {currentTime} <sup className="text-[10px]">{period}</sup>
           </div>
         </div>
