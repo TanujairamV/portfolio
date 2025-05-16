@@ -1,469 +1,365 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import ParticlesBackground from './ParticlesBackground';
-import IntroScreen from './IntroScreen';
-import NavBar from './NavBar';
-import Cursor from './Cursor';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaFacebook, FaMusic, FaTelegram } from 'react-icons/fa';
-import { useRef, useState, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
-import { fetchListeningData } from './lastFmApi';
-import { TrackData, Project } from './types';
-import SkillChip from './SkillChip';
-import ProjectCard from './ProjectCard';
+import { FaHome, FaUser, FaTools, FaProjectDiagram, FaSun, FaMoon } from 'react-icons/fa';
+import { fetchRecentTrack, LastFMTrack } from './lastFmApi';
 
-const Portfolio = () => {
-  const form = useRef<HTMLFormElement>(null);
-  const [listeningData, setListeningData] = useState<TrackData>({ 
-    track: '', 
-    artist: '', 
-    isPlaying: false, 
-    imageUrl: ''
-  });
-  const [isLoading, setIsLoading] = useState(true);
+function Portfolio() {
+  // Theme state (light/dark mode)
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
+  // Navbar states
+  const [currentTime, setCurrentTime] = useState("11:33");
+  const [period, setPeriod] = useState("pm");
+  const [isNavVisible, setIsNavVisible] = useState(false);
+
+  // Last.fm states
+  const [track, setTrack] = useState<LastFMTrack | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+
+  // Scroll state for navbar animation
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Fetch current time
   useEffect(() => {
-    const updateListeningData = async () => {
-      setIsLoading(true);
+    const fetchTime = () => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const periodValue = hours >= 12 ? "pm" : "am";
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      const formattedTime = `${formattedHours}:${formattedMinutes}`;
+      setCurrentTime(formattedTime);
+      setPeriod(periodValue);
+    };
+
+    fetchTime();
+    const interval = setInterval(fetchTime, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Delay navbar visibility for intro animation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsNavVisible(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch Last.fm track
+  useEffect(() => {
+    const loadTrack = async () => {
       try {
-        const data = await fetchListeningData();
-        console.log('Fetched Listening Data:', data);
-        if (data && data.track && data.artist) {
-          console.log('Setting imageUrl:', data.imageUrl); // Debug log for imageUrl
-          setListeningData({
-            track: data.track,
-            artist: data.artist,
-            isPlaying: data.isPlaying || false,
-            imageUrl: data.imageUrl || 'https://via.placeholder.com/150?text=No+Image'
-          });
-        }
-      } catch (error) {
-        console.error('Error updating listening data:', error);
-      } finally {
-        setIsLoading(false);
+        const trackData = await fetchRecentTrack();
+        setTrack(trackData);
+        setError(null);
+        setImageLoaded(false); // Reset image loading state
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+        console.error('Error fetching Last.fm data:', errorMessage);
+        setError('Unable to fetch track data');
       }
     };
 
-    updateListeningData();
-    // Fetch only once on mount (no setInterval)
+    loadTrack();
+    const interval = setInterval(loadTrack, 300000); // Refresh every 5 minutes
+
+    return () => clearInterval(interval);
   }, []);
 
-  const sendEmail = (e: React.FormEvent) => {
-    e.preventDefault();
+  // Handle scroll for navbar animation
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
 
-    if (form.current) {
-      emailjs
-        .sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_PUBLIC_KEY')
-        .then(
-          () => {
-            alert('Message sent successfully!');
-            form.current?.reset();
-          },
-          (error) => {
-            alert('Failed to send message: ' + error.text);
-          }
-        );
-    }
-  };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
+  // Apply theme to document
+  useEffect(() => {
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(theme);
+  }, [theme]);
+
+  // Animation variants for sections
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { 
-        duration: 0.6, 
-        staggerChildren: 0.2 
-      } 
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
   };
-
-  const childVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
-  };
-
-  const headingVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 120,
-        damping: 15,
-        duration: 0.8,
-      },
-    },
-  };
-
-  const skills = [
-    'React',
-    'TypeScript',
-    'Tailwind CSS',
-    'JavaScript',
-    'HTML',
-    'CSS',
-    'Node.js',
-    'Git'
-  ];
-
-  const projects: Project[] = [
-    {
-      name: 'Project 1',
-      url: 'https://example.com/project1',
-      tech: ['React', 'TypeScript', 'Tailwind CSS'],
-      description: 'A cool project built with modern tech.'
-    },
-    {
-      name: 'Project 2',
-      url: 'https://example.com/project2',
-      tech: ['JavaScript', 'Node.js', 'Express'],
-      description: 'Another awesome project showcasing my skills.'
-    }
-  ];
-
-  const [visibleSections, setVisibleSections] = useState<string[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleSections((prev) => [...prev, entry.target.id]);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-    };
-  }, []);
 
   return (
-    <div className="min-h-screen relative bg-black">
-      <IntroScreen />
-      <ParticlesBackground />
-      <Cursor />
-      <NavBar />
+    <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 to-black text-white' : 'bg-gradient-to-br from-gray-100 to-white text-gray-900'}`}>
+      {/* Navbar */}
+      <motion.nav
+        className={`fixed top-6 w-full max-w-3xl mx-auto px-4 md:px-6 z-50 transition-all duration-300 ${isScrolled ? 'bg-opacity-90 backdrop-blur-lg shadow-xl' : 'bg-opacity-20 backdrop-blur-2xl'}`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={isNavVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <div className="flex items-center justify-between bg-black/20 border border-white/30 rounded-3xl py-2 px-3 shadow-lg hover:scale-[1.01] transition-transform duration-300">
+          <a
+            href="/"
+            className="text-xl font-semibold tracking-wide text-white hover:text-blue-300 transition-colors duration-200"
+          >
+            Tanu
+          </a>
+          <div className="flex items-center space-x-4 md:space-x-6">
+            <div className="flex items-center space-x-4 md:space-x-6">
+              <a
+                href="#hero"
+                className="hidden md:inline text-sm text-gray-200 hover:text-blue-300 transition-colors duration-200"
+              >
+                Home
+              </a>
+              <a
+                href="#about"
+                className="hidden md:inline text-sm text-gray-200 hover:text-blue-300 transition-colors duration-200"
+              >
+                About
+              </a>
+              <a
+                href="#skills"
+                className="hidden md:inline text-sm text-gray-200 hover:text-blue-300 transition-colors duration-200"
+              >
+                Skills
+              </a>
+              <a
+                href="#projects"
+                className="hidden md:inline text-sm text-gray-200 hover:text-blue-300 transition-colors duration-200"
+              >
+                Projects
+              </a>
+              <a href="#hero" className="md:hidden text-gray-200 hover:text-blue-300 transition-colors duration-200">
+                <FaHome size={14} />
+              </a>
+              <a href="#about" className="md:hidden text-gray-200 hover:text-blue-300 transition-colors duration-200">
+                <FaUser size={14} />
+              </a>
+              <a href="#skills" className="md:hidden text-gray-200 hover:text-blue-300 transition-colors duration-200">
+                <FaTools size={14} />
+              </a>
+              <a href="#projects" className="md:hidden text-gray-200 hover:text-blue-300 transition-colors duration-200">
+                <FaProjectDiagram size={14} />
+              </a>
+            </div>
+            <div className="hidden md:flex items-center space-x-3">
+              <div className="text-sm text-gray-200">
+                {currentTime} <sup className="text-[10px]">{period}</sup>
+              </div>
+              <button
+                onClick={toggleTheme}
+                className="p-1 rounded-full hover:bg-gray-700 transition-colors duration-200"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <FaSun size={14} className="text-yellow-400" /> : <FaMoon size={14} className="text-gray-600" />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.nav>
+
       <main className="container mx-auto px-4 py-12">
+        {/* Hero Section */}
         <motion.section
           id="hero"
-          className="text-center py-16"
+          className="mb-16 text-center"
           initial="hidden"
-          animate={visibleSections.includes('hero') ? 'visible' : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={sectionVariants}
         >
-          <motion.h1
-            className="mb-4 hero-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
-            variants={headingVariants}
-          >
-            <motion.span variants={childVariants}>Hi, I'm Tanuj</motion.span>
-          </motion.h1>
-          <motion.p
-            className="text-subheading mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-600 invert-on-hover"
-            variants={childVariants}
-          >
-            <motion.span variants={childVariants}>A passionate developer building modern web experiences.</motion.span>
-          </motion.p>
-          <motion.div
-            className="flex justify-center space-x-4 mb-6"
-            variants={childVariants}
-          >
-            <motion.a
-              href="https://github.com/TanujairamV"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}><FaGithub /></motion.span>
-            </motion.a>
-            <motion.a
-              href="https://linkedin.com/in/tanujairam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}><FaLinkedin /></motion.span>
-            </motion.a>
-            <motion.a
-              href="https://twitter.com/tanujairam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}><FaTwitter /></motion.span>
-            </motion.a>
-            <motion.a
-              href="https://instagram.com/tanujairam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}><FaInstagram /></motion.span>
-            </motion.a>
-            <motion.a
-              href="https://facebook.com/tanujairam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}><FaFacebook /></motion.span>
-            </motion.a>
-            <motion.a
-              href="https://t.me/tanujairam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl text-subheading hover:text-accent hover:scale-110 transition-transform duration-200 invert-on-hover"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}><FaTelegram /></motion.span>
-            </motion.a>
-          </motion.div>
-          <motion.div
-            className="flex flex-col items-center mb-6"
-            variants={childVariants}
-          >
-            <motion.p
-              className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover mb-2"
-              variants={childVariants}
-            >
-              <motion.span variants={childVariants}>Now Listening To</motion.span>
-            </motion.p>
-            <motion.div
-              className="listening-widget relative rounded-xl p-4 shadow-lg flex items-center space-x-4 w-full max-w-md overflow-hidden pb-5"
-              style={{
-                backgroundImage: listeningData.imageUrl ? `url(${listeningData.imageUrl})` : 'none',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundColor: listeningData.imageUrl ? 'transparent' : 'rgba(255, 255, 255, 0.8)', // Fallback to white if no image
-              }}
-              variants={childVariants}
-            >
-              <div className="absolute inset-0 backdrop-blur-lg bg-black/60" style={{ filter: 'blur(8px)' }}></div>
-              <div className="relative z-10 flex items-center space-x-4 w-full">
-                {isLoading ? (
-                  <motion.p
-                    className="text-sm text-subheading font-space-grotesk bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-                    variants={childVariants}
-                  >
-                    <motion.span variants={childVariants}>Loading...</motion.span>
-                  </motion.p>
-                ) : (
-                  <motion.div className="flex items-center space-x-4 w-full" variants={childVariants}>
-                    <motion.img
-                      key={listeningData.imageUrl} // Force re-render if imageUrl changes
-                      src={listeningData.imageUrl || 'https://via.placeholder.com/150?text=No+Image'}
-                      alt="Album Art"
-                      className="w-16 h-16 rounded-md object-cover"
-                      onError={(e) => {
-                        console.log('Image failed to load, falling back to placeholder');
-                        e.currentTarget.src = 'https://via.placeholder.com/150?text=No+Image';
-                      }}
-                      variants={childVariants}
-                    />
-                    <div className="flex-1">
-                      <motion.p
-                        className="text-lg font-poppins text-white font-semibold truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-                        variants={childVariants}
-                      >
-                        <motion.span variants={childVariants}>{listeningData.track || 'Unknown Track'}</motion.span>
-                      </motion.p>
-                      <motion.p
-                        className="text-sm text-subheading truncate bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-                        variants={childVariants}
-                      >
-                        <motion.span variants={childVariants}>{listeningData.artist || 'Unknown Artist'}</motion.span>
-                      </motion.p>
-                      {listeningData.isPlaying && (
-                        <motion.div
-                          className="visualizer flex space-x-1 mt-2"
-                          variants={childVariants}
-                        >
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar1" variants={childVariants} />
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar2" variants={childVariants} />
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar3" variants={childVariants} />
-                          <motion.div className="w-1 h-4 bg-gradient-to-r from-white to-gray-400 rounded animate-visualizer-bar4" variants={childVariants} />
-                        </motion.div>
-                      )}
-                    </div>
-                    <motion.div variants={childVariants}>
-                      <motion.span variants={childVariants}><FaMusic className="text-xl text-subheading invert-on-hover" /></motion.span>
-                    </motion.div>
-                  </motion.div>
-                )}
-              </div>
-              {listeningData.isPlaying && (
-                <motion.div
-                  className="absolute bottom-0 left-0 w-full h-1 overflow-hidden"
-                  variants={childVariants}
-                >
-                  <div className="w-full h-1 flex space-x-1 px-4">
-                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer1" />
-                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer2" />
-                    <div className="flex-1 h-1 bg-gradient-to-r from-white to-gray-400 rounded animate-line-visualizer3" />
-                  </div>
-                </motion.div>
-              )}
-            </motion.div>
-          </motion.div>
-          <motion.button
-            className="material-btn mt-6 invert-on-hover"
-            variants={childVariants}
-          >
-            <motion.span variants={childVariants}>Get in Touch</motion.span>
-          </motion.button>
+          <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+            Welcome to My Portfolio
+          </h1>
+          <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+            Hi, I'm Tanu. I'm a developer passionate about creating amazing web experiences.
+          </p>
         </motion.section>
+
+        {/* Now Playing Section */}
+        <motion.section
+          id="now-playing"
+          className="mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={sectionVariants}
+        >
+          <div className="lastfm-section bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold mb-4">Now Playing</h3>
+            {error ? (
+              <p className="text-red-500">{error}</p>
+            ) : !track ? (
+              <p className="text-gray-400">Loading...</p>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <div className="relative w-20 h-20 flex-shrink-0">
+                  {!imageLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-700 rounded-lg animate-pulse">
+                      <p className="text-gray-400 text-xs">Loading...</p>
+                    </div>
+                  )}
+                  <img
+                    src={track.image}
+                    alt={`${track.name} by ${track.artist}`}
+                    className={`w-20 h-20 object-cover rounded-lg transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                    onLoad={() => setImageLoaded(true)}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://via.placeholder.com/300x300?text=No+Image';
+                      setImageLoaded(true);
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="text-lg font-medium">{track.name}</p>
+                  <p className="text-gray-400">by {track.artist}</p>
+                  <p className="text-sm text-gray-500">Album: {track.album}</p>
+                  <a
+                    href={track.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:underline text-sm"
+                  >
+                    Listen on Last.fm
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.section>
+
+        {/* About Section */}
         <motion.section
           id="about"
-          className="py-16"
+          className="mb-16"
           initial="hidden"
-          animate={visibleSections.includes('about') ? 'visible' : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={sectionVariants}
         >
-          <motion.h2
-            className="text-center mb-8 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            variants={headingVariants}
-          >
-            About Me
-          </motion.h2>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={sectionVariants}
-          >
-            <motion.div className="material-card hover:scale-105 transition-transform duration-300" variants={childVariants}>
-              <motion.p className="text-base bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
-                I'm a developer with a focus on React, TypeScript, and Tailwind CSS.
-              </motion.p>
-            </motion.div>
-            <motion.div className="profile-card flex items-center space-x-4" variants={childVariants}>
-              <motion.div variants={childVariants}>
-                <motion.h3 className="text-3xl font-space-grotesk text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
-                  Tanuj
-                </motion.h3>
-                <motion.p className="text-base text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Frontend Developer</motion.p>
-                <motion.p className="text-base text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Email: tanuj@example.com</motion.p>
-                <motion.p className="text-base text-white/80 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Based in: India</motion.p>
-              </motion.div>
-            </motion.div>
-            <motion.div className="material-card p-6 bg-white/80 backdrop-blur-md rounded-lg shadow-lg" variants={childVariants}>
-              <motion.h3 className="text-2xl font-space-grotesk mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>Contact Me</motion.h3>
-              <form ref={form} onSubmit={sendEmail} className="space-y-4">
-                <motion.div variants={childVariants}>
-                  <input
-                    type="text"
-                    name="user_name"
-                    placeholder="Your Name"
-                    className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading focus:outline-none focus:ring-2 focus:ring-accent"
-                    required
-                  />
-                </motion.div>
-                <motion.div variants={childVariants}>
-                  <input
-                    type="email"
-                    name="user_email"
-                    placeholder="Your Email"
-                    className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading focus:outline-none focus:ring-2 focus:ring-accent"
-                    required
-                  />
-                </motion.div>
-                <motion.div variants={childVariants}>
-                  <textarea
-                    name="message"
-                    placeholder="Your Message"
-                    className="w-full p-3 rounded-lg bg-foreground/10 border border-foreground/20 text-foreground placeholder-subheading h-32 focus:outline-none focus:ring-2 focus:ring-accent"
-                    required
-                  ></textarea>
-                </motion.div>
-                <motion.button type="submit" className="material-btn w-full invert-on-hover" variants={childVariants}>Send Message</motion.button>
-              </form>
-            </motion.div>
-          </motion.div>
+          <h2 className="text-3xl font-semibold mb-4">About Me</h2>
+          <p className={`text-gray-300 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+            I’m a full-stack developer with experience in React, TypeScript, Node.js, and more. I love building
+            intuitive and performant applications that solve real-world problems. My journey in tech started with a curiosity
+            for how things work, and now I’m dedicated to crafting seamless digital experiences.
+          </p>
         </motion.section>
+
+        {/* Skills Section */}
         <motion.section
           id="skills"
-          className="py-16"
+          className="mb-16"
           initial="hidden"
-          animate={visibleSections.includes('skills') ? 'visible' : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={sectionVariants}
         >
-          <motion.h2
-            className="text-center mb-8 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            variants={headingVariants}
-          >
-            Skills
-          </motion.h2>
-          <motion.div
-            className="flex flex-wrap justify-center gap-2"
-            variants={sectionVariants}
-          >
-            {skills.map((skill) => (
-              <SkillChip key={skill} skill={skill} />
-            ))}
-          </motion.div>
+          <h2 className="text-3xl font-semibold mb-4">Skills</h2>
+          <ul className="grid grid-cols-2 md:grid-cols-4 gap-4 text-gray-300">
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">JavaScript</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">React</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">TypeScript</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">Node.js</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">Tailwind CSS</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">Express</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">Git</li>
+            <li className="bg-gray-800 p-3 rounded-lg text-center hover:bg-gray-700 transition-colors duration-200">Docker</li>
+          </ul>
         </motion.section>
+
+        {/* Projects Section */}
         <motion.section
           id="projects"
-          className="py-16"
           initial="hidden"
-          animate={visibleSections.includes('projects') ? 'visible' : 'hidden'}
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={sectionVariants}
         >
-          <motion.h2
-            className="text-center mb-8 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
-            variants={headingVariants}
-          >
-            Projects
-          </motion.h2>
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            variants={sectionVariants}
-          >
-            {projects.map((project) => (
-              <ProjectCard key={project.name} project={project} />
-            ))}
-          </motion.div>
+          <h2 className="text-3xl font-semibold mb-4">Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-800 p-6 rounded-lg hover:shadow-xl transition-shadow duration-300">
+              <h3 className="text-xl font-medium mb-2">Last.fm Proxy</h3>
+              <p className="text-gray-300 mb-2">
+                A Node.js proxy server to fetch and display my currently playing music from Last.fm, deployed on Koyeb.
+              </p>
+              <a
+                href="https://inquisitive-gamefowl-tanujairam-tg-e1360444.koyeb.app/api/lastfm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:underline text-sm"
+              >
+                View API
+              </a>
+            </div>
+            <div className="bg-gray-800 p-6 rounded-lg hover:shadow-xl transition-shadow duration-300">
+              <h3 className="text-xl font-medium mb-2">Portfolio Website</h3>
+              <p className="text-gray-300 mb-2">
+                This very website, built with React, TypeScript, and Tailwind CSS to showcase my work and skills.
+              </p>
+              <a
+                href="#"
+                className="text-blue-400 hover:underline text-sm"
+              >
+                You’re already here!
+              </a>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Contact Section */}
+        <motion.section
+          id="contact"
+          className="mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={sectionVariants}
+        >
+          <h2 className="text-3xl font-semibold mb-4">Get in Touch</h2>
+          <p className={`text-gray-300 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+            I’m always open to new opportunities and collaborations. Feel free to reach out!
+          </p>
+          <div className="mt-4 flex space-x-4">
+            <a
+              href="mailto:your.email@example.com"
+              className="text-blue-400 hover:underline"
+            >
+              Email Me
+            </a>
+            <a
+              href="https://github.com/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://linkedin.com/in/yourusername"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              LinkedIn
+            </a>
+          </div>
         </motion.section>
       </main>
-      <motion.footer
-        className="bg-white/80 backdrop-blur-md py-8 text-center border-t border-white/20 mt-12"
-        initial="hidden"
-        animate={visibleSections.includes('footer') ? 'visible' : 'hidden'}
-        variants={sectionVariants}
-        id="footer"
-      >
-        <motion.p className="text-base bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
-          <a href="mailto:tanuj@example.com" className="hover:text-accent">tanuj@example.com</a>
-        </motion.p>
-        <motion.p className="text-base mt-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover" variants={childVariants}>
-          2025 Tanuj. All rights reserved.
-        </motion.p>
-        <motion.div className="flex justify-center space-x-4 mt-4" variants={childVariants}>
-          <motion.a href="https://github.com/TanujairamV" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
-            <FaGithub />
-          </motion.a>
-          <motion.a href="https://linkedin.com/in/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
-            <FaLinkedin />
-          </motion.a>
-          <motion.a href="https://twitter.com/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
-            <FaTwitter />
-          </motion.a>
-          <motion.a href="https://t.me/tanujairam" target="_blank" rel="noopener noreferrer" className="text-base hover:text-accent invert-on-hover" variants={childVariants}>
-            <FaTelegram />
-          </motion.a>
-        </motion.div>
-      </motion.footer>
+
+      {/* Footer */}
+      <footer className="py-6 text-center text-gray-500">
+        <p>&copy; {new Date().getFullYear()} Tanu. All rights reserved.</p>
+      </footer>
     </div>
   );
-};
+}
 
 export default Portfolio;
