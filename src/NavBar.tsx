@@ -1,22 +1,55 @@
 import { motion } from 'framer-motion';
 import { FaHome, FaUser, FaTools, FaProjectDiagram } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 
 const NavBar = () => {
-  // Use the provided date and time: 04:55 PM IST on May 16, 2025
-  const currentTime = "04:55";
-  const period = "pm";
+  // State to store the current time and period (am/pm)
+  const [currentTime, setCurrentTime] = useState("05:10");
+  const [period, setPeriod] = useState("pm");
+
+  // State to control navbar visibility after intro screen
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Fetch the current time from the user's system on component mount
+  useEffect(() => {
+    const fetchTime = () => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      // Determine period (am/pm) and convert to 12-hour format
+      const periodValue = hours >= 12 ? "pm" : "am";
+      const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
+      const formattedTime = `${formattedHours}:${formattedMinutes}`;
+
+      setCurrentTime(formattedTime);
+      setPeriod(periodValue);
+    };
+
+    fetchTime();
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  // Delay the navbar appearance until after the intro screen (assumed 2 seconds)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 2000); // Delay of 2 seconds to match intro screen duration
+
+    return () => clearTimeout(timer); // Cleanup timer on unmount
+  }, []);
 
   return (
     <motion.nav
-      className="fixed top-6 w-full z-50 px-4 md:px-6"
+      className="fixed top-6 max-w-fit mx-auto z-50 px-2 md:px-3"
       initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="flex items-center justify-between bg-gradient-to-r from-gray-800 to-gray-900 backdrop-blur-lg border border-white/20 rounded-full py-2 md:py-3 px-4 shadow-lg hover:scale-[1.01] transition-transform duration-300">
+      <div className="flex items-center justify-between bg-black/20 backdrop-blur-2xl border border-white/30 rounded-3xl py-1 px-2 shadow-md hover:scale-[1.01] transition-transform duration-300">
         <a
           href="/"
-          className="text-2xl md:text-3xl font-style-script text-white scale-105 hover:scale-110 transition-transform duration-200 invert-on-hover"
+          className="text-lg md:text-xl font-style-script text-white scale-105 hover:scale-110 transition-transform duration-200 invert-on-hover"
         >
           Tanu
         </a>
@@ -25,45 +58,45 @@ const NavBar = () => {
           <div className="flex items-center space-x-4 md:space-x-6">
             <a
               href="#hero"
-              className="hidden md:inline text-base text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             >
               Home
             </a>
             <a
               href="#about"
-              className="hidden md:inline text-base text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             >
               About
             </a>
             <a
               href="#skills"
-              className="hidden md:inline text-base text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             >
               Skills
             </a>
             <a
               href="#projects"
-              className="hidden md:inline text-base text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
+              className="hidden md:inline text-xs text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover"
             >
               Projects
             </a>
             {/* Icons for mobile */}
             <a href="#hero" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaHome size={16} />
+              <FaHome size={12} />
             </a>
             <a href="#about" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaUser size={16} />
+              <FaUser size={12} />
             </a>
             <a href="#skills" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaTools size={16} />
+              <FaTools size={12} />
             </a>
             <a href="#projects" className="md:hidden text-white hover:text-accent bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-              <FaProjectDiagram size={16} />
+              <FaProjectDiagram size={12} />
             </a>
           </div>
           {/* Time display - hidden on mobile */}
-          <div className="hidden md:block text-base text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
-            {currentTime} <sup className="text-xs">{period}</sup>
+          <div className="hidden md:block text-xs text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover">
+            {currentTime} <sup className="text-[10px]">{period}</sup>
           </div>
         </div>
       </div>
