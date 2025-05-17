@@ -56,7 +56,6 @@ const fallbackTrack: LastFMTrack = {
 
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
-  const [loading, setLoading] = useState(true);
   const [img, setImg] = useState<string>(fallbackTrack.image);
 
   useEffect(() => {
@@ -70,12 +69,10 @@ const NowListening: React.FC = () => {
         } else {
           setImg(t.image);
         }
-        setLoading(false);
       })
       .catch(() => {
         setTrack(null);
         setImg(fallbackTrack.image);
-        setLoading(false);
       });
   }, []);
 
