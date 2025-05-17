@@ -29,77 +29,77 @@ const aboutText = `I'm a passionate developer focused on creating beautiful, per
 const socialIcons = [
   {
     href: "https://github.com/TanujairamV",
-    icon: <FaGithub size={26} />,
+    icon: <FaGithub size={28} />,
     label: "GitHub"
   },
   {
     href: "https://linkedin.com/in/tanujairam",
-    icon: <FaLinkedinIn size={26} />,
+    icon: <FaLinkedinIn size={28} />,
     label: "LinkedIn"
   },
   {
     href: "mailto:tanujairam@email.com",
-    icon: <FaEnvelope size={26} />,
+    icon: <FaEnvelope size={28} />,
     label: "Email"
   },
   {
     href: "tel:+1234567890",
-    icon: <FaPhoneAlt size={26} />,
+    icon: <FaPhoneAlt size={28} />,
     label: "Phone"
   },
   {
     href: "https://twitter.com/tanujairam",
-    icon: <FaTwitter size={26} />,
+    icon: <FaTwitter size={28} />,
     label: "Twitter"
   },
   {
     href: "https://instagram.com/tanujairam",
-    icon: <FaInstagram size={26} />,
+    icon: <FaInstagram size={28} />,
     label: "Instagram"
   },
   {
     href: "https://facebook.com/tanujairam",
-    icon: <FaFacebook size={26} />,
+    icon: <FaFacebook size={28} />,
     label: "Facebook"
   },
   {
     href: "https://tanujairam.com",
-    icon: <FaGlobe size={26} />,
+    icon: <FaGlobe size={28} />,
     label: "Website"
   },
   {
     href: "https://discordapp.com/users/1234567890",
-    icon: <FaDiscord size={26} />,
+    icon: <FaDiscord size={28} />,
     label: "Discord"
   },
   {
     href: "https://t.me/tanujairam",
-    icon: <FaTelegramPlane size={26} />,
+    icon: <FaTelegramPlane size={28} />,
     label: "Telegram"
   },
   {
     href: "https://youtube.com/@tanujairam",
-    icon: <FaYoutube size={26} />,
+    icon: <FaYoutube size={28} />,
     label: "YouTube"
   },
   {
     href: "https://stackoverflow.com/users/123456/tanujairam",
-    icon: <FaStackOverflow size={26} />,
+    icon: <FaStackOverflow size={28} />,
     label: "StackOverflow"
   },
   {
     href: "https://medium.com/@tanujairam",
-    icon: <FaMediumM size={26} />,
+    icon: <FaMediumM size={28} />,
     label: "Medium"
   },
   {
     href: "https://dribbble.com/tanujairam",
-    icon: <FaDribbble size={26} />,
+    icon: <FaDribbble size={28} />,
     label: "Dribbble"
   },
   {
     href: "https://reddit.com/user/tanujairam",
-    icon: <FaRedditAlien size={26} />,
+    icon: <FaRedditAlien size={28} />,
     label: "Reddit"
   }
 ];
@@ -108,41 +108,37 @@ const Hero: React.FC = () => {
   return (
     <section
       id="hero"
-      className="w-full flex justify-center items-center min-h-[60vh] pt-10 pb-4"
+      className="w-full flex justify-center items-center min-h-[60vh] pt-4 pb-4"
       style={{
         minHeight: "54vh",
         width: "100vw",
-        position: "relative",
-        zIndex: 1,
         fontFamily: "'Space Grotesk', 'Poppins', sans-serif"
       }}
     >
-      <div
-        className="flex flex-col md:flex-row items-center md:items-start justify-center w-full max-w-5xl gap-8 md:gap-16 px-4 md:px-8"
-      >
+      <div className="flex flex-col md:flex-row items-center md:items-stretch justify-center w-full max-w-6xl gap-10 md:gap-16 px-4 md:px-8">
         {/* Profile picture */}
-        <div className="flex-shrink-0 flex justify-center md:justify-start items-center w-full md:w-auto mb-7 md:mb-0">
+        <div className="flex-shrink-0 flex items-center justify-center md:justify-start w-full md:w-auto mb-6 md:mb-0">
           <img
             src="/pfp.png"
             alt="Tanujairam"
             className="rounded-2xl shadow-xl object-cover object-center"
             style={{
-              width: 170,
-              height: 170,
-              background: "rgba(255,255,255,0.07)",
-              minWidth: 120,
-              minHeight: 120,
-              maxWidth: 200,
-              maxHeight: 200,
+              width: 260,
+              height: 260,
+              maxWidth: 320,
+              maxHeight: 320,
+              minWidth: 200,
+              minHeight: 200,
               display: "block",
+              background: "rgba(255,255,255,0.07)"
               // border removed
             }}
           />
         </div>
         {/* Text and socials */}
-        <div className="flex flex-col items-center md:items-start w-full max-w-xl md:pr-4">
+        <div className="flex flex-col justify-center h-full items-center md:items-start w-full max-w-2xl">
           <h1
-            className="text-3xl md:text-4xl font-bold mb-1 flex items-center flex-wrap"
+            className="text-4xl md:text-5xl font-bold mb-2 flex items-center flex-wrap"
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
               fontWeight: 700,
@@ -154,17 +150,17 @@ const Hero: React.FC = () => {
             <span style={gradientStyle}>, i'm&nbsp;Tanujairam</span>
           </h1>
           <div
-            className="mt-2 mb-3 text-base md:text-lg font-medium text-center md:text-left"
+            className="mt-2 mb-5 text-lg md:text-xl font-medium text-center md:text-left"
             style={{
               ...gradientStyle,
               lineHeight: 1.5,
               fontWeight: 500,
-              maxWidth: 420
+              maxWidth: 480
             }}
           >
             {aboutText}
           </div>
-          <div className="flex flex-row mt-3 flex-wrap gap-4 md:gap-6">
+          <div className="flex flex-row mt-2 flex-wrap gap-5 md:gap-7">
             {socialIcons.map((social) => (
               <a
                 key={social.href}
@@ -174,7 +170,7 @@ const Hero: React.FC = () => {
                 aria-label={social.label}
                 style={{
                   ...gradientStyle,
-                  fontSize: "1.5rem",
+                  fontSize: "2rem",
                   transition: "transform 0.14s, color 0.14s"
                 }}
                 className="hover:scale-110 focus:scale-110"
