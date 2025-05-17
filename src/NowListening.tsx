@@ -18,38 +18,60 @@ const NowListening: React.FC = () => {
       });
   }, []);
 
-  if (loading) return null;
-  if (error || !track) return null;
+  if (loading || error || !track) return null;
 
   return (
-    <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500/30 to-purple-600/30 mb-8 shadow-lg backdrop-blur-sm border border-white/20">
-      <img
-        src={track.image}
-        alt="Album Art"
-        className="w-14 h-14 rounded-xl object-cover border-2 border-white/30"
+    <div className="relative w-full max-w-lg rounded-2xl mx-auto mb-12 overflow-hidden shadow-2xl">
+      {/* Blurred cover image as background */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url(${track.image})`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          filter: "blur(24px) brightness(0.5)",
+          WebkitFilter: "blur(24px) brightness(0.5)",
+          transform: "scale(1.1)",
+        }}
+        aria-hidden
       />
-      <div>
-        <span
-          className="block text-xs uppercase tracking-wider text-pink-400 mb-1"
-          style={{ fontFamily: "'Roboto Mono', monospace" }}
-        >
-          Now Listening To
-        </span>
-        <a
-          href={track.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block text-lg font-bold text-white hover:text-pink-300"
-          style={{ fontFamily: "'Pacifico', cursive" }}
-        >
-          {track.name}
-        </a>
-        <span
-          className="block text-sm text-gray-200"
-          style={{ fontFamily: "'Montserrat', sans-serif" }}
-        >
-          {track.artist}
-        </span>
+      {/* Glassmorphic overlay */}
+      <div className="relative z-10 flex items-center gap-5 px-6 py-5"
+        style={{
+          background: "rgba(255,255,255,0.14)",
+          borderRadius: "1.25rem",
+          border: "1px solid rgba(255,255,255,0.25)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+        }}>
+        <img
+          src={track.image}
+          alt={`Album art for ${track.name}`}
+          className="w-16 h-16 rounded-xl border-2 border-white/50 shadow-lg object-cover flex-shrink-0"
+        />
+        <div className="flex flex-col">
+          <span
+            className="text-xs uppercase tracking-widest text-pink-400 mb-1"
+            style={{ fontFamily: "'Roboto Mono', monospace", letterSpacing: "0.15em" }}
+          >
+            Now Listening To
+          </span>
+          <a
+            href={track.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xl font-bold text-white hover:text-pink-200 transition"
+            style={{ fontFamily: "'Pacifico', cursive", textShadow: "0 2px 8px rgba(0,0,0,0.38)" }}
+          >
+            {track.name}
+          </a>
+          <span
+            className="text-base text-gray-200 font-semibold"
+            style={{ fontFamily: "'Montserrat', sans-serif", textShadow: "0 1px 6px rgba(0,0,0,0.22)" }}
+          >
+            {track.artist}
+          </span>
+        </div>
       </div>
     </div>
   );
