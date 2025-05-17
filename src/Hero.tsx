@@ -1,18 +1,9 @@
 import React from "react";
-
-// Update the import path for your image if necessary
-const PFP = "/pfp.png";
-
-// Example social links, replace with your real ones
-const SOCIALS = [
-  { href: "https://github.com/TanujairamV", icon: <i className="fab fa-github" />, label: "GitHub" },
-  { href: "https://linkedin.com/in/tanujairam", icon: <i className="fab fa-linkedin-in" />, label: "LinkedIn" },
-  { href: "mailto:tanujairam@email.com", icon: <i className="fas fa-envelope" />, label: "Email" }
-];
-
-// You can use react-icons for better icons if you want
 import { FaGithub, FaLinkedinIn, FaEnvelope } from "react-icons/fa";
 
+const PFP = "/pfp.png";
+
+// Social links (edit as needed)
 const socialIcons = [
   {
     href: "https://github.com/TanujairamV",
@@ -108,7 +99,7 @@ const Hero: React.FC = () => {
             {aboutText}
           </div>
           <div className="flex flex-row mt-3 gap-6">
-            {socialIcons.map((social, idx) => (
+            {socialIcons.map((social) => (
               <a
                 key={social.href}
                 href={social.href}
