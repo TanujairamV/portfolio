@@ -33,7 +33,9 @@ const PortfolioSection: React.FC = () => {
 
       <main className="relative z-10 max-w-3xl mx-auto pt-36 pb-16 px-4 md:px-8">
         {/* Now Listening */}
-        <NowListening />
+        <div className="flex justify-center mb-8">
+          <NowListening />
+        </div>
 
         {/* Hero Section */}
         <section id="hero" className="text-center mb-20">
