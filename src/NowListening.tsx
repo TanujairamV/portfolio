@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Get a YouTube Music thumbnail via Piped API as fallback
+// Always use YouTube Music (Piped) thumbnail for the song
 const getYtMusicThumbnail = async (artist: string, track: string): Promise<string | null> => {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
@@ -75,11 +75,6 @@ const MusicIcon: React.FC = () => (
   </svg>
 );
 
-const isBlankImage = (img: string) =>
-  !img ||
-  img.includes("2a96cbd8b46e442fc41c2b86b821562f.png") ||
-  img.includes("via.placeholder.com");
-
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [img, setImg] = useState<string>(fallbackTrack.image);
@@ -91,12 +86,10 @@ const NowListening: React.FC = () => {
       .then(async (t) => {
         if (!isMounted) return;
         setTrack(t);
-        let cover = t.image;
-        if (isBlankImage(cover)) {
-          const ytThumb = await getYtMusicThumbnail(t.artist, t.name);
-          cover = ytThumb || fallbackTrack.image;
-        }
-        setImg(cover);
+
+        // Always use YT Music thumbnail as default
+        const ytThumb = await getYtMusicThumbnail(t.artist, t.name);
+        setImg(ytThumb || fallbackTrack.image);
       })
       .catch(() => {
         if (!isMounted) return;
@@ -110,7 +103,6 @@ const NowListening: React.FC = () => {
 
   const t = track || fallbackTrack;
 
-  // Make the bar bigger (taller, more padding, larger image)
   return (
     <div
       className="relative w-full max-w-xl mx-auto mb-12"
