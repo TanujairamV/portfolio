@@ -44,7 +44,7 @@ const PortfolioSection: React.FC = () => {
       <AnimatedCursor />
       <Navbar />
 
-      <main className="relative z-10 max-w-3xl mx-auto pt-36 pb-16 px-4 md:px-8">
+      <main className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10">
         {/* Hero Section */}
         <Hero />
 
