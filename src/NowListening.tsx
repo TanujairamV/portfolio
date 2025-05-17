@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Get a YouTube Music thumbnail via Piped API
+// Get a YouTube Music thumbnail via Piped API as fallback
 const getYtMusicThumbnail = async (artist: string, track: string): Promise<string | null> => {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
@@ -38,10 +38,10 @@ const CompactEqualizer: React.FC = () => {
       display: "flex",
       alignItems: "end",
       gap: "3px",
-      height: "19px",
-      marginLeft: 8,
+      height: "22px",
+      marginLeft: 10,
       marginRight: 2,
-      minWidth: "15px",
+      minWidth: "17px",
     }}>
       {heights.map((h, i) => (
         <div key={i}
@@ -58,7 +58,7 @@ const CompactEqualizer: React.FC = () => {
 };
 
 const MusicIcon: React.FC = () => (
-  <svg width="26" height="26" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }} xmlns="http://www.w3.org/2000/svg">
+  <svg width="30" height="30" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }} xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#softshadow)">
       <path d="M15.8 4.4V13.1C15.5 12.9 15.1 12.8 14.7 12.8C13.6 12.8 12.7 13.7 12.7 14.8C12.7 15.9 13.6 16.8 14.7 16.8C15.8 16.8 16.7 15.9 16.7 14.8V7.6H18V4.4H15.8ZM7.8 6.7V13.1C7.5 12.9 7.1 12.8 6.7 12.8C5.6 12.8 4.7 13.7 4.7 14.8C4.7 15.9 5.6 16.8 6.7 16.8C7.8 16.8 8.7 15.9 8.7 14.8V8.7H12V6.7H7.8Z"
         fill="url(#gradient)" />
@@ -75,38 +75,49 @@ const MusicIcon: React.FC = () => (
   </svg>
 );
 
+const isBlankImage = (img: string) =>
+  !img ||
+  img.includes("2a96cbd8b46e442fc41c2b86b821562f.png") ||
+  img.includes("via.placeholder.com");
+
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [img, setImg] = useState<string>(fallbackTrack.image);
   const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     fetchRecentTrack()
       .then(async (t) => {
+        if (!isMounted) return;
         setTrack(t);
         let cover = t.image;
-        if (!cover || cover.includes("2a96cbd8b46e442fc41c2b86b821562f.png")) {
+        if (isBlankImage(cover)) {
           const ytThumb = await getYtMusicThumbnail(t.artist, t.name);
           cover = ytThumb || fallbackTrack.image;
         }
         setImg(cover);
       })
       .catch(() => {
+        if (!isMounted) return;
         setTrack(null);
         setImg(fallbackTrack.image);
       });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const t = track || fallbackTrack;
 
-  // Compact, visually balanced, soft glass, all gradient text, space-efficient
+  // Make the bar bigger (taller, more padding, larger image)
   return (
     <div
-      className="relative w-full max-w-md mx-auto mb-8"
+      className="relative w-full max-w-xl mx-auto mb-12"
       style={{
-        borderRadius: "1.7rem",
+        borderRadius: "2.1rem",
         overflow: "hidden",
-        boxShadow: "0 3px 18px rgba(60,60,60,0.11), 0 0.5px 4px rgba(200,200,200,0.09)"
+        boxShadow: "0 8px 30px rgba(60,60,60,0.13), 0 2px 12px rgba(200,200,200,0.11)"
       }}
     >
       {/* Blurred cover as background */}
@@ -116,9 +127,9 @@ const NowListening: React.FC = () => {
           backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(22px) brightness(0.62)",
-          WebkitFilter: "blur(22px) brightness(0.62)",
-          transform: "scale(1.07)"
+          filter: "blur(28px) brightness(0.60)",
+          WebkitFilter: "blur(28px) brightness(0.60)",
+          transform: "scale(1.10)"
         }}
         aria-hidden
       />
@@ -126,51 +137,51 @@ const NowListening: React.FC = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "rgba(40,40,40,0.26)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)"
+          background: "rgba(40,40,40,0.23)",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)"
         }}
       />
       {/* Main content */}
       <div
-        className="relative z-10 flex items-center gap-3 px-4 py-3"
+        className="relative z-10 flex items-center gap-4 px-7 py-5"
         style={{
-          background: "rgba(255,255,255,0.10)",
-          borderRadius: "1.7rem",
-          border: "1px solid rgba(180,180,180,0.13)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          minHeight: "62px",
+          background: "rgba(255,255,255,0.13)",
+          borderRadius: "2.1rem",
+          border: "1.3px solid rgba(180,180,180,0.13)",
+          backdropFilter: "blur(17px)",
+          WebkitBackdropFilter: "blur(17px)",
+          minHeight: "86px",
         }}
       >
         <div style={{ position: "relative", flexShrink: 0 }}>
           <img
             src={img}
             alt={`Album art for ${t.name}`}
-            className="w-12 h-12 object-cover"
+            className="w-[66px] h-[66px] object-cover"
             style={{
-              borderRadius: "0.8rem",
-              border: "1.5px solid rgba(225,225,225,0.19)",
+              borderRadius: "1.1rem",
+              border: "2px solid rgba(225,225,225,0.19)",
               boxShadow: "0 2px 8px 0 rgba(80,80,80,0.06)",
               opacity: imgLoaded ? 1 : 0,
-              transition: "opacity 0.3s"
+              transition: "opacity .3s"
             }}
             onLoad={() => setImgLoaded(true)}
           />
           {!imgLoaded && (
             <div style={{
-              width: "3rem", height: "3rem",
-              borderRadius: "0.8rem",
+              width: "66px", height: "66px",
+              borderRadius: "1.1rem",
               background: "linear-gradient(135deg,#dfdfdf 10%,#bbb 90%)",
               position: "absolute", left: 0, top: 0
             }} />
           )}
         </div>
-        <div className="flex flex-col min-w-0" style={{flex: 1}}>
+        <div className="flex flex-col min-w-0" style={{ flex: 1 }}>
           <span
-            className="text-[0.65rem] uppercase tracking-widest mb-0.5"
+            className="text-[0.7rem] uppercase tracking-widest mb-1"
             style={{
-              background: "linear-gradient(90deg, #fff 50%, #b0b0b0 100%)",
+              background: "linear-gradient(90deg, #fff 55%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               fontFamily: "'Roboto Mono', monospace",
@@ -184,9 +195,9 @@ const NowListening: React.FC = () => {
               href={t.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="truncate text-base font-bold"
+              className="truncate text-[1.22rem] font-bold"
               style={{
-                background: "linear-gradient(90deg, #fff 65%, #b0b0b0 100%)",
+                background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 fontFamily: "'Montserrat', sans-serif",
@@ -200,7 +211,7 @@ const NowListening: React.FC = () => {
             <CompactEqualizer />
           </div>
           <span
-            className="truncate text-xs font-semibold mt-0"
+            className="truncate text-[0.98rem] font-semibold mt-0"
             style={{
               background: "linear-gradient(90deg, #fff 40%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -213,7 +224,7 @@ const NowListening: React.FC = () => {
             {t.artist}
           </span>
         </div>
-        <div className="hidden md:flex" style={{ marginLeft: 10 }}>
+        <div style={{ marginLeft: 10, display: "flex", alignItems: "center" }}>
           <MusicIcon />
         </div>
       </div>
