@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
+import { FaMusic } from "react-icons/fa";
 
-// --- Album art fetching logic as before ---
+// iTunes fallback
 async function getItunesThumbnail(artist: string, track: string): Promise<string | null> {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
@@ -22,7 +23,7 @@ const fallbackTrack: LastFMTrack = {
   url: "#",
 };
 
-const CompactEqualizer: React.FC = () => {
+const CompactEqualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
   const [heights, setHeights] = useState<number[]>([10, 10, 10]);
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,16 +39,16 @@ const CompactEqualizer: React.FC = () => {
     <div style={{
       display: "flex",
       alignItems: "end",
-      gap: "4px",
-      height: "34px",
-      marginLeft: 12,
+      gap: mobile ? "2.5px" : "4px",
+      height: mobile ? "20px" : "34px",
+      marginLeft: mobile ? 7 : 12,
       marginRight: 2,
-      minWidth: "21px",
+      minWidth: mobile ? "13px" : "21px",
     }}>
       {heights.map((h, i) => (
         <div key={i}
           style={{
-            width: "5px",
+            width: mobile ? "3px" : "5px",
             height: `${h}px`,
             background: "linear-gradient(180deg, #fff 70%, #b0b0b0 100%)",
             borderRadius: "4px",
@@ -57,24 +58,6 @@ const CompactEqualizer: React.FC = () => {
     </div>
   );
 };
-
-const MusicIcon: React.FC = () => (
-  <svg width="38" height="38" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} xmlns="http://www.w3.org/2000/svg">
-    <g filter="url(#softshadow)">
-      <path d="M19.8 6.2V17.1C19.5 16.9 19.1 16.8 18.7 16.8C17.6 16.8 16.7 17.7 16.7 18.8C16.7 19.9 17.6 20.8 18.7 20.8C19.8 20.8 20.7 19.9 20.7 18.8V10.6H22V6.2H19.8ZM9.8 8.7V17.1C9.5 16.9 9.1 16.8 8.7 16.8C7.6 16.8 6.7 17.7 6.7 18.8C6.7 19.9 7.6 20.8 8.7 20.8C9.8 20.8 10.7 19.9 10.7 18.8V12.7H16V8.7H9.8Z"
-        fill="url(#gradient)" />
-    </g>
-    <defs>
-      <linearGradient id="gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#fff"/>
-        <stop offset="1" stopColor="#b0b0b0"/>
-      </linearGradient>
-      <filter id="softshadow" x="0" y="0" width="24" height="24" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#bbb" floodOpacity="0.18"/>
-      </filter>
-    </defs>
-  </svg>
-);
 
 const isMobile = () =>
   typeof window !== "undefined" &&
@@ -124,7 +107,7 @@ const NowListening: React.FC = () => {
     } else {
       marqueeRef.current.classList.remove("marquee-scroll");
     }
-  }, [track]);
+  }, [track, mobileView]);
 
   const t = track || fallbackTrack;
 
@@ -136,36 +119,37 @@ const NowListening: React.FC = () => {
         overflow: "hidden",
         boxShadow: mobileView
           ? "0 4px 16px rgba(60,60,60,0.17), 0 1px 6px rgba(200,200,200,0.09)"
-          : "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)"
+          : "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)",
+        fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif"
       }}
     >
-      {/* Gaussian blurred cover as background */}
+      {/* Blurred thumbnail as gaussian background */}
       <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(44px) brightness(0.38) saturate(1.7)",
-          WebkitFilter: "blur(44px) brightness(0.38) saturate(1.7)",
-          transform: "scale(1.18)"
+          filter: "blur(54px) brightness(0.38) saturate(1.7)",
+          WebkitFilter: "blur(54px) brightness(0.38) saturate(1.7)",
+          transform: "scale(1.19)"
         }}
         aria-hidden
       />
-      {/* Overlay for extra blur and deeper glass effect */}
+      {/* Overlay for glass effect */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "rgba(20,20,32,0.62)",
-          backdropFilter: "blur(18px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(18px) saturate(1.2)"
+          background: "rgba(18,18,30,0.61)",
+          backdropFilter: "blur(20px) saturate(1.2)",
+          WebkitBackdropFilter: "blur(20px) saturate(1.2)"
         }}
       />
       {/* Main content */}
       <div
-        className={`relative z-10 flex items-center ${mobileView ? "gap-4 px-3 py-3" : "gap-7 px-10 py-7"}`}
+        className={`relative z-10 flex items-center ${mobileView ? "gap-3 px-3 py-3" : "gap-7 px-10 py-7"}`}
         style={{
-          background: "rgba(255,255,255,0.11)",
+          background: "rgba(255,255,255,0.09)",
           borderRadius: mobileView ? "1.2rem" : "2.3rem",
           border: "1.7px solid rgba(180,180,180,0.18)",
           backdropFilter: "blur(22px)",
@@ -177,9 +161,9 @@ const NowListening: React.FC = () => {
           style={{
             position: "relative",
             flexShrink: 0,
-            width: mobileView ? "58px" : "110px",
-            height: mobileView ? "58px" : "110px",
-            borderRadius: mobileView ? "1rem" : "1.55rem",
+            width: mobileView ? "50px" : "110px",
+            height: mobileView ? "50px" : "110px",
+            borderRadius: mobileView ? "0.9rem" : "1.55rem",
             overflow: "hidden",
             transition: "box-shadow .19s, transform .19s"
           }}
@@ -192,22 +176,21 @@ const NowListening: React.FC = () => {
             style={{
               width: "100%",
               height: "100%",
-              borderRadius: mobileView ? "1rem" : "1.55rem",
+              borderRadius: mobileView ? "0.9rem" : "1.55rem",
               border: mobileView ? "1.3px solid rgba(225,225,225,0.14)" : "2.5px solid rgba(225,225,225,0.21)",
               boxShadow: "0 4px 14px 0 rgba(80,80,80,0.10), 0 1px 9px #fff3",
               opacity: imgLoaded ? 1 : 0,
               transition: "opacity .35s, transform .23s cubic-bezier(.33,1.4,.55,1)",
-              zIndex: 2,
+              zIndex: 2
             }}
             onLoad={() => setImgLoaded(true)}
-            // Only enable zoom on hover for non-mobile
             tabIndex={mobileView ? -1 : 0}
           />
           {!imgLoaded && (
             <div style={{
               width: "100%",
               height: "100%",
-              borderRadius: mobileView ? "1rem" : "1.55rem",
+              borderRadius: mobileView ? "0.9rem" : "1.55rem",
               background: "linear-gradient(135deg,#e8e8e8 10%,#bbb 90%)",
               position: "absolute", left: 0, top: 0
             }} />
@@ -220,7 +203,7 @@ const NowListening: React.FC = () => {
               background: "linear-gradient(90deg, #fff 55%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              fontFamily: "'Roboto Mono', monospace",
+              fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif",
               letterSpacing: "0.19em"
             }}
           >
@@ -229,16 +212,18 @@ const NowListening: React.FC = () => {
           <div className="flex items-center gap-0">
             <div
               ref={marqueeRef}
-              className="truncate font-bold text-[1.1rem] md:text-[1.6rem] max-w-full relative"
+              className="truncate font-bold text-[1.10rem] md:text-[1.55rem] max-w-full relative"
               style={{
                 background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                fontFamily: "'Montserrat', sans-serif",
+                fontFamily: "'Dancing Script', 'Style Script', 'Space Grotesk', 'Poppins', sans-serif",
+                fontWeight: 700,
                 lineHeight: 1.15,
                 maxWidth: "100%",
                 letterSpacing: "0.01em",
-                overflow: "hidden"
+                overflow: "hidden",
+                fontStyle: "italic"
               }}
             >
               <a
@@ -249,13 +234,16 @@ const NowListening: React.FC = () => {
                 style={{
                   width: "fit-content",
                   minWidth: 0,
-                  display: "inline-block"
+                  display: "inline-block",
+                  background: "linear-gradient(90deg,#fff 80%,#b0b0b0 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent"
                 }}
               >
                 {t.name}
               </a>
             </div>
-            <CompactEqualizer />
+            <CompactEqualizer mobile={mobileView} />
           </div>
           <span
             className="truncate text-[1.00rem] md:text-[1.12rem] font-semibold mt-2"
@@ -263,7 +251,7 @@ const NowListening: React.FC = () => {
               background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif",
               lineHeight: 1.13,
               maxWidth: "100%"
             }}
@@ -273,12 +261,19 @@ const NowListening: React.FC = () => {
         </div>
         {!mobileView && (
           <div style={{ marginLeft: 16, display: "flex", alignItems: "center" }}>
-            <MusicIcon />
+            <FaMusic
+              size={34}
+              style={{
+                background: "linear-gradient(90deg,#fff 85%, #b0b0b0 100%)",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+                filter: "drop-shadow(0 2px 10px #fff6)"
+              }}
+            />
           </div>
         )}
       </div>
       <style>{`
-        /* Marquee animation for long song titles */
         .marquee-scroll a {
           display: inline-block;
           animation: marquee-song-title 7s linear infinite;
@@ -294,13 +289,13 @@ const NowListening: React.FC = () => {
           .now-listening-container {
             max-width: 99vw !important;
             margin-bottom: 1rem !important;
+            border-radius: 1.2rem !important;
           }
           .now-listening-container .thumbnail-wrapper {
-            min-width: 58px !important;
-            min-height: 58px !important;
+            min-width: 50px !important;
+            min-height: 50px !important;
           }
         }
-        /* Hover effect for song thumbnail (desktop only) */
         .thumbnail-wrapper:hover .thumbnail-img,
         .thumbnail-wrapper:focus .thumbnail-img {
           transform: scale(1.13);
