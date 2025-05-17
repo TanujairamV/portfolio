@@ -4,10 +4,9 @@ const AnimatedCursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
 
-  // For random line equalizer
+  // Equalizer state (lines inside cursor)
   const [lines, setLines] = useState<number[]>(Array(8).fill(8));
 
-  // Animate the equalizer
   useEffect(() => {
     const interval = setInterval(() => {
       setLines(Array.from({ length: 8 }, () => Math.floor(Math.random() * 20) + 8));
@@ -19,33 +18,46 @@ const AnimatedCursor: React.FC = () => {
     const cursor = cursorRef.current;
     if (!cursor) return;
 
+    // Mouse move
     const move = (e: MouseEvent) => {
       cursor.style.left = e.clientX + "px";
       cursor.style.top = e.clientY + "px";
+      setVisible(true);
     };
 
+    // Hide/show on entering/leaving viewport (including switching tabs)
     const hide = () => setVisible(false);
     const show = () => setVisible(true);
+
+    // Hide when mouse leaves window (pointer leaves document)
+    document.addEventListener("mouseleave", hide);
+    document.addEventListener("mouseenter", show);
+
+    // Hide when window blurs (tab out)
+    window.addEventListener("blur", hide);
+    window.addEventListener("focus", show);
+
+    window.addEventListener("mousemove", move);
+
+    // Animate on click
     const click = () => {
       cursor.animate(
         [
-          { transform: "scale(1)", boxShadow: "0 0 24px 12px #f472b6" },
-          { transform: "scale(1.5)", boxShadow: "0 0 48px 24px #f472b6" },
-          { transform: "scale(1)", boxShadow: "0 0 24px 12px #f472b6" }
+          { transform: "scale(1)", boxShadow: "0 0 24px 12px #b0b0b0" },
+          { transform: "scale(1.5)", boxShadow: "0 0 48px 24px #b0b0b0" },
+          { transform: "scale(1)", boxShadow: "0 0 24px 12px #b0b0b0" }
         ], { duration: 300 }
       );
     };
-
-    window.addEventListener("mousemove", move);
     window.addEventListener("mousedown", click);
-    window.addEventListener("mouseleave", hide);
-    window.addEventListener("mouseenter", show);
 
     return () => {
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mousedown", click);
-      window.removeEventListener("mouseleave", hide);
-      window.removeEventListener("mouseenter", show);
+      document.removeEventListener("mouseleave", hide);
+      document.removeEventListener("mouseenter", show);
+      window.removeEventListener("blur", hide);
+      window.removeEventListener("focus", show);
     };
   }, []);
 
@@ -60,9 +72,9 @@ const AnimatedCursor: React.FC = () => {
         height: 56,
         pointerEvents: "none",
         borderRadius: "50%",
-        background: "rgba(236, 72, 153, 0.18)",
-        border: "2.5px solid #f472b6",
-        boxShadow: "0 0 32px 8px #f472b6, 0 0 0 2px #fff2",
+        background: "rgba(180, 180, 180, 0.13)",
+        border: "2.5px solid #b0b0b0",
+        boxShadow: "0 0 32px 8px #b0b0b0, 0 0 0 2px #fff2",
         mixBlendMode: "screen",
         zIndex: 9999,
         transform: "translate(-50%, -50%)",
@@ -73,29 +85,29 @@ const AnimatedCursor: React.FC = () => {
         alignItems: "center",
         justifyContent: "center",
         overflow: "visible",
-        backdropFilter: "blur(3px)",
+        backdropFilter: "blur(4px)",
       }}
     >
-      {/* Random line equalizer */}
+      {/* Minimal random line equalizer */}
       <div
         style={{
           display: "flex",
           gap: "2px",
           alignItems: "end",
-          height: "32px",
-          width: "32px",
+          height: "26px",
+          width: "26px",
         }}
       >
         {lines.map((h, i) => (
           <div
             key={i}
             style={{
-              width: "2.2px",
+              width: "2px",
               height: `${h}px`,
-              background: "linear-gradient(180deg,#f472b6 80%,#d946ef 100%)",
+              background: "linear-gradient(180deg, #fff, #b0b0b0 90%)",
               borderRadius: "2px",
-              transition: "height 0.12s",
-              opacity: 0.86
+              transition: "height 0.14s",
+              opacity: 0.9
             }}
           />
         ))}
