@@ -118,9 +118,27 @@ const Hero: React.FC = () => {
       }}
     >
       <div
-        className="flex flex-col-reverse md:flex-row items-center justify-center w-full max-w-5xl gap-8 md:gap-16 px-4 md:px-8"
-        style={{ alignItems: "center" }}
+        className="flex flex-col md:flex-row items-center md:items-start justify-center w-full max-w-5xl gap-8 md:gap-16 px-4 md:px-8"
       >
+        {/* Profile picture */}
+        <div className="flex-shrink-0 flex justify-center md:justify-start items-center w-full md:w-auto mb-7 md:mb-0">
+          <img
+            src="/pfp.png"
+            alt="Tanujairam"
+            className="rounded-2xl shadow-xl object-cover object-center"
+            style={{
+              width: 170,
+              height: 170,
+              background: "rgba(255,255,255,0.07)",
+              minWidth: 120,
+              minHeight: 120,
+              maxWidth: 200,
+              maxHeight: 200,
+              display: "block",
+              // border removed
+            }}
+          />
+        </div>
         {/* Text and socials */}
         <div className="flex flex-col items-center md:items-start w-full max-w-xl md:pr-4">
           <h1
@@ -166,26 +184,6 @@ const Hero: React.FC = () => {
               </a>
             ))}
           </div>
-        </div>
-        {/* Profile picture */}
-        <div className="flex-shrink-0 flex justify-center items-center w-full md:w-auto mb-7 md:mb-0">
-          <img
-            src="/pfp.png"
-            alt="Tanujairam"
-            className="rounded-2xl shadow-xl object-cover object-center"
-            style={{
-              width: 170,
-              height: 170,
-              background: "rgba(255,255,255,0.07)",
-              borderRadius: "1.5rem",
-              border: "2.5px solid rgba(225,225,225,0.16)",
-              minWidth: 120,
-              minHeight: 120,
-              maxWidth: 200,
-              maxHeight: 200,
-              boxShadow: "0 0 40px #fff1, 0 2px 16px #2227"
-            }}
-          />
         </div>
       </div>
     </section>
