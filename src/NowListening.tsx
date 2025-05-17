@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Always use YouTube Music (Piped) thumbnail for the song
-const getYtMusicThumbnail = async (artist: string, track: string): Promise<string | null> => {
+// Change this to any active public Invidious instance:
+const INVIDIOUS_INSTANCE = "https://invidious.snopyta.org";
+
+async function getInvidiousThumbnail(artist: string, track: string): Promise<string | null> {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
-    const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${query}&filter=music_songs`);
+    const res = await fetch(`${INVIDIOUS_INSTANCE}/api/v1/search?q=${query}&type=music`);
     const data = await res.json();
-    return data?.items?.[0]?.thumbnail ?? null;
+    const thumb = data?.[0]?.videoId
+      ? `https://i.ytimg.com/vi/${data[0].videoId}/hqdefault.jpg`
+      : null;
+    return thumb;
   } catch {
     return null;
   }
-};
+}
 
 const fallbackTrack: LastFMTrack = {
   artist: "",
@@ -87,9 +92,9 @@ const NowListening: React.FC = () => {
         if (!isMounted) return;
         setTrack(t);
 
-        // Always use YT Music thumbnail as default
-        const ytThumb = await getYtMusicThumbnail(t.artist, t.name);
-        setImg(ytThumb || fallbackTrack.image);
+        // Always use Invidious (YT Music) thumbnail as default
+        const thumb = await getInvidiousThumbnail(t.artist, t.name);
+        setImg(thumb || fallbackTrack.image);
       })
       .catch(() => {
         if (!isMounted) return;
