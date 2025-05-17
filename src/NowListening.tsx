@@ -1,25 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Try Spotify API via RapidAPI, fallback to iTunes API
-async function getSpotifyThumbnail(artist: string, track: string): Promise<string | null> {
-  try {
-    const query = encodeURIComponent(`${artist} ${track}`);
-    const res = await fetch(`https://spotify23.p.rapidapi.com/search/?q=${query}&type=tracks&limit=1`, {
-      headers: {
-        // Replace with your actual RapidAPI Key!
-        "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",
-        "X-RapidAPI-Host": "spotify23.p.rapidapi.com"
-      }
-    });
-    const data = await res.json();
-    const image = data?.tracks?.items?.[0]?.data?.albumOfTrack?.coverArt?.sources?.[0]?.url;
-    return image || null;
-  } catch {
-    return null;
-  }
-}
-
+// --- Album art fetching logic as before ---
 async function getItunesThumbnail(artist: string, track: string): Promise<string | null> {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
@@ -45,9 +27,9 @@ const CompactEqualizer: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setHeights([
-        Math.floor(Math.random() * 16) + 8,
-        Math.floor(Math.random() * 20) + 6,
-        Math.floor(Math.random() * 14) + 10,
+        Math.floor(Math.random() * 16) + 12,
+        Math.floor(Math.random() * 24) + 10,
+        Math.floor(Math.random() * 14) + 18,
       ]);
     }, 120);
     return () => clearInterval(interval);
@@ -56,16 +38,16 @@ const CompactEqualizer: React.FC = () => {
     <div style={{
       display: "flex",
       alignItems: "end",
-      gap: "3px",
-      height: "22px",
-      marginLeft: 10,
+      gap: "4px",
+      height: "34px",
+      marginLeft: 12,
       marginRight: 2,
-      minWidth: "17px",
+      minWidth: "21px",
     }}>
       {heights.map((h, i) => (
         <div key={i}
           style={{
-            width: "3px",
+            width: "5px",
             height: `${h}px`,
             background: "linear-gradient(180deg, #fff 70%, #b0b0b0 100%)",
             borderRadius: "4px",
@@ -77,18 +59,18 @@ const CompactEqualizer: React.FC = () => {
 };
 
 const MusicIcon: React.FC = () => (
-  <svg width="30" height="30" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }} xmlns="http://www.w3.org/2000/svg">
+  <svg width="38" height="38" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#softshadow)">
-      <path d="M15.8 4.4V13.1C15.5 12.9 15.1 12.8 14.7 12.8C13.6 12.8 12.7 13.7 12.7 14.8C12.7 15.9 13.6 16.8 14.7 16.8C15.8 16.8 16.7 15.9 16.7 14.8V7.6H18V4.4H15.8ZM7.8 6.7V13.1C7.5 12.9 7.1 12.8 6.7 12.8C5.6 12.8 4.7 13.7 4.7 14.8C4.7 15.9 5.6 16.8 6.7 16.8C7.8 16.8 8.7 15.9 8.7 14.8V8.7H12V6.7H7.8Z"
+      <path d="M19.8 6.2V17.1C19.5 16.9 19.1 16.8 18.7 16.8C17.6 16.8 16.7 17.7 16.7 18.8C16.7 19.9 17.6 20.8 18.7 20.8C19.8 20.8 20.7 19.9 20.7 18.8V10.6H22V6.2H19.8ZM9.8 8.7V17.1C9.5 16.9 9.1 16.8 8.7 16.8C7.6 16.8 6.7 17.7 6.7 18.8C6.7 19.9 7.6 20.8 8.7 20.8C9.8 20.8 10.7 19.9 10.7 18.8V12.7H16V8.7H9.8Z"
         fill="url(#gradient)" />
     </g>
     <defs>
-      <linearGradient id="gradient" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+      <linearGradient id="gradient" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
         <stop stopColor="#fff"/>
         <stop offset="1" stopColor="#b0b0b0"/>
       </linearGradient>
-      <filter id="softshadow" x="0" y="0" width="20" height="20" filterUnits="userSpaceOnUse">
-        <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="#bbb" floodOpacity="0.18"/>
+      <filter id="softshadow" x="0" y="0" width="24" height="24" filterUnits="userSpaceOnUse">
+        <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#bbb" floodOpacity="0.18"/>
       </filter>
     </defs>
   </svg>
@@ -106,10 +88,7 @@ const NowListening: React.FC = () => {
         if (!isMounted) return;
         setTrack(t);
 
-        // Try Spotify (RapidAPI) first, then iTunes
-        let thumb: string | null = null;
-        thumb = await getSpotifyThumbnail(t.artist, t.name);
-        if (!thumb) thumb = await getItunesThumbnail(t.artist, t.name);
+        const thumb = await getItunesThumbnail(t.artist, t.name);
         setImg(thumb || fallbackTrack.image);
       })
       .catch(() => {
@@ -126,79 +105,79 @@ const NowListening: React.FC = () => {
 
   return (
     <div
-      className="relative w-full max-w-xl mx-auto mb-12"
+      className="relative w-full max-w-2xl mx-auto mb-12"
       style={{
-        borderRadius: "2.1rem",
+        borderRadius: "2.3rem",
         overflow: "hidden",
-        boxShadow: "0 8px 30px rgba(60,60,60,0.13), 0 2px 12px rgba(200,200,200,0.11)"
+        boxShadow: "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)"
       }}
     >
-      {/* Blurred cover as background */}
+      {/* Highly visible blurred cover as background */}
       <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(28px) brightness(0.60)",
-          WebkitFilter: "blur(28px) brightness(0.60)",
-          transform: "scale(1.10)"
+          filter: "blur(42px) brightness(0.45) saturate(1.6)",
+          WebkitFilter: "blur(42px) brightness(0.45) saturate(1.6)",
+          transform: "scale(1.18)"
         }}
         aria-hidden
       />
-      {/* Overlay for extra blur and glass effect */}
+      {/* Overlay for extra blur and deeper glass effect */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "rgba(40,40,40,0.23)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)"
+          background: "rgba(28,28,40,0.46)",
+          backdropFilter: "blur(18px) saturate(1.2)",
+          WebkitBackdropFilter: "blur(18px) saturate(1.2)"
         }}
       />
       {/* Main content */}
       <div
-        className="relative z-10 flex items-center gap-4 px-7 py-5"
+        className="relative z-10 flex items-center gap-7 px-10 py-7"
         style={{
-          background: "rgba(255,255,255,0.13)",
-          borderRadius: "2.1rem",
-          border: "1.3px solid rgba(180,180,180,0.13)",
-          backdropFilter: "blur(17px)",
-          WebkitBackdropFilter: "blur(17px)",
-          minHeight: "86px",
+          background: "rgba(255,255,255,0.11)",
+          borderRadius: "2.3rem",
+          border: "1.7px solid rgba(180,180,180,0.18)",
+          backdropFilter: "blur(22px)",
+          WebkitBackdropFilter: "blur(22px)",
+          minHeight: "150px"
         }}
       >
         <div style={{ position: "relative", flexShrink: 0 }}>
           <img
             src={img}
             alt={`Album art for ${t.name}`}
-            className="w-[66px] h-[66px] object-cover"
+            className="w-[110px] h-[110px] object-cover"
             style={{
-              borderRadius: "1.1rem",
-              border: "2px solid rgba(225,225,225,0.19)",
-              boxShadow: "0 2px 8px 0 rgba(80,80,80,0.06)",
+              borderRadius: "1.55rem",
+              border: "2.5px solid rgba(225,225,225,0.21)",
+              boxShadow: "0 4px 14px 0 rgba(80,80,80,0.10), 0 1px 9px #fff3",
               opacity: imgLoaded ? 1 : 0,
-              transition: "opacity .3s"
+              transition: "opacity .35s"
             }}
             onLoad={() => setImgLoaded(true)}
           />
           {!imgLoaded && (
             <div style={{
-              width: "66px", height: "66px",
-              borderRadius: "1.1rem",
-              background: "linear-gradient(135deg,#dfdfdf 10%,#bbb 90%)",
+              width: "110px", height: "110px",
+              borderRadius: "1.55rem",
+              background: "linear-gradient(135deg,#e8e8e8 10%,#bbb 90%)",
               position: "absolute", left: 0, top: 0
             }} />
           )}
         </div>
-        <div className="flex flex-col min-w-0" style={{ flex: 1 }}>
+        <div className="flex flex-col min-w-0" style={{ flex: 1, minWidth: 0 }}>
           <span
-            className="text-[0.7rem] uppercase tracking-widest mb-1"
+            className="text-[0.74rem] uppercase tracking-widest mb-1"
             style={{
               background: "linear-gradient(90deg, #fff 55%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               fontFamily: "'Roboto Mono', monospace",
-              letterSpacing: "0.15em"
+              letterSpacing: "0.19em"
             }}
           >
             Now Playing
@@ -208,9 +187,9 @@ const NowListening: React.FC = () => {
               href={t.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="truncate text-[1.22rem] font-bold"
+              className="truncate text-[1.6rem] font-bold"
               style={{
-                background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
+                background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 fontFamily: "'Montserrat', sans-serif",
@@ -224,9 +203,9 @@ const NowListening: React.FC = () => {
             <CompactEqualizer />
           </div>
           <span
-            className="truncate text-[0.98rem] font-semibold mt-0"
+            className="truncate text-[1.12rem] font-semibold mt-2"
             style={{
-              background: "linear-gradient(90deg, #fff 40%, #b0b0b0 100%)",
+              background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               fontFamily: "'Montserrat', sans-serif",
@@ -237,7 +216,7 @@ const NowListening: React.FC = () => {
             {t.artist}
           </span>
         </div>
-        <div style={{ marginLeft: 10, display: "flex", alignItems: "center" }}>
+        <div style={{ marginLeft: 16, display: "flex", alignItems: "center" }}>
           <MusicIcon />
         </div>
       </div>
