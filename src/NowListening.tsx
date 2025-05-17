@@ -1,55 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Marquee component for scrolling long titles
-const Marquee: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const [shouldScroll, setShouldScroll] = useState(false);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    const text = textRef.current;
-    if (container && text) {
-      setShouldScroll(text.scrollWidth > container.offsetWidth);
-    }
-  }, [children]);
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative overflow-hidden whitespace-nowrap"
-      style={{ maxWidth: "100%" }}
-    >
-      <div
-        ref={textRef}
-        className={`inline-block ${shouldScroll ? "animate-marquee" : ""}`}
-        style={{
-          willChange: shouldScroll ? "transform" : undefined,
-          fontWeight: 700,
-        }}
-      >
-        {children}
-        {shouldScroll && (
-          <span style={{ paddingLeft: 48 }}>{children}</span>
-        )}
-      </div>
-      <style>
-        {`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 8s linear infinite;
-        }
-        `}
-      </style>
-    </div>
-  );
-};
-
-// Album art fetching (iTunes, but you can add more sources here)
+// --- Album art fetching logic as before ---
 async function getItunesThumbnail(artist: string, track: string): Promise<string | null> {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
@@ -82,18 +34,16 @@ const CompactEqualizer: React.FC = () => {
     }, 120);
     return () => clearInterval(interval);
   }, []);
-  // Hide on mobile
   return (
-    <div
-      className="hidden sm:flex"
-      style={{
-        alignItems: "end",
-        gap: "4px",
-        height: "34px",
-        marginLeft: 12,
-        marginRight: 2,
-        minWidth: "21px",
-      }}>
+    <div style={{
+      display: "flex",
+      alignItems: "end",
+      gap: "4px",
+      height: "34px",
+      marginLeft: 12,
+      marginRight: 2,
+      minWidth: "21px",
+    }}>
       {heights.map((h, i) => (
         <div key={i}
           style={{
@@ -126,10 +76,17 @@ const MusicIcon: React.FC = () => (
   </svg>
 );
 
+const isMobile = () =>
+  typeof window !== "undefined" &&
+  (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent) ||
+    window.innerWidth < 768);
+
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [img, setImg] = useState<string>(fallbackTrack.image);
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [mobileView, setMobileView] = useState(isMobile());
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -151,28 +108,47 @@ const NowListening: React.FC = () => {
     };
   }, []);
 
+  // Responsive check for mobile
+  useEffect(() => {
+    const handleResize = () => setMobileView(isMobile());
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Marquee scroll for long title
+  useEffect(() => {
+    if (!marqueeRef.current) return;
+    const { scrollWidth, clientWidth } = marqueeRef.current;
+    if (scrollWidth > clientWidth) {
+      marqueeRef.current.classList.add("marquee-scroll");
+    } else {
+      marqueeRef.current.classList.remove("marquee-scroll");
+    }
+  }, [track]);
+
   const t = track || fallbackTrack;
 
-  // Show full frosted glass and hover effect
   return (
     <div
-      className="relative w-full max-w-2xl mx-auto mb-12 group"
+      className={`now-listening-container relative w-full max-w-2xl mx-auto mb-8 ${mobileView ? "mobile" : ""}`}
       style={{
-        borderRadius: "2.3rem",
+        borderRadius: mobileView ? "1.2rem" : "2.3rem",
         overflow: "hidden",
-        boxShadow: "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)"
+        boxShadow: mobileView
+          ? "0 4px 16px rgba(60,60,60,0.17), 0 1px 6px rgba(200,200,200,0.09)"
+          : "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)"
       }}
     >
-      {/* Strong frosted glass blur background */}
+      {/* Gaussian blurred cover as background */}
       <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(44px) brightness(0.40) saturate(2.2)",
-          WebkitFilter: "blur(44px) brightness(0.40) saturate(2.2)",
-          transform: "scale(1.21)"
+          filter: "blur(44px) brightness(0.38) saturate(1.7)",
+          WebkitFilter: "blur(44px) brightness(0.38) saturate(1.7)",
+          transform: "scale(1.18)"
         }}
         aria-hidden
       />
@@ -180,47 +156,58 @@ const NowListening: React.FC = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "rgba(24,24,32,0.55)",
-          backdropFilter: "blur(22px) saturate(1.3)",
-          WebkitBackdropFilter: "blur(22px) saturate(1.3)"
+          background: "rgba(20,20,32,0.62)",
+          backdropFilter: "blur(18px) saturate(1.2)",
+          WebkitBackdropFilter: "blur(18px) saturate(1.2)"
         }}
       />
       {/* Main content */}
       <div
-        className="
-          relative z-10 flex items-center gap-7 px-6 py-6
-          md:px-10 md:py-7
-          transition-all duration-200
-          cursor-pointer
-          group-hover:bg-white/25 group-hover:backdrop-blur-[32px] group-hover:scale-[1.025]
-        "
+        className={`relative z-10 flex items-center ${mobileView ? "gap-4 px-3 py-3" : "gap-7 px-10 py-7"}`}
         style={{
-          background: "rgba(255,255,255,0.17)",
-          borderRadius: "2.3rem",
-          border: "1.7px solid rgba(180,180,180,0.22)",
-          backdropFilter: "blur(28px)",
-          WebkitBackdropFilter: "blur(28px)",
-          minHeight: "140px"
+          background: "rgba(255,255,255,0.11)",
+          borderRadius: mobileView ? "1.2rem" : "2.3rem",
+          border: "1.7px solid rgba(180,180,180,0.18)",
+          backdropFilter: "blur(22px)",
+          WebkitBackdropFilter: "blur(22px)",
+          minHeight: mobileView ? "76px" : "150px"
         }}
       >
-        <div style={{ position: "relative", flexShrink: 0 }}>
+        <div
+          style={{
+            position: "relative",
+            flexShrink: 0,
+            width: mobileView ? "58px" : "110px",
+            height: mobileView ? "58px" : "110px",
+            borderRadius: mobileView ? "1rem" : "1.55rem",
+            overflow: "hidden",
+            transition: "box-shadow .19s, transform .19s"
+          }}
+          className="thumbnail-wrapper group"
+        >
           <img
             src={img}
             alt={`Album art for ${t.name}`}
-            className="w-[76px] h-[76px] sm:w-[110px] sm:h-[110px] object-cover"
+            className="object-cover thumbnail-img"
             style={{
-              borderRadius: "1.55rem",
-              border: "2.5px solid rgba(225,225,225,0.21)",
+              width: "100%",
+              height: "100%",
+              borderRadius: mobileView ? "1rem" : "1.55rem",
+              border: mobileView ? "1.3px solid rgba(225,225,225,0.14)" : "2.5px solid rgba(225,225,225,0.21)",
               boxShadow: "0 4px 14px 0 rgba(80,80,80,0.10), 0 1px 9px #fff3",
               opacity: imgLoaded ? 1 : 0,
-              transition: "opacity .35s"
+              transition: "opacity .35s, transform .23s cubic-bezier(.33,1.4,.55,1)",
+              zIndex: 2,
             }}
             onLoad={() => setImgLoaded(true)}
+            // Only enable zoom on hover for non-mobile
+            tabIndex={mobileView ? -1 : 0}
           />
           {!imgLoaded && (
             <div style={{
-              width: "110px", height: "110px",
-              borderRadius: "1.55rem",
+              width: "100%",
+              height: "100%",
+              borderRadius: mobileView ? "1rem" : "1.55rem",
               background: "linear-gradient(135deg,#e8e8e8 10%,#bbb 90%)",
               position: "absolute", left: 0, top: 0
             }} />
@@ -228,7 +215,7 @@ const NowListening: React.FC = () => {
         </div>
         <div className="flex flex-col min-w-0" style={{ flex: 1, minWidth: 0 }}>
           <span
-            className="text-[0.7rem] uppercase tracking-widest mb-1"
+            className="text-[0.74rem] uppercase tracking-widest mb-1"
             style={{
               background: "linear-gradient(90deg, #fff 55%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -239,12 +226,10 @@ const NowListening: React.FC = () => {
           >
             Now Playing
           </span>
-          <div className="flex items-center gap-0 min-w-0">
-            <a
-              href={t.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="truncate text-[1.2rem] sm:text-[1.6rem] font-bold min-w-0"
+          <div className="flex items-center gap-0">
+            <div
+              ref={marqueeRef}
+              className="truncate font-bold text-[1.1rem] md:text-[1.6rem] max-w-full relative"
               style={{
                 background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
@@ -252,15 +237,28 @@ const NowListening: React.FC = () => {
                 fontFamily: "'Montserrat', sans-serif",
                 lineHeight: 1.15,
                 maxWidth: "100%",
-                letterSpacing: "0.01em"
+                letterSpacing: "0.01em",
+                overflow: "hidden"
               }}
             >
-              <Marquee>{t.name}</Marquee>
-            </a>
+              <a
+                href={t.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+                style={{
+                  width: "fit-content",
+                  minWidth: 0,
+                  display: "inline-block"
+                }}
+              >
+                {t.name}
+              </a>
+            </div>
             <CompactEqualizer />
           </div>
           <span
-            className="truncate text-[1.0rem] sm:text-[1.12rem] font-semibold mt-2"
+            className="truncate text-[1.00rem] md:text-[1.12rem] font-semibold mt-2"
             style={{
               background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -273,10 +271,46 @@ const NowListening: React.FC = () => {
             {t.artist}
           </span>
         </div>
-        <div style={{ marginLeft: 10, display: "flex", alignItems: "center" }}>
-          <MusicIcon />
-        </div>
+        {!mobileView && (
+          <div style={{ marginLeft: 16, display: "flex", alignItems: "center" }}>
+            <MusicIcon />
+          </div>
+        )}
       </div>
+      <style>{`
+        /* Marquee animation for long song titles */
+        .marquee-scroll a {
+          display: inline-block;
+          animation: marquee-song-title 7s linear infinite;
+          white-space: nowrap;
+        }
+        @keyframes marquee-song-title {
+          0% { transform: translateX(0); }
+          10% { transform: translateX(0); }
+          90% { transform: translateX(calc(-100% + 75vw)); }
+          100% { transform: translateX(calc(-100% + 75vw)); }
+        }
+        @media (max-width: 767px) {
+          .now-listening-container {
+            max-width: 99vw !important;
+            margin-bottom: 1rem !important;
+          }
+          .now-listening-container .thumbnail-wrapper {
+            min-width: 58px !important;
+            min-height: 58px !important;
+          }
+        }
+        /* Hover effect for song thumbnail (desktop only) */
+        .thumbnail-wrapper:hover .thumbnail-img,
+        .thumbnail-wrapper:focus .thumbnail-img {
+          transform: scale(1.13);
+          z-index: 3;
+          box-shadow: 0 8px 36px #fff5, 0 2px 14px #9998;
+        }
+        .thumbnail-img {
+          will-change: transform;
+        }
+      `}</style>
     </div>
   );
 };
