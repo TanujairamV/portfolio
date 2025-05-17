@@ -1,17 +1,40 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 const AnimatedCursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${e.clientX - 20}px`;
-        cursorRef.current.style.top = `${e.clientY - 20}px`;
-      }
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    const move = (e: MouseEvent) => {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
     };
-    document.addEventListener("mousemove", moveCursor);
-    return () => document.removeEventListener("mousemove", moveCursor);
+
+    const hide = () => cursor.style.opacity = "0";
+    const show = () => cursor.style.opacity = "1";
+    const click = () => {
+      cursor.animate(
+        [
+          { transform: "scale(1)", boxShadow: "0 0 24px 12px #f472b6" },
+          { transform: "scale(1.5)", boxShadow: "0 0 48px 24px #f472b6" },
+          { transform: "scale(1)", boxShadow: "0 0 24px 12px #f472b6" }
+        ], { duration: 300 }
+      );
+    };
+
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mousedown", click);
+    window.addEventListener("mouseleave", hide);
+    window.addEventListener("mouseenter", show);
+
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mousedown", click);
+      window.removeEventListener("mouseleave", hide);
+      window.removeEventListener("mouseenter", show);
+    };
   }, []);
 
   return (
@@ -21,19 +44,19 @@ const AnimatedCursor: React.FC = () => {
         position: "fixed",
         left: 0,
         top: 0,
-        width: 40,
-        height: 40,
-        borderRadius: "50%",
+        width: 44,
+        height: 44,
         pointerEvents: "none",
+        borderRadius: "50%",
+        background: "rgba(236, 72, 153, 0.16)",
+        border: "2px solid #f472b6",
+        boxShadow: "0 0 32px 8px #f472b6, 0 0 0 2px #fff2",
+        mixBlendMode: "screen",
         zIndex: 9999,
-        // The magic: shows inverted/blurred region under the cursor
-        backdropFilter: "invert(1) blur(6px)",
-        WebkitBackdropFilter: "invert(1) blur(6px)",
-        mixBlendMode: "difference",
-        background: "rgba(255,255,255,0.06)",
-        boxShadow: "0 2px 12px 0 rgba(0,0,0,0.16)",
-        border: "1.5px solid rgba(255,255,255,0.5)",
-        transition: "transform 0.12s cubic-bezier(.4,2,.3,.7)",
+        transform: "translate(-50%, -50%)",
+        transition: "background 0.25s, border 0.25s, box-shadow 0.25s, opacity 0.25s",
+        opacity: 1,
+        willChange: "transform, opacity"
       }}
     />
   );
