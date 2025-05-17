@@ -4,28 +4,25 @@ import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let mounted = true;
     fetchRecentTrack()
       .then((t) => {
-        if (mounted) {
-          setTrack(t);
-          setLoading(false);
-        }
+        setTrack(t);
+        setLoading(false);
       })
-      .catch(() => {
+      .catch((e) => {
+        setError("Could not load track.");
         setLoading(false);
       });
-    return () => {
-      mounted = false;
-    };
   }, []);
 
-  if (loading || !track) return null;
+  if (loading) return null;
+  if (error || !track) return null;
 
   return (
-    <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500/30 to-purple-600/30 mb-8 shadow-lg backdrop-blur-sm">
+    <div className="flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500/30 to-purple-600/30 mb-8 shadow-lg backdrop-blur-sm border border-white/20">
       <img
         src={track.image}
         alt="Album Art"
