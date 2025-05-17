@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
+import { FaHome, FaUserGraduate, FaBriefcase, FaCertificate, FaProjectDiagram, FaStar } from "react-icons/fa";
 
 const NAV_LINKS = [
-  { to: "hero", label: "Home" },
-  { to: "skills", label: "Skills" },
-  { to: "experience", label: "Experience" },
-  { to: "education", label: "Education" },
-  { to: "certifications", label: "Certifications" },
-  { to: "projects", label: "Projects" }
+  { to: "hero", label: "Home", icon: <FaHome /> },
+  { to: "skills", label: "Skills", icon: <FaStar /> },
+  { to: "experience", label: "Experience", icon: <FaBriefcase /> },
+  { to: "education", label: "Education", icon: <FaUserGraduate /> },
+  { to: "certifications", label: "Certifications", icon: <FaCertificate /> },
+  { to: "projects", label: "Projects", icon: <FaProjectDiagram /> }
 ];
 
 const NavBar: React.FC = () => {
@@ -25,25 +26,25 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // preserve shape, compact on mobile, glass effect
   return (
     <nav
       id="navbar"
       className={`fixed top-5 left-1/2 z-50 transition-all duration-300`}
       style={{
         transform: "translateX(-50%)",
-        padding: isMobile ? "0.25rem 0.5rem" : "0.55rem 1.3rem",
-        background: "rgba(16,16,24,0.80)",
-        borderRadius: "2rem",
+        padding: isMobile ? "0.25rem 0.7rem" : "0.55rem 1.3rem",
+        background: "linear-gradient(90deg, rgba(255,255,255,0.23) 0%, rgba(180,180,180,0.19) 100%)",
+        borderRadius: isMobile ? "2rem" : "2.3rem",
         boxShadow: "0 2px 16px #2228, 0 1px 7px #fff1",
-        border: "1.4px solid rgba(200,200,200,0.13)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        border: "1.4px solid rgba(200,200,200,0.15)",
+        backdropFilter: "blur(22px)",
+        WebkitBackdropFilter: "blur(22px)",
         minWidth: isMobile ? "auto" : "380px",
-        minHeight: isMobile ? "48px" : "56px",
+        minHeight: isMobile ? "50px" : "56px",
         display: "flex",
         alignItems: "center",
-        justifyContent: isMobile ? "space-between" : "center"
+        justifyContent: isMobile ? "space-between" : "center",
+        overflow: "visible"
       }}
     >
       <div className="flex items-center w-full">
@@ -59,9 +60,10 @@ const NavBar: React.FC = () => {
               margin: 0,
               outline: "none",
               cursor: "pointer",
-              color: "#fff",
+              color: "#232323",
               fontSize: "2rem",
-              lineHeight: 1
+              lineHeight: 1,
+              zIndex: 20
             }}
             onClick={() => setOpen((v) => !v)}
           >
@@ -77,8 +79,10 @@ const NavBar: React.FC = () => {
             overflow: "hidden",
             maxHeight: isMobile ? (open ? "350px" : "0") : "none",
             width: isMobile ? "100%" : "auto",
-            background: isMobile ? "rgba(18,18,27,0.94)" : "transparent",
-            borderRadius: isMobile ? "1.5rem" : "2rem",
+            background: isMobile
+              ? "linear-gradient(90deg, rgba(255,255,255,0.89) 0%, rgba(180,180,180,0.78) 100%)"
+              : "transparent",
+            borderRadius: isMobile ? "2rem" : "2.3rem",
             margin: 0,
             padding: isMobile ? "0.7rem 0.2rem" : "0",
             boxShadow: isMobile && open ? "0 10px 42px #111b, 0 2px 12px #fff1" : undefined,
@@ -86,7 +90,7 @@ const NavBar: React.FC = () => {
             top: isMobile ? "60px" : undefined,
             left: isMobile ? "0" : undefined,
             right: isMobile ? "0" : undefined,
-            zIndex: 100
+            zIndex: 10
           }}
         >
           {NAV_LINKS.map((link) => (
@@ -94,17 +98,19 @@ const NavBar: React.FC = () => {
               key={link.to}
               className={`px-2 md:px-3 py-1 nav-link`}
               style={{
-                fontFamily: "'Montserrat', sans-serif",
+                fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
                 fontWeight: 600,
                 textTransform: "uppercase",
-                fontSize: isMobile ? "1.05rem" : "1.1rem",
+                fontSize: isMobile ? "1.15rem" : "1.1rem",
                 letterSpacing: ".04em",
-                color: "#fff",
+                color: "#232323",
                 cursor: "pointer",
                 borderRadius: "1.2rem",
-                margin: isMobile ? "0.15rem 0" : "0 0.25rem",
+                margin: isMobile ? "0.18rem 0" : "0 0.25rem",
                 transition: "background 0.12s, color 0.12s, transform 0.14s",
-                background: "none"
+                background: "none",
+                display: "flex",
+                alignItems: "center"
               }}
               onClick={() => isMobile && setOpen(false)}
             >
@@ -116,7 +122,13 @@ const NavBar: React.FC = () => {
                 spy={true}
                 activeClass="active"
               >
-                {link.label}
+                {isMobile ? (
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.37em" }}>
+                    {link.icon}
+                  </span>
+                ) : (
+                  link.label
+                )}
               </Link>
             </li>
           ))}
@@ -130,19 +142,25 @@ const NavBar: React.FC = () => {
             width: auto !important;
             left: 50% !important;
             transform: translateX(-50%) !important;
-            padding: 0.25rem 0.5rem !important;
-            border-radius: 1.5rem !important;
+            padding: 0.25rem 0.7rem !important;
+            border-radius: 2rem !important;
           }
           #navbar ul {
             width: 100% !important;
             left: 0 !important;
             right: 0 !important;
+            border-radius: 2rem !important;
+          }
+          .nav-link {
+            background: none !important;
+            color: #232323 !important;
+            border-radius: 1.6rem !important;
           }
         }
         .nav-link:hover, .nav-link:focus {
-          background: linear-gradient(90deg,#fff1,#eaeaea22 65%);
+          background: linear-gradient(90deg,#fff3,#d0d0d022 65%);
           color: #1e1e1e !important;
-          transform: scale(1.09);
+          transform: scale(1.10);
         }
         .nav-link .active {
           color: #b0b0b0 !important;
