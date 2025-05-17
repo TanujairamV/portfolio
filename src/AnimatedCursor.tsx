@@ -1,7 +1,19 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const AnimatedCursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
+
+  // For random line equalizer
+  const [lines, setLines] = useState<number[]>(Array(8).fill(8));
+
+  // Animate the equalizer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLines(Array.from({ length: 8 }, () => Math.floor(Math.random() * 20) + 8));
+    }, 140);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -12,8 +24,8 @@ const AnimatedCursor: React.FC = () => {
       cursor.style.top = e.clientY + "px";
     };
 
-    const hide = () => cursor.style.opacity = "0";
-    const show = () => cursor.style.opacity = "1";
+    const hide = () => setVisible(false);
+    const show = () => setVisible(true);
     const click = () => {
       cursor.animate(
         [
@@ -44,21 +56,51 @@ const AnimatedCursor: React.FC = () => {
         position: "fixed",
         left: 0,
         top: 0,
-        width: 44,
-        height: 44,
+        width: 56,
+        height: 56,
         pointerEvents: "none",
         borderRadius: "50%",
-        background: "rgba(236, 72, 153, 0.16)",
-        border: "2px solid #f472b6",
+        background: "rgba(236, 72, 153, 0.18)",
+        border: "2.5px solid #f472b6",
         boxShadow: "0 0 32px 8px #f472b6, 0 0 0 2px #fff2",
         mixBlendMode: "screen",
         zIndex: 9999,
         transform: "translate(-50%, -50%)",
         transition: "background 0.25s, border 0.25s, box-shadow 0.25s, opacity 0.25s",
-        opacity: 1,
-        willChange: "transform, opacity"
+        opacity: visible ? 1 : 0,
+        willChange: "transform, opacity",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "visible",
+        backdropFilter: "blur(3px)",
       }}
-    />
+    >
+      {/* Random line equalizer */}
+      <div
+        style={{
+          display: "flex",
+          gap: "2px",
+          alignItems: "end",
+          height: "32px",
+          width: "32px",
+        }}
+      >
+        {lines.map((h, i) => (
+          <div
+            key={i}
+            style={{
+              width: "2.2px",
+              height: `${h}px`,
+              background: "linear-gradient(180deg,#f472b6 80%,#d946ef 100%)",
+              borderRadius: "2px",
+              transition: "height 0.12s",
+              opacity: 0.86
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
