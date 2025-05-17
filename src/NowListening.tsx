@@ -1,21 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Change this to any active public Invidious instance:
-const INVIDIOUS_INSTANCE = "https://invidious.snopyta.org";
-
-async function getInvidiousThumbnail(artist: string, track: string): Promise<string | null> {
+// Try multiple public APIs/services for a YouTube Music thumbnail
+async function getSongThumbnail(artist: string, track: string): Promise<string | null> {
+  // 1. Try Invidious
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
-    const res = await fetch(`${INVIDIOUS_INSTANCE}/api/v1/search?q=${query}&type=music`);
-    const data = await res.json();
-    const thumb = data?.[0]?.videoId
-      ? `https://i.ytimg.com/vi/${data[0].videoId}/hqdefault.jpg`
-      : null;
-    return thumb;
-  } catch {
-    return null;
-  }
+    // Use a reliable public Invidious instance
+    const invRes = await fetch(`https://invidious.snopyta.org/api/v1/search?q=${query}&type=music`);
+    const invData = await invRes.json();
+    if (Array.isArray(invData) && invData[0]?.videoId) {
+      return `https://i.ytimg.com/vi/${invData[0].videoId}/hqdefault.jpg`;
+    }
+  } catch {}
+  // 2. Try YouTube Data unofficial endpoint (no API key, less reliable, fallback)
+  try {
+    const query = encodeURIComponent(`${artist} ${track}`);
+    const ytRes = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/results?search_query=${query}`);
+    const ytData = await ytRes.json();
+    if (ytData?.thumbnail_url) {
+      return ytData.thumbnail_url;
+    }
+  } catch {}
+  // 3. Try iTunes Search API
+  try {
+    const query = encodeURIComponent(`${artist} ${track}`);
+    const itunesRes = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=1`);
+    const itunesData = await itunesRes.json();
+    if (itunesData.results?.[0]?.artworkUrl100) {
+      // Use higher-res version if possible
+      return itunesData.results[0].artworkUrl100.replace("100x100bb.jpg", "400x400bb.jpg");
+    }
+  } catch {}
+  // 4. Fallback: no art
+  return null;
 }
 
 const fallbackTrack: LastFMTrack = {
@@ -92,8 +110,8 @@ const NowListening: React.FC = () => {
         if (!isMounted) return;
         setTrack(t);
 
-        // Always use Invidious (YT Music) thumbnail as default
-        const thumb = await getInvidiousThumbnail(t.artist, t.name);
+        // Always try all possible thumbnail sources for the current track
+        const thumb = await getSongThumbnail(t.artist, t.name);
         setImg(thumb || fallbackTrack.image);
       })
       .catch(() => {
