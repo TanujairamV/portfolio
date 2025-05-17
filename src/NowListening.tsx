@@ -12,7 +12,7 @@ const NowListening: React.FC = () => {
         setTrack(t);
         setLoading(false);
       })
-      .catch((e) => {
+      .catch(() => {
         setError("Could not load track.");
         setLoading(false);
       });
