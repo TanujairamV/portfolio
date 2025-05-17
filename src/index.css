@@ -24,20 +24,21 @@ html, body, * {
   cursor: none !important;
 }
 
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #000;
-  color: var(--foreground-color);
-}
-
 /* Hide custom animated cursor for mobile */
-@media (max-width: 767px) {
+@media (max-width: 767px), (pointer: coarse), (hover: none) {
   .custom-cursor,
-  #animated-cursor {
+  #animated-cursor,
+  [class*="cursor"], /* Hide any element with cursor in its class name */
+  *[data-cursor],    /* Hide any element with data-cursor attribute */
+  *[id*="cursor"]    /* Hide by id containing cursor */
+  {
     display: none !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    visibility: hidden !important;
+  }
+  html, body, * {
+    cursor: none !important;
   }
 }
 
@@ -174,12 +175,12 @@ body {
 /* ================================
    NowListening Marquee & Responsive
    ================================ */
-.marquee-scroll a {
-  display: inline-block;
-  animation: marquee-song-title 7s linear infinite;
+.marquee-scroll {
+  animation: marquee-artist 7s linear infinite;
   white-space: nowrap;
+  display: inline-block;
 }
-@keyframes marquee-song-title {
+@keyframes marquee-artist {
   0% { transform: translateX(0); }
   10% { transform: translateX(0); }
   90% { transform: translateX(calc(-100% + 75vw)); }
