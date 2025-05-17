@@ -41,7 +41,6 @@ const HorizontalPopVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => 
     return () => clearInterval(interval);
   }, []);
   const width = mobile ? 50 : 74;
-  const height = mobile ? 9 : 13;
   const gap = mobile ? 6 : 10;
   const baseHeight = mobile ? 4 : 6;
   return (
