@@ -17,9 +17,6 @@ import {
   FaRedditAlien
 } from "react-icons/fa";
 
-// Use require for images inside src/ (Vite/CRA compatibility)
-import PFP from "./pfp.png";
-
 // White to grey gradient for text and icons
 const gradientStyle = {
   background: "linear-gradient(90deg, #fff 80%, #b0b0b0 100%)",
@@ -173,7 +170,7 @@ const Hero: React.FC = () => {
         {/* Profile picture */}
         <div className="flex-shrink-0 flex justify-center items-center w-full md:w-auto mb-7 md:mb-0">
           <img
-            src={PFP}
+            src="/pfp.png"
             alt="Tanujairam"
             className="rounded-2xl shadow-xl object-cover object-center"
             style={{
