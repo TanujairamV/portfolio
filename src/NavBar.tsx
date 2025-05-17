@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
-import { FaHome, FaUserGraduate, FaBriefcase, FaCertificate, FaProjectDiagram, FaStar } from "react-icons/fa";
+import { FaHome, FaUserGraduate, FaBriefcase, FaCertificate, FaProjectDiagram, FaTools } from "react-icons/fa";
+import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
 
+// List of nav items and icons for desktop and mobile
 const NAV_LINKS = [
-  { to: "hero", label: "Home", icon: <FaHome /> },
-  { to: "skills", label: "Skills", icon: <FaStar /> },
-  { to: "experience", label: "Experience", icon: <FaBriefcase /> },
-  { to: "education", label: "Education", icon: <FaUserGraduate /> },
-  { to: "certifications", label: "Certifications", icon: <FaCertificate /> },
-  { to: "projects", label: "Projects", icon: <FaProjectDiagram /> }
+  { to: "hero", label: "Home", icon: <MdHome size={22} /> },
+  { to: "skills", label: "Skills", icon: <MdBuild size={22} /> },
+  { to: "experience", label: "Experience", icon: <MdWork size={22} /> },
+  { to: "education", label: "Education", icon: <MdSchool size={22} /> },
+  { to: "certifications", label: "Certifications", icon: <MdStar size={22} /> },
+  { to: "projects", label: "Projects", icon: <MdAssignment size={22} /> }
 ];
+
+const isMobile = () =>
+  typeof window !== "undefined" &&
+  (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent) ||
+    window.innerWidth < 768);
 
 const NavBar: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" &&
-      (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent) ||
-      window.innerWidth < 768)
-  );
+  const [mobile, setMobile] = useState(isMobile());
 
   useEffect(() => {
-    const handleResize = () =>
-      setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setMobile(isMobile());
     window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -32,26 +34,26 @@ const NavBar: React.FC = () => {
       className={`fixed top-5 left-1/2 z-50 transition-all duration-300`}
       style={{
         transform: "translateX(-50%)",
-        padding: isMobile ? "0.25rem 0.7rem" : "0.55rem 1.3rem",
-        background: "linear-gradient(90deg, rgba(255,255,255,0.23) 0%, rgba(180,180,180,0.19) 100%)",
-        borderRadius: isMobile ? "2rem" : "2.3rem",
-        boxShadow: "0 2px 16px #2228, 0 1px 7px #fff1",
-        border: "1.4px solid rgba(200,200,200,0.15)",
-        backdropFilter: "blur(22px)",
-        WebkitBackdropFilter: "blur(22px)",
-        minWidth: isMobile ? "auto" : "380px",
-        minHeight: isMobile ? "50px" : "56px",
+        padding: mobile ? "0.20rem 0.6rem" : "0.55rem 1.6rem",
+        background: "rgba(18,18,30,0.83)",
+        borderRadius: "2rem",
+        boxShadow: "0 2px 18px #222a, 0 1px 10px #fff1",
+        border: "1.5px solid rgba(220,220,220,0.13)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        minWidth: mobile ? "auto" : "400px",
+        minHeight: mobile ? "46px" : "56px",
         display: "flex",
         alignItems: "center",
-        justifyContent: isMobile ? "space-between" : "center",
-        overflow: "visible"
+        justifyContent: mobile ? "space-between" : "center",
+        fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif"
       }}
     >
-      <div className="flex items-center w-full">
+      <div className="flex items-center w-full relative">
         {/* Hamburger for mobile */}
-        {isMobile && (
+        {mobile && (
           <button
-            className="mr-3"
+            className="mr-2"
             aria-label="Toggle navigation"
             style={{
               background: "none",
@@ -60,59 +62,50 @@ const NavBar: React.FC = () => {
               margin: 0,
               outline: "none",
               cursor: "pointer",
-              color: "#232323",
-              fontSize: "2rem",
-              lineHeight: 1,
-              zIndex: 20
+              color: "#fff"
             }}
             onClick={() => setOpen((v) => !v)}
           >
-            <span style={{ fontWeight: 900, fontSize: "2rem", display: "block" }}>
+            <span style={{ fontSize: "2.2rem", display: "block" }}>
               {open ? "\u2715" : "\u2630"}
             </span>
           </button>
         )}
         <ul
-          className={`flex ${isMobile ? "flex-col" : "flex-row"} items-center justify-center gap-0`}
+          className={`transition-all flex-col ${mobile ? "absolute left-0 right-0 items-center bg-[rgba(18,18,30,0.97)]" : "flex-row items-center bg-transparent"} flex justify-center`}
           style={{
-            transition: "max-height 0.4s cubic-bezier(.2,1.8,.4,1)",
-            overflow: "hidden",
-            maxHeight: isMobile ? (open ? "350px" : "0") : "none",
-            width: isMobile ? "100%" : "auto",
-            background: isMobile
-              ? "linear-gradient(90deg, rgba(255,255,255,0.89) 0%, rgba(180,180,180,0.78) 100%)"
-              : "transparent",
-            borderRadius: isMobile ? "2rem" : "2.3rem",
+            top: mobile ? "55px" : undefined,
+            borderRadius: mobile ? "1.4rem" : "2rem",
             margin: 0,
-            padding: isMobile ? "0.7rem 0.2rem" : "0",
-            boxShadow: isMobile && open ? "0 10px 42px #111b, 0 2px 12px #fff1" : undefined,
-            position: isMobile ? "absolute" : "static",
-            top: isMobile ? "60px" : undefined,
-            left: isMobile ? "0" : undefined,
-            right: isMobile ? "0" : undefined,
-            zIndex: 10
+            padding: mobile ? (open ? "0.7rem 0.2rem" : "0") : "0",
+            width: mobile ? "100%" : "auto",
+            boxShadow: mobile && open ? "0 10px 40px #111b, 0 2px 12px #fff2" : undefined,
+            maxHeight: mobile ? (open ? "420px" : "0") : "none",
+            overflow: "hidden",
+            zIndex: 200,
+            display: mobile && !open ? "none" : undefined
           }}
         >
           {NAV_LINKS.map((link) => (
             <li
               key={link.to}
-              className={`px-2 md:px-3 py-1 nav-link`}
+              className={`px-1.5 md:px-3 py-1 nav-link`}
               style={{
                 fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
                 fontWeight: 600,
                 textTransform: "uppercase",
-                fontSize: isMobile ? "1.15rem" : "1.1rem",
-                letterSpacing: ".04em",
-                color: "#232323",
+                fontSize: mobile ? "1.10rem" : "1.09rem",
+                letterSpacing: ".045em",
+                color: "#fff",
                 cursor: "pointer",
                 borderRadius: "1.2rem",
-                margin: isMobile ? "0.18rem 0" : "0 0.25rem",
-                transition: "background 0.12s, color 0.12s, transform 0.14s",
-                background: "none",
+                margin: mobile ? "0.15rem 0" : "0 0.18rem",
                 display: "flex",
-                alignItems: "center"
+                alignItems: "center",
+                background: "none",
+                transition: "background 0.13s, color 0.13s, transform 0.16s"
               }}
-              onClick={() => isMobile && setOpen(false)}
+              onClick={() => mobile && setOpen(false)}
             >
               <Link
                 to={link.to}
@@ -121,13 +114,28 @@ const NavBar: React.FC = () => {
                 offset={-60}
                 spy={true}
                 activeClass="active"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.55em",
+                  background: "linear-gradient(90deg,#fff 65%,#b0b0b0 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  fontFamily: "'Dancing Script', 'Style Script', 'Space Grotesk', 'Poppins', sans-serif"
+                }}
               >
-                {isMobile ? (
-                  <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "1.37em" }}>
-                    {link.icon}
+                {mobile ? link.icon : (
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #fff 80%, #b0b0b0 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      fontWeight: 700,
+                      fontFamily: "'Dancing Script', 'Style Script', 'Space Grotesk', 'Poppins', sans-serif"
+                    }}
+                  >
+                    {link.label}
                   </span>
-                ) : (
-                  link.label
                 )}
               </Link>
             </li>
@@ -135,6 +143,14 @@ const NavBar: React.FC = () => {
         </ul>
       </div>
       <style>{`
+        .nav-link:hover, .nav-link:focus {
+          background: linear-gradient(90deg,#fff1,#eaeaea22 80%);
+          color: #232323 !important;
+          transform: scale(1.08);
+        }
+        .nav-link .active {
+          color: #b0b0b0 !important;
+        }
         @media (max-width: 767px) {
           #navbar {
             min-width: 0 !important;
@@ -142,28 +158,14 @@ const NavBar: React.FC = () => {
             width: auto !important;
             left: 50% !important;
             transform: translateX(-50%) !important;
-            padding: 0.25rem 0.7rem !important;
-            border-radius: 2rem !important;
+            padding: 0.15rem 0.5rem !important;
+            border-radius: 1.5rem !important;
           }
           #navbar ul {
             width: 100% !important;
             left: 0 !important;
             right: 0 !important;
-            border-radius: 2rem !important;
           }
-          .nav-link {
-            background: none !important;
-            color: #232323 !important;
-            border-radius: 1.6rem !important;
-          }
-        }
-        .nav-link:hover, .nav-link:focus {
-          background: linear-gradient(90deg,#fff3,#d0d0d022 65%);
-          color: #1e1e1e !important;
-          transform: scale(1.10);
-        }
-        .nav-link .active {
-          color: #b0b0b0 !important;
         }
       `}</style>
     </nav>
