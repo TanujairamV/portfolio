@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 import { FaMusic } from "react-icons/fa";
 
@@ -23,43 +23,64 @@ const fallbackTrack: LastFMTrack = {
   url: "#",
 };
 
-// Wave visualizer (soft, minimal style)
-const WaveVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
-  const [phase, setPhase] = useState(0);
+// Circular Pulse Visualizer (doesn't affect/overlap song name)
+const PulseVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
+  const [scale, setScale] = useState(1);
   useEffect(() => {
-    const interval = setInterval(() => setPhase((p) => p + 1), 80);
+    let growing = true;
+    const interval = setInterval(() => {
+      setScale((prev) => {
+        if (prev >= 1.3) growing = false;
+        if (prev <= 1) growing = true;
+        return growing ? prev + 0.04 : prev - 0.04;
+      });
+    }, 60);
     return () => clearInterval(interval);
   }, []);
-  // 5 waves
-  const width = mobile ? 30 : 48;
-  const height = mobile ? 18 : 26;
+  const size = mobile ? 22 : 30;
   return (
-    <svg width={width} height={height} viewBox={`0 0 48 26`} style={{ marginLeft: mobile ? 8 : 16, marginRight: 0, minWidth: width }}>
-      {[0, 1, 2, 3, 4].map((i) => {
-        // Math.sin for soft wave, stagger phase
-        const y =
-          Math.sin((phase / 2 + i * 0.7)) * (height / 3) +
-          height / 2;
-        return (
-          <rect
-            key={i}
-            x={i * (width / 5) + 2}
-            y={y}
-            width={width / 10}
-            rx={width / 24}
-            height={height - y}
-            fill="url(#wave-gradient)"
-            opacity={0.8}
-          />
-        );
-      })}
-      <defs>
-        <linearGradient id="wave-gradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#fff" />
-          <stop offset="95%" stopColor="#b0b0b0" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <span
+      style={{
+        display: "inline-block",
+        verticalAlign: "middle",
+        marginLeft: mobile ? 7 : 14,
+        marginRight: 0,
+        width: size,
+        height: size,
+        position: "relative"
+      }}
+      aria-hidden="true"
+    >
+      <span
+        style={{
+          display: "block",
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          background: "radial-gradient(circle at 60% 40%, #fff 78%, #b0b0b0 100%)",
+          opacity: 0.24,
+          position: "absolute",
+          left: 0,
+          top: 0,
+          transform: `scale(${scale})`,
+          transition: "transform 0.12s"
+        }}
+      />
+      <span
+        style={{
+          display: "block",
+          width: size - 8,
+          height: size - 8,
+          borderRadius: "50%",
+          background: "linear-gradient(90deg, #fff 90%, #b0b0b0 100%)",
+          position: "absolute",
+          left: 4,
+          top: 4,
+          opacity: 0.7,
+          boxShadow: "0 0 2px #fff6"
+        }}
+      />
+    </span>
   );
 };
 
@@ -73,7 +94,6 @@ const NowListening: React.FC = () => {
   const [img, setImg] = useState<string>(fallbackTrack.image);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [mobileView, setMobileView] = useState(isMobile());
-  const marqueeArtistRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -102,17 +122,6 @@ const NowListening: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Marquee scroll for long artist names
-  useEffect(() => {
-    if (!marqueeArtistRef.current) return;
-    const { scrollWidth, clientWidth } = marqueeArtistRef.current;
-    if (scrollWidth > clientWidth) {
-      marqueeArtistRef.current.classList.add("marquee-scroll");
-    } else {
-      marqueeArtistRef.current.classList.remove("marquee-scroll");
-    }
-  }, [track, mobileView]);
-
   const t = track || fallbackTrack;
 
   // Blur settings: soft but image still visible (10-14px on desktop, 8-10px on mobile)
@@ -120,13 +129,14 @@ const NowListening: React.FC = () => {
 
   return (
     <div
-      className={`now-listening-container relative w-full max-w-2xl mx-auto mb-8 ${mobileView ? "mobile" : ""}`}
+      className={`now-listening-container relative w-full mx-auto mb-8 ${mobileView ? "mobile" : ""}`}
       style={{
-        borderRadius: mobileView ? "1.2rem" : "2.3rem",
+        maxWidth: mobileView ? "100vw" : "440px", // smaller than before on PC (was 500+px)
+        borderRadius: mobileView ? "1.2rem" : "2.1rem",
         overflow: "hidden",
         boxShadow: mobileView
           ? "0 4px 16px rgba(60,60,60,0.17), 0 1px 6px rgba(200,200,200,0.09)"
-          : "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)",
+          : "0 8px 32px rgba(60,60,60,0.18), 0 2px 12px rgba(200,200,200,0.10)",
         fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif"
       }}
     >
@@ -154,23 +164,23 @@ const NowListening: React.FC = () => {
       />
       {/* Main content */}
       <div
-        className={`relative z-10 flex items-center ${mobileView ? "gap-2 px-2.5 py-2.5" : "gap-7 px-10 py-7"}`}
+        className={`relative z-10 flex items-center ${mobileView ? "gap-2 px-2.5 py-2.5" : "gap-6 px-8 py-6"}`}
         style={{
           background: "rgba(255,255,255,0.09)",
-          borderRadius: mobileView ? "1.2rem" : "2.3rem",
+          borderRadius: mobileView ? "1.2rem" : "2.1rem",
           border: "1.7px solid rgba(180,180,180,0.18)",
           backdropFilter: "blur(22px)",
           WebkitBackdropFilter: "blur(22px)",
-          minHeight: mobileView ? "76px" : "150px"
+          minHeight: mobileView ? "76px" : "112px"
         }}
       >
         <div
           style={{
             position: "relative",
             flexShrink: 0,
-            width: mobileView ? "60px" : "128px",
-            height: mobileView ? "60px" : "128px",
-            borderRadius: mobileView ? "1.1rem" : "1.9rem",
+            width: mobileView ? "56px" : "100px",
+            height: mobileView ? "56px" : "100px",
+            borderRadius: mobileView ? "1.1rem" : "1.6rem",
             overflow: "hidden",
             transition: "box-shadow .19s, transform .19s"
           }}
@@ -183,7 +193,7 @@ const NowListening: React.FC = () => {
             style={{
               width: "100%",
               height: "100%",
-              borderRadius: mobileView ? "1.1rem" : "1.9rem",
+              borderRadius: mobileView ? "1.1rem" : "1.6rem",
               border: mobileView ? "1.3px solid rgba(225,225,225,0.14)" : "2.5px solid rgba(225,225,225,0.21)",
               boxShadow: "0 4px 14px 0 rgba(80,80,80,0.10), 0 1px 9px #fff3",
               opacity: imgLoaded ? 1 : 0,
@@ -197,7 +207,7 @@ const NowListening: React.FC = () => {
             <div style={{
               width: "100%",
               height: "100%",
-              borderRadius: mobileView ? "1.1rem" : "1.9rem",
+              borderRadius: mobileView ? "1.1rem" : "1.6rem",
               background: "linear-gradient(135deg,#e8e8e8 10%,#bbb 90%)",
               position: "absolute", left: 0, top: 0
             }} />
@@ -219,7 +229,7 @@ const NowListening: React.FC = () => {
           </span>
           <div className="flex items-center gap-0">
             <div
-              className="truncate font-bold text-[1.16rem] md:text-[1.5rem] max-w-full relative"
+              className="truncate font-bold text-[1.10rem] md:text-[1.28rem] max-w-full relative"
               style={{
                 background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
@@ -249,11 +259,10 @@ const NowListening: React.FC = () => {
                 {t.name}
               </a>
             </div>
-            <WaveVisualizer mobile={mobileView} />
+            <PulseVisualizer mobile={mobileView} />
           </div>
           <span
-            ref={marqueeArtistRef}
-            className="truncate text-[1.00rem] md:text-[1.12rem] font-semibold mt-2"
+            className="truncate text-[0.98rem] md:text-[1.08rem] font-semibold mt-2"
             style={{
               background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -270,7 +279,7 @@ const NowListening: React.FC = () => {
         {!mobileView && (
           <div style={{ marginLeft: 16, display: "flex", alignItems: "center" }}>
             <FaMusic
-              size={36}
+              size={32}
               style={{
                 background: "linear-gradient(90deg,#fff 85%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
@@ -282,18 +291,6 @@ const NowListening: React.FC = () => {
         )}
       </div>
       <style>{`
-        /* Only marquee for long artist names (not song title) */
-        .marquee-scroll {
-          animation: marquee-artist 7s linear infinite;
-          white-space: nowrap;
-          display: inline-block;
-        }
-        @keyframes marquee-artist {
-          0% { transform: translateX(0); }
-          10% { transform: translateX(0); }
-          90% { transform: translateX(calc(-100% + 75vw)); }
-          100% { transform: translateX(calc(-100% + 75vw)); }
-        }
         @media (max-width: 767px) {
           .now-listening-container {
             max-width: 99vw !important;
@@ -301,13 +298,13 @@ const NowListening: React.FC = () => {
             border-radius: 1.2rem !important;
           }
           .now-listening-container .thumbnail-wrapper {
-            min-width: 60px !important;
-            min-height: 60px !important;
+            min-width: 54px !important;
+            min-height: 54px !important;
           }
         }
         .thumbnail-wrapper:hover .thumbnail-img,
         .thumbnail-wrapper:focus .thumbnail-img {
-          transform: scale(1.11);
+          transform: scale(1.09);
           z-index: 3;
           box-shadow: 0 8px 36px #fff5, 0 2px 14px #9998;
         }
