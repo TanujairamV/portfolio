@@ -73,7 +73,7 @@ const NowListening: React.FC = () => {
   const [img, setImg] = useState<string>(fallbackTrack.image);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [mobileView, setMobileView] = useState(isMobile());
-  const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeArtistRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -102,21 +102,22 @@ const NowListening: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Marquee scroll for long title
+  // Marquee scroll for long artist names
   useEffect(() => {
-    if (!marqueeRef.current) return;
-    const { scrollWidth, clientWidth } = marqueeRef.current;
+    if (!marqueeArtistRef.current) return;
+    const { scrollWidth, clientWidth } = marqueeArtistRef.current;
     if (scrollWidth > clientWidth) {
-      marqueeRef.current.classList.add("marquee-scroll");
+      marqueeArtistRef.current.classList.add("marquee-scroll");
     } else {
-      marqueeRef.current.classList.remove("marquee-scroll");
+      marqueeArtistRef.current.classList.remove("marquee-scroll");
     }
   }, [track, mobileView]);
 
   const t = track || fallbackTrack;
 
-  // Minimal, modern font with mix of capitals/small (Space Grotesk or Poppins, no italics, clean)
-  // Thumbnail slightly bigger, box size preserved
+  // Blur settings: soft but image still visible (10-14px on desktop, 8-10px on mobile)
+  const blurStrength = mobileView ? 8 : 13;
+
   return (
     <div
       className={`now-listening-container relative w-full max-w-2xl mx-auto mb-8 ${mobileView ? "mobile" : ""}`}
@@ -129,16 +130,16 @@ const NowListening: React.FC = () => {
         fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif"
       }}
     >
-      {/* Strong Gaussian blurred thumbnail bg */}
+      {/* Gaussian blurred thumbnail bg (less intense, image content visible) */}
       <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(94px) brightness(0.32) saturate(2.05)",
-          WebkitFilter: "blur(94px) brightness(0.32) saturate(2.05)",
-          transform: "scale(1.22)"
+          filter: `blur(${blurStrength}px) brightness(0.65) saturate(1.45)`,
+          WebkitFilter: `blur(${blurStrength}px) brightness(0.65) saturate(1.45)`,
+          transform: "scale(1.10)"
         }}
         aria-hidden
       />
@@ -146,9 +147,9 @@ const NowListening: React.FC = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "rgba(18,18,30,0.66)",
-          backdropFilter: "blur(26px) saturate(1.35)",
-          WebkitBackdropFilter: "blur(26px) saturate(1.35)"
+          background: "rgba(18,18,30,0.50)",
+          backdropFilter: "blur(1px) saturate(1.15)",
+          WebkitBackdropFilter: "blur(1px) saturate(1.15)"
         }}
       />
       {/* Main content */}
@@ -218,7 +219,6 @@ const NowListening: React.FC = () => {
           </span>
           <div className="flex items-center gap-0">
             <div
-              ref={marqueeRef}
               className="truncate font-bold text-[1.16rem] md:text-[1.5rem] max-w-full relative"
               style={{
                 background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
@@ -252,6 +252,7 @@ const NowListening: React.FC = () => {
             <WaveVisualizer mobile={mobileView} />
           </div>
           <span
+            ref={marqueeArtistRef}
             className="truncate text-[1.00rem] md:text-[1.12rem] font-semibold mt-2"
             style={{
               background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
@@ -281,12 +282,13 @@ const NowListening: React.FC = () => {
         )}
       </div>
       <style>{`
-        .marquee-scroll a {
-          display: inline-block;
-          animation: marquee-song-title 7s linear infinite;
+        /* Only marquee for long artist names (not song title) */
+        .marquee-scroll {
+          animation: marquee-artist 7s linear infinite;
           white-space: nowrap;
+          display: inline-block;
         }
-        @keyframes marquee-song-title {
+        @keyframes marquee-artist {
           0% { transform: translateX(0); }
           10% { transform: translateX(0); }
           90% { transform: translateX(calc(-100% + 75vw)); }
