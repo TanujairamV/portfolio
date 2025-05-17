@@ -1,9 +1,25 @@
 import React from "react";
-import { FaGithub, FaLinkedinIn, FaEnvelope } from "react-icons/fa";
+import {
+  FaGithub,
+  FaLinkedinIn,
+  FaEnvelope,
+  FaPhoneAlt,
+  FaTwitter,
+  FaInstagram,
+  FaFacebook,
+  FaGlobe,
+  FaDiscord,
+  FaTelegramPlane,
+  FaYoutube,
+  FaStackOverflow,
+  FaMediumM,
+  FaDribbble,
+  FaRedditAlien
+} from "react-icons/fa";
 
 const PFP = "/pfp.png";
 
-// Social links (edit as needed)
+// Add all major social links (replace href with your real links if desired)
 const socialIcons = [
   {
     href: "https://github.com/TanujairamV",
@@ -19,6 +35,66 @@ const socialIcons = [
     href: "mailto:tanujairam@email.com",
     icon: <FaEnvelope size={26} />,
     label: "Email"
+  },
+  {
+    href: "tel:+1234567890",
+    icon: <FaPhoneAlt size={26} />,
+    label: "Phone"
+  },
+  {
+    href: "https://twitter.com/tanujairam",
+    icon: <FaTwitter size={26} />,
+    label: "Twitter"
+  },
+  {
+    href: "https://instagram.com/tanujairam",
+    icon: <FaInstagram size={26} />,
+    label: "Instagram"
+  },
+  {
+    href: "https://facebook.com/tanujairam",
+    icon: <FaFacebook size={26} />,
+    label: "Facebook"
+  },
+  {
+    href: "https://tanujairam.com",
+    icon: <FaGlobe size={26} />,
+    label: "Website"
+  },
+  {
+    href: "https://discordapp.com/users/1234567890",
+    icon: <FaDiscord size={26} />,
+    label: "Discord"
+  },
+  {
+    href: "https://t.me/tanujairam",
+    icon: <FaTelegramPlane size={26} />,
+    label: "Telegram"
+  },
+  {
+    href: "https://youtube.com/@tanujairam",
+    icon: <FaYoutube size={26} />,
+    label: "YouTube"
+  },
+  {
+    href: "https://stackoverflow.com/users/123456/tanujairam",
+    icon: <FaStackOverflow size={26} />,
+    label: "StackOverflow"
+  },
+  {
+    href: "https://medium.com/@tanujairam",
+    icon: <FaMediumM size={26} />,
+    label: "Medium"
+  },
+  {
+    href: "https://dribbble.com/tanujairam",
+    icon: <FaDribbble size={26} />,
+    label: "Dribbble"
+  },
+  {
+    href: "https://reddit.com/user/tanujairam",
+    icon: <FaRedditAlien size={26} />,
+    label: "Reddit"
   }
 ];
 
@@ -98,7 +174,7 @@ const Hero: React.FC = () => {
           >
             {aboutText}
           </div>
-          <div className="flex flex-row mt-3 gap-6">
+          <div className="flex flex-row mt-3 flex-wrap gap-4 md:gap-6">
             {socialIcons.map((social) => (
               <a
                 key={social.href}
@@ -114,6 +190,7 @@ const Hero: React.FC = () => {
                   transition: "transform 0.14s, color 0.14s"
                 }}
                 className="hover:scale-110 focus:scale-110"
+                title={social.label}
               >
                 {social.icon}
               </a>
