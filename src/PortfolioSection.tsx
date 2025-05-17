@@ -32,13 +32,8 @@ const PortfolioSection: React.FC = () => {
       <Navbar />
 
       <main className="relative z-10 max-w-3xl mx-auto pt-36 pb-16 px-4 md:px-8">
-        {/* Now Listening */}
-        <div className="flex justify-center mb-8">
-          <NowListening />
-        </div>
-
         {/* Hero Section */}
-        <section id="hero" className="text-center mb-20">
+        <section id="hero" className="text-center mb-12">
           <img
             src="https://avatars.githubusercontent.com/u/108195209?v=4"
             alt="TanujairamV"
@@ -96,6 +91,11 @@ const PortfolioSection: React.FC = () => {
             {socials.location}
           </p>
         </section>
+
+        {/* Now Listening */}
+        <div className="flex justify-center mb-12">
+          <NowListening />
+        </div>
 
         {/* Skills */}
         <section id="skills" className="mb-16">
