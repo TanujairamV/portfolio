@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// Minimal equalizer for NowListening
-const Equalizer: React.FC<{ lines?: number }> = ({ lines = 6 }) => {
-  const [heights, setHeights] = useState<number[]>(Array(lines).fill(10));
+// Utility to get a Piped thumbnail by search
+const getPipedThumbnail = async (artist: string, track: string): Promise<string | null> => {
+  try {
+    const query = encodeURIComponent(`${artist} ${track}`);
+    const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${query}&filter=music_songs`);
+    const data = await res.json();
+    const thumb = data?.items?.[0]?.thumbnail ?? null;
+    return thumb;
+  } catch {
+    return null;
+  }
+};
+
+// Minimal equalizer bar animation
+const Equalizer: React.FC<{ bars?: number }> = ({ bars = 6 }) => {
+  const [heights, setHeights] = useState<number[]>(Array(bars).fill(10));
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeights(Array.from({ length: lines }, () => Math.floor(Math.random() * 18) + 10));
-    }, 120);
+      setHeights(Array.from({ length: bars }, () => Math.floor(Math.random() * 20) + 8));
+    }, 110);
     return () => clearInterval(interval);
-  }, [lines]);
+  }, [bars]);
   return (
     <div style={{
       display: "flex",
       alignItems: "end",
       gap: "2px",
-      height: "18px",
+      height: "20px",
       marginLeft: 8,
       marginRight: 2
     }}>
@@ -44,11 +57,26 @@ const fallbackTrack: LastFMTrack = {
 const NowListening: React.FC = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [loading, setLoading] = useState(true);
+  const [img, setImg] = useState<string>(fallbackTrack.image);
 
   useEffect(() => {
     fetchRecentTrack()
-      .then((t) => { setTrack(t); setLoading(false); })
-      .catch(() => { setTrack(null); setLoading(false); });
+      .then(async (t) => {
+        setTrack(t);
+        // If no usable lastfm image, try Piped
+        if (!t.image || t.image.includes("2a96cbd8b46e442fc41c2b86b821562f.png")) {
+          const pipedThumb = await getPipedThumbnail(t.artist, t.name);
+          setImg(pipedThumb || fallbackTrack.image);
+        } else {
+          setImg(t.image);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setTrack(null);
+        setImg(fallbackTrack.image);
+        setLoading(false);
+      });
   }, []);
 
   const t = track || fallbackTrack;
@@ -57,7 +85,7 @@ const NowListening: React.FC = () => {
     <div
       className="relative w-full max-w-xl mx-auto mb-12 shadow-2xl"
       style={{
-        borderRadius: "2.4rem", // increased roundness
+        borderRadius: "2.7rem", // more roundness
         overflow: "hidden"
       }}
     >
@@ -65,28 +93,28 @@ const NowListening: React.FC = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `url(${t.image})`,
+          backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(28px) brightness(0.65)",
-          WebkitFilter: "blur(28px) brightness(0.65)",
-          transform: "scale(1.08)",
+          filter: "blur(32px) brightness(0.62)",
+          WebkitFilter: "blur(32px) brightness(0.62)",
+          transform: "scale(1.08)"
         }}
         aria-hidden
       />
       {/* Glassmorphic overlay */}
       <div
-        className="relative z-10 flex items-center gap-5 px-7 py-6"
+        className="relative z-10 flex items-center gap-5 px-8 py-7"
         style={{
           background: "rgba(255,255,255,0.13)",
-          borderRadius: "2.4rem",
+          borderRadius: "2.7rem",
           border: "1.5px solid rgba(180,180,180,0.17)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
         }}
       >
         <img
-          src={t.image}
+          src={img}
           alt={`Album art for ${t.name}`}
           className="w-20 h-20 rounded-3xl border-2 border-white/30 shadow-lg object-cover flex-shrink-0"
           style={{ borderRadius: "1.5rem" }}
@@ -124,7 +152,7 @@ const NowListening: React.FC = () => {
             <Equalizer />
           </div>
           <span
-            className="truncate text-base text-gray-200 font-semibold"
+            className="truncate text-base font-semibold"
             style={{
               background: "linear-gradient(90deg, #fff 30%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
