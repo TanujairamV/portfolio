@@ -9,7 +9,6 @@ import IntroScreen from "./IntroScreen";
 import NowListening from "./NowListening";
 import Hero from "./Hero";
 import {
-  socials,
   skills,
   experiences,
   education,
