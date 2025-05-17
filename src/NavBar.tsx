@@ -44,11 +44,11 @@ const NavBar: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', 'Quicksand', sans-serif"
+        fontFamily: "'Space Grotesk', 'Poppins', sans-serif"
       }}
     >
       <ul
-        className={`flex ${mobile ? "flex-row" : "flex-row"} items-center justify-center w-full`}
+        className={`flex flex-row items-center justify-center w-full`}
         style={{
           gap: mobile ? "0.7rem" : "0.6rem",
           margin: 0,
@@ -63,9 +63,9 @@ const NavBar: React.FC = () => {
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
               fontWeight: 600,
-              textTransform: "uppercase",
-              fontSize: mobile ? "1.35rem" : "1.09rem",
-              letterSpacing: ".045em",
+              textTransform: "capitalize",
+              fontSize: mobile ? "1.29rem" : "1.08rem",
+              letterSpacing: ".042em",
               color: "#fff",
               cursor: "pointer",
               borderRadius: "1.2rem",
@@ -87,10 +87,12 @@ const NavBar: React.FC = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: "0.55em",
-                background: "linear-gradient(90deg,#fff 65%,#b0b0b0 100%)",
+                background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                fontFamily: "'Dancing Script', 'Style Script', 'Space Grotesk', 'Poppins', sans-serif"
+                fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
+                fontWeight: 700,
+                textTransform: "capitalize"
               }}
               tabIndex={0}
               aria-label={link.label}
@@ -102,7 +104,7 @@ const NavBar: React.FC = () => {
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     fontWeight: 700,
-                    fontFamily: "'Dancing Script', 'Style Script', 'Space Grotesk', 'Poppins', sans-serif"
+                    fontFamily: "'Space Grotesk', 'Poppins', sans-serif"
                   }}
                 >
                   {link.label}
@@ -136,8 +138,6 @@ const NavBar: React.FC = () => {
             left: 0 !important;
             right: 0 !important;
           }
-        }
-        @media (max-width: 767px) {
           html, body, * {
             cursor: none !important;
           }
