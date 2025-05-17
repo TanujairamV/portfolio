@@ -1,7 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 
-// --- Album art fetching logic as before ---
+// Marquee component for scrolling long titles
+const Marquee: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const [shouldScroll, setShouldScroll] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const text = textRef.current;
+    if (container && text) {
+      setShouldScroll(text.scrollWidth > container.offsetWidth);
+    }
+  }, [children]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden whitespace-nowrap"
+      style={{ maxWidth: "100%" }}
+    >
+      <div
+        ref={textRef}
+        className={`inline-block ${shouldScroll ? "animate-marquee" : ""}`}
+        style={{
+          willChange: shouldScroll ? "transform" : undefined,
+          fontWeight: 700,
+        }}
+      >
+        {children}
+        {shouldScroll && (
+          <span style={{ paddingLeft: 48 }}>{children}</span>
+        )}
+      </div>
+      <style>
+        {`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 8s linear infinite;
+        }
+        `}
+      </style>
+    </div>
+  );
+};
+
+// Album art fetching (iTunes, but you can add more sources here)
 async function getItunesThumbnail(artist: string, track: string): Promise<string | null> {
   try {
     const query = encodeURIComponent(`${artist} ${track}`);
@@ -34,16 +82,18 @@ const CompactEqualizer: React.FC = () => {
     }, 120);
     return () => clearInterval(interval);
   }, []);
+  // Hide on mobile
   return (
-    <div style={{
-      display: "flex",
-      alignItems: "end",
-      gap: "4px",
-      height: "34px",
-      marginLeft: 12,
-      marginRight: 2,
-      minWidth: "21px",
-    }}>
+    <div
+      className="hidden sm:flex"
+      style={{
+        alignItems: "end",
+        gap: "4px",
+        height: "34px",
+        marginLeft: 12,
+        marginRight: 2,
+        minWidth: "21px",
+      }}>
       {heights.map((h, i) => (
         <div key={i}
           style={{
@@ -103,25 +153,26 @@ const NowListening: React.FC = () => {
 
   const t = track || fallbackTrack;
 
+  // Show full frosted glass and hover effect
   return (
     <div
-      className="relative w-full max-w-2xl mx-auto mb-12"
+      className="relative w-full max-w-2xl mx-auto mb-12 group"
       style={{
         borderRadius: "2.3rem",
         overflow: "hidden",
         boxShadow: "0 12px 40px rgba(60,60,60,0.22), 0 2px 18px rgba(200,200,200,0.11)"
       }}
     >
-      {/* Highly visible blurred cover as background */}
+      {/* Strong frosted glass blur background */}
       <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${img})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
-          filter: "blur(42px) brightness(0.45) saturate(1.6)",
-          WebkitFilter: "blur(42px) brightness(0.45) saturate(1.6)",
-          transform: "scale(1.18)"
+          filter: "blur(44px) brightness(0.40) saturate(2.2)",
+          WebkitFilter: "blur(44px) brightness(0.40) saturate(2.2)",
+          transform: "scale(1.21)"
         }}
         aria-hidden
       />
@@ -129,28 +180,34 @@ const NowListening: React.FC = () => {
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: "rgba(28,28,40,0.46)",
-          backdropFilter: "blur(18px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(18px) saturate(1.2)"
+          background: "rgba(24,24,32,0.55)",
+          backdropFilter: "blur(22px) saturate(1.3)",
+          WebkitBackdropFilter: "blur(22px) saturate(1.3)"
         }}
       />
       {/* Main content */}
       <div
-        className="relative z-10 flex items-center gap-7 px-10 py-7"
+        className="
+          relative z-10 flex items-center gap-7 px-6 py-6
+          md:px-10 md:py-7
+          transition-all duration-200
+          cursor-pointer
+          group-hover:bg-white/25 group-hover:backdrop-blur-[32px] group-hover:scale-[1.025]
+        "
         style={{
-          background: "rgba(255,255,255,0.11)",
+          background: "rgba(255,255,255,0.17)",
           borderRadius: "2.3rem",
-          border: "1.7px solid rgba(180,180,180,0.18)",
-          backdropFilter: "blur(22px)",
-          WebkitBackdropFilter: "blur(22px)",
-          minHeight: "150px"
+          border: "1.7px solid rgba(180,180,180,0.22)",
+          backdropFilter: "blur(28px)",
+          WebkitBackdropFilter: "blur(28px)",
+          minHeight: "140px"
         }}
       >
         <div style={{ position: "relative", flexShrink: 0 }}>
           <img
             src={img}
             alt={`Album art for ${t.name}`}
-            className="w-[110px] h-[110px] object-cover"
+            className="w-[76px] h-[76px] sm:w-[110px] sm:h-[110px] object-cover"
             style={{
               borderRadius: "1.55rem",
               border: "2.5px solid rgba(225,225,225,0.21)",
@@ -171,7 +228,7 @@ const NowListening: React.FC = () => {
         </div>
         <div className="flex flex-col min-w-0" style={{ flex: 1, minWidth: 0 }}>
           <span
-            className="text-[0.74rem] uppercase tracking-widest mb-1"
+            className="text-[0.7rem] uppercase tracking-widest mb-1"
             style={{
               background: "linear-gradient(90deg, #fff 55%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -182,12 +239,12 @@ const NowListening: React.FC = () => {
           >
             Now Playing
           </span>
-          <div className="flex items-center gap-0">
+          <div className="flex items-center gap-0 min-w-0">
             <a
               href={t.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="truncate text-[1.6rem] font-bold"
+              className="truncate text-[1.2rem] sm:text-[1.6rem] font-bold min-w-0"
               style={{
                 background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
@@ -198,12 +255,12 @@ const NowListening: React.FC = () => {
                 letterSpacing: "0.01em"
               }}
             >
-              {t.name}
+              <Marquee>{t.name}</Marquee>
             </a>
             <CompactEqualizer />
           </div>
           <span
-            className="truncate text-[1.12rem] font-semibold mt-2"
+            className="truncate text-[1.0rem] sm:text-[1.12rem] font-semibold mt-2"
             style={{
               background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -216,7 +273,7 @@ const NowListening: React.FC = () => {
             {t.artist}
           </span>
         </div>
-        <div style={{ marginLeft: 16, display: "flex", alignItems: "center" }}>
+        <div style={{ marginLeft: 10, display: "flex", alignItems: "center" }}>
           <MusicIcon />
         </div>
       </div>
