@@ -1,186 +1,102 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Poppins:wght@400;500;700&display=swap');
-
-/* Tailwind base, components, utilities (if using Tailwind) */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ================================
-   Root Custom Properties
-   ================================ */
-:root {
-  --accent-color: #ff6b6b;
-  --foreground-color: #ffffff;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
+/* Reset and base styles */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #101016;
+  font-family: 'Montserrat', 'Space Grotesk', 'Poppins', 'Inter', Arial, sans-serif;
 }
 
-/* ================================
-   Global Styles
-   ================================ */
 body {
-  font-family: 'Space Grotesk', 'Poppins', sans-serif;
-  background: #15151e;
-  color: #fff;
   min-height: 100vh;
+  background: #101016;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ================================
-   Hide Cursor & Custom Cursors on Mobile
-   ================================ */
-@media (max-width: 767px), (pointer: coarse), (hover: none) {
-  html, body, *, *:before, *:after {
-    cursor: none !important;
-  }
-  /* Hide custom cursor DOM elements */
-  .custom-cursor,
-  #custom-cursor,
-  #animated-cursor,
-  [class*="cursor"],
-  [id*="cursor"],
-  [data-cursor] {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
-  }
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
-/* ================================
-   Typography Utility Classes
-   ================================ */
-.hero-heading {
-  font-size: 4rem;
-  font-weight: 700;
-  font-family: 'Space Grotesk', 'Poppins', sans-serif;
+/* Make sure images don't exceed container */
+img {
+  max-width: 100%;
+  display: block;
 }
 
-.text-subheading,
-.placeholder-subheading::placeholder {
-  font-size: 1.25rem;
-  opacity: 0.8;
-  font-family: 'Space Grotesk', sans-serif;
-  color: rgba(255, 255, 255, 0.5);
+/* Remove blue highlight on mobile tap */
+input, textarea, button, select, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-.text-accent {
-  color: var(--accent-color);
-}
-
-/* ================================
-   Button Styles
-   ================================ */
-.material-btn {
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: var(--foreground-color);
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.material-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* ================================
-   Card Styles
-   ================================ */
-.material-card,
-.profile-card {
-  padding: 24px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-}
-
-/* ================================
-   NowListening Marquee & Responsive
-   ================================ */
-.marquee-scroll {
-  animation: marquee-artist 7s linear infinite;
-  white-space: nowrap;
-  display: inline-block;
-}
-@keyframes marquee-artist {
-  0% { transform: translateX(0); }
-  10% { transform: translateX(0); }
-  90% { transform: translateX(calc(-100% + 75vw)); }
-  100% { transform: translateX(calc(-100% + 75vw)); }
-}
-
-@media (max-width: 767px) {
-  .now-listening-container {
-    max-width: 99vw !important;
-    margin-bottom: 1rem !important;
-    border-radius: 1.15rem !important;
-  }
-  .now-listening-container .thumbnail-wrapper {
-    min-width: 49px !important;
-    min-height: 49px !important;
-  }
-}
-
-.thumbnail-wrapper:hover .thumbnail-img,
-.thumbnail-wrapper:focus .thumbnail-img {
-  transform: scale(1.06);
-  z-index: 3;
-  box-shadow: 0 7px 31px #fff5, 0 2px 10px #9997;
-}
-.thumbnail-img {
-  will-change: transform;
-}
-
-/* ================================
-   NavBar Responsive & Shape
-   ================================ */
-@media (max-width: 767px) {
-  #navbar {
-    min-width: 0 !important;
-    max-width: 97vw !important;
-    width: auto !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    padding: 0.25rem 0.5rem !important;
-    border-radius: 1.5rem !important;
-  }
-  #navbar ul {
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-  }
-}
-.nav-link:hover, .nav-link:focus {
-  background: linear-gradient(90deg,#fff1,#eaeaea22 65%);
-  color: #1e1e1e !important;
-  transform: scale(1.09);
-}
-.nav-link .active {
-  color: #b0b0b0 !important;
-}
-
-/* ================================
-   3-Line Pop Visualizer (NowListening)
-   ================================ */
-.now-listening-container .pop-visualizer {
+/* Hero section layout fix */
+#hero {
   display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: flex-end;
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  pointer-events: none;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 0;
+  margin-bottom: 0;
 }
-@media (max-width: 767px) {
-  .now-listening-container .pop-visualizer {
-    gap: 6px;
+
+/* Make the image big and always to the left */
+#hero > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 2.5rem;
+}
+
+#hero img {
+  width: 260px;
+  height: 260px;
+  min-width: 200px;
+  min-height: 200px;
+  max-width: 320px;
+  max-height: 320px;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 40px #fff1, 0 2px 16px #2227;
+  margin-right: 0;
+  background: rgba(255,255,255,0.07);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  #hero > div {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
+  #hero img {
+    margin: 0 auto 1.2rem auto;
+  }
+}
+
+@media (max-width: 650px) {
+  #hero img {
+    width: 170px;
+    height: 170px;
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 200px;
+    max-height: 200px;
+  }
+  #hero > div {
+    gap: 1.4rem;
+  }
+}
+
+/* Gradient text utility (can be reused anywhere) */
+.gradient-text {
+  background: linear-gradient(90deg, #fff 70%, #b0b0b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
