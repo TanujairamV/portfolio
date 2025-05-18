@@ -52,8 +52,8 @@ const Hero: React.FC = () => {
       {/* Text & socials right */}
       <div className="flex flex-col items-center md:items-start w-full max-w-2xl">
         {/* Main Heading */}
-        <span className="fade-in-up" data-fade-delay="2">
-          <span
+        <div className="fade-in-up" data-fade-delay="2">
+          <h1
             className="text-3xl md:text-5xl font-hatton font-bold mb-2 flex flex-wrap items-center"
             style={{
               ...gradientText,
@@ -65,10 +65,10 @@ const Hero: React.FC = () => {
           >
             hey, i'm&nbsp;
             <span className="font-caviar">Tanujairam</span>
-          </span>
-        </span>
+          </h1>
+        </div>
         {/* Subheading/About */}
-        <span
+        <div
           className="mt-2 mb-5 text-base md:text-lg font-caviar font-medium text-center md:text-left fade-in-up"
           data-fade-delay="3"
           style={{
@@ -82,9 +82,9 @@ const Hero: React.FC = () => {
           }}
         >
           {aboutText}
-        </span>
+        </div>
         {/* Social Icons */}
-        <span className="flex flex-row mt-2 flex-wrap gap-5 fade-in-up" data-fade-delay="4">
+        <div className="flex flex-row mt-2 flex-wrap gap-5 fade-in-up" data-fade-delay="4">
           {socialIcons.map((social, i) => (
             <a
               key={social.href}
@@ -112,7 +112,7 @@ const Hero: React.FC = () => {
               <span className="icon-main">{social.icon}</span>
             </a>
           ))}
-        </span>
+        </div>
       </div>
     </section>
   );
