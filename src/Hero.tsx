@@ -36,38 +36,39 @@ const Hero: React.FC = () => (
     </div>
     {/* Text & socials right */}
     <div className="flex flex-col items-center md:items-start w-full max-w-2xl">
+      {/* Main Heading with Hatton */}
       <span>
         <span
-          className="text-4xl md:text-6xl font-agoka font-bold mb-2 flex flex-wrap items-center"
+          className="text-4xl md:text-6xl font-hatton font-bold mb-2 flex flex-wrap items-center"
           style={{
-            background: "linear-gradient(90deg, #fff 60%, #b0b0b0 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontFamily: "'Agoka', 'Space Grotesk', 'Poppins', sans-serif",
+            color: "#fff",
             fontWeight: 700,
-            lineHeight: 1.14
+            lineHeight: 1.14,
+            letterSpacing: "0.01em",
+            wordBreak: "break-word"
           }}
         >
           hey
           <span style={{ fontSize: "1.5em", margin: "0 0.18em" }}>👋</span>
-          , i'm&nbsp;Tanujairam
+          , i'm&nbsp;<span className="font-caviar">Tanujairam</span>
         </span>
       </span>
+      {/* Subheading with Caviar Dreams */}
       <span
-        className="mt-2 mb-5 text-lg md:text-2xl font-carlo font-medium text-center md:text-left"
+        className="mt-2 mb-5 text-lg md:text-2xl font-caviar font-medium text-center md:text-left"
         style={{
-          background: "linear-gradient(90deg, #fff 40%, #b0b0b0 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          fontFamily: "'Carlo', 'Space Grotesk', 'Poppins', sans-serif",
+          color: "#b0b0b0",
           fontWeight: 500,
           lineHeight: 1.5,
           maxWidth: 480,
-          display: "block"
+          display: "block",
+          letterSpacing: "0.02em",
+          wordBreak: "break-word"
         }}
       >
         {aboutText}
       </span>
+      {/* Social Icons with Unica One */}
       <span className="flex flex-row mt-2 flex-wrap gap-5">
         {socialIcons.map((social) => (
           <a
@@ -77,13 +78,11 @@ const Hero: React.FC = () => (
             rel="noopener noreferrer"
             aria-label={social.label}
             style={{
-              background: "linear-gradient(90deg, #fff, #b0b0b0 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              fontSize: "2.1rem", // smaller than before
+              color: "#b0b0b0",
+              fontSize: "2.1rem",
               transition: "transform 0.14s, color 0.14s"
             }}
-            className="hover:scale-110 focus:scale-110"
+            className="hover:scale-110 focus:scale-110 font-unica"
             title={social.label}
           >
             {social.icon}
