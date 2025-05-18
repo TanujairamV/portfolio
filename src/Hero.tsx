@@ -1,8 +1,6 @@
 import React from "react";
 import {
-  FaGithub, FaLinkedinIn, FaEnvelope, FaPhoneAlt, FaTwitter, FaInstagram,
-  FaFacebook, FaGlobe, FaDiscord, FaTelegramPlane, FaYoutube, FaStackOverflow,
-  FaMediumM, FaDribbble, FaRedditAlien
+  FaGithub, FaEnvelope, FaInstagram, FaTelegramPlane
 } from "react-icons/fa";
 
 const gradientStyle = {
@@ -14,21 +12,10 @@ const gradientStyle = {
 const aboutText = `I'm a passionate developer focused on creating beautiful, performant web experiences. I love coding, learning new things, and building projects that matter.`;
 
 const socialIcons = [
-  { href: "https://github.com/TanujairamV", icon: <FaGithub size={28} />, label: "GitHub" },
-  { href: "https://linkedin.com/in/tanujairam", icon: <FaLinkedinIn size={28} />, label: "LinkedIn" },
-  { href: "mailto:tanujairam@email.com", icon: <FaEnvelope size={28} />, label: "Email" },
-  { href: "tel:+1234567890", icon: <FaPhoneAlt size={28} />, label: "Phone" },
-  { href: "https://twitter.com/tanujairam", icon: <FaTwitter size={28} />, label: "Twitter" },
-  { href: "https://instagram.com/tanujairam", icon: <FaInstagram size={28} />, label: "Instagram" },
-  { href: "https://facebook.com/tanujairam", icon: <FaFacebook size={28} />, label: "Facebook" },
-  { href: "https://tanujairam.com", icon: <FaGlobe size={28} />, label: "Website" },
-  { href: "https://discordapp.com/users/1234567890", icon: <FaDiscord size={28} />, label: "Discord" },
-  { href: "https://t.me/tanujairam", icon: <FaTelegramPlane size={28} />, label: "Telegram" },
-  { href: "https://youtube.com/@tanujairam", icon: <FaYoutube size={28} />, label: "YouTube" },
-  { href: "https://stackoverflow.com/users/123456/tanujairam", icon: <FaStackOverflow size={28} />, label: "StackOverflow" },
-  { href: "https://medium.com/@tanujairam", icon: <FaMediumM size={28} />, label: "Medium" },
-  { href: "https://dribbble.com/tanujairam", icon: <FaDribbble size={28} />, label: "Dribbble" },
-  { href: "https://reddit.com/user/tanujairam", icon: <FaRedditAlien size={28} />, label: "Reddit" }
+  { href: "mailto:tanujairam.v@gmail.com", icon: <FaEnvelope size={32} />, label: "Email" },
+  { href: "https://github.com/TanujairamV", icon: <FaGithub size={32} />, label: "GitHub" },
+  { href: "https://instagram.com/tanujairam.v", icon: <FaInstagram size={32} />, label: "Instagram" },
+  { href: "https://t.me/Tanujairam", icon: <FaTelegramPlane size={32} />, label: "Telegram" }
 ];
 
 const Hero: React.FC = () => (
@@ -43,10 +30,10 @@ const Hero: React.FC = () => (
         alt="Tanujairam"
         className="rounded-2xl shadow-xl object-cover object-center"
         style={{
-          width: 340,
-          height: 340,
-          maxWidth: 400,
-          maxHeight: 400,
+          width: 380,
+          height: 380,
+          maxWidth: 440,
+          maxHeight: 440,
           minWidth: 260,
           minHeight: 260,
           display: "block"
@@ -78,7 +65,7 @@ const Hero: React.FC = () => (
       >
         {aboutText}
       </div>
-      <div className="flex flex-row mt-2 flex-wrap gap-5 md:gap-7">
+      <div className="flex flex-row mt-2 flex-wrap gap-7">
         {socialIcons.map((social) => (
           <a
             key={social.href}
@@ -88,7 +75,7 @@ const Hero: React.FC = () => (
             aria-label={social.label}
             style={{
               ...gradientStyle,
-              fontSize: "2rem",
+              fontSize: "2.3rem",
               transition: "transform 0.14s, color 0.14s"
             }}
             className="hover:scale-110 focus:scale-110"
@@ -97,6 +84,45 @@ const Hero: React.FC = () => (
             {social.icon}
           </a>
         ))}
+      </div>
+      {/* Social text links below icons */}
+      <div className="mt-5 flex flex-col gap-1 text-base md:text-lg font-medium">
+        <a
+          href="mailto:tanujairam.v@gmail.com"
+          className="hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={gradientStyle}
+        >
+          📧 tanujairam.v@gmail.com
+        </a>
+        <a
+          href="https://github.com/TanujairamV"
+          className="hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={gradientStyle}
+        >
+          🐙 github.com/TanujairamV
+        </a>
+        <a
+          href="https://instagram.com/tanujairam.v"
+          className="hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={gradientStyle}
+        >
+          📸 instagram.com/tanujairam.v
+        </a>
+        <a
+          href="https://t.me/Tanujairam"
+          className="hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={gradientStyle}
+        >
+          💬 t.me/Tanujairam
+        </a>
       </div>
     </div>
   </section>
