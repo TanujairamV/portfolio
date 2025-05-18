@@ -9,19 +9,17 @@ import IntroScreen from "./IntroScreen";
 import NowListening from "./NowListening";
 import Hero from "./Hero";
 import {
-  skills,
   experiences,
   education,
   certifications,
   projects,
-  Skill,
   Experience,
   Education,
   Certification,
   Project
 } from "./data";
 
-// Gradient text style helper
+// Gradient text style helpers
 const gradientText = {
   background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
   WebkitBackgroundClip: "text",
@@ -55,94 +53,139 @@ const PortfolioSection: React.FC = () => {
 
         {/* Skills */}
         <section id="skills" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4" style={{ ...gradientText, fontFamily: "'Montserrat', sans-serif" }}>Skills</h2>
-          {/* FIX: Remove .map and render SkillChip only once, as it renders all skills itself */}
-          <SkillChip />
+          <span>
+            <span
+              className="text-2xl font-bold mb-4 block font-agoka"
+              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+            >
+              Skills
+            </span>
+          </span>
+          <span>
+            <SkillChip />
+          </span>
         </section>
 
         {/* Experience */}
         <section id="experience" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4" style={{ ...gradientText, fontFamily: "'Montserrat', sans-serif" }}>Experience</h2>
+          <span>
+            <span
+              className="text-2xl font-bold mb-4 block font-agoka"
+              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+            >
+              Experience
+            </span>
+          </span>
           {experiences.map((exp: Experience) => (
-            <div key={exp.id} className="mb-6">
-              <h3 className="text-xl font-semibold" style={subtleGradientText}>{exp.title} @ {exp.company}</h3>
-              <p className="text-gray-400 text-sm mb-1">
+            <span key={exp.id} className="block mb-6">
+              <span
+                className="text-xl font-semibold font-carlo"
+                style={subtleGradientText}
+              >
+                {exp.title} @ {exp.company}
+              </span>
+              <span className="block text-gray-400 text-sm mb-1 font-carlo">
                 {exp.start} — {exp.end || "Present"}
-              </p>
+              </span>
               <ul className="list-disc ml-5" style={subtleGradientText}>
                 {exp.responsibilities.map((r: string, i: number) => (
                   <li key={i}>{r}</li>
                 ))}
               </ul>
-            </div>
+            </span>
           ))}
         </section>
 
         {/* Education */}
         <section id="education" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4" style={{ ...gradientText, fontFamily: "'Montserrat', sans-serif" }}>Education</h2>
+          <span>
+            <span
+              className="text-2xl font-bold mb-4 block font-agoka"
+              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+            >
+              Education
+            </span>
+          </span>
           {education.map((edu: Education) => (
-            <div key={edu.id} className="mb-6">
-              <h3 className="text-lg font-semibold" style={subtleGradientText}>
+            <span key={edu.id} className="block mb-6">
+              <span
+                className="text-lg font-semibold font-carlo"
+                style={subtleGradientText}
+              >
                 {edu.degree} - {edu.school}
-              </h3>
-              <p className="text-gray-400 text-sm mb-1">
+              </span>
+              <span className="block text-gray-400 text-sm mb-1 font-carlo">
                 {edu.start} — {edu.end}
-              </p>
-              <p style={subtleGradientText}>{edu.details}</p>
-            </div>
+              </span>
+              <span style={subtleGradientText} className="font-carlo">{edu.details}</span>
+            </span>
           ))}
         </section>
 
         {/* Certifications */}
         <section id="certifications" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4" style={{ ...gradientText, fontFamily: "'Montserrat', sans-serif" }}>Certifications</h2>
+          <span>
+            <span
+              className="text-2xl font-bold mb-4 block font-agoka"
+              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+            >
+              Certifications
+            </span>
+          </span>
           <ul className="list-disc ml-5">
             {certifications.map((cert: Certification) => (
-              <li key={cert.id} className="mb-2">
+              <span key={cert.id} className="block mb-2">
                 <a
                   href={cert.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline"
+                  className="underline font-carlo"
                   style={gradientText}
                 >
                   {cert.name}
                 </a>
-                <span className="text-gray-400 ml-2">
+                <span className="text-gray-400 ml-2 font-carlo">
                   ({cert.issuer}, {cert.date})
                 </span>
-              </li>
+              </span>
             ))}
           </ul>
         </section>
 
         {/* Projects */}
         <section id="projects" className="mb-16">
-          <h2 className="text-2xl font-bold mb-4" style={{ ...gradientText, fontFamily: "'Montserrat', sans-serif" }}>Projects</h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <span>
+            <span
+              className="text-2xl font-bold mb-4 block font-agoka"
+              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+            >
+              Projects
+            </span>
+          </span>
+          <span className="grid md:grid-cols-2 gap-8">
             {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
-              <ProjectCard
-                key={project.id}
-                project={{
-                  name: project.title || "Untitled Project",
-                  url: project.url ?? "https://example.com",
-                  tech: project.techStack ?? [],
-                  description: project.description ?? "No description available.",
-                }}
-              />
+              <span key={project.id} className="block">
+                <ProjectCard
+                  project={{
+                    name: project.title || "Untitled Project",
+                    url: project.url ?? "https://example.com",
+                    tech: project.techStack ?? [],
+                    description: project.description ?? "No description available.",
+                  }}
+                />
+              </span>
             ))}
-          </div>
+          </span>
           {projects.length > 4 && (
             <div className="flex justify-center mt-6">
               <button
-                className="px-6 py-2 rounded-xl font-semibold shadow"
+                className="px-6 py-2 rounded-xl font-semibold shadow font-carlo"
                 style={{
                   background: "linear-gradient(90deg,#fff,#b0b0b0 90%)",
                   color: "#111",
                   boxShadow: "0 2px 10px #b0b0b044",
                   fontWeight: 600,
-                  fontFamily: "'Montserrat',sans-serif",
+                  fontFamily: "'Carlo',sans-serif",
                   transition: "background 0.15s, color 0.15s"
                 }}
                 onClick={() => setShowAllProjects(v => !v)}
