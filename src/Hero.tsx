@@ -3,7 +3,7 @@ import {
   FaGithub, FaEnvelope, FaInstagram, FaTelegramPlane
 } from "react-icons/fa";
 
-const aboutText = `I'm a passionate developer focused on creating beautiful, performant web experiences. I love coding, learning new things, and building projects that matter.`;
+const aboutText = `As a developer, I’m dedicated to crafting beautiful, high-performance web experiences. I thrive on learning, exploring new technologies, and building projects that make a difference.`;
 
 const socialIcons = [
   { href: "mailto:tanujairam.v@gmail.com", icon: <FaEnvelope />, label: "Email" },
@@ -56,9 +56,7 @@ const Hero: React.FC = () => (
             wordBreak: "break-word"
           }}
         >
-          hey
-          <span style={{ fontSize: "1.2em", margin: "0 0.18em" }}>👋</span>
-          , i'm&nbsp;
+          hey, i'm&nbsp;
           <span className="font-caviar">Tanujairam</span>
         </span>
       </span>
