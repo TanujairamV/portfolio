@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
-import { useFadeInOnScroll } from "./utils/useFadeInOnScroll";
+import { useFadeInOnScroll } from "./useFadeInOnScroll"; // <-- Fixed import path
 
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
