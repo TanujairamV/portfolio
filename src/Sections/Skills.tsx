@@ -2,56 +2,46 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import {
   FaReact, FaJs, FaPython, FaHtml5, FaCss3Alt, FaNodeJs, FaGitAlt, FaGithub, FaDatabase,
-  FaFigma, FaJava, FaLinux, FaDocker, FaSwift
+  FaFigma, FaJava, FaLinux, FaDocker, FaSwift, FaBug, FaTerminal, FaCodeBranch, FaCogs
 } from 'react-icons/fa';
-import { SiTypescript, SiTailwindcss, SiNextdotjs, SiCplusplus, SiMongodb, SiRedux } from 'react-icons/si';
+import { 
+  SiTypescript, SiTailwindcss, SiNextdotjs, SiCplusplus, SiMongodb, SiRedux, SiVuedotjs, SiBash, SiVisualstudiocode, SiFastapi, SiOpenai 
+} from 'react-icons/si';
+import { TbApi } from "react-icons/tb";
+import { MdSettingsSystemDaydream, MdSecurity, MdExtension } from "react-icons/md";
 
-// List your skills here as strings
+// Extended skills from your list (including the original and new ones)
 const skills = [
-  "React",
-  "JavaScript",
-  "TypeScript",
-  "HTML",
-  "CSS",
-  "TailwindCSS",
-  "NextJS",
-  "NodeJS",
-  "Python",
-  "Git",
-  "GitHub",
-  "MongoDB",
-  "SQL",
-  "Figma",
-  "Java",
-  "Linux",
-  "Docker",
-  "Swift",
-  "C++",
-  "Redux",
+  "Python", "JavaScript", "TypeScript", "HTML", "CSS", "TailwindCSS", "Bash", "Selenium", "Tkinter", "Git", "GitHub", "GitHub Actions", "VS Code",
+  "REST APIs", "GitHub Pages", "Custom ROMs", "TWRP", "ADB", "Fastboot", "Node.js", "Express.js", "Open-source collaboration", "Debugging", "CI/CD workflows"
 ];
 
-// Map skills to icons (add/edit as you wish)
+// Map skills to icons
 const skillIconMap: Record<string, React.ReactNode> = {
-  React: <FaReact className="text-sky-400" />,
+  Python: <FaPython className="text-yellow-300" />,
   JavaScript: <FaJs className="text-yellow-400" />,
   TypeScript: <SiTypescript className="text-blue-300" />,
   HTML: <FaHtml5 className="text-orange-400" />,
   CSS: <FaCss3Alt className="text-blue-400" />,
   TailwindCSS: <SiTailwindcss className="text-cyan-300" />,
-  NextJS: <SiNextdotjs className="text-black dark:text-white" />,
-  NodeJS: <FaNodeJs className="text-green-600" />,
-  Python: <FaPython className="text-yellow-300" />,
+  Bash: <SiBash className="text-green-300" />,
+  Selenium: <FaBug className="text-green-400" />,
+  Tkinter: <SiPython className="text-yellow-200" />, // Uses Python icon for Tkinter
   Git: <FaGitAlt className="text-orange-500" />,
   GitHub: <FaGithub />,
-  MongoDB: <SiMongodb className="text-green-500" />,
-  SQL: <FaDatabase className="text-blue-500" />,
-  Figma: <FaFigma className="text-pink-500" />,
-  Java: <FaJava className="text-red-500" />,
-  Linux: <FaLinux className="text-gray-300" />,
-  Docker: <FaDocker className="text-blue-400" />,
-  Swift: <FaSwift className="text-orange-400" />,
-  "C++": <SiCplusplus className="text-blue-400" />,
-  Redux: <SiRedux className="text-purple-400" />,
+  "GitHub Actions": <FaCodeBranch className="text-blue-400" />,
+  "VS Code": <SiVisualstudiocode className="text-blue-400" />,
+  "REST APIs": <TbApi className="text-emerald-300" />,
+  "GitHub Pages": <FaGithub className="text-purple-300" />,
+  "Custom ROMs": <MdExtension className="text-pink-400" />,
+  TWRP: <MdSettingsSystemDaydream className="text-blue-400" />,
+  ADB: <FaTerminal className="text-gray-300" />,
+  Fastboot: <FaTerminal className="text-gray-300" />,
+  "Node.js": <FaNodeJs className="text-green-600" />,
+  "Express.js": <SiExpress className="text-gray-100" />,
+  "Open-source collaboration": <FaCogs className="text-green-200" />,
+  Debugging: <FaBug className="text-red-400" />,
+  "CI/CD workflows": <MdSecurity className="text-yellow-400" />,
 };
 
 const gradientTextClass =
