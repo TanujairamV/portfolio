@@ -23,7 +23,8 @@ const fallbackTrack: LastFMTrack = {
   url: "#",
 };
 
-const SoftEqualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => (
+// Soft 3-bar equalizer (animated)
+const SoftEqualizer: React.FC = () => (
   <div className="equalizer-bars" aria-hidden="true">
     <div className="equalizer-bar bar1" />
     <div className="equalizer-bar bar2" />
@@ -31,8 +32,8 @@ const SoftEqualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => (
   </div>
 );
 
+// Soft 3-line popping horizontal visualizer (below artist, attached to box bottom)
 const HorizontalPopVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
-  // Animation state for each line
   const [pops, setPops] = useState([1, 1, 1]);
   useEffect(() => {
     let t = 0;
@@ -123,17 +124,6 @@ const NowListening: React.FC = () => {
   const t = track || fallbackTrack;
   const blurStrength = mobileView ? 7 : 11;
 
-  // For continuously animating wave ripple
-  const [waveRipples, setWaveRipples] = useState([true, false, false]);
-  useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setWaveRipples([true, false, false].map((_, idx) => (i + idx) % 3 === 0));
-      i = (i + 1) % 3;
-    }, 900);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div
       className={`now-listening-container relative w-full mx-auto mb-8 ${mobileView ? "mobile" : ""}`}
@@ -146,13 +136,12 @@ const NowListening: React.FC = () => {
           : "0 6px 22px rgba(60,60,60,0.12), 0 2px 10px rgba(200,200,200,0.08)",
         fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
         background: "rgba(255,255,255,0.05)",
-        position: "relative"
+        position: "relative",
+        cursor: "pointer"
       }}
       tabIndex={0}
-      // no onClick - do not redirect
-      style={{ cursor: "pointer" }}
     >
-      {/* Constant Wave Ripple */}
+      {/* Constant Wave Ripple, always running */}
       <span
         className="nowlistening-wave-ripple"
         style={{
@@ -282,7 +271,7 @@ const NowListening: React.FC = () => {
                 {t.name}
               </span>
             </div>
-            <SoftEqualizer mobile={mobileView} />
+            <SoftEqualizer />
           </div>
           <span
             className="truncate text-[0.93rem] md:text-[1.01rem] font-semibold mt-2"
