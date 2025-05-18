@@ -66,88 +66,88 @@ const PortfolioSection: React.FC = () => {
 
         {/* Skills */}
         <section id="skills" ref={skillsRef} className="mb-16 fade-in-up" data-fade-delay="2">
-          <span>
+          <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
               style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Skills
             </span>
-          </span>
-          <span>
+          </div>
+          <div>
             <SkillChip />
-          </span>
+          </div>
         </section>
 
         {/* Experience */}
         <section id="experience" ref={experienceRef} className="mb-16 fade-in-up" data-fade-delay="3">
-          <span>
+          <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
               style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Experience
             </span>
-          </span>
+          </div>
           {experiences.map((exp: Experience, i) => (
-            <span key={exp.id} className="block mb-6 fade-in-up" data-fade-delay={i + 1}>
-              <span
+            <div key={exp.id} className="mb-6 fade-in-up" data-fade-delay={i + 1}>
+              <div
                 className="text-xl font-semibold font-caviar"
                 style={subtleGradientText}
               >
                 {exp.title} @ {exp.company}
-              </span>
-              <span className="block text-gray-400 text-sm mb-1 font-caviar">
+              </div>
+              <div className="text-gray-400 text-sm mb-1 font-caviar">
                 {exp.start} — {exp.end || "Present"}
-              </span>
+              </div>
               <ul className="list-disc ml-5" style={subtleGradientText}>
                 {exp.responsibilities.map((r: string, j: number) => (
                   <li key={j}>{r}</li>
                 ))}
               </ul>
-            </span>
+            </div>
           ))}
         </section>
 
         {/* Education */}
         <section id="education" ref={educationRef} className="mb-16 fade-in-up" data-fade-delay="4">
-          <span>
+          <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
               style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Education
             </span>
-          </span>
+          </div>
           {education.map((edu: Education, i) => (
-            <span key={edu.id} className="block mb-6 fade-in-up" data-fade-delay={i + 1}>
-              <span
+            <div key={edu.id} className="mb-6 fade-in-up" data-fade-delay={i + 1}>
+              <div
                 className="text-lg font-semibold font-caviar"
                 style={subtleGradientText}
               >
                 {edu.degree} - {edu.school}
-              </span>
-              <span className="block text-gray-400 text-sm mb-1 font-caviar">
+              </div>
+              <div className="text-gray-400 text-sm mb-1 font-caviar">
                 {edu.start} — {edu.end}
-              </span>
-              <span style={subtleGradientText} className="font-caviar">{edu.details}</span>
-            </span>
+              </div>
+              <div style={subtleGradientText} className="font-caviar">{edu.details}</div>
+            </div>
           ))}
         </section>
 
         {/* Certifications */}
         <section id="certifications" ref={certificationsRef} className="mb-16 fade-in-up" data-fade-delay="5">
-          <span>
+          <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
               style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Certifications
             </span>
-          </span>
+          </div>
           <ul className="list-disc ml-5">
             {certifications.map((cert: Certification, i) => (
-              <span key={cert.id} className="block mb-2 fade-in-up" data-fade-delay={i + 1}>
+              <li key={cert.id} className="mb-2 fade-in-up" data-fade-delay={i + 1}>
                 <a
                   href={cert.url}
                   target="_blank"
@@ -160,24 +160,24 @@ const PortfolioSection: React.FC = () => {
                 <span className="text-gray-400 ml-2 font-caviar">
                   ({cert.issuer}, {cert.date})
                 </span>
-              </span>
+              </li>
             ))}
           </ul>
         </section>
 
         {/* Projects */}
         <section id="projects" ref={projectsRef} className="mb-16 fade-in-up" data-fade-delay="6">
-          <span>
+          <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
               style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Projects
             </span>
-          </span>
-          <span className="grid md:grid-cols-2 gap-8">
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
             {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project, i) => (
-              <span key={project.id} className="block fade-in-up" data-fade-delay={i + 1}>
+              <div key={project.id} className="fade-in-up" data-fade-delay={i + 1}>
                 <ProjectCard
                   project={{
                     name: project.title || "Untitled Project",
@@ -186,9 +186,9 @@ const PortfolioSection: React.FC = () => {
                     description: project.description ?? "No description available.",
                   }}
                 />
-              </span>
+              </div>
             ))}
-          </span>
+          </div>
           {projects.length > 4 && (
             <div className="flex justify-center mt-6 fade-in-up" data-fade-delay="7">
               <button
