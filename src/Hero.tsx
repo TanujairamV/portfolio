@@ -75,7 +75,7 @@ const Hero: React.FC = () => (
       >
         {aboutText}
       </span>
-      {/* Social Icons */}
+      {/* Social Icons - below about text, gradient style */}
       <span className="flex flex-row mt-2 flex-wrap gap-5">
         {socialIcons.map((social) => (
           <a
@@ -85,14 +85,38 @@ const Hero: React.FC = () => (
             rel="noopener noreferrer"
             aria-label={social.label}
             style={{
-              ...gradientText,
-              fontSize: "1.7rem",
+              background: "linear-gradient(90deg, #ff6b6b 40%, #fff 80%, #888 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              color: "transparent",
+              fontSize: "2rem",
               transition: "transform 0.14s, color 0.14s"
             }}
-            className="hover:scale-110 focus:scale-110 font-unica ripple"
+            className="hover:scale-110 focus:scale-110 font-unica ripple social-icon"
             title={social.label}
           >
-            {social.icon}
+            <span className="icon-main">{social.icon}</span>
+            <span className="social-arrow">
+              <svg width="21" height="21" viewBox="0 0 21 21">
+                <polyline
+                  points="6,16 16,16 16,6"
+                  fill="none"
+                  stroke="url(#arrowGradient)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ filter: "drop-shadow(0 2px 8px #fff5)", opacity: 0.87 }}
+                />
+                <defs>
+                  <linearGradient id="arrowGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#ff6b6b" />
+                    <stop offset="70%" stopColor="#fff" />
+                    <stop offset="100%" stopColor="#888" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </span>
           </a>
         ))}
       </span>
