@@ -233,7 +233,6 @@ body {
     gap: 6px;
   }
 }
-/* ...your existing CSS... */
 
 /* Android-style Ripple Effect */
 .ripple {
@@ -262,4 +261,21 @@ body {
   opacity: 1;
   transform: translate(-50%, -50%) scale(0.7);
   transition: 0s;
+}
+
+/* Ripple effect for NowListening background */
+.nowlistening-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.19);
+  transform: scale(0);
+  animation: nowlistening-ripple-animate 0.7s cubic-bezier(.41,1.69,.41,1.01);
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes nowlistening-ripple-animate {
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
 }
