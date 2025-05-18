@@ -57,15 +57,13 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
       style={{
         minHeight: "100vh",
         minWidth: "100vw",
-        background: "#000",
-        overflow: "hidden"
+        overflow: "hidden",
       }}
     >
-      {/* Box-blur effect background */}
       <div
         className="absolute inset-0"
         style={{
@@ -77,32 +75,39 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
         }}
         aria-hidden
       />
-      {/* Scrambled name only, aesthetic font, gradient */}
       <div
-        className="relative z-10"
+        className="relative z-10 flex flex-col items-center"
         style={{
           padding: "2.8rem 3.2rem",
           borderRadius: "2.2rem",
           background: "rgba(10,10,10,0.50)",
           boxShadow: "0 8px 60px 0 #111a, 0 1px 10px #fff1",
-          display: "flex", flexDirection: "column", alignItems: "center",
         }}
       >
         <h1
-          className="text-4xl md:text-5xl"
+          className="text-4xl md:text-6xl font-bold text-center"
           style={{
             background: "linear-gradient(90deg, #fff 60%, #b0b0b0 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontFamily: "'Outfit', 'Plus Jakarta Sans', 'Montserrat', 'Quicksand', sans-serif",
-            fontWeight: 700,
             letterSpacing: "0.07em",
             userSelect: "none",
-            textShadow: "0 4px 40px #000a"
+            textShadow: "0 4px 40px #000a",
           }}
         >
           {scramble(SCRAMBLE_TEXT, scrambleProgress)}
         </h1>
+        <p
+          className="mt-6 max-w-xl text-center text-lg md:text-2xl text-gray-400 font-normal"
+          style={{
+            fontFamily: "'Outfit', 'Plus Jakarta Sans', 'Montserrat', 'Quicksand', sans-serif",
+            textShadow: "0 2px 20px #000a",
+          }}
+        >
+          I build software and digital experiences.<br />
+          Currently focused on web, cloud, and AI.
+        </p>
       </div>
     </div>
   );
