@@ -11,6 +11,8 @@ export default {
         'space-grotesk': ['Space Grotesk', 'sans-serif'],
         'cabinet-grotesk': ['Cabinet Grotesk', 'sans-serif'],
         ranade: ['Ranade', 'sans-serif'],
+        agoka: ['Agoka', 'serif'],
+        carlo: ['Carlo', 'sans-serif'],
       },
       colors: {
         background: ({ opacityValue }) => `rgba(var(--background-rgb, 15, 15, 15), ${opacityValue})`,
