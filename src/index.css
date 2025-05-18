@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Poppins:wght@400;500;700&display=swap');
 
-/* ================================
-   Custom Self-hosted Fonts
-   ================================ */
+/* Custom Fonts */
 @font-face {
   font-family: 'Agoka';
   src: url('/Agoka.otf') format('opentype');
@@ -20,6 +18,27 @@
 @font-face {
   font-family: 'Dream Avenue';
   src: url('/Dream Avenue.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caviar Dreams';
+  src: url('/CaviarDreams.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hatton';
+  src: url('/Hatton.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica One';
+  src: url('/UnicaOne.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -44,7 +63,7 @@
    Global Styles
    ================================ */
 body {
-  font-family: 'Space Grotesk', 'Poppins', 'Agoka', 'Carlo', 'Dream Avenue', sans-serif;
+  font-family: 'Space Grotesk', 'Poppins', 'Caviar Dreams', 'Hatton', 'Unica One', 'Agoka', 'Carlo', 'Dream Avenue', sans-serif;
   background: #15151e;
   color: #fff;
   min-height: 100vh;
@@ -77,14 +96,14 @@ body {
 .hero-heading {
   font-size: 4rem;
   font-weight: 700;
-  font-family: 'Agoka', 'Space Grotesk', 'Poppins', sans-serif;
+  font-family: 'Hatton', 'Space Grotesk', 'Poppins', 'Caviar Dreams', serif;
 }
 
 .text-subheading,
 .placeholder-subheading::placeholder {
   font-size: 1.25rem;
   opacity: 0.8;
-  font-family: 'Carlo', 'Space Grotesk', sans-serif;
+  font-family: 'Caviar Dreams', 'Space Grotesk', 'Poppins', sans-serif;
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -106,7 +125,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   color: var(--foreground-color);
-  font-family: 'Poppins', 'Carlo', sans-serif;
+  font-family: 'Poppins', 'Carlo', 'Caviar Dreams', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   backdrop-filter: blur(10px);
