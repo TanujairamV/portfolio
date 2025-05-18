@@ -50,16 +50,11 @@ const NavBar: React.FC = () => {
   return (
     <nav
       id="navbar"
-      className={`fixed top-5 left-1/2 z-50 transition-all duration-300`}
+      className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300"
       style={{
         transform: "translateX(-50%)",
-        padding: mobile ? "0.18rem 0.5rem" : "0.55rem 1.6rem",
-        background: "rgba(18,18,30,0.83)",
-        borderRadius: "2rem",
-        boxShadow: "0 2px 18px #222a, 0 1px 10px #fff1",
-        border: "1.5px solid rgba(220,220,220,0.13)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        padding: mobile ? "0.18rem 0.5rem" : "0.55rem 2.2rem",
+        borderRadius: "2.2rem",
         minWidth: mobile ? "auto" : "400px",
         minHeight: mobile ? "46px" : "56px",
         display: "flex",
@@ -138,7 +133,7 @@ const NavBar: React.FC = () => {
               {!mobile && (
                 <span className="nav-arrow" style={{ marginLeft: "0.26em", display: "inline-flex", alignItems: "center" }}>
                   <svg width="17" height="17" viewBox="0 0 17 17">
-                    <polyline points="5,12 12,12 12,5" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <polyline points="5,12 12,12 12,5" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </span>
               )}
