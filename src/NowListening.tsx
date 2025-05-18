@@ -2,28 +2,8 @@ import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 import { FaMusic } from "react-icons/fa";
 
-// iTunes fallback
-async function getItunesThumbnail(artist: string, track: string): Promise<string | null> {
-  try {
-    const query = encodeURIComponent(`${artist} ${track}`);
-    const itunesRes = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=1`);
-    const itunesData = await itunesRes.json();
-    if (itunesData.results?.[0]?.artworkUrl100) {
-      return itunesData.results[0].artworkUrl100.replace("100x100bb.jpg", "400x400bb.jpg");
-    }
-  } catch {}
-  return null;
-}
+// ...getItunesThumbnail and fallbackTrack as before...
 
-const fallbackTrack: LastFMTrack = {
-  artist: "",
-  name: "Not playing",
-  album: "",
-  image: "https://via.placeholder.com/120x120?text=No+Art",
-  url: "#",
-};
-
-// Soft 3-bar equalizer (animated)
 const SoftEqualizer: React.FC = () => (
   <div className="equalizer-bars" aria-hidden="true">
     <div className="equalizer-bar bar1" />
@@ -32,7 +12,6 @@ const SoftEqualizer: React.FC = () => (
   </div>
 );
 
-// Soft 3-line popping horizontal visualizer (below artist, attached to box bottom)
 const HorizontalPopVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
   const [pops, setPops] = useState([1, 1, 1]);
   useEffect(() => {
@@ -141,18 +120,17 @@ const NowListening: React.FC = () => {
       }}
       tabIndex={0}
     >
-      {/* Constant Wave Ripple, always running */}
-      <span
-        className="nowlistening-wave-ripple"
-        style={{
-          left: "50%",
-          top: "50%",
-          width: mobileView ? "180px" : "250px",
-          height: mobileView ? "180px" : "250px",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1
-        }}
-      />
+      {/* Constant Particles Blur Ripple Android 15 style */}
+      <span className="particle-blur-bg" aria-hidden="true">
+        <span className="particle p1"></span>
+        <span className="particle p2"></span>
+        <span className="particle p3"></span>
+        <span className="particle p4"></span>
+        <span className="particle p5"></span>
+        <span className="particle p6"></span>
+        <span className="particle p7"></span>
+        <span className="particle p8"></span>
+      </span>
       {/* Blurred thumbnail bg */}
       <div
         className="absolute inset-0 z-0"
