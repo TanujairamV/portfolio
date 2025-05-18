@@ -1,40 +1,44 @@
-import { FaInstagram, FaTelegram, FaDiscord, FaEnvelope, FaGithub } from "react-icons/fa";
+import { FaInstagram, FaTelegramPlane, FaGithub, FaEnvelope } from "react-icons/fa";
 
-/**
- * Social media links configuration.
- */
 const socialLinks = [
   { href: "https://instagram.com/tanujairam.v", icon: FaInstagram, label: "Instagram" },
-  { href: "https://t.me/Tanujairam", icon: FaTelegram, label: "Telegram" },
-  { href: "https://discord.com/users/Tanujairam", icon: FaDiscord, label: "Discord" },
+  { href: "https://t.me/Tanujairam", icon: FaTelegramPlane, label: "Telegram" },
   { href: "mailto:tanujairam.v@gmail.com", icon: FaEnvelope, label: "Email" },
-  { href: "https://github.com/TanujairamV", icon: FaGithub, label: "GitHub" },
+  { href: "https://github.com/TanujairamV", icon: FaGithub, label: "GitHub" }
 ];
 
-/**
- * Footer component displaying social links and copyright.
- */
+const gradientStyle = {
+  background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
+  WebkitBackgroundClip: "text" as const,
+  WebkitTextFillColor: "transparent" as const,
+};
+
 const Footer: React.FC = () => (
-  <footer className="py-3 text-center font-inter text-subheading">
+  <footer className="py-5 px-4 flex flex-col items-center gap-2 border-t border-white/10 bg-[#181824]">
     <nav aria-label="Social media links">
-      <ul className="flex justify-center space-x-1.5 mb-1 list-none p-0 m-0">
+      <ul className="flex flex-row gap-5 mb-1">
         {socialLinks.map(({ href, icon: Icon, label }) => (
           <li key={href}>
             <a
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="social-icon material-icon inline-flex items-center"
               aria-label={label}
+              style={gradientStyle}
+              className="hover:scale-125 transition-transform duration-150"
+              title={label}
             >
-              <Icon size={14} />
+              <Icon size={26} />
             </a>
           </li>
         ))}
       </ul>
     </nav>
-    <p className="text-[0.65rem] text-gray-500 select-none">
-      © 2025 Tanujairam
+    <p
+      className="text-xs select-none mt-1 font-medium"
+      style={gradientStyle}
+    >
+      © 2025 Tanujairam &nbsp;|&nbsp; Built with React & TailwindCSS
     </p>
   </footer>
 );
