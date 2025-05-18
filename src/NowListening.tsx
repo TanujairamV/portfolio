@@ -88,6 +88,19 @@ const NowListening: React.FC = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [mobileView, setMobileView] = useState(isMobile());
 
+  // For ripple
+  const handleRipple = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const container = e.currentTarget;
+    const ripple = document.createElement("span");
+    ripple.className = "nowlistening-ripple";
+    const size = Math.max(container.clientWidth, container.clientHeight);
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - container.getBoundingClientRect().left - size / 2}px`;
+    ripple.style.top = `${e.clientY - container.getBoundingClientRect().top - size / 2}px`;
+    container.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 700);
+  };
+
   useEffect(() => {
     let isMounted = true;
     fetchRecentTrack()
@@ -132,6 +145,8 @@ const NowListening: React.FC = () => {
         background: "rgba(255,255,255,0.05)",
         position: "relative"
       }}
+      onClick={handleRipple}
+      tabIndex={0}
     >
       {/* Blurred thumbnail bg */}
       <div
@@ -306,6 +321,22 @@ const NowListening: React.FC = () => {
         }
         .thumbnail-img {
           will-change: transform;
+        }
+        /* Ripple effect for NowListening background */
+        .nowlistening-ripple {
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.19);
+          transform: scale(0);
+          animation: nowlistening-ripple-animate 0.7s cubic-bezier(.41,1.69,.41,1.01);
+          pointer-events: none;
+          z-index: 1;
+        }
+        @keyframes nowlistening-ripple-animate {
+          to {
+            transform: scale(2.8);
+            opacity: 0;
+          }
         }
       `}</style>
     </div>
