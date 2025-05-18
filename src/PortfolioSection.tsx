@@ -18,6 +18,7 @@ import {
   Certification,
   Project
 } from "./data";
+import { useFadeInOnScroll } from "./useFadeInOnScroll";
 
 // Gradient text style helpers
 const gradientText = {
@@ -35,6 +36,15 @@ const subtleGradientText = {
 const PortfolioSection: React.FC = () => {
   const [showAllProjects, setShowAllProjects] = useState(false);
 
+  // Fade in hooks for sections
+  const mainRef = useFadeInOnScroll<HTMLDivElement>();
+  const skillsRef = useFadeInOnScroll<HTMLElement>();
+  const experienceRef = useFadeInOnScroll<HTMLElement>();
+  const educationRef = useFadeInOnScroll<HTMLElement>();
+  const certificationsRef = useFadeInOnScroll<HTMLElement>();
+  const projectsRef = useFadeInOnScroll<HTMLElement>();
+  const nowListeningRef = useFadeInOnScroll<HTMLDivElement>();
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
       <IntroScreen />
@@ -42,17 +52,20 @@ const PortfolioSection: React.FC = () => {
       <AnimatedCursor />
       <Navbar />
 
-      <main className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10">
+      <main
+        ref={mainRef}
+        className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10 fade-in-up"
+      >
         {/* Hero Section */}
         <Hero />
 
         {/* Now Listening */}
-        <div className="flex justify-center mb-12">
+        <div ref={nowListeningRef} className="flex justify-center mb-12 fade-in-up" data-fade-delay="1">
           <NowListening />
         </div>
 
         {/* Skills */}
-        <section id="skills" className="mb-16">
+        <section id="skills" ref={skillsRef} className="mb-16 fade-in-up" data-fade-delay="2">
           <span>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -67,7 +80,7 @@ const PortfolioSection: React.FC = () => {
         </section>
 
         {/* Experience */}
-        <section id="experience" className="mb-16">
+        <section id="experience" ref={experienceRef} className="mb-16 fade-in-up" data-fade-delay="3">
           <span>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -76,8 +89,8 @@ const PortfolioSection: React.FC = () => {
               Experience
             </span>
           </span>
-          {experiences.map((exp: Experience) => (
-            <span key={exp.id} className="block mb-6">
+          {experiences.map((exp: Experience, i) => (
+            <span key={exp.id} className="block mb-6 fade-in-up" data-fade-delay={i + 1}>
               <span
                 className="text-xl font-semibold font-caviar"
                 style={subtleGradientText}
@@ -88,8 +101,8 @@ const PortfolioSection: React.FC = () => {
                 {exp.start} — {exp.end || "Present"}
               </span>
               <ul className="list-disc ml-5" style={subtleGradientText}>
-                {exp.responsibilities.map((r: string, i: number) => (
-                  <li key={i}>{r}</li>
+                {exp.responsibilities.map((r: string, j: number) => (
+                  <li key={j}>{r}</li>
                 ))}
               </ul>
             </span>
@@ -97,7 +110,7 @@ const PortfolioSection: React.FC = () => {
         </section>
 
         {/* Education */}
-        <section id="education" className="mb-16">
+        <section id="education" ref={educationRef} className="mb-16 fade-in-up" data-fade-delay="4">
           <span>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -106,8 +119,8 @@ const PortfolioSection: React.FC = () => {
               Education
             </span>
           </span>
-          {education.map((edu: Education) => (
-            <span key={edu.id} className="block mb-6">
+          {education.map((edu: Education, i) => (
+            <span key={edu.id} className="block mb-6 fade-in-up" data-fade-delay={i + 1}>
               <span
                 className="text-lg font-semibold font-caviar"
                 style={subtleGradientText}
@@ -123,7 +136,7 @@ const PortfolioSection: React.FC = () => {
         </section>
 
         {/* Certifications */}
-        <section id="certifications" className="mb-16">
+        <section id="certifications" ref={certificationsRef} className="mb-16 fade-in-up" data-fade-delay="5">
           <span>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -133,8 +146,8 @@ const PortfolioSection: React.FC = () => {
             </span>
           </span>
           <ul className="list-disc ml-5">
-            {certifications.map((cert: Certification) => (
-              <span key={cert.id} className="block mb-2">
+            {certifications.map((cert: Certification, i) => (
+              <span key={cert.id} className="block mb-2 fade-in-up" data-fade-delay={i + 1}>
                 <a
                   href={cert.url}
                   target="_blank"
@@ -153,7 +166,7 @@ const PortfolioSection: React.FC = () => {
         </section>
 
         {/* Projects */}
-        <section id="projects" className="mb-16">
+        <section id="projects" ref={projectsRef} className="mb-16 fade-in-up" data-fade-delay="6">
           <span>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -163,8 +176,8 @@ const PortfolioSection: React.FC = () => {
             </span>
           </span>
           <span className="grid md:grid-cols-2 gap-8">
-            {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
-              <span key={project.id} className="block">
+            {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project, i) => (
+              <span key={project.id} className="block fade-in-up" data-fade-delay={i + 1}>
                 <ProjectCard
                   project={{
                     name: project.title || "Untitled Project",
@@ -177,7 +190,7 @@ const PortfolioSection: React.FC = () => {
             ))}
           </span>
           {projects.length > 4 && (
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-6 fade-in-up" data-fade-delay="7">
               <button
                 className="px-6 py-2 rounded-xl font-semibold shadow font-caviar"
                 style={{
