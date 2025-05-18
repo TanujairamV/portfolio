@@ -23,64 +23,60 @@ const fallbackTrack: LastFMTrack = {
   url: "#",
 };
 
-const SoftEqualizer: React.FC = () => (
-  <div className="equalizer-bars" aria-hidden="true" style={{
-    marginLeft: 12,
-    minWidth: 22,
-    display: "flex",
-    alignItems: "flex-end",
-    height: 18
-  }}>
-    <div className="equalizer-bar bar1" />
-    <div className="equalizer-bar bar2" />
-    <div className="equalizer-bar bar3" />
-  </div>
-);
-
-const HorizontalPopVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
-  const [pops, setPops] = useState([1, 1, 1]);
+const BoxWideVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
+  // 16 bars for desktop, 8 for mobile
+  const barCount = mobile ? 8 : 16;
+  const [heights, setHeights] = useState(Array(barCount).fill(8));
   useEffect(() => {
-    let t = 0;
-    const popArray = [1, 1, 1];
-    const interval = setInterval(() => {
-      t += 1;
-      popArray[0] = 1 + 0.7 * Math.abs(Math.sin((t + 0) * 0.10));
-      popArray[1] = 1 + 0.7 * Math.abs(Math.sin((t + 10) * 0.11));
-      popArray[2] = 1 + 0.7 * Math.abs(Math.sin((t + 20) * 0.095));
-      setPops([...popArray]);
-    }, 70);
-    return () => clearInterval(interval);
-  }, []);
-  const width = mobile ? 50 : 74;
-  const gap = mobile ? 6 : 10;
-  const baseHeight = mobile ? 4 : 6;
+    let raf: number;
+    let anim = true;
+    const animate = () => {
+      setHeights(
+        Array(barCount)
+          .fill(0)
+          .map((_, i) =>
+            10 +
+            Math.abs(
+              Math.sin(Date.now() / (330 + i * 13)) +
+              Math.cos(Date.now() / (210 + i * 41))
+            ) * (mobile ? 14 : 20)
+          )
+      );
+      if (anim) raf = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => {
+      anim = false;
+      cancelAnimationFrame(raf);
+    };
+    // eslint-disable-next-line
+  }, [barCount, mobile]);
   return (
     <div
+      className="box-wide-visualizer"
       style={{
-        display: 'flex',
-        gap: `${gap}px`,
-        justifyContent: 'center',
-        alignItems: 'flex-end',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: mobile ? "-13px" : "-18px",
-        zIndex: 2,
-        pointerEvents: 'none'
+        display: "flex",
+        alignItems: "flex-end",
+        width: "100%",
+        height: mobile ? 18 : 28,
+        marginTop: mobile ? 9 : 13,
+        gap: mobile ? 3 : 5,
+        justifyContent: "center",
+        pointerEvents: "none"
       }}
       aria-hidden="true"
     >
-      {[0, 1, 2].map(i => (
-        <span
+      {heights.map((h, i) => (
+        <div
           key={i}
           style={{
-            width: width / 4.5,
-            height: baseHeight * pops[i],
-            borderRadius: "8px",
+            width: mobile ? 6 : 9,
+            height: h,
+            borderRadius: 5,
             background: "linear-gradient(90deg,#fff 80%,#b0b0b0 100%)",
-            opacity: 0.92,
-            boxShadow: "0 2px 12px 0 rgba(255,255,255,0.25)",
-            transition: "height 0.22s cubic-bezier(.47,1.64,.41,.8), background 0.17s"
+            opacity: 0.88,
+            boxShadow: "0 1.5px 7px 0 rgba(255,255,255,0.19)",
+            transition: "height 0.17s cubic-bezier(.2,1.2,.41,.8)"
           }}
         />
       ))}
@@ -191,17 +187,6 @@ const NowListening: React.FC = () => {
           transition: "background 0.2s, box-shadow 0.2s"
         }}
       >
-        {/* Music Icon left */}
-        <span style={{
-          color: "#fff",
-          fontSize: mobileView ? 22 : 32,
-          marginRight: mobileView ? 7 : 15,
-          filter: "drop-shadow(0 2px 6px #fff5)",
-          opacity: 0.92,
-          flexShrink: 0
-        }}>
-          <FaMusic />
-        </span>
         {/* Album art */}
         <div
           style={{
@@ -243,7 +228,7 @@ const NowListening: React.FC = () => {
           )}
         </div>
         {/* Info block */}
-        <div className="flex flex-col min-w-0 flex-1" style={{ marginLeft: mobileView ? 10 : 22 }}>
+        <div className="flex flex-col min-w-0 flex-1" style={{ marginLeft: mobileView ? 10 : 22, position: "relative" }}>
           <span
             className="text-[0.75rem] uppercase tracking-widest mb-1"
             style={{
@@ -258,25 +243,22 @@ const NowListening: React.FC = () => {
           >
             Now Listening
           </span>
-          <div className="flex items-center w-full" style={{ minWidth: 0 }}>
-            <span
-              className="truncate font-bold text-[1.15rem] md:text-[1.24rem] max-w-full relative"
-              style={{
-                background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
-                fontWeight: 700,
-                lineHeight: 1.17,
-                maxWidth: "100%",
-                letterSpacing: "0.01em",
-                overflow: "hidden"
-              }}
-            >
-              {t.name}
-            </span>
-            <SoftEqualizer />
-          </div>
+          <span
+            className="truncate font-bold text-[1.15rem] md:text-[1.24rem] max-w-full relative"
+            style={{
+              background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
+              fontWeight: 700,
+              lineHeight: 1.17,
+              maxWidth: "100%",
+              letterSpacing: "0.01em",
+              overflow: "hidden"
+            }}
+          >
+            {t.name}
+          </span>
           <span
             className="truncate text-[1.03rem] md:text-[1.11rem] font-semibold mt-1"
             style={{
@@ -291,32 +273,20 @@ const NowListening: React.FC = () => {
           >
             {t.artist}
           </span>
+          <BoxWideVisualizer mobile={mobileView} />
         </div>
+        {/* Music Icon right */}
+        <span style={{
+          color: "#fff",
+          fontSize: mobileView ? 22 : 32,
+          marginLeft: mobileView ? 7 : 15,
+          filter: "drop-shadow(0 2px 6px #fff5)",
+          opacity: 0.92,
+          flexShrink: 0
+        }}>
+          <FaMusic />
+        </span>
       </div>
-      {/* Horizontal popping visualizer */}
-      <HorizontalPopVisualizer mobile={mobileView} />
-      <style>{`
-        @media (max-width: 767px) {
-          .now-listening-container {
-            max-width: 99vw !important;
-            margin-bottom: 1rem !important;
-            border-radius: 1.15rem !important;
-          }
-          .now-listening-container .thumbnail-wrapper {
-            min-width: 49px !important;
-            min-height: 49px !important;
-          }
-        }
-        .thumbnail-wrapper:hover .thumbnail-img,
-        .thumbnail-wrapper:focus .thumbnail-img {
-          transform: scale(1.06);
-          z-index: 3;
-          box-shadow: 0 7px 31px #fff5, 0 2px 10px #9997;
-        }
-        .thumbnail-img {
-          will-change: transform;
-        }
-      `}</style>
     </div>
   );
 };
