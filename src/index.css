@@ -233,3 +233,33 @@ body {
     gap: 6px;
   }
 }
+/* ...your existing CSS... */
+
+/* Android-style Ripple Effect */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple:after {
+  content: '';
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1);
+  transition: opacity 0.4s, transform 0.4s;
+  background: rgba(255,255,255,0.25);
+  z-index: 10;
+}
+
+.ripple:active:after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(0.7);
+  transition: 0s;
+}
