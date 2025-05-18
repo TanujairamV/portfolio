@@ -3,12 +3,6 @@ import {
   FaGithub, FaEnvelope, FaInstagram, FaTelegramPlane
 } from "react-icons/fa";
 
-const gradientStyle = {
-  background: "linear-gradient(90deg, #fff 60%, #b0b0b0 100%)",
-  WebkitBackgroundClip: "text" as const,
-  WebkitTextFillColor: "transparent" as const,
-};
-
 const aboutText = `I'm a passionate developer focused on creating beautiful, performant web experiences. I love coding, learning new things, and building projects that matter.`;
 
 const socialIcons = [
