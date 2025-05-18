@@ -75,7 +75,7 @@ const Hero: React.FC = () => (
       >
         {aboutText}
       </span>
-      {/* Social Icons - below about text, gradient style */}
+      {/* Social Icons - below about text, gradient style, NE arrow custom cursor on hover */}
       <span className="flex flex-row mt-2 flex-wrap gap-5">
         {socialIcons.map((social) => (
           <a
@@ -91,32 +91,17 @@ const Hero: React.FC = () => (
               backgroundClip: "text",
               color: "transparent",
               fontSize: "2rem",
-              transition: "transform 0.14s, color 0.14s"
+              transition: "transform 0.14s",
+              position: "relative",
+              zIndex: 1,
+              cursor: "none"
             }}
             className="hover:scale-110 focus:scale-110 font-unica ripple social-icon"
             title={social.label}
+            data-cursor="ne-arrow"
           >
             <span className="icon-main">{social.icon}</span>
-            <span className="social-arrow">
-              <svg width="21" height="21" viewBox="0 0 21 21">
-                <polyline
-                  points="6,16 16,16 16,6"
-                  fill="none"
-                  stroke="url(#arrowGradient)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ filter: "drop-shadow(0 2px 8px #fff5)", opacity: 0.87 }}
-                />
-                <defs>
-                  <linearGradient id="arrowGradient" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#ff6b6b" />
-                    <stop offset="70%" stopColor="#fff" />
-                    <stop offset="100%" stopColor="#888" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
+            {/* The arrow is shown by CSS via the custom cursor, not here */}
           </a>
         ))}
       </span>
