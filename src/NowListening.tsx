@@ -23,7 +23,14 @@ const fallbackTrack: LastFMTrack = {
   url: "#",
 };
 
-// Soft 3-line popping horizontal visualizer (below artist, attached to box bottom)
+const SoftEqualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => (
+  <div className="equalizer-bars" aria-hidden="true">
+    <div className="equalizer-bar bar1" />
+    <div className="equalizer-bar bar2" />
+    <div className="equalizer-bar bar3" />
+  </div>
+);
+
 const HorizontalPopVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
   // Animation state for each line
   const [pops, setPops] = useState([1, 1, 1]);
@@ -32,7 +39,6 @@ const HorizontalPopVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => 
     const popArray = [1, 1, 1];
     const interval = setInterval(() => {
       t += 1;
-      // Each line pops at a different phase for a soft feel
       popArray[0] = 1 + 0.7 * Math.abs(Math.sin((t + 0) * 0.10));
       popArray[1] = 1 + 0.7 * Math.abs(Math.sin((t + 10) * 0.11));
       popArray[2] = 1 + 0.7 * Math.abs(Math.sin((t + 20) * 0.095));
@@ -88,19 +94,6 @@ const NowListening: React.FC = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [mobileView, setMobileView] = useState(isMobile());
 
-  // For ripple
-  const handleRipple = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const container = e.currentTarget;
-    const ripple = document.createElement("span");
-    ripple.className = "nowlistening-ripple";
-    const size = Math.max(container.clientWidth, container.clientHeight);
-    ripple.style.width = ripple.style.height = `${size}px`;
-    ripple.style.left = `${e.clientX - container.getBoundingClientRect().left - size / 2}px`;
-    ripple.style.top = `${e.clientY - container.getBoundingClientRect().top - size / 2}px`;
-    container.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 700);
-  };
-
   useEffect(() => {
     let isMounted = true;
     fetchRecentTrack()
@@ -121,7 +114,6 @@ const NowListening: React.FC = () => {
     };
   }, []);
 
-  // Responsive check for mobile
   useEffect(() => {
     const handleResize = () => setMobileView(isMobile());
     window.addEventListener("resize", handleResize, { passive: true });
@@ -130,6 +122,17 @@ const NowListening: React.FC = () => {
 
   const t = track || fallbackTrack;
   const blurStrength = mobileView ? 7 : 11;
+
+  // For continuously animating wave ripple
+  const [waveRipples, setWaveRipples] = useState([true, false, false]);
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setWaveRipples([true, false, false].map((_, idx) => (i + idx) % 3 === 0));
+      i = (i + 1) % 3;
+    }, 900);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
@@ -145,9 +148,22 @@ const NowListening: React.FC = () => {
         background: "rgba(255,255,255,0.05)",
         position: "relative"
       }}
-      onClick={handleRipple}
       tabIndex={0}
+      // no onClick - do not redirect
+      style={{ cursor: "pointer" }}
     >
+      {/* Constant Wave Ripple */}
+      <span
+        className="nowlistening-wave-ripple"
+        style={{
+          left: "50%",
+          top: "50%",
+          width: mobileView ? "180px" : "250px",
+          height: mobileView ? "180px" : "250px",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1
+        }}
+      />
       {/* Blurred thumbnail bg */}
       <div
         className="absolute inset-0 z-0"
@@ -237,7 +253,7 @@ const NowListening: React.FC = () => {
           >
             Now Playing
           </span>
-          <div className="flex items-center gap-0">
+          <div className="flex items-center gap-2">
             <div
               className="truncate font-bold text-[1.02rem] md:text-[1.13rem] max-w-full relative"
               style={{
@@ -252,10 +268,7 @@ const NowListening: React.FC = () => {
                 overflow: "hidden"
               }}
             >
-              <a
-                href={t.url}
-                target="_blank"
-                rel="noopener noreferrer"
+              <span
                 className="block"
                 style={{
                   width: "fit-content",
@@ -267,8 +280,9 @@ const NowListening: React.FC = () => {
                 }}
               >
                 {t.name}
-              </a>
+              </span>
             </div>
+            <SoftEqualizer mobile={mobileView} />
           </div>
           <span
             className="truncate text-[0.93rem] md:text-[1.01rem] font-semibold mt-2"
@@ -299,7 +313,7 @@ const NowListening: React.FC = () => {
           </div>
         )}
       </div>
-      {/* Soft, horizontal popping visualizer attached to box bottom */}
+      {/* Horizontal popping visualizer */}
       <HorizontalPopVisualizer mobile={mobileView} />
       <style>{`
         @media (max-width: 767px) {
@@ -321,22 +335,6 @@ const NowListening: React.FC = () => {
         }
         .thumbnail-img {
           will-change: transform;
-        }
-        /* Ripple effect for NowListening background */
-        .nowlistening-ripple {
-          position: absolute;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.19);
-          transform: scale(0);
-          animation: nowlistening-ripple-animate 0.7s cubic-bezier(.41,1.69,.41,1.01);
-          pointer-events: none;
-          z-index: 1;
-        }
-        @keyframes nowlistening-ripple-animate {
-          to {
-            transform: scale(2.8);
-            opacity: 0;
-          }
         }
       `}</style>
     </div>
