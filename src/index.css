@@ -230,15 +230,25 @@ body {
 }
 
 /* ================================
-   Social Icon Arrow Hover Effect
+   Social Icons: Gradient, NE Arrow Cursor, Ripple
    ================================ */
 .social-icon {
   display: inline-flex;
   align-items: center;
-  font-size: 1.7rem;
-  transition: transform 0.13s, color 0.13s;
+  font-size: 2rem;
+  background: linear-gradient(90deg, #ff6b6b 40%, #fff 80%, #888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  color: transparent;
   position: relative;
-  color: #fff;
+  z-index: 1;
+  cursor: none;
+  transition: transform 0.14s;
+}
+.social-icon .icon-main {
+  transition: opacity 0.14s, transform 0.15s;
 }
 .social-arrow {
   position: absolute;
@@ -247,9 +257,6 @@ body {
   opacity: 0;
   transition: opacity 0.14s, transform 0.17s;
   pointer-events: none;
-}
-.social-icon .icon-main {
-  transition: opacity 0.14s, transform 0.15s;
 }
 .social-icon:hover .icon-main,
 .social-icon:focus .icon-main {
@@ -287,7 +294,55 @@ body {
   user-select: none;
 }
 
-/* Android-style Ripple Effect */
+/* ================================
+   Custom Cursor Styles
+   ================================ */
+.custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid #fff;
+  mix-blend-mode: difference;
+  transition: transform 0.18s, width 0.18s, height 0.18s, background 0.18s, border 0.18s, border-radius 0.16s;
+  z-index: 9999;
+  will-change: transform, width, height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-cursor.ne-arrow {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,0.25);
+}
+.custom-cursor.ne-arrow::after {
+  content: '';
+  width: 18px; height: 18px;
+  display: block;
+  background: none;
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%);
+  background-image: url("data:image/svg+xml;utf8,<svg width='18' height='18' viewBox='0 0 18 18' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'><polyline points='5,13 13,13 13,5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.92;
+  filter: drop-shadow(0 2px 6px #fff5);
+}
+.custom-cursor.nav-circled {
+  width: var(--nav-hover-width, 90px);
+  height: var(--nav-hover-height, 38px);
+  border-radius: 24px;
+  border: 2.5px solid #fff;
+  background: rgba(255,255,255,0.09);
+  transition: width 0.18s, height 0.18s, border-radius 0.19s;
+}
+
+/* ================================
+   Android-style Ripple Effect
+   ================================ */
 .ripple {
   position: relative;
   overflow: hidden;
