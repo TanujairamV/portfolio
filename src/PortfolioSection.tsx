@@ -56,11 +56,8 @@ const PortfolioSection: React.FC = () => {
         {/* Skills */}
         <section id="skills" className="mb-16">
           <h2 className="text-2xl font-bold mb-4" style={{ ...gradientText, fontFamily: "'Montserrat', sans-serif" }}>Skills</h2>
-          <div className="flex flex-wrap gap-3">
-            {skills.map((skill: Skill) => (
-              <SkillChip skill={skill.name} key={skill.name} />
-            ))}
-          </div>
+          {/* FIX: Remove .map and render SkillChip only once, as it renders all skills itself */}
+          <SkillChip />
         </section>
 
         {/* Experience */}
