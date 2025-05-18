@@ -197,13 +197,69 @@ body {
     right: 0 !important;
   }
 }
-.nav-link:hover, .nav-link:focus {
-  background: linear-gradient(90deg,#fff1,#eaeaea22 65%);
-  color: #1e1e1e !important;
-  transform: scale(1.09);
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5em 1.2em;
+  border-radius: 1.3em;
+  transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+  background: transparent;
+}
+.nav-link:hover,
+.nav-link:focus {
+  background: rgba(255,255,255,0.13);
+  box-shadow: 0 2px 12px 0 #fff2, 0 0 0 2px #fff3;
+  color: #12121a !important;
+}
+.nav-link .nav-arrow {
+  opacity: 0;
+  transform: translateX(-4px) scale(0.85);
+  margin-left: 0.6em;
+  transition: opacity 0.16s, transform 0.19s;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-link:hover .nav-arrow,
+.nav-link:focus .nav-arrow {
+  opacity: 1;
+  transform: translateX(0) scale(1);
 }
 .nav-link .active {
   color: #b0b0b0 !important;
+}
+
+/* ================================
+   Social Icon Arrow Hover Effect
+   ================================ */
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.7rem;
+  transition: transform 0.13s, color 0.13s;
+  position: relative;
+  color: #fff;
+}
+.social-arrow {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%,-50%) rotate(45deg) scale(0);
+  opacity: 0;
+  transition: opacity 0.14s, transform 0.17s;
+  pointer-events: none;
+}
+.social-icon .icon-main {
+  transition: opacity 0.14s, transform 0.15s;
+}
+.social-icon:hover .icon-main,
+.social-icon:focus .icon-main {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.social-icon:hover .social-arrow,
+.social-icon:focus .social-arrow {
+  opacity: 1;
+  transform: translate(-50%,-50%) rotate(45deg) scale(1.13);
 }
 
 /* ================================
@@ -224,6 +280,11 @@ body {
   .now-listening-container .pop-visualizer {
     gap: 6px;
   }
+}
+
+/* Wide Box Visualizer (NowListening) */
+.box-wide-visualizer {
+  user-select: none;
 }
 
 /* Android-style Ripple Effect */
@@ -307,38 +368,31 @@ body {
   100% { transform: scale(1) translateY(0px); opacity: 0.22; }
 }
 
-/* Navbar link base style */
-.nav-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5em 1.2em;
-  border-radius: 1.3em;
-  transition: background 0.18s, box-shadow 0.18s, color 0.18s;
-  background: transparent;
+/* ================================
+   Equalizer Bars (for SoftEqualizer)
+   ================================ */
+.equalizer-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  height: 18px;
+  min-width: 22px;
 }
-
-/* On hover/focus: add box, background, and show arrow */
-.nav-link:hover,
-.nav-link:focus {
-  background: rgba(255,255,255,0.13);
-  box-shadow: 0 2px 12px 0 #fff2, 0 0 0 2px #fff3;
-  color: #12121a !important;
+.equalizer-bar {
+  width: 5px;
+  border-radius: 4px;
+  background: linear-gradient(90deg,#fff 80%,#b0b0b0 100%);
+  opacity: 0.8;
+  animation: eq-bar 1s infinite ease-in-out;
 }
-
-/* Arrow hidden by default, shown on hover/focus */
-.nav-link .nav-arrow {
-  opacity: 0;
-  transform: translateX(-4px) scale(0.85);
-  margin-left: 0.6em;
-  transition: opacity 0.16s, transform 0.19s;
-  display: inline-flex;
-  align-items: center;
-}
-
-/* Show arrow on hover */
-.nav-link:hover .nav-arrow,
-.nav-link:focus .nav-arrow {
-  opacity: 1;
-  transform: translateX(0) scale(1);
+.equalizer-bar.bar2 { animation-delay: 0.19s;}
+.equalizer-bar.bar3 { animation-delay: 0.33s;}
+@keyframes eq-bar {
+  0% { height: 8px;}
+  20% { height: 18px;}
+  40% { height: 8px;}
+  60% { height: 12px;}
+  80% { height: 16px;}
+  100% { height: 8px;}
 }
