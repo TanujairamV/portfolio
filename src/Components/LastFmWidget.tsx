@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchRecentTrack, LastFMTrack } from './lastFmApi';
 
-const LastFm = () => {
+const LastFmWidget = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -79,4 +79,4 @@ const LastFm = () => {
   );
 };
 
-export default LastFm;
+export default LastFmWidget;
