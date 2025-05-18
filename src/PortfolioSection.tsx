@@ -55,8 +55,8 @@ const PortfolioSection: React.FC = () => {
         <section id="skills" className="mb-16">
           <span>
             <span
-              className="text-2xl font-bold mb-4 block font-agoka"
-              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+              className="text-2xl font-bold mb-4 block font-hatton"
+              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Skills
             </span>
@@ -70,8 +70,8 @@ const PortfolioSection: React.FC = () => {
         <section id="experience" className="mb-16">
           <span>
             <span
-              className="text-2xl font-bold mb-4 block font-agoka"
-              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+              className="text-2xl font-bold mb-4 block font-hatton"
+              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Experience
             </span>
@@ -79,12 +79,12 @@ const PortfolioSection: React.FC = () => {
           {experiences.map((exp: Experience) => (
             <span key={exp.id} className="block mb-6">
               <span
-                className="text-xl font-semibold font-carlo"
+                className="text-xl font-semibold font-caviar"
                 style={subtleGradientText}
               >
                 {exp.title} @ {exp.company}
               </span>
-              <span className="block text-gray-400 text-sm mb-1 font-carlo">
+              <span className="block text-gray-400 text-sm mb-1 font-caviar">
                 {exp.start} — {exp.end || "Present"}
               </span>
               <ul className="list-disc ml-5" style={subtleGradientText}>
@@ -100,8 +100,8 @@ const PortfolioSection: React.FC = () => {
         <section id="education" className="mb-16">
           <span>
             <span
-              className="text-2xl font-bold mb-4 block font-agoka"
-              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+              className="text-2xl font-bold mb-4 block font-hatton"
+              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Education
             </span>
@@ -109,15 +109,15 @@ const PortfolioSection: React.FC = () => {
           {education.map((edu: Education) => (
             <span key={edu.id} className="block mb-6">
               <span
-                className="text-lg font-semibold font-carlo"
+                className="text-lg font-semibold font-caviar"
                 style={subtleGradientText}
               >
                 {edu.degree} - {edu.school}
               </span>
-              <span className="block text-gray-400 text-sm mb-1 font-carlo">
+              <span className="block text-gray-400 text-sm mb-1 font-caviar">
                 {edu.start} — {edu.end}
               </span>
-              <span style={subtleGradientText} className="font-carlo">{edu.details}</span>
+              <span style={subtleGradientText} className="font-caviar">{edu.details}</span>
             </span>
           ))}
         </section>
@@ -126,8 +126,8 @@ const PortfolioSection: React.FC = () => {
         <section id="certifications" className="mb-16">
           <span>
             <span
-              className="text-2xl font-bold mb-4 block font-agoka"
-              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+              className="text-2xl font-bold mb-4 block font-hatton"
+              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Certifications
             </span>
@@ -139,12 +139,12 @@ const PortfolioSection: React.FC = () => {
                   href={cert.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline font-carlo"
+                  className="underline font-caviar"
                   style={gradientText}
                 >
                   {cert.name}
                 </a>
-                <span className="text-gray-400 ml-2 font-carlo">
+                <span className="text-gray-400 ml-2 font-caviar">
                   ({cert.issuer}, {cert.date})
                 </span>
               </span>
@@ -156,8 +156,8 @@ const PortfolioSection: React.FC = () => {
         <section id="projects" className="mb-16">
           <span>
             <span
-              className="text-2xl font-bold mb-4 block font-agoka"
-              style={{ ...gradientText, fontFamily: "'Agoka', serif" }}
+              className="text-2xl font-bold mb-4 block font-hatton"
+              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
             >
               Projects
             </span>
@@ -179,13 +179,13 @@ const PortfolioSection: React.FC = () => {
           {projects.length > 4 && (
             <div className="flex justify-center mt-6">
               <button
-                className="px-6 py-2 rounded-xl font-semibold shadow font-carlo"
+                className="px-6 py-2 rounded-xl font-semibold shadow font-caviar"
                 style={{
                   background: "linear-gradient(90deg,#fff,#b0b0b0 90%)",
                   color: "#111",
                   boxShadow: "0 2px 10px #b0b0b044",
                   fontWeight: 600,
-                  fontFamily: "'Carlo',sans-serif",
+                  fontFamily: "'Caviar Dreams',sans-serif",
                   transition: "background 0.15s, color 0.15s"
                 }}
                 onClick={() => setShowAllProjects(v => !v)}
