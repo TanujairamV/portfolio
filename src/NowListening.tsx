@@ -24,7 +24,13 @@ const fallbackTrack: LastFMTrack = {
 };
 
 const SoftEqualizer: React.FC = () => (
-  <div className="equalizer-bars" aria-hidden="true">
+  <div className="equalizer-bars" aria-hidden="true" style={{
+    marginLeft: 12,
+    minWidth: 22,
+    display: "flex",
+    alignItems: "flex-end",
+    height: 18
+  }}>
     <div className="equalizer-bar bar1" />
     <div className="equalizer-bar bar2" />
     <div className="equalizer-bar bar3" />
@@ -126,7 +132,7 @@ const NowListening: React.FC = () => {
     <div
       className={`now-listening-container relative w-full mx-auto mb-8 ${mobileView ? "mobile" : ""}`}
       style={{
-        maxWidth: mobileView ? "100vw" : "410px",
+        maxWidth: mobileView ? "100vw" : "460px",
         borderRadius: mobileView ? "1.15rem" : "2rem",
         overflow: "hidden",
         boxShadow: mobileView
@@ -175,23 +181,35 @@ const NowListening: React.FC = () => {
       />
       {/* Main content */}
       <div
-        className={`relative z-10 flex items-center ${mobileView ? "gap-2 px-2.5 py-2.5" : "gap-5 px-7 py-5"}`}
+        className={`relative z-10 flex items-center ${mobileView ? "gap-2 px-2.5 py-2.5" : "gap-7 px-8 py-6"}`}
         style={{
           background: "rgba(255,255,255,0.07)",
           borderRadius: mobileView ? "1.15rem" : "2rem",
           border: "1.5px solid rgba(180,180,180,0.16)",
-          minHeight: mobileView ? "70px" : "104px",
+          minHeight: mobileView ? "80px" : "120px",
           boxShadow: "0 1px 8px 0 rgba(100,100,100,0.08)",
           transition: "background 0.2s, box-shadow 0.2s"
         }}
       >
+        {/* Music Icon left */}
+        <span style={{
+          color: "#fff",
+          fontSize: mobileView ? 22 : 32,
+          marginRight: mobileView ? 7 : 15,
+          filter: "drop-shadow(0 2px 6px #fff5)",
+          opacity: 0.92,
+          flexShrink: 0
+        }}>
+          <FaMusic />
+        </span>
+        {/* Album art */}
         <div
           style={{
             position: "relative",
             flexShrink: 0,
-            width: mobileView ? "50px" : "86px",
-            height: mobileView ? "50px" : "86px",
-            borderRadius: mobileView ? "0.9rem" : "1.3rem",
+            width: mobileView ? "62px" : "98px",
+            height: mobileView ? "62px" : "98px",
+            borderRadius: mobileView ? "1.15rem" : "1.9rem",
             overflow: "hidden",
             transition: "box-shadow .19s, transform .19s"
           }}
@@ -204,7 +222,7 @@ const NowListening: React.FC = () => {
             style={{
               width: "100%",
               height: "100%",
-              borderRadius: mobileView ? "0.9rem" : "1.3rem",
+              borderRadius: mobileView ? "1.15rem" : "1.9rem",
               border: mobileView ? "1.1px solid rgba(225,225,225,0.11)" : "2px solid rgba(225,225,225,0.16)",
               boxShadow: "0 3px 11px 0 rgba(80,80,80,0.09), 0 1px 7px #fff2",
               opacity: imgLoaded ? 1 : 0,
@@ -218,15 +236,16 @@ const NowListening: React.FC = () => {
             <div style={{
               width: "100%",
               height: "100%",
-              borderRadius: mobileView ? "0.9rem" : "1.3rem",
+              borderRadius: mobileView ? "1.15rem" : "1.9rem",
               background: "linear-gradient(135deg,#e8e8e8 10%,#bbb 90%)",
               position: "absolute", left: 0, top: 0
             }} />
           )}
         </div>
-        <div className="flex flex-col min-w-0" style={{ flex: 1, minWidth: 0 }}>
+        {/* Info block */}
+        <div className="flex flex-col min-w-0 flex-1" style={{ marginLeft: mobileView ? 10 : 22 }}>
           <span
-            className="text-[0.72rem] uppercase tracking-widest mb-1"
+            className="text-[0.75rem] uppercase tracking-widest mb-1"
             style={{
               background: "linear-gradient(90deg, #fff 55%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -237,41 +256,29 @@ const NowListening: React.FC = () => {
               opacity: 0.91
             }}
           >
-            Now Playing
+            Now Listening
           </span>
-          <div className="flex items-center gap-2">
-            <div
-              className="truncate font-bold text-[1.02rem] md:text-[1.13rem] max-w-full relative"
+          <div className="flex items-center w-full" style={{ minWidth: 0 }}>
+            <span
+              className="truncate font-bold text-[1.15rem] md:text-[1.24rem] max-w-full relative"
               style={{
                 background: "linear-gradient(90deg, #fff 75%, #b0b0b0 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
                 fontWeight: 700,
-                lineHeight: 1.14,
+                lineHeight: 1.17,
                 maxWidth: "100%",
                 letterSpacing: "0.01em",
                 overflow: "hidden"
               }}
             >
-              <span
-                className="block"
-                style={{
-                  width: "fit-content",
-                  minWidth: 0,
-                  display: "inline-block",
-                  background: "linear-gradient(90deg,#fff 80%,#b0b0b0 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent"
-                }}
-              >
-                {t.name}
-              </span>
-            </div>
+              {t.name}
+            </span>
             <SoftEqualizer />
           </div>
           <span
-            className="truncate text-[0.93rem] md:text-[1.01rem] font-semibold mt-2"
+            className="truncate text-[1.03rem] md:text-[1.11rem] font-semibold mt-1"
             style={{
               background: "linear-gradient(90deg, #fff 45%, #b0b0b0 100%)",
               WebkitBackgroundClip: "text",
@@ -285,19 +292,6 @@ const NowListening: React.FC = () => {
             {t.artist}
           </span>
         </div>
-        {!mobileView && (
-          <div style={{ marginLeft: 13, display: "flex", alignItems: "center" }}>
-            <FaMusic
-              size={28}
-              style={{
-                background: "linear-gradient(90deg,#fff 85%, #b0b0b0 100%)",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-                filter: "drop-shadow(0 2px 10px #fff5)"
-              }}
-            />
-          </div>
-        )}
       </div>
       {/* Horizontal popping visualizer */}
       <HorizontalPopVisualizer mobile={mobileView} />
