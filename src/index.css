@@ -44,14 +44,10 @@
   font-display: swap;
 }
 
-/* Tailwind base, components, utilities (if using Tailwind) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ================================
-   Root Custom Properties
-   ================================ */
 :root {
   --accent-color: #ff6b6b;
   --foreground-color: #ffffff;
@@ -59,9 +55,6 @@
   --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-/* ================================
-   Global Styles
-   ================================ */
 body {
   font-family: 'Space Grotesk', 'Poppins', 'Caviar Dreams', 'Hatton', 'Unica One', 'Agoka', 'Carlo', 'Dream Avenue', sans-serif;
   background: #15151e;
@@ -70,212 +63,133 @@ body {
 }
 
 /* ================================
-   Hide Cursor & Custom Cursors on Mobile
+   Custom Cursor Styles
    ================================ */
-@media (max-width: 767px), (pointer: coarse), (hover: none) {
-  html, body, *, *:before, *:after {
-    cursor: none !important;
-  }
-  /* Hide custom cursor DOM elements */
-  .custom-cursor,
-  #custom-cursor,
-  #animated-cursor,
-  [class*="cursor"],
-  [id*="cursor"],
-  [data-cursor] {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
-  }
-}
-
-/* ================================
-   Typography Utility Classes
-   ================================ */
-.hero-heading {
-  font-size: 4rem;
-  font-weight: 700;
-  font-family: 'Hatton', 'Space Grotesk', 'Poppins', 'Caviar Dreams', serif;
-}
-
-.text-subheading,
-.placeholder-subheading::placeholder {
-  font-size: 1.25rem;
-  opacity: 0.8;
-  font-family: 'Caviar Dreams', 'Space Grotesk', 'Poppins', sans-serif;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.text-dream {
-  font-family: 'Dream Avenue', cursive;
-  letter-spacing: 0.04em;
-}
-
-.text-accent {
-  color: var(--accent-color);
-}
-
-/* ================================
-   Button Styles
-   ================================ */
-.material-btn {
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: var(--foreground-color);
-  font-family: 'Poppins', 'Carlo', 'Caviar Dreams', sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.material-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* ================================
-   Card Styles
-   ================================ */
-.material-card,
-.profile-card {
-  padding: 24px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-}
-
-/* ================================
-   NowListening Marquee & Responsive
-   ================================ */
-.marquee-scroll {
-  animation: marquee-artist 7s linear infinite;
-  white-space: nowrap;
-  display: inline-block;
-}
-@keyframes marquee-artist {
-  0% { transform: translateX(0); }
-  10% { transform: translateX(0); }
-  90% { transform: translateX(calc(-100% + 75vw)); }
-  100% { transform: translateX(calc(-100% + 75vw)); }
-}
-
-@media (max-width: 767px) {
-  .now-listening-container {
-    max-width: 99vw !important;
-    margin-bottom: 1rem !important;
-    border-radius: 1.15rem !important;
-  }
-  .now-listening-container .thumbnail-wrapper {
-    min-width: 49px !important;
-    min-height: 49px !important;
-  }
-}
-
-.thumbnail-wrapper:hover .thumbnail-img,
-.thumbnail-wrapper:focus .thumbnail-img {
-  transform: scale(1.06);
-  z-index: 3;
-  box-shadow: 0 7px 31px #fff5, 0 2px 10px #9997;
-}
-.thumbnail-img {
-  will-change: transform;
-}
-
-/* ================================
-   NavBar Responsive & Shape
-   ================================ */
-@media (max-width: 767px) {
-  #navbar {
-    min-width: 0 !important;
-    max-width: 97vw !important;
-    width: auto !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    padding: 0.25rem 0.5rem !important;
-    border-radius: 1.5rem !important;
-  }
-  #navbar ul {
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-  }
-}
-.nav-link:hover, .nav-link:focus {
-  background: linear-gradient(90deg,#fff1,#eaeaea22 65%);
-  color: #1e1e1e !important;
-  transform: scale(1.09);
-}
-.nav-link .active {
-  color: #b0b0b0 !important;
-}
-
-/* ================================
-   3-Line Pop Visualizer (NowListening)
-   ================================ */
-.now-listening-container .pop-visualizer {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: flex-end;
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 2;
+#custom-cursor {
+  position: fixed;
+  left: 0; top: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.08);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%) scale(1);
+  transition: border 0.22s, background 0.22s, width 0.18s, height 0.18s, transform 0.15s cubic-bezier(.6,.2,.1,1.2);
+  mix-blend-mode: lighten;
+  box-shadow: 0 2px 12px 0 rgba(255,255,255,0.07);
+  backdrop-filter: blur(2.5px);
+  will-change: transform, border, background, width, height;
   pointer-events: none;
 }
-@media (max-width: 767px) {
-  .now-listening-container .pop-visualizer {
-    gap: 6px;
+#custom-cursor.cursor-hover {
+  border: 2.5px solid #fff;
+  background: rgba(255,255,255,0.18);
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%) scale(1.15);
+}
+#custom-cursor .arrow45 {
+  display: none;
+}
+#custom-cursor.cursor-hover .arrow45 {
+  display: block;
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 21px; height: 21px;
+  transform: translate(-50%,-50%) rotate(45deg);
+  pointer-events: none;
+}
+#custom-cursor .arrow45 svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 8px #fff5);
+  opacity: 0.87;
+  stroke: #fff;
+}
+
+@media (max-width: 767px), (pointer: coarse), (hover: none) {
+  #custom-cursor {
+    display: none !important;
   }
 }
 
-/* Android-style Ripple Effect */
+/* Ripple effect for .ripple (NavBar, buttons, etc) */
 .ripple {
   position: relative;
   overflow: hidden;
 }
-
-.ripple:after {
-  content: '';
-  position: absolute;
-  display: block;
-  border-radius: 50%;
-  pointer-events: none;
-  width: 100px;
-  height: 100px;
-  top: 50%;
-  left: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(1);
-  transition: opacity 0.4s, transform 0.4s;
-  background: rgba(255,255,255,0.25);
-  z-index: 10;
-}
-
-.ripple:active:after {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(0.7);
-  transition: 0s;
-}
-
-/* Ripple effect for NowListening background */
-.nowlistening-ripple {
+.ripple-span {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255,255,255,0.19);
   transform: scale(0);
-  animation: nowlistening-ripple-animate 0.7s cubic-bezier(.41,1.69,.41,1.01);
+  animation: ripple-animate 0.5s linear;
+  background-color: rgba(255,255,255,0.25);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
-@keyframes nowlistening-ripple-animate {
+@keyframes ripple-animate {
   to {
-    transform: scale(2.8);
+    transform: scale(2.2);
     opacity: 0;
   }
 }
+
+/* ================================
+   NowListening Wave Ripple
+   ================================ */
+.nowlistening-wave-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 70%, transparent 100%);
+  opacity: 0.9;
+  animation: nowlistening-wave-ripple-anim 2.7s cubic-bezier(.41,1.69,.41,1.01) infinite;
+}
+
+@keyframes nowlistening-wave-ripple-anim {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.8;
+  }
+  80% {
+    transform: scale(1.7);
+    opacity: 0.13;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Soft 3-bar equaliser */
+.equalizer-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  height: 18px;
+  width: 32px;
+}
+.equalizer-bar {
+  width: 5px;
+  border-radius: 4px;
+  background: linear-gradient(90deg,#fff 80%,#b0b0b0 100%);
+  opacity: 0.8;
+  animation: eq-bar 1s infinite ease-in-out;
+}
+.equalizer-bar.bar2 { animation-delay: 0.19s; }
+.equalizer-bar.bar3 { animation-delay: 0.33s; }
+
+@keyframes eq-bar {
+  0% { height: 8px;}
+  20% { height: 18px;}
+  40% { height: 8px;}
+  60% { height: 12px;}
+  80% { height: 16px;}
+  100% { height: 8px;}
+}
+
+/* ...rest of your CSS... */
