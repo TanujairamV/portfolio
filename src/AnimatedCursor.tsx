@@ -55,7 +55,7 @@ const AnimatedCursor: React.FC = () => {
         setHovering(true);
       }
     };
-    const mouseOut = (e: MouseEvent) => {
+    const mouseOut = () => {
       setHovering(false);
     };
 
