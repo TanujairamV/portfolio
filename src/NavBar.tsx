@@ -47,9 +47,6 @@ const NavBar: React.FC = () => {
     }, 500);
   };
 
-  // Optional: If you have a custom cursor and want to hide it on nav-link hover,
-  // manage its state in context or via a global class, not with addEventListener here.
-
   return (
     <nav
       id="navbar"
@@ -138,7 +135,6 @@ const NavBar: React.FC = () => {
                   {link.label}
                 </span>
               )}
-              {/* NE Arrow for desktop only, visible on hover */}
               {!mobile && (
                 <span className="nav-arrow" style={{ marginLeft: "0.26em", display: "inline-flex", alignItems: "center" }}>
                   <svg width="17" height="17" viewBox="0 0 17 17">
@@ -150,68 +146,7 @@ const NavBar: React.FC = () => {
           </li>
         ))}
       </ul>
-      <style>{`
-        .nav-link:hover, .nav-link:focus {
-          background: linear-gradient(90deg,#fff1,#eaeaea22 80%);
-          color: #232323 !important;
-          transform: scale(1.08);
-        }
-        .nav-link .active {
-          color: #b0b0b0 !important;
-        }
-        .nav-link .nav-arrow {
-          opacity: 0;
-          transform: translateX(-4px) scale(0.85);
-          margin-left: 0.35em;
-          transition: opacity 0.16s, transform 0.19s;
-          display: inline-flex;
-          align-items: center;
-        }
-        .nav-link:hover .nav-arrow,
-        .nav-link:focus .nav-arrow {
-          opacity: 1;
-          transform: translateX(0) scale(1);
-        }
-        @media (max-width: 767px) {
-          #navbar {
-            min-width: 0 !important;
-            max-width: 97vw !important;
-            width: auto !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            padding: 0.13rem 0.3rem !important;
-            border-radius: 1.5rem !important;
-          }
-          #navbar ul {
-            width: 100% !important;
-            left: 0 !important;
-            right: 0 !important;
-          }
-          html, body, * {
-            cursor: none !important;
-          }
-        }
-        /* Ripple effect for NavBar links */
-        .ripple {
-          position: relative;
-          overflow: hidden;
-        }
-        .ripple-span {
-          position: absolute;
-          border-radius: 50%;
-          transform: scale(0);
-          animation: ripple-animate 0.5s linear;
-          background-color: rgba(255,255,255,0.25);
-          pointer-events: none;
-          z-index: 2;
-        }
-        @keyframes ripple-animate {
-          to {
-            transform: scale(2.2);
-            opacity: 0;
-          }
-        }
-      `}</style>
+      {/* Styles for ripple and nav-arrow are in index.css */}
     </nav>
   );
 };
