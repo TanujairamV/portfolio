@@ -1,5 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Poppins:wght@400;500;700&display=swap');
 
+/* ================================
+   Custom Self-hosted Fonts
+   ================================ */
+@font-face {
+  font-family: 'Agoka';
+  src: url('/Agoka.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Carlo';
+  src: url('/Carlo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dream Avenue';
+  src: url('/Dream Avenue.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Tailwind base, components, utilities (if using Tailwind) */
 @tailwind base;
 @tailwind components;
@@ -19,7 +44,7 @@
    Global Styles
    ================================ */
 body {
-  font-family: 'Space Grotesk', 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', 'Poppins', 'Agoka', 'Carlo', 'Dream Avenue', sans-serif;
   background: #15151e;
   color: #fff;
   min-height: 100vh;
@@ -52,15 +77,20 @@ body {
 .hero-heading {
   font-size: 4rem;
   font-weight: 700;
-  font-family: 'Space Grotesk', 'Poppins', sans-serif;
+  font-family: 'Agoka', 'Space Grotesk', 'Poppins', sans-serif;
 }
 
 .text-subheading,
 .placeholder-subheading::placeholder {
   font-size: 1.25rem;
   opacity: 0.8;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Carlo', 'Space Grotesk', sans-serif;
   color: rgba(255, 255, 255, 0.5);
+}
+
+.text-dream {
+  font-family: 'Dream Avenue', cursive;
+  letter-spacing: 0.04em;
 }
 
 .text-accent {
@@ -76,7 +106,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   color: var(--foreground-color);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', 'Carlo', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   backdrop-filter: blur(10px);
