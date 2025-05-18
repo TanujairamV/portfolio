@@ -19,6 +19,7 @@ import {
   Project
 } from "./data";
 import { useFadeInOnScroll } from "./useFadeInOnScroll";
+import "./Styles.css"; // updated to use Styles.css
 
 // Gradient text style helpers
 const gradientText = {
@@ -33,7 +34,7 @@ const subtleGradientText = {
   WebkitTextFillColor: "transparent"
 };
 
-const PortfolioSection: React.FC = () => {
+const Portfolio: React.FC = () => {
   const [showAllProjects, setShowAllProjects] = useState(false);
 
   // Fade in hooks for sections
@@ -214,4 +215,4 @@ const PortfolioSection: React.FC = () => {
   );
 };
 
-export default PortfolioSection;
+export default Portfolio;
