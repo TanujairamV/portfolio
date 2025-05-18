@@ -38,29 +38,20 @@ const Hero: React.FC = () => (
   >
     {/* Image left */}
     <div className="flex-shrink-0 flex justify-center md:justify-start items-center w-full md:w-auto">
-      <div
-        className="flex items-center justify-center rounded-2xl shadow-xl bg-[rgba(255,255,255,0.07)]"
+      <img
+        src="pfp.png"
+        alt="Tanujairam"
+        className="rounded-2xl shadow-xl object-cover object-center"
         style={{
-          width: 260,
-          height: 260,
-          maxWidth: 320,
-          maxHeight: 320,
-          minWidth: 200,
-          minHeight: 200
+          width: 340,
+          height: 340,
+          maxWidth: 400,
+          maxHeight: 400,
+          minWidth: 260,
+          minHeight: 260,
+          display: "block"
         }}
-      >
-        {/* For GitHub Pages project site, use relative path */}
-        <img
-          src="pfp.png"
-          alt="Tanujairam"
-          className="rounded-2xl object-cover object-center"
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "block"
-          }}
-        />
-      </div>
+      />
     </div>
     {/* Text & socials right */}
     <div className="flex flex-col items-center md:items-start w-full max-w-2xl">
