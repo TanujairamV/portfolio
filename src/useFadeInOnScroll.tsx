@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 
-/**
- * React hook to add fade-in effect on scroll for any element.
- */
+// This hook adds the 'visible' class to the ref's element when it enters the viewport
 export function useFadeInOnScroll<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
 
@@ -12,21 +10,16 @@ export function useFadeInOnScroll<T extends HTMLElement>() {
 
     function handle(entries: IntersectionObserverEntry[]) {
       entries.forEach(entry => {
-        const el = entry.target as HTMLElement;
         if (entry.isIntersecting) {
-          el.classList.add("visible");
-        } else {
-          el.classList.remove("visible");
+          entry.target.classList.add("visible");
         }
       });
     }
 
-    const observer = new window.IntersectionObserver(handle, {
-      threshold: 0.12,
-    });
-
+    const observer = new window.IntersectionObserver(handle, { threshold: 0.13 });
     observer.observe(node);
 
+    // Clean up
     return () => observer.disconnect();
   }, []);
 
