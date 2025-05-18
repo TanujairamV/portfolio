@@ -44,6 +44,9 @@ export interface Project {
   url?: string;
 }
 
+// ---- REMOVE EXAMPLES BELOW IF YOU ARE REPLACING WITH REAL DATA ELSEWHERE ----
+
+// Example socials (replace with real ones if you haven't already)
 export const socials: Socials = {
   github: 'https://github.com/exampleuser',
   linkedin: 'https://linkedin.com/in/exampleuser',
@@ -52,6 +55,7 @@ export const socials: Socials = {
   location: 'Sample City, Country',
 };
 
+// Example skills (remove if your Skills section is hardcoded or imported from elsewhere)
 export const skills: Skill[] = [
   { name: 'JavaScript' },
   { name: 'TypeScript' },
@@ -65,6 +69,7 @@ export const skills: Skill[] = [
   { name: 'Git' },
 ];
 
+// Example experiences (remove if you have a real experiences array)
 export const experiences: Experience[] = [
   {
     id: 'exp1',
@@ -90,6 +95,7 @@ export const experiences: Experience[] = [
   },
 ];
 
+// Example education (remove if you have a real education array)
 export const education: Education[] = [
   {
     id: 'edu1',
@@ -109,6 +115,7 @@ export const education: Education[] = [
   },
 ];
 
+// Example certifications (remove if you have real certifications)
 export const certifications: Certification[] = [
   {
     id: 'cert1',
@@ -126,6 +133,7 @@ export const certifications: Certification[] = [
   },
 ];
 
+// Example projects (remove if you have a real projects array)
 export const projects: Project[] = [
   {
     id: 'proj1',
