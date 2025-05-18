@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
+import { useFadeInOnScroll } from "./utils/useFadeInOnScroll";
 
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
@@ -18,6 +19,7 @@ const isMobile = () =>
 
 const NavBar: React.FC = () => {
   const [mobile, setMobile] = useState(isMobile());
+  const navRef = useFadeInOnScroll<HTMLDivElement>();
 
   useEffect(() => {
     const handleResize = () => setMobile(isMobile());
@@ -49,8 +51,9 @@ const NavBar: React.FC = () => {
 
   return (
     <nav
+      ref={navRef}
       id="navbar"
-      className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300"
+      className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300 fade-in"
       style={{
         transform: "translateX(-50%)",
         padding: mobile ? "0.18rem 0.5rem" : "0.55rem 2.2rem",
@@ -72,10 +75,11 @@ const NavBar: React.FC = () => {
           width: "100%"
         }}
       >
-        {NAV_LINKS.map((link) => (
+        {NAV_LINKS.map((link, i) => (
           <li
             key={link.to}
-            className={`px-1.5 md:px-3 py-1 nav-link ripple`}
+            className={`px-1.5 md:px-3 py-1 nav-link ripple fade-in`}
+            data-fade-delay={i + 1}
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
               fontWeight: 600,
@@ -141,7 +145,6 @@ const NavBar: React.FC = () => {
           </li>
         ))}
       </ul>
-      {/* Styles for ripple and nav-arrow are in index.css */}
     </nav>
   );
 };
