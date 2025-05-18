@@ -48,6 +48,36 @@ const NavBar: React.FC = () => {
     }, 500);
   };
 
+  // Hide custom cursor when hovering nav links and show NE arrow at end of text
+  useEffect(() => {
+    const cursor = document.querySelector('.custom-cursor') as HTMLElement | null;
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function handleNavHover(e: MouseEvent) {
+      if (cursor) {
+        cursor.style.opacity = "0";
+        cursor.style.visibility = "hidden";
+      }
+    }
+    function handleNavOut(e: MouseEvent) {
+      if (cursor) {
+        cursor.style.opacity = "1";
+        cursor.style.visibility = "visible";
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener("mouseenter", handleNavHover);
+      link.addEventListener("mouseleave", handleNavOut);
+    });
+    return () => {
+      navLinks.forEach(link => {
+        link.removeEventListener("mouseenter", handleNavHover);
+        link.removeEventListener("mouseleave", handleNavOut);
+      });
+    }
+  }, []);
+
   return (
     <nav
       id="navbar"
@@ -100,6 +130,7 @@ const NavBar: React.FC = () => {
               overflow: "hidden"
             }}
             onClick={handleRipple}
+            tabIndex={0}
           >
             <Link
               to={link.to}
@@ -135,6 +166,14 @@ const NavBar: React.FC = () => {
                   {link.label}
                 </span>
               )}
+              {/* NE Arrow for desktop only, visible on hover */}
+              {!mobile && (
+                <span className="nav-arrow" style={{ marginLeft: "0.26em", display: "inline-flex", alignItems: "center" }}>
+                  <svg width="17" height="17" viewBox="0 0 17 17">
+                    <polyline points="5,12 12,12 12,5" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              )}
             </Link>
           </li>
         ))}
@@ -147,6 +186,19 @@ const NavBar: React.FC = () => {
         }
         .nav-link .active {
           color: #b0b0b0 !important;
+        }
+        .nav-link .nav-arrow {
+          opacity: 0;
+          transform: translateX(-4px) scale(0.85);
+          margin-left: 0.35em;
+          transition: opacity 0.16s, transform 0.19s;
+          display: inline-flex;
+          align-items: center;
+        }
+        .nav-link:hover .nav-arrow,
+        .nav-link:focus .nav-arrow {
+          opacity: 1;
+          transform: translateX(0) scale(1);
         }
         @media (max-width: 767px) {
           #navbar {
