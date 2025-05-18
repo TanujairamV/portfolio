@@ -18,7 +18,7 @@ const Arrow45 = () => (
   </svg>
 );
 
-const AnimatedCursor: React.FC = () => {
+const Cursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(true);
   const [hovering, setHovering] = useState(false);
@@ -142,4 +142,4 @@ const AnimatedCursor: React.FC = () => {
   );
 };
 
-export default AnimatedCursor;
+export default Cursor;
