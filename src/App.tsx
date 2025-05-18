@@ -1,8 +1,6 @@
 import React from "react";
-import PortfolioSection from "./PortfolioSection";
+import Portfolio from "./Portfolio";
 
-const App: React.FC = () => {
-  return <PortfolioSection />;
-};
+const App: React.FC = () => <Portfolio />;
 
 export default App;
