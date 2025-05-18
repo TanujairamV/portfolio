@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
 
-// List of nav items and icons for desktop and mobile
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
   { to: "skills", label: "Skills", icon: <MdBuild size={22} /> },
@@ -48,35 +47,8 @@ const NavBar: React.FC = () => {
     }, 500);
   };
 
-  // Hide custom cursor when hovering nav links and show NE arrow at end of text
-  useEffect(() => {
-    const cursor = document.querySelector('.custom-cursor') as HTMLElement | null;
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    function handleNavHover(e: MouseEvent) {
-      if (cursor) {
-        cursor.style.opacity = "0";
-        cursor.style.visibility = "hidden";
-      }
-    }
-    function handleNavOut(e: MouseEvent) {
-      if (cursor) {
-        cursor.style.opacity = "1";
-        cursor.style.visibility = "visible";
-      }
-    }
-
-    navLinks.forEach(link => {
-      link.addEventListener("mouseenter", handleNavHover);
-      link.addEventListener("mouseleave", handleNavOut);
-    });
-    return () => {
-      navLinks.forEach(link => {
-        link.removeEventListener("mouseenter", handleNavHover);
-        link.removeEventListener("mouseleave", handleNavOut);
-      });
-    }
-  }, []);
+  // Optional: If you have a custom cursor and want to hide it on nav-link hover,
+  // manage its state in context or via a global class, not with addEventListener here.
 
   return (
     <nav
