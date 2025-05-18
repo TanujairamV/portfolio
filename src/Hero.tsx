@@ -38,10 +38,20 @@ const Hero: React.FC = () => (
   >
     {/* Image left */}
     <div className="flex-shrink-0 flex justify-center md:justify-start items-center w-full md:w-auto">
-      <div className="flex items-center justify-center rounded-2xl shadow-xl bg-[rgba(255,255,255,0.07)]"
-        style={{ width: 260, height: 260, maxWidth: 320, maxHeight: 320, minWidth: 200, minHeight: 200 }}>
+      <div
+        className="flex items-center justify-center rounded-2xl shadow-xl bg-[rgba(255,255,255,0.07)]"
+        style={{
+          width: 260,
+          height: 260,
+          maxWidth: 320,
+          maxHeight: 320,
+          minWidth: 200,
+          minHeight: 200
+        }}
+      >
+        {/* For GitHub Pages project site, use relative path */}
         <img
-          src="/pfp.png"
+          src="pfp.png"
           alt="Tanujairam"
           className="rounded-2xl object-cover object-center"
           style={{
@@ -56,7 +66,11 @@ const Hero: React.FC = () => (
     <div className="flex flex-col items-center md:items-start w-full max-w-2xl">
       <h1
         className="text-4xl md:text-5xl font-bold mb-2 flex flex-wrap items-center"
-        style={{ fontFamily: "'Space Grotesk', 'Poppins', sans-serif", fontWeight: 700, lineHeight: 1.14 }}
+        style={{
+          fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
+          fontWeight: 700,
+          lineHeight: 1.14
+        }}
       >
         <span style={gradientStyle}>hey</span>
         <span style={{ fontSize: "1.5em", margin: "0 0.18em" }}>👋</span>
@@ -64,7 +78,12 @@ const Hero: React.FC = () => (
       </h1>
       <div
         className="mt-2 mb-5 text-lg md:text-xl font-medium text-center md:text-left"
-        style={{ ...gradientStyle, lineHeight: 1.5, fontWeight: 500, maxWidth: 480 }}
+        style={{
+          ...gradientStyle,
+          lineHeight: 1.5,
+          fontWeight: 500,
+          maxWidth: 480
+        }}
       >
         {aboutText}
       </div>
