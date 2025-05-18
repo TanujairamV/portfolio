@@ -640,3 +640,48 @@ body {
   opacity: 1;
   transform: translate(-50%,-50%) rotate(45deg) scale(1.13);
 }
+/* ... (keep all your previous styles above!) ... */
+
+/* ================
+   Appearing Effect
+   ================ */
+
+/* Fade+slide for sections, nav, cards, hero, etc. */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in,
+  .fade-in-up,
+  .fade-in-down,
+  .fade-in-left,
+  .fade-in-right,
+  .fade-in-scale {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.72s cubic-bezier(.55,.12,.35,.99),
+      transform 0.72s cubic-bezier(.55,.12,.35,.99)
+    ;
+    will-change: opacity, transform;
+  }
+  .fade-in.visible,
+  .fade-in-up.visible,
+  .fade-in-down.visible,
+  .fade-in-left.visible,
+  .fade-in-right.visible,
+  .fade-in-scale.visible {
+    opacity: 1;
+    transform: none;
+  }
+  .fade-in-down { transform: translateY(-24px);}
+  .fade-in-left { transform: translateX(-32px);}
+  .fade-in-right { transform: translateX(32px);}
+  .fade-in-scale { transform: scale(0.94);}
+  .fade-in-scale.visible { transform: scale(1);}
+}
+
+/* Recommended: add delay for staggered children */
+[data-fade-delay="1"] { transition-delay: 0.13s; }
+[data-fade-delay="2"] { transition-delay: 0.26s; }
+[data-fade-delay="3"] { transition-delay: 0.39s; }
+[data-fade-delay="4"] { transition-delay: 0.52s; }
+[data-fade-delay="5"] { transition-delay: 0.65s; }
+/* ...add more if needed */
