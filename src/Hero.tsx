@@ -75,7 +75,7 @@ const Hero: React.FC = () => (
       >
         {aboutText}
       </span>
-      {/* Social Icons - below about text, gradient style, NE arrow custom cursor on hover */}
+      {/* Social Icons - below about text, colored with drop shadow, NE arrow custom cursor on hover */}
       <span className="flex flex-row mt-2 flex-wrap gap-5">
         {socialIcons.map((social) => (
           <a
@@ -85,13 +85,9 @@ const Hero: React.FC = () => (
             rel="noopener noreferrer"
             aria-label={social.label}
             style={{
-              background: "linear-gradient(90deg, #ff6b6b 40%, #fff 80%, #888 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              color: "transparent",
+              color: "#ff6b6b",
               fontSize: "2rem",
-              transition: "transform 0.14s",
+              transition: "transform 0.14s, color 0.14s",
               position: "relative",
               zIndex: 1,
               cursor: "none"
