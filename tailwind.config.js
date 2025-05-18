@@ -7,12 +7,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        agoka: ['Agoka', 'serif'],
+        carlo: ['Carlo', 'sans-serif'],
+        dream: ['Dream Avenue', 'cursive'],
         inter: ['Inter', 'sans-serif'],
         'space-grotesk': ['Space Grotesk', 'sans-serif'],
         'cabinet-grotesk': ['Cabinet Grotesk', 'sans-serif'],
         ranade: ['Ranade', 'sans-serif'],
-        agoka: ['Agoka', 'serif'],
-        carlo: ['Carlo', 'sans-serif'],
       },
       colors: {
         background: ({ opacityValue }) => `rgba(var(--background-rgb, 15, 15, 15), ${opacityValue})`,
