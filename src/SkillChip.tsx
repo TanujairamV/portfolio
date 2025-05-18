@@ -1,18 +1,34 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-// Example: Add more icons as needed for your skills!
 import {
   FaReact, FaJs, FaPython, FaHtml5, FaCss3Alt, FaNodeJs, FaGitAlt, FaGithub, FaDatabase,
   FaFigma, FaJava, FaLinux, FaDocker, FaSwift
 } from 'react-icons/fa';
 import { SiTypescript, SiTailwindcss, SiNextdotjs, SiCplusplus, SiMongodb, SiRedux } from 'react-icons/si';
 
-interface SkillChipProps {
-  skill: string;
-}
-
-const gradientTextClass =
-  'bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover';
+// List your skills here as strings
+const skills = [
+  "React",
+  "JavaScript",
+  "TypeScript",
+  "HTML",
+  "CSS",
+  "TailwindCSS",
+  "NextJS",
+  "NodeJS",
+  "Python",
+  "Git",
+  "GitHub",
+  "MongoDB",
+  "SQL",
+  "Figma",
+  "Java",
+  "Linux",
+  "Docker",
+  "Swift",
+  "C++",
+  "Redux",
+];
 
 // Map skills to icons (add/edit as you wish)
 const skillIconMap: Record<string, React.ReactNode> = {
@@ -38,22 +54,64 @@ const skillIconMap: Record<string, React.ReactNode> = {
   Redux: <SiRedux className="text-purple-400" />,
 };
 
-const SkillChip = ({ skill }: SkillChipProps) => {
-  const icon = skillIconMap[skill] || null;
+const gradientTextClass =
+  'bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover';
+
+const Skillchip: React.FC = () => {
+  // Duplicate skills to enable smooth infinite scrolling
+  const scrollingSkills = [...skills, ...skills];
 
   return (
-    <motion.span
-      className={`inline-flex items-center gap-2 bg-foreground/10 text-foreground px-3 py-1 rounded-full text-base font-space-grotesk ${gradientTextClass} mr-2 mb-2`}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4 }}
-      aria-label={skill}
-      title={skill}
-    >
-      {icon}
-      <span>{skill}</span>
-    </motion.span>
+    <section className="w-full py-8 md:py-14">
+      <h2
+        className="text-2xl md:text-3xl font-bold mb-6 text-center"
+        style={{
+          background: "linear-gradient(90deg, #fff, #b0b0b0 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+        My Skills
+      </h2>
+      <div className="overflow-x-auto scrollbar-hide w-full">
+        <div
+          className="flex flex-nowrap gap-3 px-2 py-3"
+          style={{
+            animation: "scroll-left 40s linear infinite",
+            minWidth: "100%",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {scrollingSkills.map((skill, idx) => {
+            const icon = skillIconMap[skill] || null;
+            return (
+              <motion.span
+                className={`inline-flex items-center gap-2 bg-foreground/10 text-foreground px-3 py-1 rounded-full text-base font-space-grotesk ${gradientTextClass} mr-2 mb-2`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+                aria-label={skill}
+                title={skill}
+                key={skill + idx}
+              >
+                {icon}
+                <span>{skill}</span>
+              </motion.span>
+            );
+          })}
+        </div>
+      </div>
+      {/* Add this keyframes style globally or here */}
+      <style>{`
+        @keyframes scroll-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
+    </section>
   );
 };
 
-export default React.memo(SkillChip);
+export default React.memo(Skillchip);
