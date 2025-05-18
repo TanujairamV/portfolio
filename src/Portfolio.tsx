@@ -4,7 +4,7 @@ import ParticlesBackground from "./ParticlesBackground";
 import Footer from "./Footer";
 import SkillChip from "./SkillChip";
 import ProjectCard from "./ProjectCard";
-import AnimatedCursor from "./AnimatedCursor";
+import Cursor from "./Components/Cursor";
 import IntroScreen from "./IntroScreen";
 import NowListening from "./NowListening";
 import Hero from "./Hero";
@@ -18,7 +18,6 @@ import {
   Certification,
   Project
 } from "./data";
-import { useFadeInOnScroll } from "./useFadeInOnScroll";
 import "./Styles.css"; // updated to use Styles.css
 
 // Gradient text style helpers
@@ -37,36 +36,26 @@ const subtleGradientText = {
 const Portfolio: React.FC = () => {
   const [showAllProjects, setShowAllProjects] = useState(false);
 
-  // Fade in hooks for sections
-  const mainRef = useFadeInOnScroll<HTMLDivElement>();
-  const skillsRef = useFadeInOnScroll<HTMLElement>();
-  const experienceRef = useFadeInOnScroll<HTMLElement>();
-  const educationRef = useFadeInOnScroll<HTMLElement>();
-  const certificationsRef = useFadeInOnScroll<HTMLElement>();
-  const projectsRef = useFadeInOnScroll<HTMLElement>();
-  const nowListeningRef = useFadeInOnScroll<HTMLDivElement>();
-
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
       <IntroScreen />
       <ParticlesBackground />
-      <AnimatedCursor />
+      <Cursor />
       <Navbar />
 
       <main
-        ref={mainRef}
-        className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10 fade-in-up"
+        className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10"
       >
         {/* Hero Section */}
         <Hero />
 
         {/* Now Listening */}
-        <div ref={nowListeningRef} className="flex justify-center mb-12 fade-in-up" data-fade-delay="1">
+        <div className="flex justify-center mb-12">
           <NowListening />
         </div>
 
         {/* Skills */}
-        <section id="skills" ref={skillsRef} className="mb-16 fade-in-up" data-fade-delay="2">
+        <section id="skills" className="mb-16">
           <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -81,7 +70,7 @@ const Portfolio: React.FC = () => {
         </section>
 
         {/* Experience */}
-        <section id="experience" ref={experienceRef} className="mb-16 fade-in-up" data-fade-delay="3">
+        <section id="experience" className="mb-16">
           <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -91,7 +80,7 @@ const Portfolio: React.FC = () => {
             </span>
           </div>
           {experiences.map((exp: Experience, i) => (
-            <div key={exp.id} className="mb-6 fade-in-up" data-fade-delay={i + 1}>
+            <div key={exp.id} className="mb-6">
               <div
                 className="text-xl font-semibold font-caviar"
                 style={subtleGradientText}
@@ -111,7 +100,7 @@ const Portfolio: React.FC = () => {
         </section>
 
         {/* Education */}
-        <section id="education" ref={educationRef} className="mb-16 fade-in-up" data-fade-delay="4">
+        <section id="education" className="mb-16">
           <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -121,7 +110,7 @@ const Portfolio: React.FC = () => {
             </span>
           </div>
           {education.map((edu: Education, i) => (
-            <div key={edu.id} className="mb-6 fade-in-up" data-fade-delay={i + 1}>
+            <div key={edu.id} className="mb-6">
               <div
                 className="text-lg font-semibold font-caviar"
                 style={subtleGradientText}
@@ -137,7 +126,7 @@ const Portfolio: React.FC = () => {
         </section>
 
         {/* Certifications */}
-        <section id="certifications" ref={certificationsRef} className="mb-16 fade-in-up" data-fade-delay="5">
+        <section id="certifications" className="mb-16">
           <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -148,7 +137,7 @@ const Portfolio: React.FC = () => {
           </div>
           <ul className="list-disc ml-5">
             {certifications.map((cert: Certification, i) => (
-              <li key={cert.id} className="mb-2 fade-in-up" data-fade-delay={i + 1}>
+              <li key={cert.id} className="mb-2">
                 <a
                   href={cert.url}
                   target="_blank"
@@ -167,7 +156,7 @@ const Portfolio: React.FC = () => {
         </section>
 
         {/* Projects */}
-        <section id="projects" ref={projectsRef} className="mb-16 fade-in-up" data-fade-delay="6">
+        <section id="projects" className="mb-16">
           <div>
             <span
               className="text-2xl font-bold mb-4 block font-hatton"
@@ -178,7 +167,7 @@ const Portfolio: React.FC = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-8">
             {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project, i) => (
-              <div key={project.id} className="fade-in-up" data-fade-delay={i + 1}>
+              <div key={project.id}>
                 <ProjectCard
                   project={{
                     name: project.title || "Untitled Project",
@@ -191,7 +180,7 @@ const Portfolio: React.FC = () => {
             ))}
           </div>
           {projects.length > 4 && (
-            <div className="flex justify-center mt-6 fade-in-up" data-fade-delay="7">
+            <div className="flex justify-center mt-6">
               <button
                 className="px-6 py-2 rounded-xl font-semibold shadow font-caviar"
                 style={{
