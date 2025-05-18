@@ -2,9 +2,6 @@ import { useEffect, useRef } from "react";
 
 /**
  * React hook to add fade-in effect on scroll for any element.
- * Usage:
- *   const ref = useFadeInOnScroll();
- *   <div ref={ref} className="fade-in">...</div>
  */
 export function useFadeInOnScroll<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);
@@ -15,10 +12,11 @@ export function useFadeInOnScroll<T extends HTMLElement>() {
 
     function handle(entries: IntersectionObserverEntry[]) {
       entries.forEach(entry => {
+        const el = entry.target as HTMLElement;
         if (entry.isIntersecting) {
-          node.classList.add("visible");
+          el.classList.add("visible");
         } else {
-          node.classList.remove("visible");
+          el.classList.remove("visible");
         }
       });
     }
