@@ -2,7 +2,26 @@ import React, { useEffect, useState } from "react";
 import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
 import { FaMusic } from "react-icons/fa";
 
-// ...getItunesThumbnail and fallbackTrack as before...
+// iTunes fallback
+async function getItunesThumbnail(artist: string, track: string): Promise<string | null> {
+  try {
+    const query = encodeURIComponent(`${artist} ${track}`);
+    const itunesRes = await fetch(`https://itunes.apple.com/search?term=${query}&entity=song&limit=1`);
+    const itunesData = await itunesRes.json();
+    if (itunesData.results?.[0]?.artworkUrl100) {
+      return itunesData.results[0].artworkUrl100.replace("100x100bb.jpg", "400x400bb.jpg");
+    }
+  } catch {}
+  return null;
+}
+
+const fallbackTrack: LastFMTrack = {
+  artist: "",
+  name: "Not playing",
+  album: "",
+  image: "https://via.placeholder.com/120x120?text=No+Art",
+  url: "#",
+};
 
 const SoftEqualizer: React.FC = () => (
   <div className="equalizer-bars" aria-hidden="true">
