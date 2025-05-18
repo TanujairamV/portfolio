@@ -4,7 +4,7 @@ import {
 } from "react-icons/fa";
 
 const gradientStyle = {
-  background: "linear-gradient(90deg, #fff 80%, #b0b0b0 100%)",
+  background: "linear-gradient(90deg, #fff, #b0b0b0 100%)",
   WebkitBackgroundClip: "text" as const,
   WebkitTextFillColor: "transparent" as const,
 };
@@ -12,10 +12,10 @@ const gradientStyle = {
 const aboutText = `I'm a passionate developer focused on creating beautiful, performant web experiences. I love coding, learning new things, and building projects that matter.`;
 
 const socialIcons = [
-  { href: "mailto:tanujairam.v@gmail.com", icon: <FaEnvelope size={32} />, label: "Email" },
-  { href: "https://github.com/TanujairamV", icon: <FaGithub size={32} />, label: "GitHub" },
-  { href: "https://instagram.com/tanujairam.v", icon: <FaInstagram size={32} />, label: "Instagram" },
-  { href: "https://t.me/Tanujairam", icon: <FaTelegramPlane size={32} />, label: "Telegram" }
+  { href: "mailto:tanujairam.v@gmail.com", icon: <FaEnvelope />, label: "Email" },
+  { href: "https://github.com/TanujairamV", icon: <FaGithub />, label: "GitHub" },
+  { href: "https://instagram.com/tanujairam.v", icon: <FaInstagram />, label: "Instagram" },
+  { href: "https://t.me/Tanujairam", icon: <FaTelegramPlane />, label: "Telegram" }
 ];
 
 const Hero: React.FC = () => (
@@ -75,7 +75,7 @@ const Hero: React.FC = () => (
             aria-label={social.label}
             style={{
               ...gradientStyle,
-              fontSize: "2.3rem",
+              fontSize: "2.7rem",
               transition: "transform 0.14s, color 0.14s"
             }}
             className="hover:scale-110 focus:scale-110"
@@ -84,45 +84,6 @@ const Hero: React.FC = () => (
             {social.icon}
           </a>
         ))}
-      </div>
-      {/* Social text links below icons */}
-      <div className="mt-5 flex flex-col gap-1 text-base md:text-lg font-medium">
-        <a
-          href="mailto:tanujairam.v@gmail.com"
-          className="hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={gradientStyle}
-        >
-          📧 tanujairam.v@gmail.com
-        </a>
-        <a
-          href="https://github.com/TanujairamV"
-          className="hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={gradientStyle}
-        >
-          🐙 github.com/TanujairamV
-        </a>
-        <a
-          href="https://instagram.com/tanujairam.v"
-          className="hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={gradientStyle}
-        >
-          📸 instagram.com/tanujairam.v
-        </a>
-        <a
-          href="https://t.me/Tanujairam"
-          className="hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={gradientStyle}
-        >
-          💬 t.me/Tanujairam
-        </a>
       </div>
     </div>
   </section>
