@@ -306,3 +306,39 @@ body {
   80%  { opacity: 0.25; }
   100% { transform: scale(1) translateY(0px); opacity: 0.22; }
 }
+
+/* Navbar link base style */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5em 1.2em;
+  border-radius: 1.3em;
+  transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+  background: transparent;
+}
+
+/* On hover/focus: add box, background, and show arrow */
+.nav-link:hover,
+.nav-link:focus {
+  background: rgba(255,255,255,0.13);
+  box-shadow: 0 2px 12px 0 #fff2, 0 0 0 2px #fff3;
+  color: #12121a !important;
+}
+
+/* Arrow hidden by default, shown on hover/focus */
+.nav-link .nav-arrow {
+  opacity: 0;
+  transform: translateX(-4px) scale(0.85);
+  margin-left: 0.6em;
+  transition: opacity 0.16s, transform 0.19s;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Show arrow on hover */
+.nav-link:hover .nav-arrow,
+.nav-link:focus .nav-arrow {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
