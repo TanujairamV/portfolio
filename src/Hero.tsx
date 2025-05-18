@@ -1,8 +1,11 @@
 import React from "react";
 import {
-  FaGithub, FaEnvelope, FaInstagram, FaTelegramPlane
+  FaGithub,
+  FaEnvelope,
+  FaInstagram,
+  FaTelegramPlane
 } from "react-icons/fa";
-import { useFadeInOnScroll } from "./utils/useFadeInOnScroll";
+import { useFadeInOnScroll } from "./useFadeInOnScroll";
 
 const aboutText = `As a developer, I’m dedicated to crafting beautiful, high-performance web experiences. I thrive on learning, exploring new technologies, and building projects that make a difference.`;
 
@@ -15,8 +18,8 @@ const socialIcons = [
 
 const gradientText = {
   background: "linear-gradient(90deg, #fff 80%, #888 100%)",
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor: "transparent",
+  WebkitBackgroundClip: "text" as const,
+  WebkitTextFillColor: "transparent" as const,
   backgroundClip: "text",
   color: "transparent"
 };
@@ -80,7 +83,7 @@ const Hero: React.FC = () => {
         >
           {aboutText}
         </span>
-        {/* Social Icons - below about text, colored with drop shadow, NE arrow custom cursor on hover */}
+        {/* Social Icons */}
         <span className="flex flex-row mt-2 flex-wrap gap-5 fade-in-up" data-fade-delay="4">
           {socialIcons.map((social, i) => (
             <a
@@ -91,6 +94,11 @@ const Hero: React.FC = () => {
               aria-label={social.label}
               style={{
                 fontSize: "2rem",
+                background: "linear-gradient(90deg, #fff 5%, #b0b0b0 94%, #888 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "#fff",
                 transition: "transform 0.14s, color 0.14s",
                 position: "relative",
                 zIndex: 1,
@@ -102,7 +110,6 @@ const Hero: React.FC = () => {
               data-cursor="ne-arrow"
             >
               <span className="icon-main">{social.icon}</span>
-              {/* The arrow is shown by CSS via the custom cursor, not here */}
             </a>
           ))}
         </span>
