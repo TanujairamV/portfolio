@@ -12,6 +12,14 @@ const socialIcons = [
   { href: "https://t.me/Tanujairam", icon: <FaTelegramPlane />, label: "Telegram" }
 ];
 
+const gradientText = {
+  background: "linear-gradient(90deg, #fff 80%, #888 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  color: "transparent"
+};
+
 const Hero: React.FC = () => (
   <section
     id="hero"
@@ -24,24 +32,24 @@ const Hero: React.FC = () => (
         alt="Tanujairam"
         className="rounded-2xl shadow-xl object-cover object-center"
         style={{
-          width: 380,
-          height: 380,
-          maxWidth: 440,
-          maxHeight: 440,
-          minWidth: 260,
-          minHeight: 260,
+          width: 320,
+          height: 320,
+          maxWidth: 380,
+          maxHeight: 380,
+          minWidth: 200,
+          minHeight: 200,
           display: "block"
         }}
       />
     </div>
     {/* Text & socials right */}
     <div className="flex flex-col items-center md:items-start w-full max-w-2xl">
-      {/* Main Heading with Hatton */}
+      {/* Main Heading */}
       <span>
         <span
-          className="text-4xl md:text-6xl font-hatton font-bold mb-2 flex flex-wrap items-center"
+          className="text-3xl md:text-5xl font-hatton font-bold mb-2 flex flex-wrap items-center"
           style={{
-            color: "#fff",
+            ...gradientText,
             fontWeight: 700,
             lineHeight: 1.14,
             letterSpacing: "0.01em",
@@ -49,15 +57,16 @@ const Hero: React.FC = () => (
           }}
         >
           hey
-          <span style={{ fontSize: "1.5em", margin: "0 0.18em" }}>👋</span>
-          , i'm&nbsp;<span className="font-caviar">Tanujairam</span>
+          <span style={{ fontSize: "1.2em", margin: "0 0.18em" }}>👋</span>
+          , i'm&nbsp;
+          <span className="font-caviar">Tanujairam</span>
         </span>
       </span>
-      {/* Subheading with Caviar Dreams */}
+      {/* Subheading/About */}
       <span
-        className="mt-2 mb-5 text-lg md:text-2xl font-caviar font-medium text-center md:text-left"
+        className="mt-2 mb-5 text-base md:text-lg font-caviar font-medium text-center md:text-left"
         style={{
-          color: "#b0b0b0",
+          ...gradientText,
           fontWeight: 500,
           lineHeight: 1.5,
           maxWidth: 480,
@@ -68,7 +77,7 @@ const Hero: React.FC = () => (
       >
         {aboutText}
       </span>
-      {/* Social Icons with Unica One */}
+      {/* Social Icons */}
       <span className="flex flex-row mt-2 flex-wrap gap-5">
         {socialIcons.map((social) => (
           <a
@@ -78,11 +87,11 @@ const Hero: React.FC = () => (
             rel="noopener noreferrer"
             aria-label={social.label}
             style={{
-              color: "#b0b0b0",
-              fontSize: "2.1rem",
+              ...gradientText,
+              fontSize: "1.7rem",
               transition: "transform 0.14s, color 0.14s"
             }}
-            className="hover:scale-110 focus:scale-110 font-unica"
+            className="hover:scale-110 focus:scale-110 font-unica ripple"
             title={social.label}
           >
             {social.icon}
