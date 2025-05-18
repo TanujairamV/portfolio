@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
-import { useFadeInOnScroll } from "./useFadeInOnScroll"; // <-- Fixed import path
+import { useFadeInOnScroll } from "./useFadeInOnScroll";
 
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
@@ -67,7 +67,7 @@ const NavBar: React.FC = () => {
       }}
     >
       <ul
-        className={`flex flex-row items-center justify-center w-full`}
+        className="flex flex-row items-center justify-center w-full"
         style={{
           gap: mobile ? "0.7rem" : "0.6rem",
           margin: 0,
@@ -78,7 +78,7 @@ const NavBar: React.FC = () => {
         {NAV_LINKS.map((link, i) => (
           <li
             key={link.to}
-            className={`px-1.5 md:px-3 py-1 nav-link ripple fade-in`}
+            className="px-1.5 md:px-3 py-1 nav-link ripple fade-in"
             data-fade-delay={i + 1}
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
