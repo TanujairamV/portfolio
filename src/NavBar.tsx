@@ -26,6 +26,28 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Ripple Handler for NavBar links
+  const handleRipple = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const target = e.currentTarget;
+    const circle = document.createElement("span");
+    const diameter = Math.max(target.clientWidth, target.clientHeight);
+    const radius = diameter / 2;
+    circle.classList.add("ripple-span");
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${e.clientX - target.getBoundingClientRect().left - radius}px`;
+    circle.style.top = `${e.clientY - target.getBoundingClientRect().top - radius}px`;
+
+    // Remove existing ripples
+    const ripple = target.getElementsByClassName("ripple-span")[0];
+    if (ripple) ripple.remove();
+
+    target.appendChild(circle);
+
+    setTimeout(() => {
+      circle.remove();
+    }, 500);
+  };
+
   return (
     <nav
       id="navbar"
@@ -59,7 +81,7 @@ const NavBar: React.FC = () => {
         {NAV_LINKS.map((link) => (
           <li
             key={link.to}
-            className={`px-1.5 md:px-3 py-1 nav-link`}
+            className={`px-1.5 md:px-3 py-1 nav-link ripple`}
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
               fontWeight: 600,
@@ -73,8 +95,11 @@ const NavBar: React.FC = () => {
               display: "flex",
               alignItems: "center",
               background: "none",
-              transition: "background 0.13s, color 0.13s, transform 0.16s"
+              transition: "background 0.13s, color 0.13s, transform 0.16s",
+              position: "relative",
+              overflow: "hidden"
             }}
+            onClick={handleRipple}
           >
             <Link
               to={link.to}
@@ -140,6 +165,26 @@ const NavBar: React.FC = () => {
           }
           html, body, * {
             cursor: none !important;
+          }
+        }
+        /* Ripple effect for NavBar links */
+        .ripple {
+          position: relative;
+          overflow: hidden;
+        }
+        .ripple-span {
+          position: absolute;
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple-animate 0.5s linear;
+          background-color: rgba(255,255,255,0.25);
+          pointer-events: none;
+          z-index: 2;
+        }
+        @keyframes ripple-animate {
+          to {
+            transform: scale(2.2);
+            opacity: 0;
           }
         }
       `}</style>
