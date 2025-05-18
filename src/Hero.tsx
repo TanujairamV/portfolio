@@ -4,7 +4,7 @@ import {
 } from "react-icons/fa";
 
 const gradientStyle = {
-  background: "linear-gradient(90deg, #fff, #b0b0b0 100%)",
+  background: "linear-gradient(90deg, #fff 60%, #b0b0b0 100%)",
   WebkitBackgroundClip: "text" as const,
   WebkitTextFillColor: "transparent" as const,
 };
@@ -42,30 +42,39 @@ const Hero: React.FC = () => (
     </div>
     {/* Text & socials right */}
     <div className="flex flex-col items-center md:items-start w-full max-w-2xl">
-      <h1
-        className="text-4xl md:text-5xl font-bold mb-2 flex flex-wrap items-center"
+      <span>
+        <span
+          className="text-4xl md:text-6xl font-agoka font-bold mb-2 flex flex-wrap items-center"
+          style={{
+            background: "linear-gradient(90deg, #fff 60%, #b0b0b0 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            fontFamily: "'Agoka', 'Space Grotesk', 'Poppins', sans-serif",
+            fontWeight: 700,
+            lineHeight: 1.14
+          }}
+        >
+          hey
+          <span style={{ fontSize: "1.5em", margin: "0 0.18em" }}>👋</span>
+          , i'm&nbsp;Tanujairam
+        </span>
+      </span>
+      <span
+        className="mt-2 mb-5 text-lg md:text-2xl font-carlo font-medium text-center md:text-left"
         style={{
-          fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
-          fontWeight: 700,
-          lineHeight: 1.14
-        }}
-      >
-        <span style={gradientStyle}>hey</span>
-        <span style={{ fontSize: "1.5em", margin: "0 0.18em" }}>👋</span>
-        <span style={gradientStyle}>, i'm&nbsp;Tanujairam</span>
-      </h1>
-      <div
-        className="mt-2 mb-5 text-lg md:text-xl font-medium text-center md:text-left"
-        style={{
-          ...gradientStyle,
-          lineHeight: 1.5,
+          background: "linear-gradient(90deg, #fff 40%, #b0b0b0 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontFamily: "'Carlo', 'Space Grotesk', 'Poppins', sans-serif",
           fontWeight: 500,
-          maxWidth: 480
+          lineHeight: 1.5,
+          maxWidth: 480,
+          display: "block"
         }}
       >
         {aboutText}
-      </div>
-      <div className="flex flex-row mt-2 flex-wrap gap-7">
+      </span>
+      <span className="flex flex-row mt-2 flex-wrap gap-5">
         {socialIcons.map((social) => (
           <a
             key={social.href}
@@ -74,8 +83,10 @@ const Hero: React.FC = () => (
             rel="noopener noreferrer"
             aria-label={social.label}
             style={{
-              ...gradientStyle,
-              fontSize: "2.7rem",
+              background: "linear-gradient(90deg, #fff, #b0b0b0 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontSize: "2.1rem", // smaller than before
               transition: "transform 0.14s, color 0.14s"
             }}
             className="hover:scale-110 focus:scale-110"
@@ -84,7 +95,7 @@ const Hero: React.FC = () => (
             {social.icon}
           </a>
         ))}
-      </div>
+      </span>
     </div>
   </section>
 );
