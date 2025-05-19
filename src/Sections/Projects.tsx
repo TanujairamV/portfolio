@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaPython, FaRobot } from "react-icons/fa";
 import { SiExpress } from "react-icons/si";
-import { Project } from "../Components/types"; // Adjust path as needed
+import { Project } from "../Data/Data"; // <-- Fix: Import type from correct location
 
 const projects: Project[] = [
   {
@@ -87,7 +87,7 @@ const Projects: React.FC = () => (
             {project.description}
           </p>
           <div className="flex flex-wrap gap-2 mb-2">
-            {project.tech.map((t) => (
+            {project.tech.map((t: string) => (
               <span
                 key={t}
                 className={`inline-block bg-foreground/10 text-foreground px-3 py-1 rounded-full text-base font-space-grotesk ${gradientTextClass}`}
