@@ -10,7 +10,7 @@ import NowPlaying from "./Components/NowPlaying";
 import Hero from "./Sections/Hero";
 import Education from "./Sections/Education";
 import Experience from "./Sections/Experience";
-import Certifications from "./Sections/Certifications";
+import Certificates from "./Sections/Certificates"; // <-- Fixed import
 import "./Styles.css";
 
 // Gradient text style helpers
@@ -60,8 +60,8 @@ const Portfolio: React.FC = () => {
         {/* Education */}
         <Education />
 
-        {/* Certifications */}
-        <Certifications />
+        {/* Certificates */}
+        <Certificates />
 
         {/* Projects */}
         <section id="projects" className="mb-16">
