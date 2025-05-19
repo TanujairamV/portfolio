@@ -1,6 +1,6 @@
 import React from "react";
 import { FaGraduationCap, FaMapMarkerAlt, FaSchool } from "react-icons/fa";
-import { useFadeInOnScroll } from "../Hooks/FadeIn";
+// Removed useFadeInOnScroll import and usage
 
 // Timeline data
 const educationData = [
@@ -48,13 +48,10 @@ const timelineBar = (
 );
 
 const Education: React.FC = () => {
-  const sectionRef = useFadeInOnScroll<HTMLDivElement>();
   return (
     <section
       id="education"
-      ref={sectionRef}
-      className="mb-16 fade-in-up"
-      data-fade-delay="4"
+      className="mb-16"
     >
       <div
         className="text-2xl font-bold mb-8 flex items-center gap-2 font-hatton"
@@ -71,45 +68,39 @@ const Education: React.FC = () => {
       <div className="relative pl-12">
         {timelineBar}
         <ol className="space-y-12 relative z-10">
-          {educationData.map((edu, idx) => {
-            // Add fade-in for each timeline item
-            const itemRef = useFadeInOnScroll<HTMLLIElement>();
-            return (
-              <li
-                key={edu.school}
-                ref={itemRef}
-                className="relative group fade-in-up"
-                data-fade-delay={idx + 1}
-              >
-                {/* Timeline dot */}
-                <span className="absolute -left-2 top-0 flex items-center justify-center w-6 h-6 rounded-full bg-gray-900 border-2 border-yellow-300 shadow-lg z-10">
-                  {edu.icon}
-                </span>
-                {/* Card */}
-                <div className="ml-8 p-6 bg-gradient-to-br from-[#18181b] via-[#23232b] to-[#1a1a23] rounded-xl shadow-md border border-gray-800 hover:border-yellow-400 transition-all">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
-                    <h3 className="text-xl font-bold mb-1 font-caviar text-yellow-200">{edu.school}</h3>
-                    <span className="text-sm text-gray-400 flex items-center gap-1">
-                      <FaMapMarkerAlt className="inline-block mr-1 text-yellow-400" />
-                      {edu.location}
-                    </span>
-                  </div>
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <span className="text-sm text-gray-300 font-semibold mb-1">
-                      {edu.grade}
-                      {edu.stream ? ` – ${edu.stream}` : ""}
-                    </span>
-                    <span className="text-xs text-gray-400 font-caviar">{edu.period}</span>
-                  </div>
-                  <ul className="list-disc ml-5 mt-2 text-gray-300 font-caviar space-y-1">
-                    {edu.details.map((d, i) => (
-                      <li key={i}>{d}</li>
-                    ))}
-                  </ul>
+          {educationData.map((edu) => (
+            <li
+              key={edu.school}
+              className="relative group"
+            >
+              {/* Timeline dot */}
+              <span className="absolute -left-2 top-0 flex items-center justify-center w-6 h-6 rounded-full bg-gray-900 border-2 border-yellow-300 shadow-lg z-10">
+                {edu.icon}
+              </span>
+              {/* Card */}
+              <div className="ml-8 p-6 bg-gradient-to-br from-[#18181b] via-[#23232b] to-[#1a1a23] rounded-xl shadow-md border border-gray-800 hover:border-yellow-400 transition-all">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
+                  <h3 className="text-xl font-bold mb-1 font-caviar text-yellow-200">{edu.school}</h3>
+                  <span className="text-sm text-gray-400 flex items-center gap-1">
+                    <FaMapMarkerAlt className="inline-block mr-1 text-yellow-400" />
+                    {edu.location}
+                  </span>
                 </div>
-              </li>
-            );
-          })}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                  <span className="text-sm text-gray-300 font-semibold mb-1">
+                    {edu.grade}
+                    {edu.stream ? ` – ${edu.stream}` : ""}
+                  </span>
+                  <span className="text-xs text-gray-400 font-caviar">{edu.period}</span>
+                </div>
+                <ul className="list-disc ml-5 mt-2 text-gray-300 font-caviar space-y-1">
+                  {edu.details.map((d, i) => (
+                    <li key={i}>{d}</li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))}
         </ol>
       </div>
     </section>
