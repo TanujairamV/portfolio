@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Navbar from "./NavBar";
-import ParticlesBackground from "./ParticlesBackground";
-import Footer from "./Footer";
-import SkillChip from "./SkillChip";
-import ProjectCard from "./ProjectCard";
+import Navbar from "./Components/NavBar";
+import ParticlesBackground from "./Components/Particles";
+import Footer from "./Components/Footer";
+import SkillChip from "./Sections/Skills";
+import ProjectCard from "./Sections/Projects";
 import Cursor from "./Components/Cursor";
-import IntroScreen from "./IntroScreen";
-import NowListening from "./NowListening";
-import Hero from "./Hero";
+import IntroScreen from "./Intro";
+import NowListening from "./Components/NowListening";
+import Hero from "./Sections/Hero";
 import {
   experiences,
   education,
@@ -17,7 +17,7 @@ import {
   Education,
   Certification,
   Project
-} from "./data";
+} from "./Data/Data";
 import "./Styles.css"; // updated to use Styles.css
 
 // Gradient text style helpers
