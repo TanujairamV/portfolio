@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchRecentTrack, LastFMTrack } from "./lastFmApi";
+import { fetchRecentTrack, LastFMTrack } from "../Data/lastFmApi";
 import { FaMusic } from "react-icons/fa";
 
 // iTunes fallback
@@ -98,7 +98,7 @@ const NowListening: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     fetchRecentTrack()
-      .then(async (t) => {
+      .then(async (t: LastFMTrack) => {
         if (!isMounted) return;
         setTrack(t);
 
@@ -121,7 +121,7 @@ const NowListening: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const t = track || fallbackTrack;
+  const t: LastFMTrack = track || fallbackTrack;
   const blurStrength = mobileView ? 7 : 11;
 
   return (
