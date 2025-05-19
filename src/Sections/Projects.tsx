@@ -2,10 +2,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaPython, FaRobot } from "react-icons/fa";
 import { SiExpress } from "react-icons/si";
-import { Project } from "../Data/Data"; // <-- Import type from correct location
+import { Project } from "../Data/Data";
 
 const projects: Project[] = [
   {
+    id: 1,
     title: "joylib – Python Mini-Games & Fun Tools Library",
     url: "https://github.com/TanujairamV/joylib",
     techStack: ["Python", "Tkinter", "Games", "FLAMES", "Chess"],
@@ -13,6 +14,7 @@ const projects: Project[] = [
       "A Python package bundling mini-games and fun utilities: Includes FLAMES calculator, Tic-Tac-Toe (Tkinter GUI), and a beta Chess GUI. Designed with easy-to-use functions like from joylib import flames. Lightweight, beginner-friendly, and expanding.",
   },
   {
+    id: 2,
     title: "gr11prctl – Grade 11 Practical Programs Library",
     url: "https://github.com/TanujairamV/gr11prctl",
     techStack: ["Python", "CBSE", "snippets.py", "index.py"],
@@ -20,6 +22,7 @@ const projects: Project[] = [
       "A Python library for CBSE-style practical programs: 20+ useful programs like pattern printing, palindrome check, tuple search, etc. Features snippets.py for core logic and an upcoming index.py for program listing. Made for students to practice efficiently.",
   },
   {
+    id: 3,
     title: "lastfm-proxy – Last.fm API Proxy Server",
     url: "https://github.com/TanujairamV/lastfm-proxy",
     techStack: ["Express.js", "TypeScript", "API", "Proxy", "Node.js"],
@@ -27,6 +30,7 @@ const projects: Project[] = [
       "A secure proxy layer to access Last.fm’s API without exposing keys: Built using Express.js with TypeScript. Can be used in bots, dashboards, or client-side apps. Handles API calls, caching, and error responses.",
   },
   {
+    id: 4,
     title: "Instagram Account Creator Bot – Selenium Automation",
     url: "https://github.com/TanujairamV/insta-creator-bot",
     techStack: ["Selenium", "Python", "Automation", "mail.tm"],
@@ -61,7 +65,7 @@ const Projects: React.FC = () => (
     <div className="grid md:grid-cols-2 gap-8">
       {projects.map((project, idx) => (
         <motion.div
-          key={project.title}
+          key={project.id}
           className="material-card bg-white/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300 fade-in-up"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
