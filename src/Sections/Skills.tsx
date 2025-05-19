@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import {
-  FaReact, FaJs, FaPython, FaHtml5, FaCss3Alt, FaNodeJs, FaGitAlt, FaGithub, FaDatabase,
-  FaFigma, FaJava, FaLinux, FaDocker, FaSwift, FaBug, FaTerminal, FaCodeBranch, FaCogs
+  FaJs, FaPython, FaHtml5, FaCss3Alt, FaNodeJs, FaGitAlt, FaGithub,
+  FaBug, FaTerminal, FaCodeBranch, FaCogs
 } from 'react-icons/fa';
-import { 
-  SiTypescript, SiTailwindcss, SiNextdotjs, SiCplusplus, SiMongodb, SiRedux, SiVuedotjs, SiBash, SiVisualstudiocode, SiFastapi, SiOpenai 
+import {
+  SiTypescript, SiTailwindcss, SiExpress, SiPython, SiVscode
 } from 'react-icons/si';
 import { TbApi } from "react-icons/tb";
 import { MdSettingsSystemDaydream, MdSecurity, MdExtension } from "react-icons/md";
@@ -24,13 +24,13 @@ const skillIconMap: Record<string, React.ReactNode> = {
   HTML: <FaHtml5 className="text-orange-400" />,
   CSS: <FaCss3Alt className="text-blue-400" />,
   TailwindCSS: <SiTailwindcss className="text-cyan-300" />,
-  Bash: <SiBash className="text-green-300" />,
+  Bash: <FaTerminal className="text-green-300" />,
   Selenium: <FaBug className="text-green-400" />,
   Tkinter: <SiPython className="text-yellow-200" />, // Uses Python icon for Tkinter
   Git: <FaGitAlt className="text-orange-500" />,
   GitHub: <FaGithub />,
   "GitHub Actions": <FaCodeBranch className="text-blue-400" />,
-  "VS Code": <SiVisualstudiocode className="text-blue-400" />,
+  "VS Code": <SiVscode className="text-blue-400" />,
   "REST APIs": <TbApi className="text-emerald-300" />,
   "GitHub Pages": <FaGithub className="text-purple-300" />,
   "Custom ROMs": <MdExtension className="text-pink-400" />,
