@@ -3,7 +3,7 @@ import Navbar from "./Components/NavBar";
 import ParticlesBackground from "./Components/Particles";
 import Footer from "./Components/Footer";
 import SkillChip from "./Sections/Skills";
-import ProjectCard from "./Sections/Projects";
+import Projects from "./Sections/Projects";
 import Cursor from "./Components/Cursor";
 import IntroScreen from "./Components/Intro";
 import NowPlaying from "./Components/NowPlaying";
@@ -49,9 +49,9 @@ const Portfolio: React.FC = () => {
         {/* Hero Section */}
         <Hero />
 
-        {/* Now Listening */}
+        {/* Now Playing */}
         <div className="flex justify-center mb-12">
-          <NowListening />
+          <NowPlaying />
         </div>
 
         {/* Skills */}
@@ -165,36 +165,12 @@ const Portfolio: React.FC = () => {
               Projects
             </span>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
-              <div key={project.id}>
-                <ProjectCard
-                  name={project.title || "Untitled Project"}
-                  url={project.url ?? "https://example.com"}
-                  tech={project.techStack ?? []}
-                  description={project.description ?? "No description available."}
-                />
-              </div>
-            ))}
-          </div>
-          {projects.length > 4 && (
-            <div className="flex justify-center mt-6">
-              <button
-                className="px-6 py-2 rounded-xl font-semibold shadow font-caviar"
-                style={{
-                  background: "linear-gradient(90deg,#fff,#b0b0b0 90%)",
-                  color: "#111",
-                  boxShadow: "0 2px 10px #b0b0b044",
-                  fontWeight: 600,
-                  fontFamily: "'Caviar Dreams',sans-serif",
-                  transition: "background 0.15s, color 0.15s"
-                }}
-                onClick={() => setShowAllProjects(v => !v)}
-              >
-                {showAllProjects ? "Show Less" : "Show All"}
-              </button>
-            </div>
-          )}
+          {/* The actual project grid is handled in ./Sections/Projects for consistency and DRYness */}
+          <Projects
+            showAll={showAllProjects}
+            setShowAll={setShowAllProjects}
+            projects={projects}
+          />
         </section>
       </main>
       <Footer />
