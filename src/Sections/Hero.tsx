@@ -83,7 +83,7 @@ const Hero: React.FC = () => {
         </div>
         {/* Social Icons */}
         <div className="flex flex-row mt-2 flex-wrap gap-5">
-          {socialIcons.map((social, i) => (
+          {socialIcons.map((social) => (
             <a
               key={social.href}
               href={social.href}
