@@ -10,7 +10,7 @@ import NowPlaying from "./Components/NowPlaying";
 import Hero from "./Sections/Hero";
 import Education from "./Sections/Education";
 import Experience from "./Sections/Experience";
-import Certificates from "./Sections/Certificates"; // <-- Fixed import
+import Certificates from "./Sections/Certificates"; // Make sure this matches your folder and filename!
 import "./Styles.css";
 
 // Gradient text style helpers
@@ -28,9 +28,7 @@ const Portfolio: React.FC = () => {
       <Cursor />
       <Navbar />
 
-      <main
-        className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10"
-      >
+      <main className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10">
         {/* Hero Section */}
         <Hero />
 
@@ -49,9 +47,7 @@ const Portfolio: React.FC = () => {
               Skills
             </span>
           </div>
-          <div>
-            <SkillChip />
-          </div>
+          <SkillChip />
         </section>
 
         {/* Experience */}
@@ -64,17 +60,7 @@ const Portfolio: React.FC = () => {
         <Certificates />
 
         {/* Projects */}
-        <section id="projects" className="mb-16">
-          <div>
-            <span
-              className="text-2xl font-bold mb-4 block font-hatton"
-              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
-            >
-              Projects
-            </span>
-          </div>
-          <Projects />
-        </section>
+        <Projects />
       </main>
       <Footer />
     </div>
