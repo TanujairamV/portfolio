@@ -75,7 +75,7 @@ const NavBar: React.FC = () => {
           width: "100%"
         }}
       >
-        {NAV_LINKS.map((link, i) => (
+        {NAV_LINKS.map((link) => (
           <li
             key={link.to}
             className="px-1.5 md:px-3 py-1 nav-link ripple"
