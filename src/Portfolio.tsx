@@ -15,8 +15,8 @@ import {
   projects,
   Experience,
   Education,
-  Certification,
-  Project
+  Certification
+  // Removed unused: Project
 } from "./Data/Data";
 import "./Styles.css";
 
@@ -34,7 +34,8 @@ const subtleGradientText = {
 };
 
 const Portfolio: React.FC = () => {
-  const [showAllProjects, setShowAllProjects] = useState(false);
+  // You don't need showAllProjects or setShowAllProjects here unless you use them for something else
+  // const [showAllProjects, setShowAllProjects] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
@@ -165,12 +166,7 @@ const Portfolio: React.FC = () => {
               Projects
             </span>
           </div>
-          {/* The actual project grid is handled in ./Sections/Projects for consistency and DRYness */}
-          <Projects
-            showAll={showAllProjects}
-            setShowAll={setShowAllProjects}
-            projects={projects}
-          />
+          <Projects />
         </section>
       </main>
       <Footer />
