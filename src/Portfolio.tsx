@@ -24,9 +24,22 @@ const divider = (
   <hr className="my-12 border-t-2 border-yellow-400 opacity-30" />
 );
 
+const sectionHeading = (text: string, icon?: React.ReactNode) => (
+  <div className="flex items-center gap-2 mb-6">
+    {icon}
+    <span
+      className="text-2xl font-bold font-hatton"
+      style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
+    >
+      {text}
+    </span>
+  </div>
+);
+
 const Portfolio: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
+      {/* Intro screen and backgrounds */}
       <IntroScreen />
       <ParticlesBackground />
       <Cursor />
@@ -41,42 +54,49 @@ const Portfolio: React.FC = () => {
           <NowPlaying />
         </div>
 
+        {divider}
+
         {/* Skills */}
-        <section id="skills" className="mb-16">
-          <div>
-            <span
-              className="text-2xl font-bold mb-4 block font-hatton"
-              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
-            >
-              Skills
-            </span>
-          </div>
+        <section id="skills" className="mb-20">
+          {sectionHeading("Skills")}
           <SkillChip />
         </section>
 
         {divider}
 
         {/* Experience */}
-        <Experience />
+        <section id="experience" className="mb-20">
+          {sectionHeading("Experience")}
+          <Experience />
+        </section>
 
         {divider}
 
-        {/* Education - Wrapped in extra visible box */}
-        <div id="education" className="mb-16">
+        {/* Education */}
+        <section id="education" className="mb-20">
+          {sectionHeading("Education")}
           <div className="rounded-xl border-2 border-yellow-400/80 bg-black/70 shadow-lg p-6">
             <Education />
           </div>
-        </div>
+        </section>
 
         {divider}
 
         {/* Certificates */}
-        <Certificates />
+        <section id="certificates" className="mb-20">
+          {sectionHeading("Certificates")}
+          <div className="rounded-xl border-2 border-yellow-400/80 bg-black/70 shadow-lg p-6">
+            <Certificates />
+          </div>
+        </section>
 
         {divider}
 
         {/* Projects */}
-        <Projects />
+        <section id="projects" className="mb-20">
+          {sectionHeading("Projects")}
+          <Projects />
+        </section>
       </main>
       <Footer />
     </div>
