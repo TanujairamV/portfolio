@@ -10,7 +10,7 @@ import NowPlaying from "./Components/NowPlaying";
 import Hero from "./Sections/Hero";
 import Education from "./Sections/Education";
 import Experience from "./Sections/Experience";
-import Certificates from "./Sections/Certificates"; // Make sure this matches your folder and filename!
+import Certificates from "./Sections/Certificates";
 import "./Styles.css";
 
 // Gradient text style helpers
@@ -19,6 +19,10 @@ const gradientText = {
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent"
 };
+
+const divider = (
+  <hr className="my-12 border-t-2 border-yellow-400 opacity-30" />
+);
 
 const Portfolio: React.FC = () => {
   return (
@@ -50,14 +54,26 @@ const Portfolio: React.FC = () => {
           <SkillChip />
         </section>
 
+        {divider}
+
         {/* Experience */}
         <Experience />
 
-        {/* Education */}
-        <Education />
+        {divider}
+
+        {/* Education - Wrapped in extra visible box */}
+        <div id="education" className="mb-16">
+          <div className="rounded-xl border-2 border-yellow-400/80 bg-black/70 shadow-lg p-6">
+            <Education />
+          </div>
+        </div>
+
+        {divider}
 
         {/* Certificates */}
         <Certificates />
+
+        {divider}
 
         {/* Projects */}
         <Projects />
