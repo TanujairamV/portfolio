@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchRecentTrack, LastFMTrack } from './lastFmApi';
+import { fetchRecentTrack, LastFMTrack } from '../Data/lastFmApi';
 
 const LastFmWidget = () => {
   const [track, setTrack] = useState<LastFMTrack | null>(null);
