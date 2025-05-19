@@ -40,9 +40,12 @@ const projects: Project[] = [
 ];
 
 const iconForProject = (title: string) => {
-  if (title.toLowerCase().includes("python")) return <FaPython className="text-yellow-400 text-2xl" />;
-  if (title.toLowerCase().includes("express")) return <SiExpress className="text-gray-200 text-2xl" />;
-  if (title.toLowerCase().includes("selenium") || title.toLowerCase().includes("bot")) return <FaRobot className="text-pink-400 text-2xl" />;
+  if (title.toLowerCase().includes("python"))
+    return <FaPython className="text-yellow-400 text-2xl" />;
+  if (title.toLowerCase().includes("express"))
+    return <SiExpress className="text-gray-200 text-2xl" />;
+  if (title.toLowerCase().includes("selenium") || title.toLowerCase().includes("bot"))
+    return <FaRobot className="text-pink-400 text-2xl" />;
   return <FaGithub className="text-gray-300 text-2xl" />;
 };
 
