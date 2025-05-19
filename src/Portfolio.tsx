@@ -5,7 +5,7 @@ import Footer from "./Components/Footer";
 import SkillChip from "./Sections/Skills";
 import ProjectCard from "./Sections/Projects";
 import Cursor from "./Components/Cursor";
-import IntroScreen from "./Intro";
+import IntroScreen from "./Components/Intro";
 import NowListening from "./Components/NowListening";
 import Hero from "./Sections/Hero";
 import {
@@ -18,7 +18,7 @@ import {
   Certification,
   Project
 } from "./Data/Data";
-import "./Styles.css"; // updated to use Styles.css
+import "./Styles.css";
 
 // Gradient text style helpers
 const gradientText = {
@@ -79,7 +79,7 @@ const Portfolio: React.FC = () => {
               Experience
             </span>
           </div>
-          {experiences.map((exp: Experience, i) => (
+          {experiences.map((exp: Experience) => (
             <div key={exp.id} className="mb-6">
               <div
                 className="text-xl font-semibold font-caviar"
@@ -109,7 +109,7 @@ const Portfolio: React.FC = () => {
               Education
             </span>
           </div>
-          {education.map((edu: Education, i) => (
+          {education.map((edu: Education) => (
             <div key={edu.id} className="mb-6">
               <div
                 className="text-lg font-semibold font-caviar"
@@ -136,7 +136,7 @@ const Portfolio: React.FC = () => {
             </span>
           </div>
           <ul className="list-disc ml-5">
-            {certifications.map((cert: Certification, i) => (
+            {certifications.map((cert: Certification) => (
               <li key={cert.id} className="mb-2">
                 <a
                   href={cert.url}
@@ -166,15 +166,13 @@ const Portfolio: React.FC = () => {
             </span>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project, i) => (
+            {(showAllProjects ? projects : projects.slice(0, 4)).map((project: Project) => (
               <div key={project.id}>
                 <ProjectCard
-                  project={{
-                    name: project.title || "Untitled Project",
-                    url: project.url ?? "https://example.com",
-                    tech: project.techStack ?? [],
-                    description: project.description ?? "No description available.",
-                  }}
+                  name={project.title || "Untitled Project"}
+                  url={project.url ?? "https://example.com"}
+                  tech={project.techStack ?? []}
+                  description={project.description ?? "No description available."}
                 />
               </div>
             ))}
