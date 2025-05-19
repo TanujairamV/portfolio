@@ -8,14 +8,13 @@ import Cursor from "./Components/Cursor";
 import IntroScreen from "./Components/Intro";
 import NowPlaying from "./Components/NowPlaying";
 import Hero from "./Sections/Hero";
+import Education from "./Sections/Education"; // <-- Import the timeline Education component
 import {
   experiences,
-  education,
   certifications,
   Experience,
-  Education,
   Certification
-  // Removed unused: projects
+  // Removed unused: education, projects
 } from "./Data/Data";
 import "./Styles.css";
 
@@ -97,30 +96,7 @@ const Portfolio: React.FC = () => {
         </section>
 
         {/* Education */}
-        <section id="education" className="mb-16">
-          <div>
-            <span
-              className="text-2xl font-bold mb-4 block font-hatton"
-              style={{ ...gradientText, fontFamily: "'Hatton', serif" }}
-            >
-              Education
-            </span>
-          </div>
-          {education.map((edu: Education) => (
-            <div key={edu.id} className="mb-6">
-              <div
-                className="text-lg font-semibold font-caviar"
-                style={subtleGradientText}
-              >
-                {edu.degree} - {edu.school}
-              </div>
-              <div className="text-gray-400 text-sm mb-1 font-caviar">
-                {edu.start} — {edu.end}
-              </div>
-              <div style={subtleGradientText} className="font-caviar">{edu.details}</div>
-            </div>
-          ))}
-        </section>
+        <Education /> {/* <-- Use the timeline Education component here */}
 
         {/* Certifications */}
         <section id="certifications" className="mb-16">
