@@ -5,7 +5,7 @@ import {
   FaBug, FaTerminal, FaCodeBranch, FaCogs
 } from 'react-icons/fa';
 import {
-  SiTypescript, SiTailwindcss, SiExpress, SiPython, SiVscode
+  SiTypescript, SiTailwindcss, SiExpress, SiPython, SiVisualstudiocode
 } from 'react-icons/si';
 import { TbApi } from "react-icons/tb";
 import { MdSettingsSystemDaydream, MdSecurity, MdExtension } from "react-icons/md";
@@ -30,7 +30,7 @@ const skillIconMap: Record<string, React.ReactNode> = {
   Git: <FaGitAlt className="text-orange-500" />,
   GitHub: <FaGithub />,
   "GitHub Actions": <FaCodeBranch className="text-blue-400" />,
-  "VS Code": <SiVscode className="text-blue-400" />,
+  "VS Code": <SiVisualstudiocode className="text-blue-400" />,
   "REST APIs": <TbApi className="text-emerald-300" />,
   "GitHub Pages": <FaGithub className="text-purple-300" />,
   "Custom ROMs": <MdExtension className="text-pink-400" />,
