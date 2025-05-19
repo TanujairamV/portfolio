@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "./Components/NavBar";
 import ParticlesBackground from "./Components/Particles";
 import Footer from "./Components/Footer";
@@ -12,11 +12,10 @@ import {
   experiences,
   education,
   certifications,
-  projects,
   Experience,
   Education,
   Certification
-  // Removed unused: Project
+  // Removed unused: projects
 } from "./Data/Data";
 import "./Styles.css";
 
@@ -34,9 +33,6 @@ const subtleGradientText = {
 };
 
 const Portfolio: React.FC = () => {
-  // You don't need showAllProjects or setShowAllProjects here unless you use them for something else
-  // const [showAllProjects, setShowAllProjects] = useState(false);
-
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
       <IntroScreen />
