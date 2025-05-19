@@ -1,6 +1,5 @@
 import React from "react";
 import { FaGraduationCap, FaMapMarkerAlt, FaSchool } from "react-icons/fa";
-// Removed useFadeInOnScroll import and usage
 
 // Timeline data
 const educationData = [
@@ -49,10 +48,7 @@ const timelineBar = (
 
 const Education: React.FC = () => {
   return (
-    <section
-      id="education"
-      className="mb-16"
-    >
+    <section id="education" className="mb-16">
       <div
         className="text-2xl font-bold mb-8 flex items-center gap-2 font-hatton"
         style={{
@@ -69,10 +65,7 @@ const Education: React.FC = () => {
         {timelineBar}
         <ol className="space-y-12 relative z-10">
           {educationData.map((edu) => (
-            <li
-              key={edu.school}
-              className="relative group"
-            >
+            <li key={edu.school} className="relative group">
               {/* Timeline dot */}
               <span className="absolute -left-2 top-0 flex items-center justify-center w-6 h-6 rounded-full bg-gray-900 border-2 border-yellow-300 shadow-lg z-10">
                 {edu.icon}
@@ -88,8 +81,7 @@ const Education: React.FC = () => {
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                   <span className="text-sm text-gray-300 font-semibold mb-1">
-                    {edu.grade}
-                    {edu.stream ? ` – ${edu.stream}` : ""}
+                    {edu.grade}{edu.stream ? ` – ${edu.stream}` : ""}
                   </span>
                   <span className="text-xs text-gray-400 font-caviar">{edu.period}</span>
                 </div>
