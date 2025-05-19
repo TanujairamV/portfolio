@@ -6,7 +6,7 @@ import SkillChip from "./Sections/Skills";
 import ProjectCard from "./Sections/Projects";
 import Cursor from "./Components/Cursor";
 import IntroScreen from "./Components/Intro";
-import NowListening from "./Components/NowListening";
+import NowPlaying from "./Components/NowPlaying";
 import Hero from "./Sections/Hero";
 import {
   experiences,
