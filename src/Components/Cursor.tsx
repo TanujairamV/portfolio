@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Detect clickables & special tiles
+// Utility to check if an element is clickable
 function isClickable(el: Element | null): boolean {
   if (!el) return false;
   const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
@@ -9,10 +9,12 @@ function isClickable(el: Element | null): boolean {
   if ((el as HTMLElement).onclick || (el as HTMLElement).onmousedown) return true;
   if (el.classList.contains("cursor-pointer")) return true;
   if (el.closest("a,button,[role=button],.cursor-pointer")) return true;
+  // Custom: Certificates and Projects tiles
   if (el.classList.contains("certificate-tile") || el.classList.contains("project-tile")) return true;
   return false;
 }
 
+// Detect if device is touch-enabled
 const isTouchDevice = (): boolean =>
   typeof window !== "undefined" &&
   ("ontouchstart" in window ||
@@ -31,7 +33,7 @@ const Cursor: React.FC = () => {
   const [showView, setShowView] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Hide on touch
+  // Detect touch device and show/hide cursor
   useEffect(() => {
     const handleTouch = () => setShouldShow(false);
     const handleMouse = () => setShouldShow(true);
@@ -96,8 +98,7 @@ const Cursor: React.FC = () => {
   // Always check hovered element for "special" class and clickable state
   useEffect(() => {
     if (!shouldShow) return;
-    const handleHover = (e: MouseEvent) => {
-      // Use current mouse coordinates for reliable detection
+    const handleHover = () => {
       const el = document.elementFromPoint(mouse.current.x, mouse.current.y);
       const overSpecial =
         el?.classList.contains("certificate-tile") ||
@@ -143,6 +144,7 @@ const Cursor: React.FC = () => {
     };
   }, [shouldShow]);
 
+  // Don't render the custom cursor on touch devices
   if (!shouldShow) return null;
 
   return (
