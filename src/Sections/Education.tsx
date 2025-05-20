@@ -70,27 +70,25 @@ const Education: React.FC = () => {
       <div className="relative w-full max-w-2xl mx-auto">
         {/* Vertical timeline line */}
         <div
-          className="hidden md:block absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 bg-gradient-to-b from-indigo-200/80 via-gray-400/30 to-gray-100/0 z-0"
+          className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-indigo-200/80 via-gray-400/30 to-gray-100/0 z-0"
           aria-hidden="true"
+          style={{ borderRadius: "10px" }}
         ></div>
         <ol className="flex flex-col gap-14 md:gap-20">
           {educationData.map((item, idx) => {
-            const isLeft = idx % 2 === 0;
             const fadeRef = useScrollFadeIn();
             return (
               <li
                 key={idx}
                 className={`
-                  group relative flex md:contents
-                  ${isLeft ? "md:justify-start" : "md:justify-end"}
-                  fade-in-up
+                  group relative flex flex-row items-start fade-in-up
                 `}
                 style={{ animationDelay: `${idx * 0.1 + 0.2}s` }}
                 data-animate
                 ref={fadeRef as any}
               >
-                {/* Connector and animated dot */}
-                <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
+                {/* Timeline dot and connector */}
+                <div className="flex flex-col items-center z-10" style={{ minWidth: "56px" }}>
                   <span className="relative flex h-6 w-6 items-center justify-center">
                     <span
                       className={`
@@ -100,6 +98,9 @@ const Education: React.FC = () => {
                       `}
                     ></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-br from-white via-indigo-400 to-blue-300 shadow"></span>
+                    <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                      {item.icon}
+                    </span>
                   </span>
                   {idx !== educationData.length - 1 && (
                     <span className="h-[90px] w-0.5 bg-gradient-to-b from-indigo-200/90 to-gray-100/0"></span>
@@ -108,20 +109,18 @@ const Education: React.FC = () => {
                 {/* Card */}
                 <div
                   className={`
-                    relative mt-2 md:w-[calc(50%-2.5rem)] w-full
+                    relative mt-2 ml-6 md:w-[calc(100%-56px)] w-full
                     rounded-2xl bg-white/70 dark:bg-neutral-900/70 shadow-xl shadow-gray-700/5
                     px-6 py-5 md:py-7
                     transition-transform
                     hover:scale-[1.027] hover:bg-white/90 dark:hover:bg-neutral-900/85 hover:shadow-2xl
                     backdrop-blur
-                    md:${isLeft ? "mr-auto ml-0" : "ml-auto mr-0"}
-                    md:text-left text-center
+                    text-left
                     cursor-pointer
                   `}
                   tabIndex={0}
                 >
-                  <div className="flex items-center justify-center md:justify-start gap-2 mb-1">
-                    <span>{item.icon}</span>
+                  <div className="flex items-center gap-2 mb-1">
                     <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">
                       {item.school}
                     </span>
