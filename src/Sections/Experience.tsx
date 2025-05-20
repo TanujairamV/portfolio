@@ -1,6 +1,6 @@
 import React from "react";
-import { FaGithub, FaPython, FaRobot, FaUserCircle, FaCode, FaCogs, FaChess, FaBolt, FaWrench } from "react-icons/fa";
-import { SiWhatsapp, SiTelegram, SiSelenium, SiHtml5, SiTailwindcss } from "react-icons/si";
+import { FaGithub, FaBolt } from "react-icons/fa";
+import { SiWhatsapp, SiHtml5 } from "react-icons/si";
 
 const EXPERIENCES = [
   {
