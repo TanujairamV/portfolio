@@ -355,7 +355,7 @@ body {
   background: none;
   position: absolute;
   left: 50%; top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background-image: url("data:image/svg+xml;utf8,<svg width='18' height='18' viewBox='0 0 18 18' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'><polyline points='5,13 13,13 13,5'/></svg>");
   background-repeat: no-repeat;
   background-position: center;
@@ -587,40 +587,23 @@ body {
    Appearing Effect
    ================ */
 
-@media (prefers-reduced-motion: no-preference) {
-  .fade-in,
-  .fade-in-up,
-  .fade-in-down,
-  .fade-in-left,
-  .fade-in-right,
-  .fade-in-scale {
-    opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity 0.72s cubic-bezier(.55,.12,.35,.99),
-      transform 0.72s cubic-bezier(.55,.12,.35,.99)
-    ;
-    will-change: opacity, transform;
-  }
-  .fade-in.visible,
-  .fade-in-up.visible,
-  .fade-in-down.visible,
-  .fade-in-left.visible,
-  .fade-in-right.visible,
-  .fade-in-scale.visible {
-    opacity: 1;
-    transform: none;
-  }
-  .fade-in-down { transform: translateY(-24px);}
-  .fade-in-left { transform: translateX(-32px);}
-  .fade-in-right { transform: translateX(32px);}
-  .fade-in-scale { transform: scale(0.94);}
-  .fade-in-scale.visible { transform: scale(1);}
+/* REMOVE all fade-in/appearing effect: these classes now do nothing */
+.fade-in,
+.fade-in-up,
+.fade-in-down,
+.fade-in-left,
+.fade-in-right,
+.fade-in-scale,
+.fade-in.visible,
+.fade-in-up.visible,
+.fade-in-down.visible,
+.fade-in-left.visible,
+.fade-in-right.visible,
+.fade-in-scale.visible {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
 }
 
-[data-fade-delay="1"] { transition-delay: 0.13s; }
-[data-fade-delay="2"] { transition-delay: 0.26s; }
-[data-fade-delay="3"] { transition-delay: 0.39s; }
-[data-fade-delay="4"] { transition-delay: 0.52s; }
-[data-fade-delay="5"] { transition-delay: 0.65s; }
-/* ...add more if needed */
+/* Keep fade delay classes for backward compatibility, do nothing */
+[data-fade-delay] { transition-delay: 0s !important; }
