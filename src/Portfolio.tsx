@@ -23,7 +23,6 @@ function withErrorBoundary(Component: React.ComponentType) {
     }
 
     componentDidCatch(error: any, info: any) {
-      // For debugging, log to console:
       console.error("[Debug] Error in Portfolio boundary:", error, info);
     }
 
@@ -41,7 +40,6 @@ function withErrorBoundary(Component: React.ComponentType) {
   };
 }
 
-// Gradient text style helpers
 const gradientText = {
   background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
   WebkitBackgroundClip: "text",
@@ -64,13 +62,11 @@ const Portfolio: React.FC = () => {
   // Debug: log rendering
   React.useEffect(() => {
     console.debug("[Debug] Portfolio component rendered");
+    console.debug("[Debug] Portfolio JSX body rendered");
   }, []);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
-      {/* Debug logs for mount */}
-      {console.debug("[Debug] Portfolio JSX body rendered")}
-
       {/* Intro screen and backgrounds */}
       <IntroScreen />
       <ParticlesBackground />
