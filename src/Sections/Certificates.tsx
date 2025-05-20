@@ -8,10 +8,10 @@ const certificates = [
     title: "Data Science and AI Completion",
     issuer: "IIT Madras",
     year: 2024,
-    image: "ds.jpg", // Use relative path for public folder
+    image: "ds.jpg", // Make sure ds.jpg is in your public folder
     description: "Certificate awarded by IIT Madras for successfully completing the Data Science and Artificial Intelligence course."
   },
-  // Add other certificates here if needed
+  // Add more certificates as needed
 ];
 
 const gradientTextStyle = {
@@ -20,10 +20,11 @@ const gradientTextStyle = {
   WebkitTextFillColor: "transparent",
   fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
   fontWeight: 700,
-  fontSize: "1.13rem",
-  letterSpacing: ".022em",
+  fontSize: "1.18rem",
+  letterSpacing: ".02em",
   lineHeight: 1.6,
-  display: "inline"
+  display: "inline",
+  cursor: "pointer"
 } as React.CSSProperties;
 
 const Certificates: React.FC = () => {
@@ -61,14 +62,14 @@ const Certificates: React.FC = () => {
           letterSpacing: "0.02em",
         }}
       >
-        <FaCertificate className="text-yellow-400 drop-shadow" />
+        <FaCertificate className="text-blue-300 drop-shadow" />
         Certificates
       </span>
-      <div className="flex flex-col items-center w-full max-w-2xl gap-12">
+      <div className="flex flex-col items-center w-full max-w-2xl gap-8">
         {certificates.map((cert, idx) => (
           <div
             key={idx}
-            className="w-full flex flex-col items-center px-5 py-4 rounded-2xl border border-white/10 bg-white/5 glass-card"
+            className="w-full flex flex-col items-center px-5 py-6 rounded-2xl border border-white/10 bg-white/5 glass-card"
             style={{
               boxShadow: "0 2px 22px 0 rgba(30, 42, 64, 0.09)",
               backdropFilter: "blur(6px)",
@@ -78,51 +79,57 @@ const Certificates: React.FC = () => {
             }}
           >
             <div
-              className="font-semibold mb-1 text-center"
+              className="mb-1 text-center w-full"
               style={gradientTextStyle}
+              onClick={() => handleToggle(idx)}
+              tabIndex={0}
+              role="button"
+              aria-pressed={shown[idx]}
+              onKeyDown={e => {
+                if (e.key === "Enter" || e.key === " ") handleToggle(idx);
+              }}
             >
               {cert.title}
             </div>
-            <div className="flex flex-row items-center gap-2 mb-1">
+            <div className="flex flex-row items-center justify-center gap-2 mb-1">
               <span className="text-gray-300 text-base font-medium">{cert.issuer}</span>
               <span className="text-gray-400 text-xs">·</span>
-              <span className="text-yellow-300 text-xs">{cert.year}</span>
+              <span className="text-gray-400 text-xs">{cert.year}</span>
             </div>
-            <div
-              className="text-gray-400 text-xs text-center mb-3"
-              style={{
-                fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
-                fontWeight: 400,
-                letterSpacing: ".011em"
-              }}
-            >
-              {cert.description}
-            </div>
-            <button
-              onClick={() => handleToggle(idx)}
-              className="px-4 py-2 rounded-2xl text-sm font-semibold outline-none bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 text-gray-900 hover:from-yellow-500 hover:to-yellow-400 hover:text-gray-900 transition mb-2 shadow-sm"
-              style={{
-                fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
-                letterSpacing: ".03em",
-                marginTop: "0.12rem"
-              }}
-            >
-              {shown[idx] ? "Hide Certificate" : "Show Certificate"}
-            </button>
-            <div className="flex justify-center">
-              {shown[idx] && (
+            <div className="flex justify-center w-full min-h-[85px]">
+              {!shown[idx] ? (
+                <div
+                  className="text-gray-400 text-xs text-center"
+                  style={{
+                    fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
+                    fontWeight: 400,
+                    letterSpacing: ".011em",
+                    padding: "0.5rem 0"
+                  }}
+                >
+                  {cert.description}
+                </div>
+              ) : (
                 <img
                   src={cert.image}
                   alt={cert.title}
-                  className="w-full max-w-xs h-auto rounded-xl shadow-lg border border-yellow-100/30"
-                  style={{
-                    marginTop: 8,
-                    background: "#fff3",
-                    transition: "box-shadow 0.18s",
-                  }}
+                  className="w-full max-w-xs h-auto rounded-xl shadow-lg border border-white/10 transition"
+                  style={{ marginTop: 2, background: "#fff3" }}
                   onError={() => console.debug(`[Debug] Failed to load image: ${cert.image}`)}
+                  onClick={() => handleToggle(idx)}
+                  tabIndex={0}
+                  role="button"
+                  aria-pressed={shown[idx]}
+                  onKeyDown={e => {
+                    if (e.key === "Enter" || e.key === " ") handleToggle(idx);
+                  }}
                 />
               )}
+            </div>
+            <div className="text-xs text-gray-500 mt-2 select-none" style={{ userSelect: "none" }}>
+              {shown[idx]
+                ? "Click image or title to hide"
+                : "Click title to view certificate"}
             </div>
           </div>
         ))}
