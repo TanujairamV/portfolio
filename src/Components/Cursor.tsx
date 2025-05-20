@@ -34,19 +34,29 @@ const Cursor: React.FC = () => {
   const [showView, setShowView] = useState(false);
   // Hide custom cursor when mouse leaves window
   const [isCursorVisible, setIsCursorVisible] = useState(false); // Start invisible
+  // Track if cursor has been initialized
+  const hasInitialized = useRef(false);
 
   // Mouse/ring positions
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number | null>(null);
 
-  // Log ref initialization
+  // Log ref initialization and initial styles
   useEffect(() => {
     console.log("Refs initialized:", {
       dotRef: !!dotRef.current,
       ringRef: !!ringRef.current,
       viewRef: !!viewRef.current,
     });
+    if (ringRef.current) {
+      const styles = window.getComputedStyle(ringRef.current);
+      console.log("Initial ring styles:", {
+        transform: styles.transform,
+        opacity: styles.opacity,
+        position: styles.position,
+      });
+    }
   }, []);
 
   // Detect touch device and set shouldShow
@@ -74,10 +84,21 @@ const Cursor: React.FC = () => {
     mouse.current.x = e.clientX;
     mouse.current.y = e.clientY;
 
+    // Log viewport and scroll offsets
+    console.log("Viewport info:", {
+      clientX: e.clientX,
+      clientY: e.clientY,
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
+    });
+
     // Initialize ring position and show cursor
-    if (!isCursorVisible) {
+    if (!hasInitialized.current) {
       ring.current.x = e.clientX;
       ring.current.y = e.clientY;
+      hasInitialized.current = true;
       setIsCursorVisible(true);
       console.log("First move, initializing ring:", {
         x: e.clientX,
@@ -104,8 +125,9 @@ const Cursor: React.FC = () => {
       ringX: ring.current.x,
       ringY: ring.current.y,
       showView,
+      isCursorVisible,
     });
-  }, [isCursorVisible]);
+  }, []);
 
   useEffect(() => {
     if (!shouldShow) return () => {};
@@ -115,17 +137,23 @@ const Cursor: React.FC = () => {
 
   // Animate the trailing ring, dot, and label
   useEffect(() => {
-    if (!shouldShow || !isCursorVisible) {
+    if (!shouldShow || !isCursorVisible || !hasInitialized.current) {
       // Immediately hide elements
       if (dotRef.current && ringRef.current && viewRef.current) {
         dotRef.current.style.opacity = "0";
         ringRef.current.style.opacity = "0";
         viewRef.current.style.opacity = "0";
-        dotRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
-        ringRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
-        viewRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
+        dotRef.current.style.transform = `translate(-9999px, -9999px)`;
+        ringRef.current.style.transform = `translate(-9999px, -9999px)`;
+        viewRef.current.style.transform = `translate(-9999px, -9999px)`;
+        console.log("Hide styles applied:", {
+          dotOpacity: dotRef.current.style.opacity,
+          ringOpacity: ringRef.current.style.opacity,
+          dotTransform: dotRef.current.style.transform,
+          ringTransform: ringRef.current.style.transform,
+        });
       }
-      console.log("Animation stopped: shouldShow=", shouldShow, "isCursorVisible=", isCursorVisible);
+      console.log("Animation stopped: shouldShow=", shouldShow, "isCursorVisible=", isCursorVisible, "hasInitialized=", hasInitialized.current);
       return () => {
         if (animFrame.current) cancelAnimationFrame(animFrame.current);
         animFrame.current = null;
@@ -145,15 +173,15 @@ const Cursor: React.FC = () => {
       ring.current.y = lerp(ring.current.y, mouse.current.y, 0.2);
 
       // Update dot position (instant)
-      dotRef.current.style.transform = `translate3d(${mouse.current.x - 4}px, ${mouse.current.y - 4}px, 0)`;
+      dotRef.current.style.transform = `translate(${mouse.current.x - 4}px, ${mouse.current.y - 4}px)`;
       dotRef.current.style.opacity = "1";
 
       // Update ring position
-      ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
+      ringRef.current.style.transform = `translate(${ring.current.x - 22}px, ${ring.current.y - 22}px)`;
       ringRef.current.style.opacity = showView ? "0" : "1";
 
       // Update view label position
-      viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
+      viewRef.current.style.transform = `translate(${ring.current.x - 48}px, ${ring.current.y - 24}px)`;
       viewRef.current.style.opacity = showView ? "1" : "0";
 
       console.log("Animation frame:", {
@@ -203,11 +231,22 @@ const Cursor: React.FC = () => {
         dotRef.current.style.opacity = "0";
         ringRef.current.style.opacity = "0";
         viewRef.current.style.opacity = "0";
-        dotRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
-        ringRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
-        viewRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
+        dotRef.current.style.transform = `translate(-9999px, -9999px)`;
+        ringRef.current.style.transform = `translate(-9999px, -9999px)`;
+        viewRef.current.style.transform = `translate(-9999px, -9999px)`;
+        console.log("Mouse leave styles:", {
+          dotOpacity: dotRef.current.style.opacity,
+          ringOpacity: ringRef.current.style.opacity,
+          dotTransform: dotRef.current.style.transform,
+          ringTransform: ringRef.current.style.transform,
+        });
       }
       console.log("Mouse left: isCursorVisible=false");
+    };
+
+    const handleMouseOut = () => {
+      console.log("Mouse out: fallback event");
+      handleMouseLeave();
     };
 
     const handleMouseEnter = () => {
@@ -216,10 +255,12 @@ const Cursor: React.FC = () => {
     };
 
     window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, [shouldShow]);
@@ -228,21 +269,9 @@ const Cursor: React.FC = () => {
 
   return (
     <>
-      <div
-        ref={ringRef}
-        className="custom-cursor-ring"
-        style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
-      />
-      <div
-        ref={dotRef}
-        className="custom-cursor-dot"
-        style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
-      />
-      <div
-        ref={viewRef}
-        className="custom-cursor-view"
-        style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
-      >
+      <div ref={ringRef} className="custom-cursor-ring" />
+      <div ref={dotRef} className="custom-cursor-dot" />
+      <div ref={viewRef} className="custom-cursor-view">
         <span>View</span>
         <span>→</span>
       </div>
