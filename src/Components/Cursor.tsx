@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./Cursor.css";
 
 // Helper: checks if an element or its ancestors is a special tile
@@ -38,9 +38,18 @@ const Cursor: React.FC = () => {
   // Mouse/ring positions, not state for performance
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
-  const animFrame = useRef<number>();
+  const animFrame = useRef<number | null>(null);
 
-  // Detect touch device and set shouldShow accordingly
+  // Debounce helper
+  const debounce = <T extends (...args: any[]) => void>(func: T, wait: number) => {
+    let timeout: NodeJS.Timeout | null = null;
+    return (...args: Parameters<T>) => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  };
+
+  // Detect touch device and set shouldShow
   useEffect(() => {
     const isTouch =
       typeof window !== "undefined" &&
@@ -66,42 +75,50 @@ const Cursor: React.FC = () => {
   // Animate the trailing ring and label
   useEffect(() => {
     if (!shouldShow) return () => {};
+
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
+
     const animate = () => {
+      if (!ringRef.current || !viewRef.current) return;
+
       ring.current.x = lerp(ring.current.x, mouse.current.x, 0.2);
       ring.current.y = lerp(ring.current.y, mouse.current.y, 0.2);
 
-      if (ringRef.current && !showView) {
+      if (!showView) {
         ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
         ringRef.current.style.opacity = isCursorVisible ? "1" : "0";
       }
-      if (viewRef.current && showView) {
+      if (showView) {
         viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
         viewRef.current.style.opacity = isCursorVisible ? "1" : "0";
       }
-      // Hide ring if label is showing or cursor not visible
-      if (ringRef.current) ringRef.current.style.opacity = showView || !isCursorVisible ? "0" : "1";
-      // Hide label if not showing or cursor not visible
-      if (viewRef.current) viewRef.current.style.opacity = showView && isCursorVisible ? "1" : "0";
+      ringRef.current.style.opacity = showView || !isCursorVisible ? "0" : "1";
+      viewRef.current.style.opacity = showView && isCursorVisible ? "1" : "0";
+
       animFrame.current = requestAnimationFrame(animate);
     };
+
     animFrame.current = requestAnimationFrame(animate);
-    return () => animFrame.current && cancelAnimationFrame(animFrame.current);
+    return () => {
+      if (animFrame.current) cancelAnimationFrame(animFrame.current);
+      animFrame.current = null;
+    };
   }, [shouldShow, showView, isCursorVisible]);
 
   // Mousemove: move dot, update mouse position, set "View" and hover
-  useEffect(() => {
-    if (!shouldShow) return () => {};
-
-    const handleMove = (e: MouseEvent) => {
+  const handleMove = useCallback(
+    debounce((e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
+
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
         dotRef.current.style.opacity = isCursorVisible ? "1" : "0";
       }
+
       const el = document.elementFromPoint(e.clientX, e.clientY);
       setShowView(isSpecialTile(el));
+
       if (ringRef.current) {
         if (isClickable(el)) {
           ringRef.current.classList.add("cursor-hover");
@@ -109,11 +126,15 @@ const Cursor: React.FC = () => {
           ringRef.current.classList.remove("cursor-hover");
         }
       }
-    };
+    }, 10),
+    [isCursorVisible]
+  );
 
+  useEffect(() => {
+    if (!shouldShow) return () => {};
     window.addEventListener("mousemove", handleMove);
     return () => window.removeEventListener("mousemove", handleMove);
-  }, [shouldShow, isCursorVisible]);
+  }, [shouldShow, handleMove]);
 
   // Hide browser cursor everywhere if using custom cursor
   useEffect(() => {
@@ -122,12 +143,13 @@ const Cursor: React.FC = () => {
     } else {
       document.body.removeAttribute("data-custom-cursor");
     }
-    return () => { document.body.removeAttribute("data-custom-cursor"); };
+    return () => document.body.removeAttribute("data-custom-cursor");
   }, [shouldShow]);
 
   // Hide custom cursor when mouse leaves window, show when enters
   useEffect(() => {
     if (!shouldShow) return () => {};
+
     const handleMouseLeave = () => setIsCursorVisible(false);
     const handleMouseEnter = () => setIsCursorVisible(true);
 
