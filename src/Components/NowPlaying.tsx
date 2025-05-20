@@ -11,7 +11,9 @@ async function getItunesThumbnail(artist: string, track: string): Promise<string
     if (itunesData.results?.[0]?.artworkUrl100) {
       return itunesData.results[0].artworkUrl100.replace("100x100bb.jpg", "400x400bb.jpg");
     }
-  } catch {}
+  } catch (e) {
+    console.error("[Debug] Error fetching iTunes thumbnail:", e);
+  }
   return null;
 }
 
@@ -19,12 +21,12 @@ const fallbackTrack: LastFMTrack = {
   artist: "",
   name: "Not playing",
   album: "",
-  image: "https://via.placeholder.com/120x120?text=No+Art",
+  // Changed placeholder image to a more reliable service
+  image: "https://placehold.co/120x120?text=No+Art",
   url: "#",
 };
 
 const BoxWideVisualizer: React.FC<{ mobile?: boolean }> = ({ mobile }) => {
-  // 16 bars for desktop, 8 for mobile
   const barCount = mobile ? 8 : 16;
   const [heights, setHeights] = useState(Array(barCount).fill(8));
   useEffect(() => {
@@ -100,12 +102,22 @@ const NowListening: React.FC = () => {
     fetchRecentTrack()
       .then(async (t: LastFMTrack) => {
         if (!isMounted) return;
+        // Debug
+        console.debug("[Debug] Recent track fetched:", t);
+
         setTrack(t);
 
         const thumb = await getItunesThumbnail(t.artist, t.name);
-        setImg(thumb || fallbackTrack.image);
+        if (thumb) {
+          console.debug("[Debug] Using iTunes thumbnail:", thumb);
+          setImg(thumb);
+        } else {
+          console.debug("[Debug] Using fallback image");
+          setImg(fallbackTrack.image);
+        }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("[Debug] Error fetching recent track:", err);
         if (!isMounted) return;
         setTrack(null);
         setImg(fallbackTrack.image);
@@ -123,6 +135,11 @@ const NowListening: React.FC = () => {
 
   const t: LastFMTrack = track || fallbackTrack;
   const blurStrength = mobileView ? 7 : 11;
+
+  // Debug: Log when component renders and what image is used
+  useEffect(() => {
+    console.debug("[Debug] NowListening component rendered. Img:", img, "Track:", t);
+  }, [img, t]);
 
   return (
     <div
@@ -216,6 +233,11 @@ const NowListening: React.FC = () => {
             }}
             onLoad={() => setImgLoaded(true)}
             tabIndex={mobileView ? -1 : 0}
+            onError={() => {
+              console.warn("[Debug] Image failed to load, using fallback.");
+              setImg(fallbackTrack.image);
+              setImgLoaded(true);
+            }}
           />
           {!imgLoaded && (
             <div style={{
