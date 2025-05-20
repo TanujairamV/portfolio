@@ -41,7 +41,7 @@ const Certificates: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col items-center w-full max-w-2xl group cursor-pointer"
+      className="flex flex-col items-center w-full max-w-2xl group cursor-pointer outline-none"
       tabIndex={0}
       onClick={handleToggle}
       onKeyDown={e => {
@@ -55,21 +55,21 @@ const Certificates: React.FC = () => {
       }}
     >
       <div
-        className="mb-1 text-center w-full flex justify-center items-center gap-2"
+        className="mb-1 w-full flex flex-row justify-center items-center gap-2 text-center"
         style={gradientTextStyle}
       >
         <FaCertificate className="text-blue-300 drop-shadow" />
         {cert.title}
       </div>
-      <div className="flex flex-row items-center justify-center gap-2 mb-1">
+      <div className="flex flex-row items-center justify-center gap-2 mb-1 w-full text-center">
         <span className="text-gray-300 text-base font-medium">{cert.issuer}</span>
         <span className="text-gray-400 text-xs">·</span>
         <span className="text-gray-400 text-xs">{cert.year}</span>
       </div>
-      <div className="flex justify-center w-full min-h-[85px]">
+      <div className="flex justify-center items-center w-full min-h-[85px] text-center">
         {!shown ? (
           <div
-            className="text-gray-400 text-xs text-center"
+            className="text-gray-400 text-xs text-center w-full flex justify-center items-center"
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
               fontWeight: 400,
@@ -83,7 +83,7 @@ const Certificates: React.FC = () => {
           <img
             src={cert.image}
             alt={cert.title}
-            className="w-full max-w-xs h-auto rounded-xl shadow-lg border border-white/10 transition"
+            className="w-full max-w-xs h-auto rounded-xl shadow-lg border border-white/10 transition block mx-auto"
             style={{ marginTop: 2, background: "#fff3" }}
             tabIndex={-1}
             draggable={false}
@@ -91,7 +91,7 @@ const Certificates: React.FC = () => {
           />
         )}
       </div>
-      <div className="text-xs text-gray-500 mt-2 select-none">
+      <div className="text-xs text-gray-500 mt-2 select-none text-center w-full flex justify-center items-center">
         {shown
           ? "Click anywhere to hide certificate"
           : "Click anywhere to view certificate"}
