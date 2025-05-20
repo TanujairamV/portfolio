@@ -13,7 +13,7 @@ import Experience from "./Sections/Experience";
 import Certificates from "./Sections/Certificates";
 import "./Styles.css";
 
-// --- Debugging helper ---
+// Error Boundary for production safety
 function withErrorBoundary(Component: React.ComponentType) {
   return class ErrorBoundary extends React.Component {
     state = { hasError: false, error: null as any };
@@ -23,15 +23,16 @@ function withErrorBoundary(Component: React.ComponentType) {
     }
 
     componentDidCatch(error: any, info: any) {
-      console.error("[Debug] Error in Portfolio boundary:", error, info);
+      // Optionally log error to an external service here
+      // This is production-safe, so no console.debug here
     }
 
     render() {
       if (this.state.hasError) {
         return (
-          <div style={{ color: "red", background: "#222", padding: 24 }}>
-            <h2>Something went wrong rendering the Portfolio component.</h2>
-            <pre>{String(this.state.error)}</pre>
+          <div style={{ color: "red", background: "#181824", padding: 24, borderRadius: 12 }}>
+            <h2>Something went wrong rendering this section.</h2>
+            <pre style={{ fontSize: 14 }}>{String(this.state.error)}</pre>
           </div>
         );
       }
@@ -41,7 +42,7 @@ function withErrorBoundary(Component: React.ComponentType) {
 }
 
 const gradientText = {
-  background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
+  background: "linear-gradient(90deg, #fff 70%, #8080ff 100%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent"
 };
@@ -59,22 +60,15 @@ const sectionHeading = (text: string, icon?: React.ReactNode) => (
 );
 
 const Portfolio: React.FC = () => {
-  // Debug: log rendering
-  React.useEffect(() => {
-    console.debug("[Debug] Portfolio component rendered");
-    console.debug("[Debug] Portfolio JSX body rendered");
-  }, []);
-
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
-      {/* Intro screen and backgrounds */}
+      {/* Intro, particles, cursor, and navigation */}
       <IntroScreen />
       <ParticlesBackground />
       <Cursor />
       <Navbar />
 
-      <main className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-10">
-        {/* Hero Section */}
+      <main className="relative z-10 w-full max-w-5xl mx-auto pt-24 pb-16 px-4 md:px-8 flex flex-col gap-14">
         <Hero />
 
         {/* Now Playing */}
@@ -97,7 +91,7 @@ const Portfolio: React.FC = () => {
         {/* Education */}
         <section id="education" className="mb-20">
           {sectionHeading("Education")}
-          <div className="rounded-xl border-2 border-yellow-400/80 bg-black/70 shadow-lg p-6">
+          <div className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md shadow-xl p-6">
             <Education />
           </div>
         </section>
@@ -105,7 +99,7 @@ const Portfolio: React.FC = () => {
         {/* Certificates */}
         <section id="certificates" className="mb-20">
           {sectionHeading("Certificates")}
-          <div className="rounded-xl border-2 border-yellow-400/80 bg-black/70 shadow-lg p-6">
+          <div className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md shadow-xl p-6">
             <Certificates />
           </div>
         </section>
