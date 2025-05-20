@@ -54,17 +54,7 @@ const gradientTextClass =
 
 const Projects: React.FC = () => (
   <section id="projects" className="mb-16 fade-in-up" data-fade-delay="6">
-    <div
-      className="text-2xl font-bold mb-8 flex items-center gap-2 font-hatton"
-      style={{
-        background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        fontFamily: "'Hatton', serif",
-      }}
-    >
-      🛠 Projects
-    </div>
+    {/* Removed the Projects heading as requested */}
     <div className="grid md:grid-cols-2 gap-8">
       {projects.map((project, idx) => (
         <motion.a
@@ -72,7 +62,31 @@ const Projects: React.FC = () => (
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group material-card bg-white/40 dark:bg-neutral-900/70 backdrop-blur-xl rounded-2xl shadow-xl p-6 transition-transform duration-300 hover:scale-105 fade-in-up cursor-pointer border border-white/10 outline-none focus:ring-2 focus:ring-gray-300"
+          className="
+            group 
+            cursor-pointer 
+            rounded-2xl 
+            p-6 
+            shadow-xl 
+            border border-white/10
+            transition-transform 
+            duration-300 
+            hover:scale-105 
+            fade-in-up 
+            outline-none 
+            focus:ring-2 
+            focus:ring-gray-300
+            bg-white/20 dark:bg-neutral-900/30
+            backdrop-blur-xl
+            "
+          style={{
+            // Extra glass morphism for extra pop
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.12)",
+            background:
+              "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(18px) saturate(1.15)",
+            WebkitBackdropFilter: "blur(18px) saturate(1.15)",
+          }}
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
