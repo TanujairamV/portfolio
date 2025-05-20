@@ -41,16 +41,16 @@ const projects: Project[] = [
 
 const iconForProject = (title: string) => {
   if (title.toLowerCase().includes("python"))
-    return <FaPython className="text-yellow-400 text-2xl" />;
+    return <FaPython className="text-white text-2xl" />;
   if (title.toLowerCase().includes("express"))
     return <SiExpress className="text-gray-200 text-2xl" />;
   if (title.toLowerCase().includes("selenium") || title.toLowerCase().includes("bot"))
-    return <FaRobot className="text-pink-400 text-2xl" />;
+    return <FaRobot className="text-gray-300 text-2xl" />;
   return <FaGithub className="text-gray-300 text-2xl" />;
 };
 
 const gradientTextClass =
-  "bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 invert-on-hover";
+  "bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-400 invert-on-hover";
 
 const Projects: React.FC = () => (
   <section id="projects" className="mb-16 fade-in-up" data-fade-delay="6">
@@ -67,52 +67,44 @@ const Projects: React.FC = () => (
     </div>
     <div className="grid md:grid-cols-2 gap-8">
       {projects.map((project, idx) => (
-        <motion.div
+        <motion.a
           key={project.id}
-          className="material-card bg-white/80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:scale-105 transition-transform duration-300 fade-in-up"
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group material-card bg-white/40 dark:bg-neutral-900/70 backdrop-blur-xl rounded-2xl shadow-xl p-6 transition-transform duration-300 hover:scale-105 fade-in-up cursor-pointer border border-white/10 outline-none focus:ring-2 focus:ring-gray-300"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.4, delay: idx * 0.1 }}
+          aria-label={`Visit ${project.title}`}
+          title={`Visit ${project.title}`}
+          tabIndex={0}
         >
           <div className="flex items-center gap-3 mb-2">
             {iconForProject(project.title)}
             <h3 className={`text-xl font-bold font-space-grotesk mb-0 ${gradientTextClass}`}>
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent"
-                aria-label={`Visit ${project.title}`}
-                title={`Visit ${project.title}`}
-              >
-                {project.title}
-              </a>
+              {project.title}
             </h3>
           </div>
           <p className={`text-base mb-4 font-light ${gradientTextClass}`}>
             {project.description}
           </p>
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="flex flex-wrap gap-2 mb-1">
             {project.techStack.map((t: string) => (
               <span
                 key={t}
-                className={`inline-block bg-foreground/10 text-foreground px-3 py-1 rounded-full text-base font-space-grotesk ${gradientTextClass}`}
+                className={`inline-block bg-white/10 text-gray-100 px-3 py-1 rounded-full text-base font-space-grotesk ${gradientTextClass}`}
               >
                 {t}
               </span>
             ))}
           </div>
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-center gap-1 px-4 py-2 rounded bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-sm shadow transition font-caviar"
-          >
+          <div className="flex items-center gap-1 text-gray-400 dark:text-gray-200 text-sm font-medium mt-3 opacity-70 group-hover:opacity-100 transition">
             <FaGithub className="mr-1" />
-            GitHub Repository
-          </a>
-        </motion.div>
+            GitHub
+          </div>
+        </motion.a>
       ))}
     </div>
   </section>
