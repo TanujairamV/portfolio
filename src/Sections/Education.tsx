@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
-import { FaGraduationCap, FaMapMarkerAlt, FaSchool } from "react-icons/fa";
+import React from "react";
+import { FaSchool, FaGraduationCap } from "react-icons/fa";
 
-// Timeline data (earliest first, latest last)
+// Your education data
 const educationData = [
   {
     school: "St. Joseph’s Matriculation Higher Secondary School",
@@ -38,140 +38,137 @@ const educationData = [
   },
 ];
 
-const Education: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+// Animation on scroll hook (Intersection Observer)
+const useScrollFadeIn = () => {
+  const ref = React.useRef<HTMLDivElement>(null);
 
-  // Smoother effect with IntersectionObserver
-  useEffect(() => {
+  React.useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
     const observer = new window.IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (visibleEntries.length > 0) {
-          const idx = Number(visibleEntries[0].target.getAttribute("data-index"));
-          setActiveIndex(idx);
-        }
+      ([entry]) => {
+        if (entry.isIntersecting) node.classList.add("in-view");
       },
-      {
-        root: null,
-        rootMargin: "0px",
-        threshold: [0.25, 0.5, 0.75, 1],
-      }
+      { threshold: 0.18 }
     );
-
-    itemRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
-    });
-
-    return () => {
-      itemRefs.current.forEach((el) => {
-        if (el) observer.unobserve(el);
-      });
-    };
+    observer.observe(node);
+    return () => observer.disconnect();
   }, []);
 
-  // Calculate the pointer (circle) top position
-  const getPointerTop = () => {
-    if (!itemRefs.current[activeIndex]) return 0;
-    const li = itemRefs.current[activeIndex];
-    if (!li || !sectionRef.current) return 0;
-    const sectionRect = sectionRef.current.getBoundingClientRect();
-    const liRect = li.getBoundingClientRect();
-    const offset = liRect.top - sectionRect.top + liRect.height / 2;
-    return offset;
-  };
+  return ref;
+};
 
+const Education: React.FC = () => {
   return (
-    <section id="education" className="mb-16">
-      <div
-        className="text-2xl font-bold mb-8 flex items-center gap-2 font-hatton"
-        style={{
-          background: "linear-gradient(90deg, #fff 70%, #8080ff 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          fontFamily: "'Hatton', serif",
-        }}
-      >
-        <FaGraduationCap className="text-blue-300" />
+    <section
+      id="education"
+      className="relative py-12 flex flex-col items-center bg-transparent"
+    >
+      <h2 className="mb-10 text-3xl font-bold text-center bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent tracking-tight font-hatton">
         Education
-      </div>
-      <div
-        className="relative flex flex-col items-center overflow-x-hidden"
-        ref={sectionRef}
-        style={{ minHeight: 400, scrollBehavior: "smooth" }}
-      >
-        {/* Timeline vertical bar */}
+      </h2>
+      <div className="relative w-full max-w-2xl mx-auto">
+        {/* Vertical timeline line */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 via-gray-500 to-blue-400 opacity-60 rounded-full pointer-events-none"
+          className="hidden md:block absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 bg-gradient-to-b from-indigo-200/80 via-gray-400/30 to-gray-100/0 z-0"
           aria-hidden="true"
-          style={{ zIndex: 0 }}
-        />
-        {/* Animated pointer */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 w-5 h-5 rounded-full border-2 border-blue-400 bg-white/40 shadow-xl z-20 pointer-events-none transition-all"
-          style={{
-            top: getPointerTop() - 10,
-            transition: "top 0.7s cubic-bezier(.4,2,.6,1), box-shadow 0.35s",
-            boxShadow: "0 0 0 7px rgba(96,165,250,0.10)",
-          }}
-        />
-        <ol className="relative z-10 w-full max-w-xl flex flex-col gap-16 overflow-y-auto snap-y snap-mandatory scroll-smooth"
-            style={{ maxHeight: "70vh" }}>
-          {educationData.map((edu, idx) => (
-            <li key={edu.school} className="relative flex justify-center snap-center" style={{ zIndex: 1 }}>
-              {/* Timeline dot */}
-              <span
-                className={`absolute left-1/2 -translate-x-1/2 -top-4 flex items-center justify-center w-6 h-6 rounded-full border-2 shadow-lg z-10 transition-all duration-300
-                  ${activeIndex === idx
-                    ? "bg-blue-400 border-blue-300 scale-110"
-                    : "bg-white/10 border-slate-400"
-                  }
+        ></div>
+        <ol className="flex flex-col gap-14 md:gap-20">
+          {educationData.map((item, idx) => {
+            const isLeft = idx % 2 === 0;
+            const fadeRef = useScrollFadeIn();
+            return (
+              <li
+                key={idx}
+                className={`
+                  group relative flex md:contents
+                  ${isLeft ? "md:justify-start" : "md:justify-end"}
+                  fade-in-up
                 `}
-                style={{
-                  transition: "all 0.35s cubic-bezier(.4,2,.6,1)",
-                }}
+                style={{ animationDelay: `${idx * 0.1 + 0.2}s` }}
+                data-animate
+                ref={fadeRef as any}
               >
-                {edu.icon}
-              </span>
-              {/* Glassmorphic tile */}
-              <div
-                ref={el => (itemRefs.current[idx] = el)}
-                data-index={idx}
-                className={`ml-0 w-full max-w-md px-7 py-6 rounded-xl border border-white/15 bg-white/10 backdrop-blur-md shadow-2xl transition-all duration-500
-                  ${activeIndex === idx ? "ring-2 ring-blue-400/60 scale-[1.03]" : ""}
-                `}
-                style={{
-                  marginTop: "2.5rem",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
-                  <h3 className="text-xl font-bold mb-1 font-caviar text-blue-200">{edu.school}</h3>
-                  <span className="text-sm text-gray-400 flex items-center gap-1">
-                    <FaMapMarkerAlt className="inline-block mr-1 text-blue-400" />
-                    {edu.location}
+                {/* Connector and animated dot */}
+                <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center z-10">
+                  <span className="relative flex h-6 w-6 items-center justify-center">
+                    <span
+                      className={`
+                        animate-pulse
+                        absolute inline-flex h-full w-full rounded-full bg-gradient-to-br from-indigo-200 via-blue-100 to-gray-100 opacity-60
+                        group-hover:scale-110 group-hover:opacity-80 transition
+                      `}
+                    ></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-br from-white via-indigo-400 to-blue-300 shadow"></span>
                   </span>
+                  {idx !== educationData.length - 1 && (
+                    <span className="h-[90px] w-0.5 bg-gradient-to-b from-indigo-200/90 to-gray-100/0"></span>
+                  )}
                 </div>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                  <span className="text-sm text-gray-300 font-semibold mb-1">
-                    {edu.grade}
-                  </span>
-                  <span className="text-xs text-gray-400 font-caviar">{edu.period}</span>
+                {/* Card */}
+                <div
+                  className={`
+                    relative mt-2 md:w-[calc(50%-2.5rem)] w-full
+                    rounded-2xl bg-white/70 dark:bg-neutral-900/70 shadow-xl shadow-gray-700/5
+                    px-6 py-5 md:py-7
+                    transition-transform
+                    hover:scale-[1.027] hover:bg-white/90 dark:hover:bg-neutral-900/85 hover:shadow-2xl
+                    backdrop-blur
+                    md:${isLeft ? "mr-auto ml-0" : "ml-auto mr-0"}
+                    md:text-left text-center
+                    cursor-pointer
+                  `}
+                  tabIndex={0}
+                >
+                  <div className="flex items-center justify-center md:justify-start gap-2 mb-1">
+                    <span>{item.icon}</span>
+                    <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                      {item.school}
+                    </span>
+                  </div>
+                  <div className="text-md font-medium text-gray-600 dark:text-gray-300 mb-0.5">
+                    {item.grade}
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">{item.location}</div>
+                  <div className="text-xs text-gray-400 dark:text-gray-500 mb-2">{item.period}</div>
+                  <ul className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed list-disc list-inside mt-1">
+                    {item.details.map((d, i) => (
+                      <li key={i}>{d}</li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="list-disc ml-5 mt-2 text-gray-300 font-caviar space-y-1">
-                  {edu.details.map((d, i) => (
-                    <li key={i}>{d}</li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ol>
       </div>
+      {/* Animation styles */}
+      <style>{`
+        .fade-in-up {
+          opacity: 0;
+          transform: translateY(44px) scale(0.98);
+          transition: opacity 0.7s cubic-bezier(.42,.03,.36,1), transform 0.7s cubic-bezier(.42,.03,.36,1);
+        }
+        .fade-in-up.in-view {
+          opacity: 1 !important;
+          transform: translateY(0) scale(1);
+        }
+      `}</style>
+      {/* Intersection Observer animation script */}
+      <script dangerouslySetInnerHTML={{
+        __html: `
+        (() => {
+          function handleIntersect(entries) {
+            entries.forEach(entry => {
+              if(entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+              }
+            });
+          }
+          const observer = new window.IntersectionObserver(handleIntersect, { threshold: 0.18 });
+          document.querySelectorAll('[data-animate].fade-in-up').forEach(el => observer.observe(el));
+        })();
+      `}} />
     </section>
   );
 };
