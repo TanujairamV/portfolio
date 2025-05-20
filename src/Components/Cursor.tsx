@@ -9,12 +9,10 @@ function isClickable(el: Element | null): boolean {
   if ((el as HTMLElement).onclick || (el as HTMLElement).onmousedown) return true;
   if (el.classList.contains("cursor-pointer")) return true;
   if (el.closest("a,button,[role=button],.cursor-pointer")) return true;
-  // Custom: Certificates and Projects tiles
   if (el.classList.contains("certificate-tile") || el.classList.contains("project-tile")) return true;
   return false;
 }
 
-// Detect if device is touch-enabled
 const isTouchDevice = (): boolean =>
   typeof window !== "undefined" &&
   ("ontouchstart" in window ||
@@ -31,8 +29,9 @@ const Cursor: React.FC = () => {
   const animFrame = useRef<number>();
   const [shouldShow, setShouldShow] = useState(false);
   const [showView, setShowView] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
-  // Detect touch device and show/hide cursor
+  // Hide on touch
   useEffect(() => {
     const handleTouch = () => setShouldShow(false);
     const handleMouse = () => setShouldShow(true);
@@ -60,19 +59,16 @@ const Cursor: React.FC = () => {
       ring.current.x = lerp(ring.current.x, mouse.current.x, 0.20);
       ring.current.y = lerp(ring.current.y, mouse.current.y, 0.20);
 
-      // Move ring
       if (ringRef.current && !showView) {
         ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
-        ringRef.current.style.opacity = "1";
+        ringRef.current.style.opacity = isVisible ? "1" : "0";
       }
-      // Move "view" label instead of ring (when on special tiles)
       if (viewRef.current && showView) {
         viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
-        viewRef.current.style.opacity = "1";
+        viewRef.current.style.opacity = isVisible ? "1" : "0";
       }
-      // Fade out the unused element
-      if (ringRef.current) ringRef.current.style.opacity = showView ? "0" : "1";
-      if (viewRef.current) viewRef.current.style.opacity = showView ? "1" : "0";
+      if (ringRef.current) ringRef.current.style.opacity = showView || !isVisible ? "0" : "1";
+      if (viewRef.current) viewRef.current.style.opacity = showView && isVisible ? "1" : "0";
 
       animFrame.current = requestAnimationFrame(animate);
     };
@@ -80,9 +76,9 @@ const Cursor: React.FC = () => {
     return () => {
       if (animFrame.current) cancelAnimationFrame(animFrame.current);
     };
-  }, [shouldShow, showView]);
+  }, [shouldShow, showView, isVisible]);
 
-  // Mouse move handler
+  // Mouse move handler (always update position)
   useEffect(() => {
     if (!shouldShow) return;
     const move = (e: MouseEvent) => {
@@ -90,23 +86,21 @@ const Cursor: React.FC = () => {
       mouse.current.y = e.clientY;
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+        dotRef.current.style.opacity = isVisible ? "1" : "0";
       }
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
-  }, [shouldShow]);
+  }, [shouldShow, isVisible]);
 
-  // Hover detection for clickable elements and "special" tiles
+  // Hover detection for clickable elements and special tiles
   useEffect(() => {
     if (!shouldShow) return;
     const handleHover = (e: MouseEvent) => {
       const el = document.elementFromPoint(e.clientX, e.clientY);
-
-      // Special: certificate/project tile (className should be set on those tiles!)
       const overSpecial =
         el?.classList.contains("certificate-tile") ||
         el?.classList.contains("project-tile");
-
       setShowView(Boolean(overSpecial));
 
       if (ringRef.current) {
@@ -130,6 +124,21 @@ const Cursor: React.FC = () => {
     }
     return () => {
       document.body.style.cursor = "";
+    };
+  }, [shouldShow]);
+
+  // Hide cursor when mouse leaves the window, show when enters
+  useEffect(() => {
+    if (!shouldShow) return;
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
+
+    window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mouseenter", handleMouseEnter);
+
+    return () => {
+      window.removeEventListener("mouseleave", handleMouseLeave);
+      window.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, [shouldShow]);
 
