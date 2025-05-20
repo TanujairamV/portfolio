@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { FaGraduationCap, FaMapMarkerAlt, FaSchool } from "react-icons/fa";
 
 // Timeline data
@@ -39,14 +39,51 @@ const educationData = [
   },
 ];
 
-const timelineBar = (
-  <div
-    className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-300 via-gray-500 to-indigo-400 opacity-60 rounded-full"
-    aria-hidden="true"
-  />
-);
-
 const Education: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Effect to track scroll and update which school is active
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+
+      const sectionTop = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+      const scrollPos = window.scrollY + window.innerHeight / 2;
+
+      let found = 0;
+      for (let i = 0; i < itemRefs.current.length; i++) {
+        const li = itemRefs.current[i];
+        if (li) {
+          const rect = li.getBoundingClientRect();
+          const liTop = rect.top + window.scrollY;
+          if (scrollPos >= liTop) {
+            found = i;
+          }
+        }
+      }
+      setActiveIndex(found);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Calculate the pointer (circle) top position
+  const getPointerTop = () => {
+    // Default to first item if refs not set yet
+    if (!itemRefs.current[activeIndex]) return 0;
+    const li = itemRefs.current[activeIndex];
+    if (!li || !sectionRef.current) return 0;
+    const sectionRect = sectionRef.current.getBoundingClientRect();
+    const liRect = li.getBoundingClientRect();
+    const offset = liRect.top - sectionRect.top + liRect.height / 2;
+    return offset;
+  };
+
   return (
     <section id="education" className="mb-16">
       <div
@@ -61,17 +98,43 @@ const Education: React.FC = () => {
         <FaGraduationCap className="text-yellow-300" />
         Education
       </div>
-      <div className="relative pl-12">
-        {timelineBar}
+      <div className="relative pl-12" ref={sectionRef} style={{minHeight: 400}}>
+        {/* Timeline vertical bar */}
+        <div
+          className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-300 via-gray-500 to-indigo-400 opacity-60 rounded-full"
+          aria-hidden="true"
+        />
+        {/* Animated pointer */}
+        <div
+          className="absolute left-3 w-7 h-7 rounded-full border-4 border-yellow-400 bg-black transition-all duration-400 shadow-lg z-20 pointer-events-none"
+          style={{
+            top: getPointerTop() - 14, // center circle on item
+            transition: "top 0.4s cubic-bezier(.4,2,.6,1)",
+          }}
+        />
         <ol className="space-y-12 relative z-10">
-          {educationData.map((edu) => (
-            <li key={edu.school} className="relative group">
+          {educationData.map((edu, idx) => (
+            <li
+              key={edu.school}
+              ref={el => (itemRefs.current[idx] = el)}
+              className="relative group"
+            >
               {/* Timeline dot */}
-              <span className="absolute -left-2 top-0 flex items-center justify-center w-6 h-6 rounded-full bg-gray-900 border-2 border-yellow-300 shadow-lg z-10">
+              <span
+                className={`absolute -left-2 top-0 flex items-center justify-center w-6 h-6 rounded-full border-2 shadow-lg z-10
+                  ${activeIndex === idx
+                    ? "bg-yellow-400 border-yellow-400 scale-110"
+                    : "bg-gray-900 border-yellow-300"
+                  }
+                `}
+                style={{
+                  transition: "all 0.3s cubic-bezier(.4,2,.6,1)"
+                }}
+              >
                 {edu.icon}
               </span>
-              {/* Card */}
-              <div className="ml-8 p-6 bg-gradient-to-br from-[#18181b] via-[#23232b] to-[#1a1a23] rounded-xl shadow-md border border-gray-800 hover:border-yellow-400 transition-all">
+              {/* Card - now no background box */}
+              <div className="ml-8">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
                   <h3 className="text-xl font-bold mb-1 font-caviar text-yellow-200">{edu.school}</h3>
                   <span className="text-sm text-gray-400 flex items-center gap-1">
