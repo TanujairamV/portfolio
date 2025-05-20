@@ -22,9 +22,9 @@ function withErrorBoundary(Component: React.ComponentType) {
       return { hasError: true, error };
     }
 
-    componentDidCatch(error: any, info: any) {
+    // Remove unused parameters to fix TS6133
+    componentDidCatch() {
       // Optionally log error to an external service here
-      // This is production-safe, so no console.debug here
     }
 
     render() {
