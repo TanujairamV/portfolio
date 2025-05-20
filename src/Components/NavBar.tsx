@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
-import { useFadeInOnScroll } from "./useFadeInOnScroll";
 
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
@@ -19,7 +18,6 @@ const isMobile = () =>
 
 const NavBar: React.FC = () => {
   const [mobile, setMobile] = useState(isMobile());
-  const navRef = useFadeInOnScroll<HTMLDivElement>();
   const [activeSection, setActiveSection] = useState<string>("hero");
 
   // For underline animation
@@ -59,9 +57,9 @@ const NavBar: React.FC = () => {
     }
     const idx = NAV_LINKS.findIndex(l => l.to === activeSection);
     const ref = underlineRefs.current[idx];
-    if (ref && navRef.current) {
+    if (ref && navBarRef.current) {
       const rect = ref.getBoundingClientRect();
-      const navRect = navRef.current.getBoundingClientRect();
+      const navRect = navBarRef.current.getBoundingClientRect();
       setUnderlineStyle({
         opacity: 1,
         left: rect.left - navRect.left + "px",
@@ -78,7 +76,7 @@ const NavBar: React.FC = () => {
     } else {
       setUnderlineStyle({ opacity: 0 });
     }
-  }, [activeSection, mobile, navRef]);
+  }, [activeSection, mobile]);
 
   // Ripple Handler for NavBar links
   const handleRipple = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -104,9 +102,8 @@ const NavBar: React.FC = () => {
 
   return (
     <nav
-      ref={navRef}
       id="navbar"
-      className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300 fade-in"
+      className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300"
       style={{
         transform: "translateX(-50%)",
         padding: mobile ? "0.18rem 0.5rem" : "0.55rem 2.2rem",
