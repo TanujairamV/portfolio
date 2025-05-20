@@ -1,52 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Checks if the element or its ancestors are a special tile
-function isSpecialTile(el: Element | null): boolean {
-  return !!el && !!el.closest(".certificate-tile, .project-tile");
-}
-
-// Checks if the element or its ancestors are clickable
-function isClickable(el: Element | null): boolean {
-  if (!el) return false;
-  const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
-  let curr: Element | null = el;
-  while (curr) {
-    if (clickableTags.includes(curr.tagName)) return true;
-    if (curr.getAttribute("tabindex") && curr.getAttribute("tabindex") !== "-1") return true;
-    if ((curr as HTMLElement).onclick || (curr as HTMLElement).onmousedown) return true;
-    if (curr.classList.contains("cursor-pointer")) return true;
-    if (curr.classList.contains("certificate-tile") || curr.classList.contains("project-tile")) return true;
-    if (curr.closest("a,button,[role=button],.cursor-pointer")) return true;
-    curr = curr.parentElement;
-  }
-  return false;
-}
-
-const isTouchDevice = (): boolean =>
-  typeof window !== "undefined" &&
-  ("ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    // @ts-ignore
-    navigator.msMaxTouchPoints > 0);
-
 const Cursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  const ring = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+
+  // We start at center, but only after client-side mount
+  const mouse = useRef({ x: 0, y: 0 });
+  const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number>();
   const [shouldShow, setShouldShow] = useState(false);
   const [showView, setShowView] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Touch device detection
+  // Only run on the client
   useEffect(() => {
+    // Touch device detection
+    const isTouch = () =>
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      // @ts-ignore
+      navigator.msMaxTouchPoints > 0;
+
+    if (isTouch()) {
+      setShouldShow(false);
+    } else {
+      setShouldShow(true);
+    }
+
     const handleTouch = () => setShouldShow(false);
     const handleMouse = () => setShouldShow(true);
-
-    if (isTouchDevice()) setShouldShow(false);
-    else setShouldShow(true);
 
     window.addEventListener("touchstart", handleTouch, { passive: true });
     window.addEventListener("mousemove", handleMouse);
@@ -57,13 +40,41 @@ const Cursor: React.FC = () => {
     };
   }, []);
 
-  // Animate ring trailing
+  // Mousemove event moves dot, sets mouse position, and manages hover state
+  useEffect(() => {
+    if (!shouldShow) return;
+    const handleMove = (e: MouseEvent) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+        dotRef.current.style.opacity = isVisible ? "1" : "0";
+      }
+      // "View →" logic: show if hovering .project-tile or .certificate-tile (or their children)
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      setShowView(Boolean(el && el.closest && el.closest(".project-tile, .certificate-tile")));
+      // Ring hover style
+      if (ringRef.current) {
+        if (el && (el.closest("a,button,[role=button],.cursor-pointer") ||
+            el.classList?.contains("project-tile") ||
+            el.classList?.contains("certificate-tile"))) {
+          ringRef.current.classList.add("cursor-hover");
+        } else {
+          ringRef.current.classList.remove("cursor-hover");
+        }
+      }
+    };
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [shouldShow, isVisible]);
+
+  // Animate trailing ring and label
   useEffect(() => {
     if (!shouldShow) return;
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
     const animate = () => {
-      ring.current.x = lerp(ring.current.x, mouse.current.x, 0.20);
-      ring.current.y = lerp(ring.current.y, mouse.current.y, 0.20);
+      ring.current.x = lerp(ring.current.x, mouse.current.x, 0.2);
+      ring.current.y = lerp(ring.current.y, mouse.current.y, 0.2);
 
       if (ringRef.current && !showView) {
         ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
@@ -75,40 +86,13 @@ const Cursor: React.FC = () => {
       }
       if (ringRef.current) ringRef.current.style.opacity = showView || !isVisible ? "0" : "1";
       if (viewRef.current) viewRef.current.style.opacity = showView && isVisible ? "1" : "0";
-
       animFrame.current = requestAnimationFrame(animate);
     };
     animFrame.current = requestAnimationFrame(animate);
-    return () => {
-      if (animFrame.current) cancelAnimationFrame(animFrame.current);
-    };
+    return () => animFrame.current && cancelAnimationFrame(animFrame.current);
   }, [shouldShow, showView, isVisible]);
 
-  // Track mouse globally and update dot position, hover, and "view" logic
-  useEffect(() => {
-    if (!shouldShow) return;
-    const move = (e: MouseEvent) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
-        dotRef.current.style.opacity = isVisible ? "1" : "0";
-      }
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      setShowView(isSpecialTile(el));
-      if (ringRef.current) {
-        if (isClickable(el)) {
-          ringRef.current.classList.add("cursor-hover");
-        } else {
-          ringRef.current.classList.remove("cursor-hover");
-        }
-      }
-    };
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
-  }, [shouldShow, isVisible]);
-
-  // Hide default cursor when custom cursor is active
+  // Hide browser cursor when custom cursor is active
   useEffect(() => {
     if (shouldShow) document.body.style.cursor = "none";
     else document.body.style.cursor = "";
