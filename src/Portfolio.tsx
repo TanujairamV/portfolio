@@ -13,6 +13,36 @@ import Experience from "./Sections/Experience";
 import Certificates from "./Sections/Certificates";
 import "./Styles.css";
 
+// --- Debugging helper ---
+function withErrorBoundary(Component: React.ComponentType) {
+  return class ErrorBoundary extends React.Component {
+    state = { hasError: false, error: null as any };
+
+    static getDerivedStateFromError(error: any) {
+      return { hasError: true, error };
+    }
+
+    componentDidCatch(error: any, info: any) {
+      // You can log error to Sentry or console here
+      // e.g. Sentry.captureException(error);
+      // For debugging, log to console:
+      console.error("Error in Portfolio boundary:", error, info);
+    }
+
+    render() {
+      if (this.state.hasError) {
+        return (
+          <div style={{ color: "red", background: "#222", padding: 24 }}>
+            <h2>Something went wrong rendering the Portfolio component.</h2>
+            <pre>{String(this.state.error)}</pre>
+          </div>
+        );
+      }
+      return <Component {...this.props} />;
+    }
+  };
+}
+
 // Gradient text style helpers
 const gradientText = {
   background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
@@ -37,6 +67,11 @@ const sectionHeading = (text: string, icon?: React.ReactNode) => (
 );
 
 const Portfolio: React.FC = () => {
+  // Debug: log rendering
+  React.useEffect(() => {
+    console.log("Portfolio component rendered");
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
       {/* Intro screen and backgrounds */}
@@ -103,4 +138,4 @@ const Portfolio: React.FC = () => {
   );
 };
 
-export default Portfolio;
+export default withErrorBoundary(Portfolio);
