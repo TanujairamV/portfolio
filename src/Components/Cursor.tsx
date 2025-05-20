@@ -1,20 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Utility to check if an element is clickable
+// Checks if an element or its ancestors are clickable
 function isClickable(el: Element | null): boolean {
   if (!el) return false;
   const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
-  if (clickableTags.includes(el.tagName)) return true;
-  if (el.getAttribute("tabindex") && el.getAttribute("tabindex") !== "-1") return true;
-  if ((el as HTMLElement).onclick || (el as HTMLElement).onmousedown) return true;
-  if (el.classList.contains("cursor-pointer")) return true;
-  if (el.closest("a,button,[role=button],.cursor-pointer")) return true;
-  // Custom: Certificates and Projects tiles
-  if (el.classList.contains("certificate-tile") || el.classList.contains("project-tile")) return true;
+  let curr: Element | null = el;
+  while (curr) {
+    if (clickableTags.includes(curr.tagName)) return true;
+    if (curr.getAttribute("tabindex") && curr.getAttribute("tabindex") !== "-1") return true;
+    if ((curr as HTMLElement).onclick || (curr as HTMLElement).onmousedown) return true;
+    if (curr.classList.contains("cursor-pointer")) return true;
+    if (curr.classList.contains("certificate-tile") || curr.classList.contains("project-tile")) return true;
+    if (curr.closest("a,button,[role=button],.cursor-pointer")) return true;
+    curr = curr.parentElement;
+  }
   return false;
 }
 
-// Detect if device is touch-enabled
+// Checks if the hovered element or its ancestors are special tiles
+function isSpecialTile(el: Element | null): boolean {
+  if (!el) return false;
+  return (
+    el.closest(".certificate-tile, .project-tile") !== null
+  );
+}
+
 const isTouchDevice = (): boolean =>
   typeof window !== "undefined" &&
   ("ontouchstart" in window ||
@@ -33,7 +43,7 @@ const Cursor: React.FC = () => {
   const [showView, setShowView] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Detect touch device and show/hide cursor
+  // Hide/show cursor on touch device
   useEffect(() => {
     const handleTouch = () => setShouldShow(false);
     const handleMouse = () => setShouldShow(true);
@@ -80,7 +90,7 @@ const Cursor: React.FC = () => {
     };
   }, [shouldShow, showView, isVisible]);
 
-  // Always track mouse position globally
+  // Always track mouse position globally and update dot position & hover logic
   useEffect(() => {
     if (!shouldShow) return;
     const move = (e: MouseEvent) => {
@@ -90,21 +100,9 @@ const Cursor: React.FC = () => {
         dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
         dotRef.current.style.opacity = isVisible ? "1" : "0";
       }
-    };
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
-  }, [shouldShow, isVisible]);
-
-  // Always check hovered element for "special" class and clickable state
-  useEffect(() => {
-    if (!shouldShow) return;
-    const handleHover = () => {
-      const el = document.elementFromPoint(mouse.current.x, mouse.current.y);
-      const overSpecial =
-        el?.classList.contains("certificate-tile") ||
-        el?.classList.contains("project-tile");
-      setShowView(Boolean(overSpecial));
-
+      // --- Ensures ring/label work even over children ---
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      setShowView(isSpecialTile(el));
       if (ringRef.current) {
         if (isClickable(el)) {
           ringRef.current.classList.add("cursor-hover");
@@ -113,9 +111,9 @@ const Cursor: React.FC = () => {
         }
       }
     };
-    window.addEventListener("mousemove", handleHover, { passive: true });
-    return () => window.removeEventListener("mousemove", handleHover);
-  }, [shouldShow]);
+    window.addEventListener("mousemove", move, { passive: true });
+    return () => window.removeEventListener("mousemove", move);
+  }, [shouldShow, isVisible]);
 
   // Hide default cursor when custom cursor is active
   useEffect(() => {
