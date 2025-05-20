@@ -49,7 +49,6 @@ const Education: React.FC = () => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
 
-      const sectionTop = sectionRef.current.getBoundingClientRect().top + window.scrollY;
       const scrollPos = window.scrollY + window.innerHeight / 2;
 
       let found = 0;
@@ -74,7 +73,6 @@ const Education: React.FC = () => {
 
   // Calculate the pointer (circle) top position
   const getPointerTop = () => {
-    // Default to first item if refs not set yet
     if (!itemRefs.current[activeIndex]) return 0;
     const li = itemRefs.current[activeIndex];
     if (!li || !sectionRef.current) return 0;
@@ -98,7 +96,7 @@ const Education: React.FC = () => {
         <FaGraduationCap className="text-yellow-300" />
         Education
       </div>
-      <div className="relative pl-12" ref={sectionRef} style={{minHeight: 400}}>
+      <div className="relative pl-12" ref={sectionRef} style={{ minHeight: 400 }}>
         {/* Timeline vertical bar */}
         <div
           className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-300 via-gray-500 to-indigo-400 opacity-60 rounded-full"
@@ -108,7 +106,7 @@ const Education: React.FC = () => {
         <div
           className="absolute left-3 w-7 h-7 rounded-full border-4 border-yellow-400 bg-black transition-all duration-400 shadow-lg z-20 pointer-events-none"
           style={{
-            top: getPointerTop() - 14, // center circle on item
+            top: getPointerTop() - 14, // center circle on item (7*2/2=7)
             transition: "top 0.4s cubic-bezier(.4,2,.6,1)",
           }}
         />
@@ -133,7 +131,7 @@ const Education: React.FC = () => {
               >
                 {edu.icon}
               </span>
-              {/* Card - now no background box */}
+              {/* School info - no background box */}
               <div className="ml-8">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
                   <h3 className="text-xl font-bold mb-1 font-caviar text-yellow-200">{edu.school}</h3>
