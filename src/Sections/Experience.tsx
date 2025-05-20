@@ -8,9 +8,9 @@ const experiences = [
     location: "Bangalore, India",
     period: "Jan 2024 – Apr 2024",
     description: [
-      "Worked on the development and optimization of internal tools using React and Node.js.",
+      "Worked on development and optimization of internal tools using React and Node.js.",
       "Collaborated with the QA team to resolve bugs and improve the deployment process.",
-      "Gained experience with REST APIs and Agile methodologies.",
+      "Gained experience with REST APIs and Agile methodologies."
     ],
   },
   {
@@ -21,7 +21,7 @@ const experiences = [
     description: [
       "Developed responsive web pages using HTML, CSS, and JavaScript.",
       "Integrated third-party services and assisted in UI/UX improvements.",
-      "Participated in code reviews and delivered features on schedule.",
+      "Participated in code reviews and delivered features on schedule."
     ],
   },
 ];
