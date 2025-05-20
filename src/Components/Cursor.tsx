@@ -1,11 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
 
+// Helper: checks if an element or ancestor is a "special tile"
+function isSpecialTile(el: Element | null): boolean {
+  return !!el && !!el.closest(".certificate-tile, .project-tile");
+}
+
+// Helper: checks if an element or ancestor is clickable
+function isClickable(el: Element | null): boolean {
+  if (!el) return false;
+  const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
+  let curr: Element | null = el;
+  while (curr) {
+    if (clickableTags.includes(curr.tagName)) return true;
+    if (curr.getAttribute("tabindex") && curr.getAttribute("tabindex") !== "-1") return true;
+    if ((curr as HTMLElement).onclick || (curr as HTMLElement).onmousedown) return true;
+    if (curr.classList.contains("cursor-pointer")) return true;
+    if (curr.classList.contains("certificate-tile") || curr.classList.contains("project-tile")) return true;
+    if (curr.closest("a,button,[role=button],.cursor-pointer")) return true;
+    curr = curr.parentElement;
+  }
+  return false;
+}
+
 const Cursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
-
-  // We start at center, but only after client-side mount
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number>();
@@ -13,16 +33,15 @@ const Cursor: React.FC = () => {
   const [showView, setShowView] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Only run on the client
+  // Only run on client, and disable on touch devices
   useEffect(() => {
-    // Touch device detection
-    const isTouch = () =>
+    const isTouch =
       "ontouchstart" in window ||
       navigator.maxTouchPoints > 0 ||
       // @ts-ignore
       navigator.msMaxTouchPoints > 0;
 
-    if (isTouch()) {
+    if (isTouch) {
       setShouldShow(false);
     } else {
       setShouldShow(true);
@@ -40,37 +59,9 @@ const Cursor: React.FC = () => {
     };
   }, []);
 
-  // Mousemove event moves dot, sets mouse position, and manages hover state
+  // Animate trailing ring and view label
   useEffect(() => {
-    if (!shouldShow) return;
-    const handleMove = (e: MouseEvent) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
-        dotRef.current.style.opacity = isVisible ? "1" : "0";
-      }
-      // "View →" logic: show if hovering .project-tile or .certificate-tile (or their children)
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      setShowView(Boolean(el && el.closest && el.closest(".project-tile, .certificate-tile")));
-      // Ring hover style
-      if (ringRef.current) {
-        if (el && (el.closest("a,button,[role=button],.cursor-pointer") ||
-            el.classList?.contains("project-tile") ||
-            el.classList?.contains("certificate-tile"))) {
-          ringRef.current.classList.add("cursor-hover");
-        } else {
-          ringRef.current.classList.remove("cursor-hover");
-        }
-      }
-    };
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, [shouldShow, isVisible]);
-
-  // Animate trailing ring and label
-  useEffect(() => {
-    if (!shouldShow) return;
+    if (!shouldShow) return () => {};
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
     const animate = () => {
       ring.current.x = lerp(ring.current.x, mouse.current.x, 0.2);
@@ -92,16 +83,43 @@ const Cursor: React.FC = () => {
     return () => animFrame.current && cancelAnimationFrame(animFrame.current);
   }, [shouldShow, showView, isVisible]);
 
-  // Hide browser cursor when custom cursor is active
+  // Mousemove handler: move dot, update mouse position, set "View" and hover
   useEffect(() => {
-    if (shouldShow) document.body.style.cursor = "none";
-    else document.body.style.cursor = "";
-    return () => { document.body.style.cursor = ""; };
+    if (!shouldShow) return () => {};
+    const handleMove = (e: MouseEvent) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+        dotRef.current.style.opacity = isVisible ? "1" : "0";
+      }
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      setShowView(isSpecialTile(el));
+      if (ringRef.current) {
+        if (isClickable(el)) {
+          ringRef.current.classList.add("cursor-hover");
+        } else {
+          ringRef.current.classList.remove("cursor-hover");
+        }
+      }
+    };
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [shouldShow, isVisible]);
+
+  // Hide browser cursor globally, even on clickable elements
+  useEffect(() => {
+    if (shouldShow) {
+      document.body.setAttribute("data-custom-cursor", "yes");
+    } else {
+      document.body.removeAttribute("data-custom-cursor");
+    }
+    return () => { document.body.removeAttribute("data-custom-cursor"); };
   }, [shouldShow]);
 
   // Hide cursor when mouse leaves window, show when enters
   useEffect(() => {
-    if (!shouldShow) return;
+    if (!shouldShow) return () => {};
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
@@ -186,11 +204,13 @@ const Cursor: React.FC = () => {
           fontWeight: 700,
         }}>→</span>
       </div>
+      {/* Absolute cursor hiding for all elements, including clickables */}
       <style>{`
+        [data-custom-cursor], [data-custom-cursor] * {
+          cursor: none !important;
+        }
         .custom-cursor-ring {
           transition: border-color 0.26s cubic-bezier(.33,1.02,.53,.98), background 0.24s cubic-bezier(.33,1.02,.53,.98), transform 0.16s cubic-bezier(.41,1.11,.59,.95), opacity 0.2s;
-          background: linear-gradient(135deg, rgba(255,255,255,0.20) 10%, rgba(190,190,200,0.16) 70%, rgba(100,100,120,0.10) 100%);
-          border: 2.5px solid rgba(220,220,255,0.31);
         }
         .custom-cursor-dot {
           transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
