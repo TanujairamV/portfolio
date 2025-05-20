@@ -7,6 +7,7 @@
   background: linear-gradient(135deg, rgba(255,255,255,0.20) 10%, rgba(190,190,200,0.16) 70%, rgba(100,100,120,0.10) 100%);
   border: 2.5px solid rgba(220,220,255,0.31);
   box-shadow: 0 2px 18px 0 rgba(120,130,155,0.13);
+  transform: translate(-9999px, -9999px);
   transition:
     border-color 0.26s cubic-bezier(.33,1.02,.53,.98),
     background 0.24s cubic-bezier(.33,1.02,.53,.98),
@@ -31,10 +32,11 @@
   border-radius: 50%;
   background: rgba(255,255,255,0.93);
   box-shadow: 0 1px 4px 0 rgba(130,140,230,0.07);
+  transform: translate(-9999px, -9999px);
+  transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
   will-change: transform;
   mix-blend-mode: exclusion;
   z-index: 9999;
-  transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
 }
 
 .custom-cursor-view {
@@ -54,9 +56,10 @@
   box-shadow: 0 2px 16px 0 rgba(220,220,255,0.08);
   border: 1.5px solid rgba(190,190,220,0.21);
   white-space: nowrap;
+  transform: translate(-9999px, -9999px);
+  transition: background 0.22s cubic-bezier(.33,1.02,.53,.98);
   z-index: 9999;
   user-select: none;
-  transition: background 0.22s cubic-bezier(.33,1.02,.53,.98);
 }
 
 .custom-cursor-view span {
@@ -82,7 +85,7 @@
   }
 }
 
-/* Hide browser/system cursor everywhere if using custom cursor (set data-custom-cursor on body) */
+/* Hide browser/system cursor everywhere if using custom cursor */
 [data-custom-cursor], [data-custom-cursor] * {
   cursor: none !important;
 }
