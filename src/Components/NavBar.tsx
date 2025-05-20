@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { to: "skills", label: "Skills", icon: <MdBuild size={22} /> },
   { to: "experience", label: "Experience", icon: <MdWork size={22} /> },
   { to: "education", label: "Education", icon: <MdSchool size={22} /> },
-  { to: "certifications", label: "Certifications", icon: <MdStar size={22} /> },
+  { to: "certificates", label: "Certificates", icon: <MdStar size={22} /> },
   { to: "projects", label: "Projects", icon: <MdAssignment size={22} /> }
 ];
 
@@ -24,6 +24,14 @@ const NavBar: React.FC = () => {
   const underlineRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const navBarRef = useRef<HTMLDivElement | null>(null);
   const [underlineStyle, setUnderlineStyle] = useState<React.CSSProperties>({ opacity: 0 });
+
+  // Prevent UI bug: ensure underline is only shown after first mount and layout is stable
+  const [navReady, setNavReady] = useState(false);
+  useEffect(() => {
+    // Give layout a tick to stabilize before showing underline
+    const t = setTimeout(() => setNavReady(true), 30);
+    return () => clearTimeout(t);
+  }, [mobile]);
 
   useEffect(() => {
     const handleResize = () => setMobile(isMobile());
@@ -49,9 +57,9 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Animated underline effect
+  // Animated underline effect (now also on mobile)
   useEffect(() => {
-    if (mobile) {
+    if (!navReady) {
       setUnderlineStyle({ opacity: 0 });
       return;
     }
@@ -69,14 +77,14 @@ const NavBar: React.FC = () => {
         position: "absolute",
         borderRadius: "2px",
         background: "linear-gradient(90deg, #fff 70%, #e4e4e7 100%)",
-        transition: "left 0.33s cubic-bezier(.62,.04,.31,1.09), width 0.23s cubic-bezier(.62,.04,.31,1.09), opacity 0.2s",
+        transition: "left 0.33s cubic-bezier(.62,.04,.31,1.09), width 0.23s cubic-bezier(.62,.04,.31,1.09), opacity 0.18s",
         zIndex: 2,
         pointerEvents: "none"
       });
     } else {
       setUnderlineStyle({ opacity: 0 });
     }
-  }, [activeSection, mobile]);
+  }, [activeSection, mobile, navReady]);
 
   // Ripple Handler for NavBar links
   const handleRipple = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -118,16 +126,17 @@ const NavBar: React.FC = () => {
         left: "50%",
         top: "1.25rem",
         zIndex: 50,
-        background: "rgba(20, 20, 32, 0.72)",
-        backdropFilter: "blur(18px) saturate(1.2)",
-        WebkitBackdropFilter: "blur(18px) saturate(1.2)",
-        border: "1.5px solid rgba(255,255,255,0.13)",
-        boxShadow: "0 4px 24px 0 rgba(25, 25, 37, 0.16), 0 2px 32px 0 rgba(255,255,255,0.08)",
+        // improved glassmorphism, more semi-transparent
+        background: "rgba(30, 34, 48, 0.58)",
+        backdropFilter: "blur(20px) saturate(1.2)",
+        WebkitBackdropFilter: "blur(20px) saturate(1.2)",
+        border: "1.5px solid rgba(255,255,255,0.11)",
+        boxShadow: "0 4px 24px 0 rgba(25, 25, 37, 0.17), 0 2px 32px 0 rgba(255,255,255,0.08)",
         overflow: "visible"
       }}
       ref={navBarRef}
     >
-      {!mobile && (
+      {navReady && (
         <span
           className="navbar-underline"
           style={underlineStyle}
