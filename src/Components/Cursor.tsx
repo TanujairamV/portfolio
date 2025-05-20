@@ -1,144 +1,172 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-// SVG for the 45-degree soft arrow
-const Arrow45 = () => (
-  <svg width="21" height="21" viewBox="0 0 21 21">
-    <polyline
-      points="6,16 16,16 16,6"
-      fill="none"
-      stroke="#fff"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{
-        filter: "drop-shadow(0 2px 8px #fff5)",
-        opacity: 0.87
-      }}
-    />
-  </svg>
-);
+// Utility to check if an element is clickable
+function isClickable(el: Element | null): boolean {
+  if (!el) return false;
+  const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
+  if (clickableTags.includes(el.tagName)) return true;
+  if (el.getAttribute("tabindex") && el.getAttribute("tabindex") !== "-1") return true;
+  if ((el as HTMLElement).onclick || (el as HTMLElement).onmousedown) return true;
+  if (el.classList.contains("cursor-pointer")) return true;
+  if (el.closest("a,button,[role=button],.cursor-pointer")) return true;
+  return false;
+}
+
+// Detect if device is touch-enabled
+const isTouchDevice = (): boolean =>
+  "ontouchstart" in window ||
+  navigator.maxTouchPoints > 0 ||
+  // @ts-ignore
+  navigator.msMaxTouchPoints > 0;
 
 const Cursor: React.FC = () => {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(true);
-  const [hovering, setHovering] = useState(false);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+  const ring = useRef({ x: 0, y: 0 });
+  const animFrame = useRef<number>();
+  const [shouldShow, setShouldShow] = useState(false);
 
+  // Detect touch device and show/hide cursor
   useEffect(() => {
-    const cursor = cursorRef.current;
-    if (!cursor) return;
+    const handleTouch = () => setShouldShow(false);
+    const handleMouse = () => setShouldShow(true);
 
-    let mouseX = 0, mouseY = 0;
-    let raf: number;
+    if (isTouchDevice()) {
+      setShouldShow(false);
+    } else {
+      setShouldShow(true);
+    }
 
-    const animate = () => {
-      cursor.style.left = `${mouseX}px`;
-      cursor.style.top = `${mouseY}px`;
-      raf = requestAnimationFrame(animate);
-    };
-
-    const move = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      setVisible(true);
-    };
-
-    const hide = () => setVisible(false);
-    const show = () => setVisible(true);
-
-    // Detect hover on clickable elements
-    const mouseOver = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      // Consider a, button, elements with role=button, .ripple, .nav-link
-      if (
-        el.closest("a, button, [role=button], .ripple, .nav-link")
-      ) {
-        setHovering(true);
-      }
-    };
-    const mouseOut = () => {
-      setHovering(false);
-    };
-
-    document.addEventListener("mouseover", mouseOver);
-    document.addEventListener("mouseout", mouseOut);
-
-    // Hide when mouse leaves window or tab switches
-    document.addEventListener("mouseleave", hide);
-    document.addEventListener("mouseenter", show);
-    window.addEventListener("blur", hide);
-    window.addEventListener("focus", show);
-    window.addEventListener("mousemove", move);
-
-    // Animate on click
-    const click = () => {
-      cursor.animate(
-        [
-          { transform: cursor.style.transform, boxShadow: "0 0 24px 12px #b0b0b0" },
-          { transform: `${cursor.style.transform} scale(1.34)`, boxShadow: "0 0 48px 24px #b0b0b0" },
-          { transform: cursor.style.transform, boxShadow: "0 0 24px 12px #b0b0b0" }
-        ],
-        { duration: 310 }
-      );
-    };
-    window.addEventListener("mousedown", click);
-
-    animate();
+    window.addEventListener("touchstart", handleTouch, { passive: true });
+    window.addEventListener("mousemove", handleMouse);
 
     return () => {
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("mousedown", click);
-      document.removeEventListener("mouseleave", hide);
-      document.removeEventListener("mouseenter", show);
-      window.removeEventListener("blur", hide);
-      window.removeEventListener("focus", show);
-      document.removeEventListener("mouseover", mouseOver);
-      document.removeEventListener("mouseout", mouseOut);
-      cancelAnimationFrame(raf);
+      window.removeEventListener("touchstart", handleTouch);
+      window.removeEventListener("mousemove", handleMouse);
     };
   }, []);
 
-  // Style changes for hover/clickable
-  const cursorStyle: React.CSSProperties = {
-    position: "fixed",
-    left: 0,
-    top: 0,
-    width: hovering ? 48 : 40,
-    height: hovering ? 48 : 40,
-    pointerEvents: "none",
-    borderRadius: "50%",
-    background: hovering
-      ? "rgba(255,255,255,0.18)"
-      : "rgba(255,255,255,0.08)",
-    border: hovering ? "2.5px solid #fff" : "2px solid rgba(255,255,255,0.55)",
-    boxShadow: "0 2px 12px 0 rgba(255,255,255,0.07)",
-    mixBlendMode: "lighten",
-    zIndex: 9999,
-    transform: `translate(-50%, -50%) scale(${hovering ? 1.15 : 1})`,
-    transition:
-      "border 0.22s, background 0.22s, width 0.18s, height 0.18s, transform 0.15s cubic-bezier(.6,.2,.1,1.2)",
-    willChange: "transform, border, background, width, height",
-    opacity: visible ? 1 : 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "visible",
-    backdropFilter: "blur(2.5px)",
-  };
+  // Animate ring trailing
+  useEffect(() => {
+    if (!shouldShow) return;
+    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
+    const animate = () => {
+      ring.current.x = lerp(ring.current.x, mouse.current.x, 0.18);
+      ring.current.y = lerp(ring.current.y, mouse.current.y, 0.18);
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
+      }
+      animFrame.current = requestAnimationFrame(animate);
+    };
+    animFrame.current = requestAnimationFrame(animate);
+    return () => {
+      if (animFrame.current) cancelAnimationFrame(animFrame.current);
+    };
+  }, [shouldShow]);
+
+  // Mouse move handler
+  useEffect(() => {
+    if (!shouldShow) return;
+    const move = (e: MouseEvent) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+      }
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, [shouldShow]);
+
+  // Hover detection for clickable elements
+  useEffect(() => {
+    if (!shouldShow) return;
+    const handleHover = (e: MouseEvent) => {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const isOverClickable = isClickable(el);
+      if (ringRef.current) {
+        if (isOverClickable) {
+          ringRef.current.classList.add("cursor-hover");
+        } else {
+          ringRef.current.classList.remove("cursor-hover");
+        }
+      }
+    };
+    window.addEventListener("mousemove", handleHover);
+    return () => window.removeEventListener("mousemove", handleHover);
+  }, [shouldShow]);
+
+  // Hide default cursor when custom cursor is active
+  useEffect(() => {
+    if (shouldShow) {
+      document.body.style.cursor = "none";
+    } else {
+      document.body.style.cursor = "";
+    }
+    return () => {
+      document.body.style.cursor = "";
+    };
+  }, [shouldShow]);
+
+  // Don't render the custom cursor on touch devices
+  if (!shouldShow) return null;
 
   return (
-    <div ref={cursorRef} id="custom-cursor" style={cursorStyle}>
-      {hovering && (
-        <span className="arrow45" style={{
-          position: "absolute",
-          left: "50%", top: "50%",
-          width: 21, height: 21,
-          transform: "translate(-50%,-50%) rotate(45deg)",
-          pointerEvents: "none"
-        }}>
-          <Arrow45 />
-        </span>
-      )}
-    </div>
+    <>
+      {/* Outer ring */}
+      <div
+        ref={ringRef}
+        className="custom-cursor-ring pointer-events-none fixed z-[9999] left-0 top-0"
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: "50%",
+          border: "2px solid rgba(220,220,255,0.38)",
+          background: "rgba(255,255,255,0.07)",
+          boxShadow: "0 1px 8px 0 rgba(100,120,200,0.10)",
+          transition:
+            "border-color 0.24s cubic-bezier(.33,1.02,.53,.98), background 0.22s cubic-bezier(.33,1.02,.53,.98), transform 0.13s cubic-bezier(.41,1.11,.59,.95)",
+          willChange: "transform",
+          pointerEvents: "none",
+          mixBlendMode: "exclusion",
+        }}
+      />
+      {/* Inner dot */}
+      <div
+        ref={dotRef}
+        className="custom-cursor-dot pointer-events-none fixed z-[9999] left-0 top-0"
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: "50%",
+          background: "rgba(255,255,255,0.95)",
+          boxShadow: "0 1px 4px 0 rgba(130,140,230,0.07)",
+          willChange: "transform",
+          pointerEvents: "none",
+          mixBlendMode: "exclusion",
+        }}
+      />
+      <style>{`
+        .custom-cursor-ring {
+          transition: border-color 0.24s cubic-bezier(.33,1.02,.53,.98), background 0.22s cubic-bezier(.33,1.02,.53,.98), transform 0.13s cubic-bezier(.41,1.11,.59,.95);
+        }
+        .custom-cursor-dot {
+          transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
+        }
+        .custom-cursor-ring.cursor-hover {
+          transform: scale(1.3) !important;
+          border-color: rgba(150,180,255,0.7) !important;
+          background: rgba(150,180,255,0.13) !important;
+          box-shadow: 0 2px 16px 0 rgba(120,170,255,0.13);
+        }
+        @media (hover: none), (pointer: coarse) {
+          .custom-cursor-dot, .custom-cursor-ring {
+            display: none !important;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 
