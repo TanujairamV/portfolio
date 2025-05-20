@@ -1,8 +1,6 @@
 .custom-cursor-ring {
   pointer-events: none;
   position: fixed;
-  left: 0;
-  top: 0;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -12,11 +10,9 @@
   transition:
     border-color 0.26s cubic-bezier(.33,1.02,.53,.98),
     background 0.24s cubic-bezier(.33,1.02,.53,.98),
-    transform 0.16s cubic-bezier(.41,1.11,.59,.95),
-    opacity 0.2s;
-  will-change: transform,opacity;
+    transform 0.16s cubic-bezier(.41,1.11,.59,.95);
+  will-change: transform;
   mix-blend-mode: exclusion;
-  opacity: 1;
   z-index: 9999;
 }
 
@@ -30,8 +26,6 @@
 .custom-cursor-dot {
   pointer-events: none;
   position: fixed;
-  left: 0;
-  top: 0;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -46,8 +40,6 @@
 .custom-cursor-view {
   pointer-events: none;
   position: fixed;
-  left: 0;
-  top: 0;
   display: flex;
   align-items: center;
   padding: 0.5rem 1.25rem;
@@ -62,12 +54,9 @@
   box-shadow: 0 2px 16px 0 rgba(220,220,255,0.08);
   border: 1.5px solid rgba(190,190,220,0.21);
   white-space: nowrap;
-  opacity: 0;
   z-index: 9999;
   user-select: none;
-  transition:
-    opacity 0.18s cubic-bezier(.44,1.11,.53,.91),
-    background 0.22s cubic-bezier(.33,1.02,.53,.98);
+  transition: background 0.22s cubic-bezier(.33,1.02,.53,.98);
 }
 
 .custom-cursor-view span {
