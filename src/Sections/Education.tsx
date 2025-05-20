@@ -1,19 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
 import { FaGraduationCap, FaMapMarkerAlt, FaSchool } from "react-icons/fa";
 
-// Timeline data
+// Timeline data (earliest first, latest last)
 const educationData = [
   {
-    school: "FIITJEE, Chennai",
-    location: "Chennai, Tamil Nadu, India",
-    period: "2023 – Present",
+    school: "St. Joseph’s Matriculation Higher Secondary School",
+    location: "Hosur, Tamil Nadu, India",
+    period: "2013 – 2017",
     details: [
-      "Enrolled in the prestigious IIT-JEE preparation program",
-      "Focus on Physics, Chemistry, Mathematics, and Computer Science",
+      "Early foundational education",
+      "Developed interest in mathematics and computers at a young age",
     ],
-    stream: "Integrated School Program (Science Stream)",
-    grade: "Grade 11 to Present",
-    icon: <FaGraduationCap className="text-2xl text-yellow-300" />,
+    grade: "Grade 1 to 4",
+    icon: <FaSchool className="text-2xl text-indigo-300" />,
   },
   {
     school: "Sri Balaji Gurukulam Matriculation Higher Secondary School",
@@ -27,48 +26,52 @@ const educationData = [
     icon: <FaSchool className="text-2xl text-teal-300" />,
   },
   {
-    school: "St. Joseph’s Matriculation Higher Secondary School",
-    location: "Hosur, Tamil Nadu, India",
-    period: "2013 – 2017",
+    school: "FIITJEE, Chennai",
+    location: "Chennai, Tamil Nadu, India",
+    period: "2023 – Present",
     details: [
-      "Early foundational education",
-      "Developed interest in mathematics and computers at a young age",
+      "Enrolled in the prestigious IIT-JEE preparation program",
+      "Focus on Physics, Chemistry, Mathematics, and Computer Science",
     ],
-    grade: "Grade 1 to 4",
-    icon: <FaSchool className="text-2xl text-indigo-300" />,
+    grade: "Grade 11 to Present",
+    icon: <FaGraduationCap className="text-2xl text-yellow-300" />,
   },
 ];
 
 const Education: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Effect to track scroll and update which school is active
+  // Smoother effect with IntersectionObserver
   useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
 
-      const scrollPos = window.scrollY + window.innerHeight / 2;
-
-      let found = 0;
-      for (let i = 0; i < itemRefs.current.length; i++) {
-        const li = itemRefs.current[i];
-        if (li) {
-          const rect = li.getBoundingClientRect();
-          const liTop = rect.top + window.scrollY;
-          if (scrollPos >= liTop) {
-            found = i;
-          }
+        if (visibleEntries.length > 0) {
+          const idx = Number(visibleEntries[0].target.getAttribute("data-index"));
+          setActiveIndex(idx);
         }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: [0.25, 0.5, 0.75, 1],
       }
-      setActiveIndex(found);
+    );
+
+    itemRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      itemRefs.current.forEach((el) => {
+        if (el) observer.unobserve(el);
+      });
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Calculate the pointer (circle) top position
@@ -96,43 +99,50 @@ const Education: React.FC = () => {
         <FaGraduationCap className="text-yellow-300" />
         Education
       </div>
-      <div className="relative pl-12" ref={sectionRef} style={{ minHeight: 400 }}>
+      <div className="relative flex flex-col items-center" ref={sectionRef} style={{ minHeight: 400 }}>
         {/* Timeline vertical bar */}
         <div
-          className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-300 via-gray-500 to-indigo-400 opacity-60 rounded-full"
+          className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-300 via-gray-400 to-yellow-300 opacity-50 rounded-full pointer-events-none"
           aria-hidden="true"
+          style={{ zIndex: 0 }}
         />
         {/* Animated pointer */}
         <div
-          className="absolute left-3 w-7 h-7 rounded-full border-4 border-yellow-400 bg-black transition-all duration-400 shadow-lg z-20 pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 w-7 h-7 rounded-full border-4 border-yellow-400 bg-black transition-all shadow-lg z-20 pointer-events-none"
           style={{
-            top: getPointerTop() - 14, // center circle on item (7*2/2=7)
-            transition: "top 0.4s cubic-bezier(.4,2,.6,1)",
+            top: getPointerTop() - 14,
+            transition: "top 0.6s cubic-bezier(.4,2,.6,1)",
           }}
         />
-        <ol className="space-y-12 relative z-10">
+        <ol className="relative z-10 w-full max-w-xl flex flex-col gap-16">
           {educationData.map((edu, idx) => (
-            <li
-              key={edu.school}
-              ref={el => (itemRefs.current[idx] = el)}
-              className="relative group"
-            >
+            <li key={edu.school} className="relative flex justify-center" style={{ zIndex: 1 }}>
               {/* Timeline dot */}
               <span
-                className={`absolute -left-2 top-0 flex items-center justify-center w-6 h-6 rounded-full border-2 shadow-lg z-10
+                className={`absolute left-1/2 -translate-x-1/2 -top-4 flex items-center justify-center w-7 h-7 rounded-full border-2 shadow-lg z-10 transition-all duration-300
                   ${activeIndex === idx
                     ? "bg-yellow-400 border-yellow-400 scale-110"
                     : "bg-gray-900 border-yellow-300"
                   }
                 `}
                 style={{
-                  transition: "all 0.3s cubic-bezier(.4,2,.6,1)"
+                  transition: "all 0.35s cubic-bezier(.4,2,.6,1)",
                 }}
               >
                 {edu.icon}
               </span>
-              {/* School info - no background box */}
-              <div className="ml-8">
+              {/* Glassmorphic tile */}
+              <div
+                ref={el => (itemRefs.current[idx] = el)}
+                data-index={idx}
+                className={`ml-0 w-full max-w-md px-7 py-6 rounded-xl border border-gray-400/30 bg-white/10 backdrop-blur-md shadow-xl transition-all duration-500
+                  ${activeIndex === idx ? "ring-2 ring-yellow-300/70 scale-[1.02]" : ""}
+                `}
+                style={{
+                  marginTop: "2.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
                   <h3 className="text-xl font-bold mb-1 font-caviar text-yellow-200">{edu.school}</h3>
                   <span className="text-sm text-gray-400 flex items-center gap-1">
@@ -142,7 +152,7 @@ const Education: React.FC = () => {
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                   <span className="text-sm text-gray-300 font-semibold mb-1">
-                    {edu.grade}{edu.stream ? ` – ${edu.stream}` : ""}
+                    {edu.grade}
                   </span>
                   <span className="text-xs text-gray-400 font-caviar">{edu.period}</span>
                 </div>
