@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Utility to check if an element is clickable
+// Detect clickables & special tiles
 function isClickable(el: Element | null): boolean {
   if (!el) return false;
   const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
@@ -24,8 +24,8 @@ const Cursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: 0, y: 0 });
-  const ring = useRef({ x: 0, y: 0 });
+  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 }); // Start at center
+  const ring = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const animFrame = useRef<number>();
   const [shouldShow, setShouldShow] = useState(false);
   const [showView, setShowView] = useState(false);
@@ -78,7 +78,7 @@ const Cursor: React.FC = () => {
     };
   }, [shouldShow, showView, isVisible]);
 
-  // Mouse move handler (always update position)
+  // Always track mouse position globally
   useEffect(() => {
     if (!shouldShow) return;
     const move = (e: MouseEvent) => {
@@ -89,15 +89,16 @@ const Cursor: React.FC = () => {
         dotRef.current.style.opacity = isVisible ? "1" : "0";
       }
     };
-    window.addEventListener("mousemove", move);
+    window.addEventListener("mousemove", move, { passive: true });
     return () => window.removeEventListener("mousemove", move);
   }, [shouldShow, isVisible]);
 
-  // Hover detection for clickable elements and special tiles
+  // Always check hovered element for "special" class and clickable state
   useEffect(() => {
     if (!shouldShow) return;
     const handleHover = (e: MouseEvent) => {
-      const el = document.elementFromPoint(e.clientX, e.clientY);
+      // Use current mouse coordinates for reliable detection
+      const el = document.elementFromPoint(mouse.current.x, mouse.current.y);
       const overSpecial =
         el?.classList.contains("certificate-tile") ||
         el?.classList.contains("project-tile");
@@ -111,7 +112,7 @@ const Cursor: React.FC = () => {
         }
       }
     };
-    window.addEventListener("mousemove", handleHover);
+    window.addEventListener("mousemove", handleHover, { passive: true });
     return () => window.removeEventListener("mousemove", handleHover);
   }, [shouldShow]);
 
@@ -142,7 +143,6 @@ const Cursor: React.FC = () => {
     };
   }, [shouldShow]);
 
-  // Don't render the custom cursor on touch devices
   if (!shouldShow) return null;
 
   return (
