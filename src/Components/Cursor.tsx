@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import "./Cursor.css";
 
 // Helper: checks if an element or its ancestors is a special tile
 function isSpecialTile(el: Element | null): boolean {
@@ -27,19 +28,19 @@ const Cursor: React.FC = () => {
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
 
-  // State for whether the custom cursor should be shown (not on touch)
+  // Should show custom cursor (not on touch devices)
   const [shouldShow, setShouldShow] = useState(false);
-  // State for whether the label is visible
+  // Show the "View →" label
   const [showView, setShowView] = useState(false);
-  // State for whether the custom cursor is visible (hides when mouse leaves window)
+  // Hide custom cursor when mouse leaves window
   const [isCursorVisible, setIsCursorVisible] = useState(true);
 
-  // These are refs for current mouse and ring positions
+  // Mouse/ring positions, not state for performance
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number>();
 
-  // Only run on client, and disable on touch devices
+  // Detect touch device and set shouldShow accordingly
   useEffect(() => {
     const isTouch =
       typeof window !== "undefined" &&
@@ -62,7 +63,7 @@ const Cursor: React.FC = () => {
     };
   }, []);
 
-  // Animate trailing ring and label
+  // Animate the trailing ring and label
   useEffect(() => {
     if (!shouldShow) return () => {};
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
@@ -114,7 +115,7 @@ const Cursor: React.FC = () => {
     return () => window.removeEventListener("mousemove", handleMove);
   }, [shouldShow, isCursorVisible]);
 
-  // Hide browser cursor globally, even on clickable elements
+  // Hide browser cursor everywhere if using custom cursor
   useEffect(() => {
     if (shouldShow) {
       document.body.setAttribute("data-custom-cursor", "yes");
@@ -124,7 +125,7 @@ const Cursor: React.FC = () => {
     return () => { document.body.removeAttribute("data-custom-cursor"); };
   }, [shouldShow]);
 
-  // Hide cursor when mouse leaves window, show when enters
+  // Hide custom cursor when mouse leaves window, show when enters
   useEffect(() => {
     if (!shouldShow) return () => {};
     const handleMouseLeave = () => setIsCursorVisible(false);
@@ -143,102 +144,12 @@ const Cursor: React.FC = () => {
 
   return (
     <>
-      <div ref={ringRef} className="custom-cursor-ring pointer-events-none fixed z-[9999] left-0 top-0"
-        style={{
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          background: "linear-gradient(135deg, rgba(255,255,255,0.20) 10%, rgba(190,190,200,0.16) 70%, rgba(100,100,120,0.10) 100%)",
-          border: "2.5px solid rgba(220,220,255,0.31)",
-          boxShadow: "0 2px 18px 0 rgba(120,130,155,0.13)",
-          transition:
-            "border-color 0.26s cubic-bezier(.33,1.02,.53,.98), background 0.24s cubic-bezier(.33,1.02,.53,.98), transform 0.16s cubic-bezier(.41,1.11,.59,.95), opacity 0.2s",
-          willChange: "transform,opacity",
-          pointerEvents: "none",
-          mixBlendMode: "exclusion",
-          opacity: 1,
-          zIndex: 9999,
-        }}
-      />
-      <div ref={dotRef} className="custom-cursor-dot pointer-events-none fixed z-[9999] left-0 top-0"
-        style={{
-          width: 8,
-          height: 8,
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.93)",
-          boxShadow: "0 1px 4px 0 rgba(130,140,230,0.07)",
-          willChange: "transform",
-          pointerEvents: "none",
-          mixBlendMode: "exclusion",
-        }}
-      />
-      <div ref={viewRef} className="custom-cursor-view pointer-events-none fixed z-[9999] left-0 top-0 flex items-center px-5 py-2 rounded-full"
-        style={{
-          fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
-          fontWeight: 600,
-          fontSize: "1.1rem",
-          background: "linear-gradient(90deg, rgba(255,255,255,0.77) 70%, rgba(200,200,220,0.28) 100%)",
-          color: "transparent",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          boxShadow: "0 2px 16px 0 rgba(220,220,255,0.08)",
-          border: "1.5px solid rgba(190,190,220,0.21)",
-          whiteSpace: "nowrap",
-          opacity: 0,
-          zIndex: 9999,
-          transition:
-            "opacity 0.18s cubic-bezier(.44,1.11,.53,.91), background 0.22s cubic-bezier(.33,1.02,.53,.98)",
-          pointerEvents: "none",
-          userSelect: "none",
-        }}
-      >
-        <span
-          style={{
-            background:
-              "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent",
-          }}
-        >
-          View
-        </span>
-        <span style={{
-          marginLeft: 8,
-          fontSize: "1.1em",
-          display: "inline-block",
-          transform: "translateY(2px)",
-          fontWeight: 700,
-        }}>→</span>
+      <div ref={ringRef} className="custom-cursor-ring" />
+      <div ref={dotRef} className="custom-cursor-dot" />
+      <div ref={viewRef} className="custom-cursor-view">
+        <span>View</span>
+        <span>→</span>
       </div>
-      {/* Hide browser cursor even on clickables */}
-      <style>{`
-        [data-custom-cursor], [data-custom-cursor] * {
-          cursor: none !important;
-        }
-        .custom-cursor-ring {
-          transition: border-color 0.26s cubic-bezier(.33,1.02,.53,.98), background 0.24s cubic-bezier(.33,1.02,.53,.98), transform 0.16s cubic-bezier(.41,1.11,.59,.95), opacity 0.2s;
-        }
-        .custom-cursor-dot {
-          transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
-        }
-        .custom-cursor-ring.cursor-hover {
-          transform: scale(1.20) !important;
-          border-color: rgba(200,210,255,0.59) !important;
-          background: linear-gradient(135deg, rgba(255,255,255,0.28) 10%, rgba(220,220,255,0.22) 80%, rgba(180,180,210,0.11) 100%) !important;
-          box-shadow: 0 2px 20px 0 rgba(160,170,220,0.14);
-        }
-        .custom-cursor-view {
-          transition: opacity 0.18s cubic-bezier(.44,1.11,.53,.91), background 0.22s cubic-bezier(.33,1.02,.53,.98);
-          pointer-events: none;
-          user-select: none;
-        }
-        @media (hover: none), (pointer: coarse) {
-          .custom-cursor-dot, .custom-cursor-ring, .custom-cursor-view {
-            display: none !important;
-          }
-        }
-      `}</style>
     </>
   );
 };
