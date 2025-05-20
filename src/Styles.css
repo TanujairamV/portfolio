@@ -605,5 +605,32 @@ body {
   transition: none !important;
 }
 
+/* Animated underline for navbar */
+.navbar-underline {
+  pointer-events: none;
+  background: linear-gradient(90deg, #fff 40%, #e4e4e7 100%);
+  height: 3.5px;
+  border-radius: 3px;
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  opacity: 1;
+  transition:
+    left 0.32s cubic-bezier(.55,0,.45,1),
+    width 0.28s cubic-bezier(.55,0,.45,1),
+    opacity 0.13s;
+  z-index: 2;
+  /* Shimmer effect */
+  box-shadow: 0 2px 12px #fff2;
+}
+
+@media (max-width: 767px) {
+  .navbar-underline {
+    display: none !important;
+    opacity: 0 !important;
+  }
+}
+
 /* Keep fade delay classes for backward compatibility, do nothing */
 [data-fade-delay] { transition-delay: 0s !important; }
