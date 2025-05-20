@@ -19,8 +19,10 @@ const isMobile = () =>
 const NavBar: React.FC = () => {
   const [mobile, setMobile] = useState(isMobile());
   const [activeSection, setActiveSection] = useState<string>("hero");
+
   // For underline animation
   const underlineRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const navBarRef = useRef<HTMLDivElement | null>(null);
   const [underlineStyle, setUnderlineStyle] = useState<React.CSSProperties>({ opacity: 0 });
 
   useEffect(() => {
@@ -47,29 +49,30 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Underline animation logic
+  // Animated underline effect
   useEffect(() => {
-    if (mobile) return;
+    if (mobile) {
+      setUnderlineStyle({ opacity: 0 });
+      return;
+    }
     const idx = NAV_LINKS.findIndex(l => l.to === activeSection);
     const ref = underlineRefs.current[idx];
-    if (ref) {
+    if (ref && navBarRef.current) {
       const rect = ref.getBoundingClientRect();
-      const navRect = ref.parentElement?.parentElement?.parentElement?.getBoundingClientRect();
-      // navRect is <nav>, ref is <span> inside <Link>
-      if (navRect) {
-        setUnderlineStyle({
-          opacity: 1,
-          left: rect.left - navRect.left + "px",
-          width: rect.width + "px",
-          height: "3.5px",
-          bottom: "4px",
-          position: "absolute",
-          borderRadius: "3px",
-          background: "linear-gradient(90deg, #fff 40%, #e4e4e7 100%)",
-          transition: "left 0.32s cubic-bezier(.55,0,.45,1), width 0.28s cubic-bezier(.55,0,.45,1), opacity 0.13s",
-          zIndex: 2,
-        });
-      }
+      const navRect = navBarRef.current.getBoundingClientRect();
+      setUnderlineStyle({
+        opacity: 1,
+        left: rect.left - navRect.left + "px",
+        width: rect.width + "px",
+        height: "3.5px",
+        bottom: "0px",
+        position: "absolute",
+        borderRadius: "2px",
+        background: "linear-gradient(90deg, #fff 60%, #e4e4e7 100%)",
+        transition: "left 0.33s cubic-bezier(.62,.04,.31,1.09), width 0.23s cubic-bezier(.62,.04,.31,1.09), opacity 0.17s",
+        zIndex: 2,
+        pointerEvents: "none"
+      });
     } else {
       setUnderlineStyle({ opacity: 0 });
     }
@@ -101,6 +104,7 @@ const NavBar: React.FC = () => {
     <nav
       id="navbar"
       className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300"
+      ref={navBarRef}
       style={{
         background: "rgba(20, 20, 32, 0.72)",
         backdropFilter: "blur(18px) saturate(1.2)",
