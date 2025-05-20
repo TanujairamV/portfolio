@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
+import { useFadeInOnScroll } from "./useFadeInOnScroll";
 
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
@@ -18,6 +19,7 @@ const isMobile = () =>
 
 const NavBar: React.FC = () => {
   const [mobile, setMobile] = useState(isMobile());
+  const navRef = useFadeInOnScroll<HTMLDivElement>();
   const [activeSection, setActiveSection] = useState<string>("hero");
 
   // For underline animation
@@ -57,26 +59,26 @@ const NavBar: React.FC = () => {
     }
     const idx = NAV_LINKS.findIndex(l => l.to === activeSection);
     const ref = underlineRefs.current[idx];
-    if (ref && navBarRef.current) {
+    if (ref && navRef.current) {
       const rect = ref.getBoundingClientRect();
-      const navRect = navBarRef.current.getBoundingClientRect();
+      const navRect = navRef.current.getBoundingClientRect();
       setUnderlineStyle({
         opacity: 1,
         left: rect.left - navRect.left + "px",
         width: rect.width + "px",
-        height: "3.5px",
+        height: "3px",
         bottom: "0px",
         position: "absolute",
         borderRadius: "2px",
-        background: "linear-gradient(90deg, #fff 60%, #e4e4e7 100%)",
-        transition: "left 0.33s cubic-bezier(.62,.04,.31,1.09), width 0.23s cubic-bezier(.62,.04,.31,1.09), opacity 0.17s",
+        background: "linear-gradient(90deg, #fff 70%, #e4e4e7 100%)",
+        transition: "left 0.33s cubic-bezier(.62,.04,.31,1.09), width 0.23s cubic-bezier(.62,.04,.31,1.09), opacity 0.2s",
         zIndex: 2,
         pointerEvents: "none"
       });
     } else {
       setUnderlineStyle({ opacity: 0 });
     }
-  }, [activeSection, mobile]);
+  }, [activeSection, mobile, navRef]);
 
   // Ripple Handler for NavBar links
   const handleRipple = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -102,29 +104,31 @@ const NavBar: React.FC = () => {
 
   return (
     <nav
+      ref={navRef}
       id="navbar"
-      className="glass-navbar static left-0 right-0 z-50 transition-all duration-300"
-      ref={navBarRef}
+      className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300 fade-in"
       style={{
-        background: "rgba(20, 20, 32, 0.72)",
-        backdropFilter: "blur(18px) saturate(1.2)",
-        WebkitBackdropFilter: "blur(18px) saturate(1.2)",
-        border: "1.5px solid rgba(255,255,255,0.13)",
-        boxShadow: "0 4px 24px 0 rgba(25, 25, 37, 0.16), 0 2px 32px 0 rgba(255,255,255,0.08)",
-        padding: mobile ? "0.18rem 0.5rem" : "0.45rem 1.2rem",
+        transform: "translateX(-50%)",
+        padding: mobile ? "0.18rem 0.5rem" : "0.55rem 2.2rem",
         borderRadius: "2.2rem",
-        minWidth: mobile ? "auto" : "0",
+        minWidth: mobile ? "auto" : "400px",
         minHeight: mobile ? "46px" : "56px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
-        position: "static",
-        top: undefined,
-        left: undefined,
-        transform: undefined,
+        position: "fixed",
+        left: "50%",
+        top: "1.25rem",
+        zIndex: 50,
+        background: "rgba(20, 20, 32, 0.72)",
+        backdropFilter: "blur(18px) saturate(1.2)",
+        WebkitBackdropFilter: "blur(18px) saturate(1.2)",
+        border: "1.5px solid rgba(255,255,255,0.13)",
+        boxShadow: "0 4px 24px 0 rgba(25, 25, 37, 0.16), 0 2px 32px 0 rgba(255,255,255,0.08)",
         overflow: "visible"
       }}
+      ref={navBarRef}
     >
       {!mobile && (
         <span
@@ -144,7 +148,8 @@ const NavBar: React.FC = () => {
         {NAV_LINKS.map((link, i) => (
           <li
             key={link.to}
-            className="px-1.5 md:px-3 py-1 nav-link ripple"
+            className="px-1.5 md:px-3 py-1 nav-link ripple fade-in"
+            data-fade-delay={i + 1}
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
               fontWeight: 600,
@@ -181,8 +186,7 @@ const NavBar: React.FC = () => {
                 WebkitTextFillColor: "transparent",
                 fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
                 fontWeight: 700,
-                textTransform: "capitalize",
-                position: "relative"
+                textTransform: "capitalize"
               }}
               tabIndex={0}
               aria-label={link.label}
