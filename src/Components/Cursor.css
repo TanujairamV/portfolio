@@ -1,41 +1,25 @@
-.custom-cursor-dot,
-.custom-cursor-ring,
-.custom-cursor-view {
-  pointer-events: none !important;
-  position: fixed !important;
-  z-index: 9999 !important;
-  user-select: none !important;
-  will-change: transform, opacity;
-  transition: opacity 0.18s cubic-bezier(.44,1.11,.53,.91);
-}
-
-/* Dot */
-.custom-cursor-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.93);
-  box-shadow: 0 1px 4px 0 rgba(130,140,230,0.07);
-  mix-blend-mode: exclusion;
-  transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
-}
-
-/* Ring */
 .custom-cursor-ring {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 44px;
   height: 44px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(255,255,255,0.20) 10%, rgba(190,190,200,0.16) 70%, rgba(100,100,120,0.10) 100%);
   border: 2.5px solid rgba(220,220,255,0.31);
   box-shadow: 0 2px 18px 0 rgba(120,130,155,0.13);
-  mix-blend-mode: exclusion;
-  opacity: 1;
   transition:
     border-color 0.26s cubic-bezier(.33,1.02,.53,.98),
     background 0.24s cubic-bezier(.33,1.02,.53,.98),
     transform 0.16s cubic-bezier(.41,1.11,.59,.95),
     opacity 0.2s;
+  will-change: transform,opacity;
+  mix-blend-mode: exclusion;
+  opacity: 1;
+  z-index: 9999;
 }
+
 .custom-cursor-ring.cursor-hover {
   transform: scale(1.20) !important;
   border-color: rgba(200,210,255,0.59) !important;
@@ -43,16 +27,35 @@
   box-shadow: 0 2px 20px 0 rgba(160,170,220,0.14);
 }
 
-/* "View →" label for special tiles */
+.custom-cursor-dot {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.93);
+  box-shadow: 0 1px 4px 0 rgba(130,140,230,0.07);
+  will-change: transform;
+  mix-blend-mode: exclusion;
+  z-index: 9999;
+  transition: background 0.18s cubic-bezier(.44,1.11,.53,.91);
+}
+
 .custom-cursor-view {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
   display: flex;
   align-items: center;
-  padding: 0.5em 1.3em;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.77) 70%, rgba(200,200,220,0.28) 100%);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
   font-family: 'Space Grotesk', 'Poppins', 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 1.1rem;
+  background: linear-gradient(90deg, rgba(255,255,255,0.77) 70%, rgba(200,200,220,0.28) 100%);
   color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -61,7 +64,6 @@
   white-space: nowrap;
   opacity: 0;
   z-index: 9999;
-  pointer-events: none;
   user-select: none;
   transition:
     opacity 0.18s cubic-bezier(.44,1.11,.53,.91),
@@ -74,6 +76,7 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
 .custom-cursor-view span:last-child {
   margin-left: 8px;
   font-size: 1.1em;
@@ -82,12 +85,15 @@
   font-weight: 700;
 }
 
-/* Hide on touch devices */
-@media (hover: none), (pointer: coarse), (max-width: 767px) {
-  .custom-cursor-dot, .custom-cursor-ring, .custom-cursor-view {
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring,
+  .custom-cursor-view {
     display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
   }
+}
+
+/* Hide browser/system cursor everywhere if using custom cursor (set data-custom-cursor on body) */
+[data-custom-cursor], [data-custom-cursor] * {
+  cursor: none !important;
 }
