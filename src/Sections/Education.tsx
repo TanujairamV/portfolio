@@ -34,7 +34,7 @@ const educationData = [
       "Focus on Physics, Chemistry, Mathematics, and Computer Science",
     ],
     grade: "Grade 11 to Present",
-    icon: <FaGraduationCap className="text-2xl text-yellow-300" />,
+    icon: <FaGraduationCap className="text-2xl text-blue-300" />,
   },
 ];
 
@@ -90,39 +90,45 @@ const Education: React.FC = () => {
       <div
         className="text-2xl font-bold mb-8 flex items-center gap-2 font-hatton"
         style={{
-          background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
+          background: "linear-gradient(90deg, #fff 70%, #8080ff 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           fontFamily: "'Hatton', serif",
         }}
       >
-        <FaGraduationCap className="text-yellow-300" />
+        <FaGraduationCap className="text-blue-300" />
         Education
       </div>
-      <div className="relative flex flex-col items-center" ref={sectionRef} style={{ minHeight: 400 }}>
+      <div
+        className="relative flex flex-col items-center overflow-x-hidden"
+        ref={sectionRef}
+        style={{ minHeight: 400, scrollBehavior: "smooth" }}
+      >
         {/* Timeline vertical bar */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-300 via-gray-400 to-yellow-300 opacity-50 rounded-full pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 via-gray-500 to-blue-400 opacity-60 rounded-full pointer-events-none"
           aria-hidden="true"
           style={{ zIndex: 0 }}
         />
         {/* Animated pointer */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 w-7 h-7 rounded-full border-4 border-yellow-400 bg-black transition-all shadow-lg z-20 pointer-events-none"
+          className="absolute left-1/2 -translate-x-1/2 w-5 h-5 rounded-full border-2 border-blue-400 bg-white/40 shadow-xl z-20 pointer-events-none transition-all"
           style={{
-            top: getPointerTop() - 14,
-            transition: "top 0.6s cubic-bezier(.4,2,.6,1)",
+            top: getPointerTop() - 10,
+            transition: "top 0.7s cubic-bezier(.4,2,.6,1), box-shadow 0.35s",
+            boxShadow: "0 0 0 7px rgba(96,165,250,0.10)",
           }}
         />
-        <ol className="relative z-10 w-full max-w-xl flex flex-col gap-16">
+        <ol className="relative z-10 w-full max-w-xl flex flex-col gap-16 overflow-y-auto snap-y snap-mandatory scroll-smooth"
+            style={{ maxHeight: "70vh" }}>
           {educationData.map((edu, idx) => (
-            <li key={edu.school} className="relative flex justify-center" style={{ zIndex: 1 }}>
+            <li key={edu.school} className="relative flex justify-center snap-center" style={{ zIndex: 1 }}>
               {/* Timeline dot */}
               <span
-                className={`absolute left-1/2 -translate-x-1/2 -top-4 flex items-center justify-center w-7 h-7 rounded-full border-2 shadow-lg z-10 transition-all duration-300
+                className={`absolute left-1/2 -translate-x-1/2 -top-4 flex items-center justify-center w-6 h-6 rounded-full border-2 shadow-lg z-10 transition-all duration-300
                   ${activeIndex === idx
-                    ? "bg-yellow-400 border-yellow-400 scale-110"
-                    : "bg-gray-900 border-yellow-300"
+                    ? "bg-blue-400 border-blue-300 scale-110"
+                    : "bg-white/10 border-slate-400"
                   }
                 `}
                 style={{
@@ -135,8 +141,8 @@ const Education: React.FC = () => {
               <div
                 ref={el => (itemRefs.current[idx] = el)}
                 data-index={idx}
-                className={`ml-0 w-full max-w-md px-7 py-6 rounded-xl border border-gray-400/30 bg-white/10 backdrop-blur-md shadow-xl transition-all duration-500
-                  ${activeIndex === idx ? "ring-2 ring-yellow-300/70 scale-[1.02]" : ""}
+                className={`ml-0 w-full max-w-md px-7 py-6 rounded-xl border border-white/15 bg-white/10 backdrop-blur-md shadow-2xl transition-all duration-500
+                  ${activeIndex === idx ? "ring-2 ring-blue-400/60 scale-[1.03]" : ""}
                 `}
                 style={{
                   marginTop: "2.5rem",
@@ -144,9 +150,9 @@ const Education: React.FC = () => {
                 }}
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-1">
-                  <h3 className="text-xl font-bold mb-1 font-caviar text-yellow-200">{edu.school}</h3>
+                  <h3 className="text-xl font-bold mb-1 font-caviar text-blue-200">{edu.school}</h3>
                   <span className="text-sm text-gray-400 flex items-center gap-1">
-                    <FaMapMarkerAlt className="inline-block mr-1 text-yellow-400" />
+                    <FaMapMarkerAlt className="inline-block mr-1 text-blue-400" />
                     {edu.location}
                   </span>
                 </div>
