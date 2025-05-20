@@ -62,11 +62,8 @@ const Education: React.FC = () => {
   return (
     <section
       id="education"
-      className="relative py-12 flex flex-col items-center bg-transparent"
+      className="relative py-12 flex flex-col items-center"
     >
-      <h2 className="mb-10 text-3xl font-bold text-center bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent tracking-tight font-hatton">
-        Education
-      </h2>
       <div className="relative w-full max-w-2xl mx-auto">
         {/* Vertical timeline line */}
         <div
@@ -106,18 +103,24 @@ const Education: React.FC = () => {
                     <span className="h-[90px] w-0.5 bg-gradient-to-b from-indigo-200/90 to-gray-100/0"></span>
                   )}
                 </div>
-                {/* Card */}
+                {/* Glassy School Card */}
                 <div
                   className={`
                     relative mt-2 ml-6 md:w-[calc(100%-56px)] w-full
-                    rounded-2xl bg-white/70 dark:bg-neutral-900/70 shadow-xl shadow-gray-700/5
+                    rounded-2xl bg-white/40 dark:bg-neutral-900/40 shadow-xl shadow-gray-700/10
                     px-6 py-5 md:py-7
                     transition-transform
-                    hover:scale-[1.027] hover:bg-white/90 dark:hover:bg-neutral-900/85 hover:shadow-2xl
-                    backdrop-blur
+                    hover:scale-[1.027] hover:bg-white/70 dark:hover:bg-neutral-900/60 hover:shadow-2xl
+                    backdrop-blur-xl
                     text-left
                     cursor-pointer
                   `}
+                  style={{
+                    // Glassmorphism effect
+                    backdropFilter: "blur(18px) saturate(1.2)",
+                    WebkitBackdropFilter: "blur(18px) saturate(1.2)",
+                    border: "1.5px solid rgba(255,255,255,0.10)",
+                  }}
                   tabIndex={0}
                 >
                   <div className="flex items-center gap-2 mb-1">
