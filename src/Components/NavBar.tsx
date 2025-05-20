@@ -19,12 +19,30 @@ const isMobile = () =>
 
 const NavBar: React.FC = () => {
   const [mobile, setMobile] = useState(isMobile());
-  // Removed useFadeInOnScroll usage
+  const [activeSection, setActiveSection] = useState<string>("hero");
 
   useEffect(() => {
     const handleResize = () => setMobile(isMobile());
     window.addEventListener("resize", handleResize, { passive: true });
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Scroll spy for active section underline
+  useEffect(() => {
+    const handleScroll = () => {
+      let found = "hero";
+      for (const link of NAV_LINKS) {
+        const el = document.getElementById(link.to);
+        if (el) {
+          const { top } = el.getBoundingClientRect();
+          if (top <= 80) found = link.to;
+        }
+      }
+      setActiveSection(found);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Ripple Handler for NavBar links
@@ -55,6 +73,13 @@ const NavBar: React.FC = () => {
       id="navbar"
       className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300"
       style={{
+        // --- ADDED for semi-transparent effect ---
+        background: "rgba(20, 20, 32, 0.72)",
+        backdropFilter: "blur(18px) saturate(1.2)",
+        WebkitBackdropFilter: "blur(18px) saturate(1.2)",
+        border: "1.5px solid rgba(255,255,255,0.13)",
+        boxShadow: "0 4px 24px 0 rgba(25, 25, 37, 0.16), 0 2px 32px 0 rgba(255,255,255,0.08)",
+        // ---
         transform: "translateX(-50%)",
         padding: mobile ? "0.18rem 0.5rem" : "0.55rem 2.2rem",
         borderRadius: "2.2rem",
@@ -116,7 +141,11 @@ const NavBar: React.FC = () => {
                 WebkitTextFillColor: "transparent",
                 fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
                 fontWeight: 700,
-                textTransform: "capitalize"
+                textTransform: "capitalize",
+                // --- ADDED underline effect for active ---
+                borderBottom: activeSection === link.to ? "2.5px solid #7ca7fa" : "2.5px solid transparent",
+                transition: "border-bottom 0.18s cubic-bezier(.61,.13,.45,.87)"
+                // ---
               }}
               tabIndex={0}
               aria-label={link.label}
