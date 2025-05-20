@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-scroll";
 import { MdHome, MdWork, MdSchool, MdStar, MdBuild, MdAssignment } from "react-icons/md";
-// Removed useFadeInOnScroll import
 
 const NAV_LINKS = [
   { to: "hero", label: "Home", icon: <MdHome size={22} /> },
@@ -20,6 +19,9 @@ const isMobile = () =>
 const NavBar: React.FC = () => {
   const [mobile, setMobile] = useState(isMobile());
   const [activeSection, setActiveSection] = useState<string>("hero");
+  // For underline animation
+  const underlineRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const [underlineStyle, setUnderlineStyle] = useState<React.CSSProperties>({ opacity: 0 });
 
   useEffect(() => {
     const handleResize = () => setMobile(isMobile());
@@ -45,6 +47,34 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Underline animation logic
+  useEffect(() => {
+    if (mobile) return;
+    const idx = NAV_LINKS.findIndex(l => l.to === activeSection);
+    const ref = underlineRefs.current[idx];
+    if (ref) {
+      const rect = ref.getBoundingClientRect();
+      const navRect = ref.parentElement?.parentElement?.parentElement?.getBoundingClientRect();
+      // navRect is <nav>, ref is <span> inside <Link>
+      if (navRect) {
+        setUnderlineStyle({
+          opacity: 1,
+          left: rect.left - navRect.left + "px",
+          width: rect.width + "px",
+          height: "3.5px",
+          bottom: "4px",
+          position: "absolute",
+          borderRadius: "3px",
+          background: "linear-gradient(90deg, #fff 40%, #e4e4e7 100%)",
+          transition: "left 0.32s cubic-bezier(.55,0,.45,1), width 0.28s cubic-bezier(.55,0,.45,1), opacity 0.13s",
+          zIndex: 2,
+        });
+      }
+    } else {
+      setUnderlineStyle({ opacity: 0 });
+    }
+  }, [activeSection, mobile]);
+
   // Ripple Handler for NavBar links
   const handleRipple = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const target = e.currentTarget;
@@ -69,17 +99,14 @@ const NavBar: React.FC = () => {
 
   return (
     <nav
-      // Removed ref={navRef}
       id="navbar"
       className="glass-navbar fixed top-5 left-1/2 z-50 transition-all duration-300"
       style={{
-        // --- ADDED for semi-transparent effect ---
         background: "rgba(20, 20, 32, 0.72)",
         backdropFilter: "blur(18px) saturate(1.2)",
         WebkitBackdropFilter: "blur(18px) saturate(1.2)",
         border: "1.5px solid rgba(255,255,255,0.13)",
         boxShadow: "0 4px 24px 0 rgba(25, 25, 37, 0.16), 0 2px 32px 0 rgba(255,255,255,0.08)",
-        // ---
         transform: "translateX(-50%)",
         padding: mobile ? "0.18rem 0.5rem" : "0.55rem 2.2rem",
         borderRadius: "2.2rem",
@@ -88,9 +115,17 @@ const NavBar: React.FC = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "'Space Grotesk', 'Poppins', sans-serif"
+        fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
+        position: "relative",
+        overflow: "visible"
       }}
     >
+      {!mobile && (
+        <span
+          className="navbar-underline"
+          style={underlineStyle}
+        />
+      )}
       <ul
         className="flex flex-row items-center justify-center w-full"
         style={{
@@ -100,11 +135,10 @@ const NavBar: React.FC = () => {
           width: "100%"
         }}
       >
-        {NAV_LINKS.map((link) => (
+        {NAV_LINKS.map((link, i) => (
           <li
             key={link.to}
             className="px-1.5 md:px-3 py-1 nav-link ripple"
-            // Removed fade-in and data-fade-delay
             style={{
               fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
               fontWeight: 600,
@@ -142,27 +176,34 @@ const NavBar: React.FC = () => {
                 fontFamily: "'Space Grotesk', 'Poppins', sans-serif",
                 fontWeight: 700,
                 textTransform: "capitalize",
-                // --- ADDED underline effect for active ---
-                borderBottom: activeSection === link.to ? "2.5px solid #7ca7fa" : "2.5px solid transparent",
-                transition: "border-bottom 0.18s cubic-bezier(.61,.13,.45,.87)"
-                // ---
+                position: "relative"
               }}
               tabIndex={0}
               aria-label={link.label}
             >
-              {mobile ? link.icon : (
-                <span
-                  style={{
-                    background: "linear-gradient(90deg, #fff 80%, #b0b0b0 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    fontWeight: 700,
-                    fontFamily: "'Space Grotesk', 'Poppins', sans-serif"
-                  }}
-                >
-                  {link.label}
-                </span>
-              )}
+              <span
+                ref={el => underlineRefs.current[i] = el}
+                style={{
+                  display: "inline-block",
+                  position: "relative",
+                  zIndex: 1,
+                  padding: "0 2px"
+                }}
+              >
+                {mobile ? link.icon : (
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #fff 80%, #b0b0b0 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      fontWeight: 700,
+                      fontFamily: "'Space Grotesk', 'Poppins', sans-serif"
+                    }}
+                  >
+                    {link.label}
+                  </span>
+                )}
+              </span>
               {!mobile && (
                 <span className="nav-arrow" style={{ marginLeft: "0.26em", display: "inline-flex", alignItems: "center" }}>
                   <svg width="17" height="17" viewBox="0 0 17 17">
