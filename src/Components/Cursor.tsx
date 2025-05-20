@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Checks if an element or its ancestors are clickable
+// Checks if the element or its ancestors are a special tile
+function isSpecialTile(el: Element | null): boolean {
+  return !!el && !!el.closest(".certificate-tile, .project-tile");
+}
+
+// Checks if the element or its ancestors are clickable
 function isClickable(el: Element | null): boolean {
   if (!el) return false;
   const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
@@ -17,14 +22,6 @@ function isClickable(el: Element | null): boolean {
   return false;
 }
 
-// Checks if the hovered element or its ancestors are special tiles
-function isSpecialTile(el: Element | null): boolean {
-  if (!el) return false;
-  return (
-    el.closest(".certificate-tile, .project-tile") !== null
-  );
-}
-
 const isTouchDevice = (): boolean =>
   typeof window !== "undefined" &&
   ("ontouchstart" in window ||
@@ -36,23 +33,20 @@ const Cursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 }); // Start at center
+  const mouse = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const ring = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const animFrame = useRef<number>();
   const [shouldShow, setShouldShow] = useState(false);
   const [showView, setShowView] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 
-  // Hide/show cursor on touch device
+  // Touch device detection
   useEffect(() => {
     const handleTouch = () => setShouldShow(false);
     const handleMouse = () => setShouldShow(true);
 
-    if (isTouchDevice()) {
-      setShouldShow(false);
-    } else {
-      setShouldShow(true);
-    }
+    if (isTouchDevice()) setShouldShow(false);
+    else setShouldShow(true);
 
     window.addEventListener("touchstart", handleTouch, { passive: true });
     window.addEventListener("mousemove", handleMouse);
@@ -90,7 +84,7 @@ const Cursor: React.FC = () => {
     };
   }, [shouldShow, showView, isVisible]);
 
-  // Always track mouse position globally and update dot position & hover logic
+  // Track mouse globally and update dot position, hover, and "view" logic
   useEffect(() => {
     if (!shouldShow) return;
     const move = (e: MouseEvent) => {
@@ -100,7 +94,6 @@ const Cursor: React.FC = () => {
         dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
         dotRef.current.style.opacity = isVisible ? "1" : "0";
       }
-      // --- Ensures ring/label work even over children ---
       const el = document.elementFromPoint(e.clientX, e.clientY);
       setShowView(isSpecialTile(el));
       if (ringRef.current) {
@@ -117,17 +110,12 @@ const Cursor: React.FC = () => {
 
   // Hide default cursor when custom cursor is active
   useEffect(() => {
-    if (shouldShow) {
-      document.body.style.cursor = "none";
-    } else {
-      document.body.style.cursor = "";
-    }
-    return () => {
-      document.body.style.cursor = "";
-    };
+    if (shouldShow) document.body.style.cursor = "none";
+    else document.body.style.cursor = "";
+    return () => { document.body.style.cursor = ""; };
   }, [shouldShow]);
 
-  // Hide cursor when mouse leaves the window, show when enters
+  // Hide cursor when mouse leaves window, show when enters
   useEffect(() => {
     if (!shouldShow) return;
     const handleMouseLeave = () => setIsVisible(false);
@@ -142,15 +130,11 @@ const Cursor: React.FC = () => {
     };
   }, [shouldShow]);
 
-  // Don't render the custom cursor on touch devices
   if (!shouldShow) return null;
 
   return (
     <>
-      {/* Outer ring */}
-      <div
-        ref={ringRef}
-        className="custom-cursor-ring pointer-events-none fixed z-[9999] left-0 top-0"
+      <div ref={ringRef} className="custom-cursor-ring pointer-events-none fixed z-[9999] left-0 top-0"
         style={{
           width: 44,
           height: 44,
@@ -167,10 +151,7 @@ const Cursor: React.FC = () => {
           zIndex: 9999,
         }}
       />
-      {/* Inner dot */}
-      <div
-        ref={dotRef}
-        className="custom-cursor-dot pointer-events-none fixed z-[9999] left-0 top-0"
+      <div ref={dotRef} className="custom-cursor-dot pointer-events-none fixed z-[9999] left-0 top-0"
         style={{
           width: 8,
           height: 8,
@@ -182,10 +163,7 @@ const Cursor: React.FC = () => {
           mixBlendMode: "exclusion",
         }}
       />
-      {/* "View →" label for special tiles */}
-      <div
-        ref={viewRef}
-        className="custom-cursor-view pointer-events-none fixed z-[9999] left-0 top-0 flex items-center px-5 py-2 rounded-full"
+      <div ref={viewRef} className="custom-cursor-view pointer-events-none fixed z-[9999] left-0 top-0 flex items-center px-5 py-2 rounded-full"
         style={{
           fontFamily: "'Space Grotesk', 'Poppins', 'Montserrat', sans-serif",
           fontWeight: 600,
