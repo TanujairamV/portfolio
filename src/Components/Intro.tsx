@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Intro.css";
 
 // Scramble animation settings
 const SCRAMBLE_TEXT = "Tanujairam V";
@@ -21,19 +22,18 @@ function scramble(text: string, progress: number) {
   return scrambled;
 }
 
-const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
+const Intro: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
   const [show, setShow] = useState(true);
   const [scrambleProgress, setScrambleProgress] = useState(0);
 
-  // Hides system and custom cursor when IntroScreen is showing
+  // Hide system and custom cursor when Intro is showing
   useEffect(() => {
     if (!show) return;
     // Hide system cursor
     const prevCursor = document.body.style.cursor;
     document.body.style.cursor = "none";
-    // Hide custom cursor if present
+    // Hide custom cursor (using data attribute for CSS)
     document.body.setAttribute("data-intro-hide-cursor", "yes");
-
     return () => {
       document.body.style.cursor = prevCursor;
       document.body.removeAttribute("data-intro-hide-cursor");
@@ -100,7 +100,7 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
         }}
       >
         <h1
-          className="text-4xl md:text-6xl font-bold text-center"
+          className="text-4xl md:text-6xl font-bold text-center intro-title"
           style={{
             background: "linear-gradient(90deg, #fff 60%, #b0b0b0 100%)",
             WebkitBackgroundClip: "text",
@@ -131,4 +131,4 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
   );
 };
 
-export default IntroScreen;
+export default Intro;
