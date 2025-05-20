@@ -25,6 +25,21 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
   const [show, setShow] = useState(true);
   const [scrambleProgress, setScrambleProgress] = useState(0);
 
+  // Hides system and custom cursor when IntroScreen is showing
+  useEffect(() => {
+    if (!show) return;
+    // Hide system cursor
+    const prevCursor = document.body.style.cursor;
+    document.body.style.cursor = "none";
+    // Hide custom cursor if present
+    document.body.setAttribute("data-intro-hide-cursor", "yes");
+
+    return () => {
+      document.body.style.cursor = prevCursor;
+      document.body.removeAttribute("data-intro-hide-cursor");
+    };
+  }, [show]);
+
   useEffect(() => {
     let running = true;
     let start = performance.now();
@@ -57,7 +72,7 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black hide-cursor"
       style={{
         minHeight: "100vh",
         minWidth: "100vw",
@@ -94,6 +109,9 @@ const IntroScreen: React.FC<{ onFinish?: () => void }> = ({ onFinish }) => {
             letterSpacing: "0.07em",
             userSelect: "none",
             textShadow: "0 4px 40px #000a",
+            overflow: "visible",              // Fix clipped descenders
+            lineHeight: 1.15,                 // Improve descender visibility (e.g. for "j")
+            paddingBottom: "0.18em",          // Extra space for descenders like "j"
           }}
         >
           {scramble(SCRAMBLE_TEXT, scrambleProgress)}
