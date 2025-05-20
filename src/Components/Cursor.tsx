@@ -30,7 +30,6 @@ const Cursor: React.FC = () => {
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number>();
   const [shouldShow, setShouldShow] = useState(false);
-  const [isHoverClickable, setIsHoverClickable] = useState(false);
   const [showView, setShowView] = useState(false);
 
   // Detect touch device and show/hide cursor
@@ -102,18 +101,16 @@ const Cursor: React.FC = () => {
     if (!shouldShow) return;
     const handleHover = (e: MouseEvent) => {
       const el = document.elementFromPoint(e.clientX, e.clientY);
-      const isOverClickable = isClickable(el);
 
       // Special: certificate/project tile (className should be set on those tiles!)
       const overSpecial =
         el?.classList.contains("certificate-tile") ||
         el?.classList.contains("project-tile");
 
-      setIsHoverClickable(isOverClickable);
       setShowView(Boolean(overSpecial));
 
       if (ringRef.current) {
-        if (isOverClickable) {
+        if (isClickable(el)) {
           ringRef.current.classList.add("cursor-hover");
         } else {
           ringRef.current.classList.remove("cursor-hover");
