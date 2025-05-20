@@ -23,10 +23,8 @@ function withErrorBoundary(Component: React.ComponentType) {
     }
 
     componentDidCatch(error: any, info: any) {
-      // You can log error to Sentry or console here
-      // e.g. Sentry.captureException(error);
       // For debugging, log to console:
-      console.error("Error in Portfolio boundary:", error, info);
+      console.error("[Debug] Error in Portfolio boundary:", error, info);
     }
 
     render() {
@@ -50,10 +48,6 @@ const gradientText = {
   WebkitTextFillColor: "transparent"
 };
 
-const divider = (
-  <hr className="my-12 border-t-2 border-yellow-400 opacity-30" />
-);
-
 const sectionHeading = (text: string, icon?: React.ReactNode) => (
   <div className="flex items-center gap-2 mb-6">
     {icon}
@@ -69,11 +63,14 @@ const sectionHeading = (text: string, icon?: React.ReactNode) => (
 const Portfolio: React.FC = () => {
   // Debug: log rendering
   React.useEffect(() => {
-    console.log("Portfolio component rendered");
+    console.debug("[Debug] Portfolio component rendered");
   }, []);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
+      {/* Debug logs for mount */}
+      {console.debug("[Debug] Portfolio JSX body rendered")}
+
       {/* Intro screen and backgrounds */}
       <IntroScreen />
       <ParticlesBackground />
@@ -89,23 +86,17 @@ const Portfolio: React.FC = () => {
           <NowPlaying />
         </div>
 
-        {divider}
-
         {/* Skills */}
         <section id="skills" className="mb-20">
           {sectionHeading("Skills")}
           <SkillChip />
         </section>
 
-        {divider}
-
         {/* Experience */}
         <section id="experience" className="mb-20">
           {sectionHeading("Experience")}
           <Experience />
         </section>
-
-        {divider}
 
         {/* Education */}
         <section id="education" className="mb-20">
@@ -115,8 +106,6 @@ const Portfolio: React.FC = () => {
           </div>
         </section>
 
-        {divider}
-
         {/* Certificates */}
         <section id="certificates" className="mb-20">
           {sectionHeading("Certificates")}
@@ -124,8 +113,6 @@ const Portfolio: React.FC = () => {
             <Certificates />
           </div>
         </section>
-
-        {divider}
 
         {/* Projects */}
         <section id="projects" className="mb-20">
