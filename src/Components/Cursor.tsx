@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
-// Helper: checks if an element or ancestor is a "special tile"
+// Helper: checks if an element or its ancestors is a special tile
 function isSpecialTile(el: Element | null): boolean {
   return !!el && !!el.closest(".certificate-tile, .project-tile");
 }
 
-// Helper: checks if an element or ancestor is clickable
+// Helper: checks if an element or its ancestors is clickable
 function isClickable(el: Element | null): boolean {
   if (!el) return false;
   const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
@@ -27,11 +27,14 @@ const Cursor: React.FC = () => {
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
 
+  // State for whether the custom cursor should be shown (not on touch)
   const [shouldShow, setShouldShow] = useState(false);
+  // State for whether the label is visible
   const [showView, setShowView] = useState(false);
+  // State for whether the custom cursor is visible (hides when mouse leaves window)
   const [isCursorVisible, setIsCursorVisible] = useState(true);
 
-  // These are kept outside state for performance
+  // These are refs for current mouse and ring positions
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number>();
@@ -39,16 +42,13 @@ const Cursor: React.FC = () => {
   // Only run on client, and disable on touch devices
   useEffect(() => {
     const isTouch =
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      // @ts-ignore
-      navigator.msMaxTouchPoints > 0;
+      typeof window !== "undefined" &&
+      ("ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        // @ts-ignore
+        navigator.msMaxTouchPoints > 0);
 
-    if (isTouch) {
-      setShouldShow(false);
-    } else {
-      setShouldShow(true);
-    }
+    setShouldShow(!isTouch);
 
     const handleTouch = () => setShouldShow(false);
     const handleMouse = () => setShouldShow(true);
@@ -62,7 +62,7 @@ const Cursor: React.FC = () => {
     };
   }, []);
 
-  // Animation for trailing ring and label
+  // Animate trailing ring and label
   useEffect(() => {
     if (!shouldShow) return () => {};
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
@@ -78,7 +78,9 @@ const Cursor: React.FC = () => {
         viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
         viewRef.current.style.opacity = isCursorVisible ? "1" : "0";
       }
+      // Hide ring if label is showing or cursor not visible
       if (ringRef.current) ringRef.current.style.opacity = showView || !isCursorVisible ? "0" : "1";
+      // Hide label if not showing or cursor not visible
       if (viewRef.current) viewRef.current.style.opacity = showView && isCursorVisible ? "1" : "0";
       animFrame.current = requestAnimationFrame(animate);
     };
@@ -209,7 +211,7 @@ const Cursor: React.FC = () => {
           fontWeight: 700,
         }}>→</span>
       </div>
-      {/* Absolute cursor hiding for all elements, including clickables */}
+      {/* Hide browser cursor even on clickables */}
       <style>{`
         [data-custom-cursor], [data-custom-cursor] * {
           cursor: none !important;
