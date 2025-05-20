@@ -5,7 +5,7 @@ import Footer from "./Components/Footer";
 import SkillChip from "./Sections/Skills";
 import Projects from "./Sections/Projects";
 import Cursor from "./Components/Cursor";
-import IntroScreen from "./Components/Intro";
+import Intro from "./Components/Intro";
 import NowPlaying from "./Components/NowPlaying";
 import Hero from "./Sections/Hero";
 import Education from "./Sections/Education";
@@ -22,10 +22,7 @@ function withErrorBoundary(Component: React.ComponentType) {
       return { hasError: true, error };
     }
 
-    // Remove unused parameters to fix TS6133
-    componentDidCatch() {
-      // Optionally log error to an external service here
-    }
+    componentDidCatch() {}
 
     render() {
       if (this.state.hasError) {
@@ -63,7 +60,7 @@ const Portfolio: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
       {/* Intro, particles, cursor, and navigation */}
-      <IntroScreen />
+      <Intro />
       <ParticlesBackground />
       <Cursor />
       <Navbar />
