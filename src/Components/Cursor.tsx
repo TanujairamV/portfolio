@@ -105,7 +105,7 @@ const Cursor: React.FC = () => {
       ringY: ring.current.y,
       showView,
     });
-  }, [isCursorVisible, showView]);
+  }, [isCursorVisible]);
 
   useEffect(() => {
     if (!shouldShow) return () => {};
@@ -163,6 +163,8 @@ const Cursor: React.FC = () => {
         ringY: ring.current.y,
         dotOpacity: dotRef.current.style.opacity,
         ringOpacity: ringRef.current.style.opacity,
+        dotTransform: dotRef.current.style.transform,
+        ringTransform: ringRef.current.style.transform,
       });
 
       animFrame.current = requestAnimationFrame(animate);
@@ -229,17 +231,17 @@ const Cursor: React.FC = () => {
       <div
         ref={ringRef}
         className="custom-cursor-ring"
-        style={{ opacity: 0, transform: "translate3d(-9999px, -9999px, 0)" }}
+        style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
       />
       <div
         ref={dotRef}
         className="custom-cursor-dot"
-        style={{ opacity: 0, transform: "translate3d(-9999px, -9999px, 0)" }}
+        style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
       />
       <div
         ref={viewRef}
         className="custom-cursor-view"
-        style={{ opacity: 0, transform: "translate3d(-9999px, -9999px, 0)" }}
+        style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
       >
         <span>View</span>
         <span>→</span>
