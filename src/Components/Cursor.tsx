@@ -33,21 +33,12 @@ const Cursor: React.FC = () => {
   // Show the "View →" label
   const [showView, setShowView] = useState(false);
   // Hide custom cursor when mouse leaves window
-  const [isCursorVisible, setIsCursorVisible] = useState(true);
+  const [isCursorVisible, setIsCursorVisible] = useState(false); // Start invisible until mouse moves
 
   // Mouse/ring positions, not state for performance
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number | null>(null);
-
-  // Debounce helper
-  const debounce = <T extends (...args: any[]) => void>(func: T, wait: number) => {
-    let timeout: number | null = null;
-    return (...args: Parameters<T>) => {
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), wait);
-    };
-  };
 
   // Detect touch device and set shouldShow
   useEffect(() => {
@@ -73,24 +64,28 @@ const Cursor: React.FC = () => {
   }, []);
 
   // Mousemove: update mouse position, set "View" and hover
-  const handleMove = useCallback(
-    debounce((e: MouseEvent) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
+  const handleMove = useCallback((e: MouseEvent) => {
+    mouse.current.x = e.clientX;
+    mouse.current.y = e.clientY;
+    setIsCursorVisible(true); // Ensure cursor is visible on move
 
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      setShowView(isSpecialTile(el));
+    // Initialize ring position on first move
+    if (ring.current.x === 0 && ring.current.y === 0) {
+      ring.current.x = e.clientX;
+      ring.current.y = e.clientY;
+    }
 
-      if (ringRef.current) {
-        if (isClickable(el)) {
-          ringRef.current.classList.add("cursor-hover");
-        } else {
-          ringRef.current.classList.remove("cursor-hover");
-        }
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    setShowView(isSpecialTile(el));
+
+    if (ringRef.current) {
+      if (isClickable(el)) {
+        ringRef.current.classList.add("cursor-hover");
+      } else {
+        ringRef.current.classList.remove("cursor-hover");
       }
-    }, 10),
-    []
-  );
+    }
+  }, []);
 
   useEffect(() => {
     if (!shouldShow) return () => {};
@@ -100,44 +95,42 @@ const Cursor: React.FC = () => {
 
   // Animate the trailing ring, dot, and label
   useEffect(() => {
-    if (!shouldShow) return () => {};
+    if (!shouldShow || !isCursorVisible) return () => {};
 
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
 
     const animate = () => {
       if (!ringRef.current || !dotRef.current || !viewRef.current) return;
 
-      // Only update positions if cursor is visible
       if (isCursorVisible) {
+        // Update ring position with lerp for smooth trailing
         ring.current.x = lerp(ring.current.x, mouse.current.x, 0.2);
         ring.current.y = lerp(ring.current.y, mouse.current.y, 0.2);
 
+        // Update dot position (instant, no lerp)
         dotRef.current.style.transform = `translate3d(${mouse.current.x - 4}px, ${mouse.current.y - 4}px, 0)`;
         dotRef.current.style.opacity = "1";
 
+        // Update ring position
         if (!showView) {
           ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
           ringRef.current.style.opacity = "1";
         }
+
+        // Update view label position
         if (showView) {
           viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
           viewRef.current.style.opacity = "1";
         }
-      } else {
-        dotRef.current.style.opacity = "0";
-        ringRef.current.style.opacity = "0";
-        viewRef.current.style.opacity = "0";
       }
 
+      // Hide elements when cursor is not visible or view is shown
       ringRef.current.style.opacity = showView || !isCursorVisible ? "0" : "1";
       viewRef.current.style.opacity = showView && isCursorVisible ? "1" : "0";
+      dotRef.current.style.opacity = isCursorVisible ? "1" : "0";
 
       animFrame.current = requestAnimationFrame(animate);
     };
-
-    // Initialize ring position to match mouse
-    ring.current.x = mouse.current.x;
-    ring.current.y = mouse.current.y;
 
     animFrame.current = requestAnimationFrame(animate);
     return () => {
@@ -148,22 +141,25 @@ const Cursor: React.FC = () => {
 
   // Hide browser cursor everywhere if using custom cursor
   useEffect(() => {
-    if (shouldShow) {
+    if (shouldShow && isCursorVisible) {
       document.body.setAttribute("data-custom-cursor", "yes");
     } else {
       document.body.removeAttribute("data-custom-cursor");
     }
     return () => document.body.removeAttribute("data-custom-cursor");
-  }, [shouldShow]);
+  }, [shouldShow, isCursorVisible]);
 
   // Hide custom cursor when mouse leaves window, show when enters
   useEffect(() => {
     if (!shouldShow) return () => {};
 
-    const handleMouseLeave = () => setIsCursorVisible(false);
+    const handleMouseLeave = () => {
+      setIsCursorVisible(false);
+    };
+
     const handleMouseEnter = () => {
       setIsCursorVisible(true);
-      // Initialize ring position on re-entry to prevent jumping
+      // Initialize ring position on re-entry
       ring.current.x = mouse.current.x;
       ring.current.y = mouse.current.y;
     };
