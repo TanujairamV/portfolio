@@ -40,6 +40,15 @@ const Cursor: React.FC = () => {
   const ring = useRef({ x: 0, y: 0 });
   const animFrame = useRef<number | null>(null);
 
+  // Log ref initialization
+  useEffect(() => {
+    console.log("Refs initialized:", {
+      dotRef: !!dotRef.current,
+      ringRef: !!ringRef.current,
+      viewRef: !!viewRef.current,
+    });
+  }, []);
+
   // Detect touch device and set shouldShow
   useEffect(() => {
     const isTouch =
@@ -49,16 +58,19 @@ const Cursor: React.FC = () => {
         // @ts-ignore
         navigator.msMaxTouchPoints > 0);
 
+    console.log("Touch detection:", { isTouch, shouldShow: !isTouch });
     setShouldShow(!isTouch);
 
-    const handleTouch = () => setShouldShow(false);
+    const handleTouch = () => {
+      console.log("Touch detected, disabling custom cursor");
+      setShouldShow(false);
+    };
     window.addEventListener("touchstart", handleTouch, { passive: true });
     return () => window.removeEventListener("touchstart", handleTouch);
   }, []);
 
   // Mousemove: update positions and states
   const handleMove = useCallback((e: MouseEvent) => {
-    // Update mouse position
     mouse.current.x = e.clientX;
     mouse.current.y = e.clientY;
 
@@ -67,6 +79,11 @@ const Cursor: React.FC = () => {
       ring.current.x = e.clientX;
       ring.current.y = e.clientY;
       setIsCursorVisible(true);
+      console.log("First move, initializing ring:", {
+        x: e.clientX,
+        y: e.clientY,
+        isCursorVisible: true,
+      });
     }
 
     // Update view and hover states
@@ -81,10 +98,14 @@ const Cursor: React.FC = () => {
       }
     }
 
-    // Debugging: Uncomment to check positions
-    // console.log("Mouse:", mouse.current.x, mouse.current.y);
-    // console.log("Ring:", ring.current.x, ring.current.y);
-  }, [isCursorVisible]);
+    console.log("Mouse move:", {
+      mouseX: mouse.current.x,
+      mouseY: mouse.current.y,
+      ringX: ring.current.x,
+      ringY: ring.current.y,
+      showView,
+    });
+  }, [isCursorVisible, showView]);
 
   useEffect(() => {
     if (!shouldShow) return () => {};
@@ -95,12 +116,16 @@ const Cursor: React.FC = () => {
   // Animate the trailing ring, dot, and label
   useEffect(() => {
     if (!shouldShow || !isCursorVisible) {
-      // Immediately hide elements if not visible
+      // Immediately hide elements
       if (dotRef.current && ringRef.current && viewRef.current) {
         dotRef.current.style.opacity = "0";
         ringRef.current.style.opacity = "0";
         viewRef.current.style.opacity = "0";
+        dotRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
+        ringRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
+        viewRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
       }
+      console.log("Animation stopped: shouldShow=", shouldShow, "isCursorVisible=", isCursorVisible);
       return () => {
         if (animFrame.current) cancelAnimationFrame(animFrame.current);
         animFrame.current = null;
@@ -110,7 +135,10 @@ const Cursor: React.FC = () => {
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
 
     const animate = () => {
-      if (!ringRef.current || !dotRef.current || !viewRef.current) return;
+      if (!ringRef.current || !dotRef.current || !viewRef.current) {
+        console.log("Animation aborted: refs missing");
+        return;
+      }
 
       // Update ring position with lerp
       ring.current.x = lerp(ring.current.x, mouse.current.x, 0.2);
@@ -127,6 +155,15 @@ const Cursor: React.FC = () => {
       // Update view label position
       viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
       viewRef.current.style.opacity = showView ? "1" : "0";
+
+      console.log("Animation frame:", {
+        mouseX: mouse.current.x,
+        mouseY: mouse.current.y,
+        ringX: ring.current.x,
+        ringY: ring.current.y,
+        dotOpacity: dotRef.current.style.opacity,
+        ringOpacity: ringRef.current.style.opacity,
+      });
 
       animFrame.current = requestAnimationFrame(animate);
     };
@@ -145,6 +182,11 @@ const Cursor: React.FC = () => {
     } else {
       document.body.removeAttribute("data-custom-cursor");
     }
+    console.log("Cursor attribute:", {
+      shouldShow,
+      isCursorVisible,
+      dataCustomCursor: document.body.getAttribute("data-custom-cursor"),
+    });
     return () => document.body.removeAttribute("data-custom-cursor");
   }, [shouldShow, isCursorVisible]);
 
@@ -159,15 +201,16 @@ const Cursor: React.FC = () => {
         dotRef.current.style.opacity = "0";
         ringRef.current.style.opacity = "0";
         viewRef.current.style.opacity = "0";
+        dotRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
+        ringRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
+        viewRef.current.style.transform = `translate3d(-9999px, -9999px, 0)`;
       }
-      // Debugging: Uncomment to verify
-      // console.log("Mouse left");
+      console.log("Mouse left: isCursorVisible=false");
     };
 
     const handleMouseEnter = () => {
       setIsCursorVisible(true);
-      // Debugging: Uncomment to verify
-      // console.log("Mouse entered");
+      console.log("Mouse entered: isCursorVisible=true");
     };
 
     window.addEventListener("mouseleave", handleMouseLeave);
@@ -183,9 +226,24 @@ const Cursor: React.FC = () => {
 
   return (
     <>
-      <div ref={ringRef} className="custom-cursor-ring" style={{ opacity: 0 }} />
-      <div ref={dotRef} className="custom-cursor-dot" style={{ opacity: 0 }} />
-      <div ref={viewRef} className="custom-cursor-view" style={{ opacity: 0 }} />
+      <div
+        ref={ringRef}
+        className="custom-cursor-ring"
+        style={{ opacity: 0, transform: "translate3d(-9999px, -9999px, 0)" }}
+      />
+      <div
+        ref={dotRef}
+        className="custom-cursor-dot"
+        style={{ opacity: 0, transform: "translate3d(-9999px, -9999px, 0)" }}
+      />
+      <div
+        ref={viewRef}
+        className="custom-cursor-view"
+        style={{ opacity: 0, transform: "translate3d(-9999px, -9999px, 0)" }}
+      >
+        <span>View</span>
+        <span>→</span>
+      </div>
     </>
   );
 };
