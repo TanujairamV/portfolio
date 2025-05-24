@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Cursor.css";
 
-// Helper: checks if an element or its ancestors is a special tile
+// Helpers
 function isSpecialTile(el: Element | null): boolean {
   return !!el && !!el.closest(".certificate-tile, .project-tile");
 }
-
-// Helper: checks if an element or its ancestors is clickable
 function isClickable(el: Element | null): boolean {
   if (!el) return false;
   const clickableTags = ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT", "SUMMARY", "LABEL"];
@@ -28,38 +26,17 @@ const Cursor: React.FC = () => {
   const ringRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
 
-  // Should show custom cursor (not on touch devices)
+  // State: should show cursor, show "View", is cursor visible
   const [shouldShow, setShouldShow] = useState(false);
-  // Show the "View →" label
   const [showView, setShowView] = useState(false);
-  // Hide custom cursor when mouse leaves window
-  const [isCursorVisible, setIsCursorVisible] = useState(false); // Start invisible
-  // Track if cursor has been initialized
-  const hasInitialized = useRef(false);
+  const [isCursorVisible, setIsCursorVisible] = useState(true);
 
-  // Mouse/ring positions
+  // Mouse/ring positions (NOT in state for perf!)
   const mouse = useRef({ x: 0, y: 0 });
   const ring = useRef({ x: 0, y: 0 });
-  const animFrame = useRef<number | null>(null);
+  const animationFrame = useRef<number>();
 
-  // Log ref initialization and initial styles
-  useEffect(() => {
-    console.log("Refs initialized:", {
-      dotRef: !!dotRef.current,
-      ringRef: !!ringRef.current,
-      viewRef: !!viewRef.current,
-    });
-    if (ringRef.current) {
-      const styles = window.getComputedStyle(ringRef.current);
-      console.log("Initial ring styles:", {
-        transform: styles.transform,
-        opacity: styles.opacity,
-        position: styles.position,
-      });
-    }
-  }, []);
-
-  // Detect touch device and set shouldShow
+  // Hide cursor on touch devices
   useEffect(() => {
     const isTouch =
       typeof window !== "undefined" &&
@@ -67,205 +44,95 @@ const Cursor: React.FC = () => {
         navigator.maxTouchPoints > 0 ||
         // @ts-ignore
         navigator.msMaxTouchPoints > 0);
-
-    console.log("Touch detection:", { isTouch, shouldShow: !isTouch });
     setShouldShow(!isTouch);
 
-    const handleTouch = () => {
-      console.log("Touch detected, disabling custom cursor");
-      setShouldShow(false);
-    };
+    const handleTouch = () => setShouldShow(false);
+    const handleMouse = () => setShouldShow(true);
+
     window.addEventListener("touchstart", handleTouch, { passive: true });
-    return () => window.removeEventListener("touchstart", handleTouch);
+    window.addEventListener("mousemove", handleMouse);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouch);
+      window.removeEventListener("mousemove", handleMouse);
+    };
   }, []);
 
-  // Mousemove: update positions and states
-  const handleMove = useCallback((e: MouseEvent) => {
-    mouse.current.x = e.clientX;
-    mouse.current.y = e.clientY;
-
-    // Log viewport and scroll offsets
-    console.log("Viewport info:", {
-      clientX: e.clientX,
-      clientY: e.clientY,
-      scrollX: window.scrollX,
-      scrollY: window.scrollY,
-      windowWidth: window.innerWidth,
-      windowHeight: window.innerHeight,
-    });
-
-    // Initialize ring position and show cursor
-    if (!hasInitialized.current) {
-      ring.current.x = e.clientX;
-      ring.current.y = e.clientY;
-      hasInitialized.current = true;
-      setIsCursorVisible(true);
-      console.log("First move, initializing ring:", {
-        x: e.clientX,
-        y: e.clientY,
-        isCursorVisible: true,
-      });
-    }
-
-    // Update view and hover states
-    const el = document.elementFromPoint(e.clientX, e.clientY);
-    setShowView(isSpecialTile(el));
-
-    if (ringRef.current) {
-      if (isClickable(el)) {
-        ringRef.current.classList.add("cursor-hover");
-      } else {
-        ringRef.current.classList.remove("cursor-hover");
-      }
-    }
-
-    console.log("Mouse move:", {
-      mouseX: mouse.current.x,
-      mouseY: mouse.current.y,
-      ringX: ring.current.x,
-      ringY: ring.current.y,
-      showView,
-      isCursorVisible,
-    });
-  }, []);
-
+  // Animate trailing ring/label
   useEffect(() => {
-    if (!shouldShow) return () => {};
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, [shouldShow, handleMove]);
-
-  // Animate the trailing ring, dot, and label
-  useEffect(() => {
-    if (!shouldShow || !isCursorVisible || !hasInitialized.current) {
-      // Immediately hide elements
-      if (dotRef.current && ringRef.current && viewRef.current) {
-        dotRef.current.style.opacity = "0";
-        ringRef.current.style.opacity = "0";
-        viewRef.current.style.opacity = "0";
-        dotRef.current.style.transform = `translate(-9999px, -9999px)`;
-        ringRef.current.style.transform = `translate(-9999px, -9999px)`;
-        viewRef.current.style.transform = `translate(-9999px, -9999px)`;
-        console.log("Hide styles applied:", {
-          dotOpacity: dotRef.current.style.opacity,
-          ringOpacity: ringRef.current.style.opacity,
-          dotTransform: dotRef.current.style.transform,
-          ringTransform: ringRef.current.style.transform,
-        });
-      }
-      console.log("Animation stopped: shouldShow=", shouldShow, "isCursorVisible=", isCursorVisible, "hasInitialized=", hasInitialized.current);
-      return () => {
-        if (animFrame.current) cancelAnimationFrame(animFrame.current);
-        animFrame.current = null;
-      };
-    }
-
+    if (!shouldShow) return;
     const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
-
     const animate = () => {
-      if (!ringRef.current || !dotRef.current || !viewRef.current) {
-        console.log("Animation aborted: refs missing");
-        return;
-      }
-
-      // Update ring position with lerp
       ring.current.x = lerp(ring.current.x, mouse.current.x, 0.2);
       ring.current.y = lerp(ring.current.y, mouse.current.y, 0.2);
 
-      // Update dot position (instant)
-      dotRef.current.style.transform = `translate(${mouse.current.x - 4}px, ${mouse.current.y - 4}px)`;
-      dotRef.current.style.opacity = "1";
-
-      // Update ring position
-      ringRef.current.style.transform = `translate(${ring.current.x - 22}px, ${ring.current.y - 22}px)`;
-      ringRef.current.style.opacity = showView ? "0" : "1";
-
-      // Update view label position
-      viewRef.current.style.transform = `translate(${ring.current.x - 48}px, ${ring.current.y - 24}px)`;
-      viewRef.current.style.opacity = showView ? "1" : "0";
-
-      console.log("Animation frame:", {
-        mouseX: mouse.current.x,
-        mouseY: mouse.current.y,
-        ringX: ring.current.x,
-        ringY: ring.current.y,
-        dotOpacity: dotRef.current.style.opacity,
-        ringOpacity: ringRef.current.style.opacity,
-        dotTransform: dotRef.current.style.transform,
-        ringTransform: ringRef.current.style.transform,
-      });
-
-      animFrame.current = requestAnimationFrame(animate);
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ring.current.x - 22}px, ${ring.current.y - 22}px, 0)`;
+        ringRef.current.style.opacity = showView || !isCursorVisible ? "0" : "1";
+      }
+      if (viewRef.current) {
+        viewRef.current.style.transform = `translate3d(${ring.current.x - 48}px, ${ring.current.y - 24}px, 0)`;
+        viewRef.current.style.opacity = showView && isCursorVisible ? "1" : "0";
+      }
+      animationFrame.current = requestAnimationFrame(animate);
     };
-
-    animFrame.current = requestAnimationFrame(animate);
-    return () => {
-      if (animFrame.current) cancelAnimationFrame(animFrame.current);
-      animFrame.current = null;
-    };
+    animationFrame.current = requestAnimationFrame(animate);
+    return () => animationFrame.current && cancelAnimationFrame(animationFrame.current);
   }, [shouldShow, showView, isCursorVisible]);
 
-  // Hide browser cursor when custom cursor is active
+  // Mousemove: update dot, mouse, "View", and clickable hover
   useEffect(() => {
-    if (shouldShow && isCursorVisible) {
+    if (!shouldShow) return;
+    const handleMove = (e: MouseEvent) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX - 4}px, ${e.clientY - 4}px, 0)`;
+        dotRef.current.style.opacity = isCursorVisible ? "1" : "0";
+      }
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      setShowView(isSpecialTile(el));
+      if (ringRef.current) {
+        if (isClickable(el)) {
+          ringRef.current.classList.add("cursor-hover");
+        } else {
+          ringRef.current.classList.remove("cursor-hover");
+        }
+      }
+    };
+
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [shouldShow, isCursorVisible]);
+
+  // Hide browser cursor everywhere (incl. clickables) if using custom cursor
+  useEffect(() => {
+    if (shouldShow) {
       document.body.setAttribute("data-custom-cursor", "yes");
     } else {
       document.body.removeAttribute("data-custom-cursor");
     }
-    console.log("Cursor attribute:", {
-      shouldShow,
-      isCursorVisible,
-      dataCustomCursor: document.body.getAttribute("data-custom-cursor"),
-    });
-    return () => document.body.removeAttribute("data-custom-cursor");
-  }, [shouldShow, isCursorVisible]);
+    return () => { document.body.removeAttribute("data-custom-cursor"); };
+  }, [shouldShow]);
 
-  // Handle mouse leave/enter
+  // Hide custom cursor when mouse leaves window, show when enters
   useEffect(() => {
-    if (!shouldShow) return () => {};
-
-    const handleMouseLeave = () => {
-      setIsCursorVisible(false);
-      // Immediately hide elements
-      if (dotRef.current && ringRef.current && viewRef.current) {
-        dotRef.current.style.opacity = "0";
-        ringRef.current.style.opacity = "0";
-        viewRef.current.style.opacity = "0";
-        dotRef.current.style.transform = `translate(-9999px, -9999px)`;
-        ringRef.current.style.transform = `translate(-9999px, -9999px)`;
-        viewRef.current.style.transform = `translate(-9999px, -9999px)`;
-        console.log("Mouse leave styles:", {
-          dotOpacity: dotRef.current.style.opacity,
-          ringOpacity: ringRef.current.style.opacity,
-          dotTransform: dotRef.current.style.transform,
-          ringTransform: ringRef.current.style.transform,
-        });
-      }
-      console.log("Mouse left: isCursorVisible=false");
-    };
-
-    const handleMouseOut = () => {
-      console.log("Mouse out: fallback event");
-      handleMouseLeave();
-    };
-
-    const handleMouseEnter = () => {
-      setIsCursorVisible(true);
-      console.log("Mouse entered: isCursorVisible=true");
-    };
+    if (!shouldShow) return;
+    const handleMouseLeave = () => setIsCursorVisible(false);
+    const handleMouseEnter = () => setIsCursorVisible(true);
 
     window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, [shouldShow]);
 
-  if (!shouldShow) return null;
+  // Hide cursor if Intro is showing (controlled by body attribute)
+  const introHide = typeof document !== "undefined" && document.body.hasAttribute("data-intro-hide-cursor");
+  if (!shouldShow || introHide) return null;
 
   return (
     <>
