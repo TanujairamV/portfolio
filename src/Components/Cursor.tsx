@@ -47,7 +47,9 @@ const Cursor: React.FC = () => {
       animationFrame.current = requestAnimationFrame(animate);
     };
     animationFrame.current = requestAnimationFrame(animate);
-    return () => animationFrame.current && cancelAnimationFrame(animationFrame.current);
+    return () => {
+      if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
+    };
   }, [shouldShow, isCursorVisible]);
 
   useEffect(() => {
