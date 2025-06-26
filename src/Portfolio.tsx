@@ -59,6 +59,7 @@ const sectionHeading = (text: string, icon?: React.ReactNode) => (
 const Portfolio: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-gray-950 text-white overflow-x-hidden font-sans">
+      {/* Intro, particles, cursor, and navigation */}
       <Intro />
       <ParticlesBackground />
       <Cursor />
@@ -73,31 +74,35 @@ const Portfolio: React.FC = () => {
         </div>
 
         {/* Skills */}
-        <section id="skills" className="mb-20 glass-card">
+        <section id="skills" className="mb-20">
           {sectionHeading("Skills")}
           <SkillChip />
         </section>
 
         {/* Experience */}
-        <section id="experience" className="mb-20 glass-card">
+        <section id="experience" className="mb-20">
           {sectionHeading("Experience")}
           <Experience />
         </section>
 
         {/* Education */}
-        <section id="education" className="mb-20 glass-card">
+        <section id="education" className="mb-20">
           {sectionHeading("Education")}
-          <Education />
+          <div className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md shadow-xl p-6">
+            <Education />
+          </div>
         </section>
 
         {/* Certificates */}
-        <section id="certificates" className="mb-20 glass-card">
+        <section id="certificates" className="mb-20">
           {sectionHeading("Certificates")}
-          <Certificates />
+          <div className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md shadow-xl p-6">
+            <Certificates />
+          </div>
         </section>
 
         {/* Projects */}
-        <section id="projects" className="mb-20 glass-card">
+        <section id="projects" className="mb-20">
           {sectionHeading("Projects")}
           <Projects />
         </section>
