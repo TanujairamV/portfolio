@@ -1,4 +1,4 @@
-/* 1. Catppuccin Mocha Palette */
+/* Catppuccin Mocha Palette */
 :root {
   --ctp-mocha-base: #1e1e2e;
   --ctp-mocha-mantle: #181825;
@@ -20,7 +20,6 @@
   --ctp-mocha-overlay2: #9399b2;
 }
 
-/* 2. General Glass Theme */
 body {
   background: var(--ctp-mocha-base);
   color: var(--ctp-mocha-text);
@@ -29,9 +28,24 @@ body {
   transition: background 0.4s cubic-bezier(.42,.03,.36,1);
 }
 
+section, .glass-section {
+  border-radius: 2.2rem;
+  margin-bottom: 3.5rem;
+  padding: 2.4rem 1.8rem;
+  background: rgba(49, 50, 68, 0.46);
+  box-shadow: 0 4px 28px 0 rgba(137,180,250,0.10);
+  backdrop-filter: blur(22px) saturate(1.11);
+}
+@media (max-width:767px) {
+  section, .glass-section {
+    border-radius: 1.2rem;
+    padding: 1.1rem 0.6rem;
+  }
+}
+
 /* Glassy Panels/Cards */
 .glass-panel, .glass-navbar, .glass-card, .material-card, .profile-card, .now-listening-container, .fade-in-up, .glass-section {
-  background: rgba(40, 42, 54, 0.74); /* slightly dark glass */
+  background: rgba(40, 42, 54, 0.74);
   border-radius: 2rem;
   border: 1.8px solid rgba(205, 214, 244, 0.16);
   box-shadow: 0 8px 32px 0 rgba(24, 24, 37, 0.28), 0 2px 32px 0 rgba(137,180,250,0.12);
@@ -53,7 +67,6 @@ body {
   border: 1.3px solid rgba(205, 214, 244, 0.13);
 }
 
-/* 3. Accent & Glow */
 a, .text-accent, .nav-link.active, .navbar-underline, .glass-navbar .nav-link.active {
   color: var(--ctp-mocha-accent) !important;
   text-shadow: 0 2px 12px var(--ctp-mocha-blue), 0 1px 4px var(--ctp-mocha-overlay0);
@@ -66,7 +79,6 @@ a, .text-accent, .nav-link.active, .navbar-underline, .glass-navbar .nav-link.ac
   stroke: var(--ctp-mocha-accent) !important;
 }
 
-/* 4. Vibrant glowing icons */
 .social-icon, .fade-in-up .icon-main svg, .now-listening-container .fa-music, .glass-navbar .nav-link svg {
   filter: drop-shadow(0 1px 7px var(--ctp-mocha-accent)) drop-shadow(0 0px 2px var(--ctp-mocha-blue));
   color: var(--ctp-mocha-accent);
@@ -75,23 +87,7 @@ a, .text-accent, .nav-link.active, .navbar-underline, .glass-navbar .nav-link.ac
   -webkit-text-fill-color: transparent;
 }
 
-/* 5. Minimal, Fluid Layout */
-section, .glass-section {
-  border-radius: 2.2rem;
-  margin-bottom: 3.5rem;
-  padding: 2.4rem 1.8rem;
-  background: rgba(49, 50, 68, 0.46);
-  box-shadow: 0 4px 28px 0 rgba(137,180,250,0.10);
-  backdrop-filter: blur(22px) saturate(1.11);
-}
-@media (max-width:767px) {
-  section, .glass-section {
-    border-radius: 1.2rem;
-    padding: 1.1rem 0.6rem;
-  }
-}
-
-/* 6. Soft Transitions and Animations */
+/* Soft Transitions and Animations */
 * {
   transition:
     background 0.32s cubic-bezier(.42,.03,.36,1),
@@ -101,7 +97,7 @@ section, .glass-section {
     filter 0.3s cubic-bezier(.42,.03,.36,1);
 }
 
-/* 7. Custom Cursor (Glass Dot & Ring) */
+/* Custom Cursor (Glass Dot & Ring) */
 .custom-cursor-dot {
   pointer-events: none;
   position: fixed;
@@ -109,7 +105,6 @@ section, .glass-section {
   height: 9px;
   border-radius: 50%;
   background: rgba(255,255,255,0.05);
-  /* Invert and see-through effect: */
   mix-blend-mode: difference;
   backdrop-filter: invert(0.98) blur(1.5px) saturate(1.5);
   -webkit-backdrop-filter: invert(0.98) blur(1.5px) saturate(1.5);
@@ -118,7 +113,6 @@ section, .glass-section {
   transition: background 0.15s, transform 0.15s;
   z-index: 10000;
 }
-
 .custom-cursor-ring {
   pointer-events: none;
   position: fixed;
@@ -135,22 +129,12 @@ section, .glass-section {
   transition: border-color 0.26s cubic-bezier(.33,1.02,.53,.98), background 0.18s cubic-bezier(.33,1.02,.53,.98), transform 0.15s cubic-bezier(.41,1.11,.59,.95);
   z-index: 9999;
 }
-
 [data-custom-cursor], [data-custom-cursor] * {
   cursor: none !important;
 }
-
 @media (hover: none), (pointer: coarse) {
   .custom-cursor-dot,
   .custom-cursor-ring {
     display: none !important;
   }
-}
-
-/* 8. Remove default borders and backgrounds on all cards/panels */
-.material-card, .profile-card, .now-listening-container,
-.glass-card, .glass-navbar, #navbar, .glass-section, .fade-in-up {
-  border: none;
-  background: none;
-  box-shadow: none;
 }
