@@ -1,104 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import "../Styles.css";
+/* Place your custom cursor CSS here. Example: */
 
-const Cursor: React.FC = () => {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+.custom-cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  transition: opacity 0.2s;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
 
-  const [shouldShow, setShouldShow] = useState(false);
-  const [isCursorVisible, setIsCursorVisible] = useState(true);
-
-  const mouse = useRef({ x: 0, y: 0 });
-  const ring = useRef({ x: 0, y: 0 });
-  const animationFrame = useRef<number>();
-
-  useEffect(() => {
-    const isTouch =
-      typeof window !== "undefined" &&
-      ("ontouchstart" in window ||
-        navigator.maxTouchPoints > 0 ||
-        // @ts-ignore
-        navigator.msMaxTouchPoints > 0);
-    setShouldShow(!isTouch);
-
-    const handleTouch = () => setShouldShow(false);
-    const handleMouse = () => setShouldShow(true);
-
-    window.addEventListener("touchstart", handleTouch, { passive: true });
-    window.addEventListener("mousemove", handleMouse);
-
-    return () => {
-      window.removeEventListener("touchstart", handleTouch);
-      window.removeEventListener("mousemove", handleMouse);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!shouldShow) return;
-    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
-    const animate = () => {
-      ring.current.x = lerp(ring.current.x, mouse.current.x, 0.22);
-      ring.current.y = lerp(ring.current.y, mouse.current.y, 0.22);
-
-      if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ring.current.x - 25}px, ${ring.current.y - 25}px, 0)`;
-        ringRef.current.style.opacity = isCursorVisible ? "1" : "0";
-      }
-      animationFrame.current = requestAnimationFrame(animate);
-    };
-    animationFrame.current = requestAnimationFrame(animate);
-    return () => {
-      if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
-    };
-  }, [shouldShow, isCursorVisible]);
-
-  useEffect(() => {
-    if (!shouldShow) return;
-    const handleMove = (e: MouseEvent) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${e.clientX - 4.5}px, ${e.clientY - 4.5}px, 0)`;
-        dotRef.current.style.opacity = isCursorVisible ? "1" : "0";
-      }
-    };
-
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
-  }, [shouldShow, isCursorVisible]);
-
-  useEffect(() => {
-    if (shouldShow) {
-      document.body.setAttribute("data-custom-cursor", "yes");
-    } else {
-      document.body.removeAttribute("data-custom-cursor");
-    }
-    return () => { document.body.removeAttribute("data-custom-cursor"); };
-  }, [shouldShow]);
-
-  useEffect(() => {
-    if (!shouldShow) return;
-    const handleMouseLeave = () => setIsCursorVisible(false);
-    const handleMouseEnter = () => setIsCursorVisible(true);
-
-    window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("mouseenter", handleMouseEnter);
-
-    return () => {
-      window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("mouseenter", handleMouseEnter);
-    };
-  }, [shouldShow]);
-
-  const introHide = typeof document !== "undefined" && document.body.hasAttribute("data-intro-hide-cursor");
-  if (!shouldShow || introHide) return null;
-
-  return (
-    <>
-      <div ref={ringRef} className="custom-cursor-ring" />
-      <div ref={dotRef} className="custom-cursor-dot" />
-    </>
-  );
-};
-
-export default Cursor;
+.custom-cursor-dot {
+  position: fixed;
+  pointer-events: none;
+  background: #fff;
+  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+  transition: opacity 0.2s;
+  z-index: 10000;
+  mix-blend-mode: difference;
+}

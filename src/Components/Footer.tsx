@@ -1,10 +1,11 @@
-import { FaInstagram, FaTelegramPlane, FaGithub, FaEnvelope } from "react-icons/fa";
-
+import { FaInstagram, FaGithub, FaEnvelope } from "react-icons/fa";
+import { FaTelegramPlane } from "react-icons/fa";
 const socialLinks = [
   { href: "https://instagram.com/tanujairam.v", icon: FaInstagram, label: "Instagram" },
   { href: "https://t.me/Tanujairam", icon: FaTelegramPlane, label: "Telegram" },
   { href: "mailto:tanujairam.v@gmail.com", icon: FaEnvelope, label: "Email" },
   { href: "https://github.com/TanujairamV", icon: FaGithub, label: "GitHub" }
+];
 ];
 
 const gradientStyle = {
