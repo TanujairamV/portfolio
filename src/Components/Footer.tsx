@@ -6,7 +6,7 @@ const socialLinks = [
   { href: "mailto:tanujairam.v@gmail.com", icon: FaEnvelope, label: "Email" },
   { href: "https://github.com/TanujairamV", icon: FaGithub, label: "GitHub" }
 ];
-];
+// Removed the extra closing bracket here
 
 const gradientStyle = {
   background: "linear-gradient(90deg, #fff 70%, #b0b0b0 100%)",
